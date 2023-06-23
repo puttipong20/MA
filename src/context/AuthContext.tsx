@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, createContext } from "react";
 
-import { UserDetail } from "../types/Type";
+import { UserDetail } from "../@types/Type";
 
 export const AuthContext = createContext({
     uid: "",

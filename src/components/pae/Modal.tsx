@@ -19,7 +19,7 @@ import {
 import { sendPasswordResetEmail } from "firebase/auth";
 import { FC, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { auth } from "../services/config-db";
+import { auth } from "../../services/config-db";
 
 const ResetModal: FC = () => {
   const ref = useRef(null);
