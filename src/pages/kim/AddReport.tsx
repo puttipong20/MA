@@ -24,7 +24,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdUpload } from "react-icons/md";
 
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 type FormValues = {
     ticketsProblems: string;
@@ -51,8 +51,6 @@ const AddReport = () => {
 
     const [allImgUpload, setAllImgUpload] = useState<any[]>([])
 
-    const [clientType, setClientType] = useState("");
-    const [uid, setUid] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
     const navigate = useNavigate();
@@ -75,8 +73,11 @@ const AddReport = () => {
     //   }
     // });
 
+    const goBackPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
+
     const onSubmit = async (data: any) => {
         setIsLoading(true);
+        console.clear();
         const dataToAdd = {
             title:
                 data.ticketsProblems === "other"
@@ -89,63 +90,49 @@ const AddReport = () => {
             createAt: data.ticketsDate,
             name: data.ticketsName,
             RepImg: allImgUpload,
-            company: clientType,
-            uid: uid
+            company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
+            projectName:params["projectName"],
+            projectID: params["projectID"],
+            uid: Auth.uid
         }
         console.log(dataToAdd);
-        // try {
-        //     await axios
-        //         .post(
-        //             "https://asia-southeast1-crafting-ticket-dev.cloudfunctions.net/addReport_v2",
-        //             {
-        //                 title:
-        //                     data.ticketsProblems === "other"
-        //                         ? data.otherProblem
-        //                         : data.ticketsProblems,
-        //                 detail: data.ticketsDetails,
-        //                 phone: data.ticketsPhone,
-        //                 line: data.ticketsLine,
-        //                 email: data.ticketsEmail,
-        //                 createAt: data.ticketsDate,
-        //                 name: data.ticketsName,
-        //                 RepImg: allImgUpload,
-        //                 company: clientType,
-        //                 uid: uid,
-        //             }
-        //         )
-        //         .then(
-        //             () => {
-        //                 // console.log(props)
-        //                 navigate(`/preview/${id}`);
-        //                 toast({
-        //                     title: "Submit Successfully",
-        //                     description: "report a problem has been submitted.",
-        //                     status: "success",
-        //                     position: "top",
-        //                     duration: 3000,
-        //                     isClosable: true,
-        //                 });
-        //             }
-        //         )
-        //         .catch((e) => console.log(e));
-        // } catch (e) {
-        //     console.log(e)
-        //     toast({
-        //         title: "Error",
-        //         description: "There's something wrong, please try again later",
-        //         status: "error",
-        //         position: "top",
-        //         duration: 3000,
-        //         isClosable: true,
-        //     });
-        // }
+        try {
+            await axios
+                .post(
+                    "https://asia-southeast1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", dataToAdd)
+                .then(
+                    () => {
+                        // console.log(props)
+                        navigate(goBackPath);
+                        toast({
+                            title: "Submit Successfully",
+                            description: "report a problem has been submitted.",
+                            status: "success",
+                            position: "top",
+                            duration: 3000,
+                            isClosable: true,
+                        });
+                    }
+                )
+                .catch((e) => console.log(e));
+        } catch (e) {
+            console.log(e)
+            toast({
+                title: "Error",
+                description: "There's something wrong, please try again later",
+                status: "error",
+                position: "top",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
 
-        // reset();
+        reset();
         setIsLoading(false);
     };
 
     const handleClose = () => {
-        navigate(`/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`);
+        navigate(goBackPath);
     };
 
     const uploadFile = (event: any) => {
