@@ -4,7 +4,9 @@ import { FC } from "react"
 
 const App: FC = () => {
   return (
-    <Container>App</Container>
+    <Container>
+      Pre/velop
+    </Container>
   )
 }
 
