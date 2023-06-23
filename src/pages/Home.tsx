@@ -11,13 +11,13 @@ export default function Home() {
 
     return (
         <Box>
-            <Box>
+            {/* <Box>
                 <Text>Go to . . .</Text>
                 <Button onClick={() => { navigate("/preview/gogreen") }}>Go Green</Button>
                 <Button onClick={() => { navigate("/preview/saimai") }}>Saimai</Button>
                 <Button onClick={() => { navigate("/preview/diwalai") }}>Diwalai</Button>
                 <Button onClick={() => { navigate("/login") }}>Login</Button>
-            </Box>
+            </Box> */}
             <Box>
                 <Text>MA nav temp</Text>
                 <Button onClick={() => { navigate("/company") }}>Company - Project</Button>

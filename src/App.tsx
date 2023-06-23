@@ -2,22 +2,21 @@ import {
   Box, Spinner, Text,
 } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import FormAddReport from "./pages/FormAddReport";
-import DetailForDev from "./pages/DetailForDev";
-import Preview from "./pages/Preview";
-import DetailForUser from "./pages/DetailForUser";
+// import FormAddReport from "./pages/FormAddReport";
+// import DetailForDev from "./pages/DetailForDev";
+// import Preview from "./pages/Preview";
+// import DetailForUser from "./pages/DetailForUser";
 import Login from "./pages/pae/Login"
 import Register from "./pages/pae/Register"
 
-// import LogoutBtn from "./Components/LogoutBtn"
 import Home from "./pages/Home";
 import Project from "./pages/kim/Project";
 
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./Context/AuthContext";
-import AuthCheck from "./Components/AuthCheck";
+import { AuthContext } from "./context/AuthContext";
+import AuthCheck from "./components/AuthCheck";
 import TempCompPreview from "./pages/kim/TempCompPreview";
-import ProjectPreviewComp from "./Components/kim/ProjectPreviewComp";
+import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
 import ProblemPreview from "./pages/kim/ProblemPreview";
 import AddReport from "./pages/kim/AddReport";
 function App() {
@@ -50,11 +49,11 @@ function App() {
           {/* <Route path="/precompany" element={<PreCompany />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/preview/:id" element={<Preview />} />
+          {/* <Route path="/preview/:id" element={<Preview />} /> */}
           <Route path="/login" element={<Login />} />
-          <Route path="/dev/:type/:id" element={<DetailForDev />} />
-          <Route path="/detail/:id" element={<DetailForUser />} />
-          <Route path="/Add/:id" element={<FormAddReport />} />
+          {/* <Route path="/dev/:type/:id" element={<DetailForDev />} /> */}
+          {/* <Route path="/detail/:id" element={<DetailForUser />} /> */}
+          {/* <Route path="/Add/:id" element={<FormAddReport />} /> */}
 
           <Route path="/company" element={<Project />} />
           <Route path="/company/:company" element={<Project><ProjectPreviewComp /></Project>} />
