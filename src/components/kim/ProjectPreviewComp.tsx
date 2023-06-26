@@ -26,7 +26,6 @@ import { BsSearch } from 'react-icons/bs'
 
 import { LuMoreHorizontal } from "react-icons/lu"
 import { CgDetailsMore } from "react-icons/cg"
-import { TiDocumentText } from "react-icons/ti"
 import { AiOutlineReload } from "react-icons/ai"
 
 import { useParams, useNavigate } from 'react-router-dom';
@@ -42,6 +41,7 @@ import classes from "./ProjectPreview.module.css";
 // import EditProject from './EditProject';
 
 import moment from 'moment';
+import Renewal from './Renewal';
 
 export default function ProjectPreviewComp() {
     const [isFetching, setIsFetching] = useState(false);
@@ -138,7 +138,7 @@ export default function ProjectPreviewComp() {
                                 </Tr> :
                                 filterProject.map((i, index) => {
                                     return (
-                                        <Tr  _hover={{ bg: "#eee" }} key={index}>
+                                        <Tr _hover={{ bg: "#eee" }} key={index}>
                                             <Td textAlign={"center"}>{index + 1}</Td>
                                             <Td textAlign={"center"}>{i.detail.projectName}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.LastestMA.startMA).format("DD/MM/YYYY")}</Td>
@@ -159,7 +159,8 @@ export default function ProjectPreviewComp() {
                                                             <EditProject projectId={i.projectId} />
                                                         </MenuItem> */}
                                                         <MenuItem color={"blue"}>
-                                                            <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา
+                                                            <Renewal />
+                                                            {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
                                                         </MenuItem>
                                                         <MenuItem color={"red"}>
                                                             <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
