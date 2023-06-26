@@ -59,20 +59,6 @@ const AddReport = () => {
     const formattedDate = moment().format("YYYY-MM-DD HH:mm:ss");
     const problem = watch("ticketsProblems");
 
-    // onAuthStateChanged(auth, async (user) => {
-    //   if (user) {
-    //     const uid = user.uid;
-    //     const q = query(collection(db, "Profiles"), where("uid", "==", uid));
-    //     const get = await getDocs(q);
-    //     let client = "";
-    //     get.forEach((i) => (client = i.data().company));
-    //     setClientType(client);
-    //     setUid(uid);
-    //   } else {
-    //     navigate("/login");
-    //   }
-    // });
-
     const goBackPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
 
     const onSubmit = async (data: any) => {
@@ -90,8 +76,9 @@ const AddReport = () => {
             createAt: data.ticketsDate,
             name: data.ticketsName,
             RepImg: allImgUpload,
-            company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-            projectName:params["projectName"],
+            // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
+            companyId:params["company"],
+            projectName:params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
             projectID: params["projectID"],
             uid: Auth.uid
         }

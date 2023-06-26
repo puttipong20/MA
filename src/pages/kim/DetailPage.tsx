@@ -37,7 +37,7 @@ export default function DetailPage() {
   } else {
 
     return (
-      <Box p="1rem">
+      <Box>
         <Box>
           <Button onClick={() => { navigate(backPath) }}><BiArrowBack /></Button>
         </Box>
@@ -63,7 +63,7 @@ export default function DetailPage() {
             สิ้นสุดสัญญาMA : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.endMA}</Text>
           </Text>
           <Text fontWeight={"bold"} w="fit-content">
-            ราคา : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.cost}</Text>
+            ค่าบริการ : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.cost}</Text>
           </Text>
         </Box>
         <Divider />

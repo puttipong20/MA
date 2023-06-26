@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../services/config-db";
+import { db } from "../../services/config-db";
 import { useParams } from "react-router-dom";
-import ImgModal from "./ImgModal";
+import ImgModal from "../../component/ImgModal";
 
 type Fvalue = {
   problem: string;
@@ -31,7 +31,7 @@ type Fvalue = {
 
 function ProblemRequest() {
   const [fValue, setFValue] = useState<Fvalue>();
-  const params = useParams();
+  const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
   const convertTime = (time: string) => {
@@ -50,7 +50,7 @@ function ProblemRequest() {
 
   async function fetchData() {
     setIsLoading(true)
-    onSnapshot(doc(db, "Report", params["problemID"] as string), (doc) => {
+    onSnapshot(doc(db, "Report", id as string), (doc) => {
       const data: Fvalue = {
         problem: doc.data()?.title,
         details: doc.data()?.detail,

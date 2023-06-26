@@ -138,14 +138,14 @@ export default function ProjectPreviewComp() {
                                 </Tr> :
                                 filterProject.map((i, index) => {
                                     return (
-                                        <Tr cursor={"pointer"} _hover={{ bg: "#eee" }} key={index}>
+                                        <Tr  _hover={{ bg: "#eee" }} key={index}>
                                             <Td textAlign={"center"}>{index + 1}</Td>
                                             <Td textAlign={"center"}>{i.detail.projectName}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.LastestMA.startMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.LastestMA.endMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"right"}>{Number(i.detail.LastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
-                                            <Td textAlign={"center"}><Button onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
+                                            <Td textAlign={"center"}><Button colorScheme='yellow' fontWeight={"normal"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
                                             <Td textAlign={"center"}>
                                                 <Menu>
                                                     <MenuButton as={Button} colorScheme='blue'>

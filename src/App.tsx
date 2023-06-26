@@ -20,6 +20,7 @@ import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
 import ProblemPreview from "./pages/kim/ProblemPreview";
 import AddReport from "./pages/kim/AddReport";
 import DetailPage from "./pages/kim/DetailPage";
+import DetailForDev from "./pages/kim/DetailForDev";
 
 function App() {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ function App() {
           {/* <Route path="/company/:company/:project/detail" element={<Project></Project>} /> */}
           <Route path="/company/:company/:projectID/:projectName/problemReport" element={<Project><ProblemPreview /></Project>} />
           <Route path="/company/:company/:projectID/:projectName/addReport" element={<AddReport />} />
+          <Route path="/company/:company/:projectID/:projectName/:problemID" element={<DetailForDev />} />
           <Route path="/tempCompany" element={<TempCompPreview />} />
         </Routes>
 
