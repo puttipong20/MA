@@ -31,7 +31,7 @@ import { AiOutlineEdit, AiOutlineReload } from "react-icons/ai"
 
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { Project, ProjectDetail } from '../../@types/Type';
 
@@ -56,30 +56,32 @@ export default function ProjectPreviewComp() {
         const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
 
         const allProject: Project[] = [];
-        // onSnapshot(q, docs => {
-        //     docs.forEach((i) => {
-        //         const project: Project = {
-        //             projectId: i.id,
-        //             detail: i.data() as ProjectDetail
-        //         }
-        //         setCompanyName(project.detail.companyName);
-        //         allProject.push(project);
-        //     })
-        // })
-        const companies = await getDocs(q)
-        companies.forEach(i => {
-            // console.log(i.data());
-            // console.log(i.data());
-            const project: Project = {
-                projectId: i.id,
-                detail: i.data() as ProjectDetail
-            }
-            setCompanyName(project.detail.companyName);
-            allProject.push(project);
-        }
-        )
-        setProjects(allProject);
-        setFilterProjects(allProject);
+        onSnapshot(q, docs => {
+            docs.forEach((i) => {
+                const project: Project = {
+                    projectId: i.id,
+                    detail: i.data() as ProjectDetail
+                }
+                setCompanyName(project.detail.companyName);
+                allProject.push(project);
+            })
+            setProjects(allProject);
+            setFilterProjects(allProject);
+        })
+        // const companies = await getDocs(q)
+        // companies.forEach(i => {
+        //     // console.log(i.data());
+        //     // console.log(i.data());
+        //     const project: Project = {
+        //         projectId: i.id,
+        //         detail: i.data() as ProjectDetail
+        //     }
+        //     setCompanyName(project.detail.companyName);
+        //     allProject.push(project);
+        // }
+        // )
+        // setProjects(allProject);
+        // setFilterProjects(allProject);
         setIsFetching(false);
     }
 
@@ -170,7 +172,7 @@ export default function ProjectPreviewComp() {
                                                             <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา
                                                         </MenuItem>
                                                         <MenuItem color={"red"}>
-                                                            <DeleteProject projectId={i.projectId} />
+                                                            <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
                                                             {/* <Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project */}
                                                         </MenuItem>
                                                     </MenuList>

@@ -18,7 +18,7 @@ import {
 // import { CgDetailsMore } from "react-icons/cg";
 import { useState, useEffect } from "react";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
 
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,7 @@ import { Company, CompanyDetail } from "../../@types/Type";
 import AddProject from "./AddProject";
 
 import { useParams } from "react-router-dom";
+import moment from "moment";
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -48,20 +49,39 @@ const Sidebar: React.FC = () => {
     const fetchingCompany = async () => {
         setIsFetching(true);
         const collRef = collection(db, "Company")
-        const collData = await getDocs(collRef);
-        const allCompany: Company[] = [];
-        collData.forEach(i => {
-            const company: Company = {
-                companyId: i.id,
-                detail: i.data() as CompanyDetail,
-            }
-            allCompany.push(company)
-        })
+        // const collData = await getDocs(collRef);
+
+        // collData.forEach(i => {
+        //     const company: Company = {
+        //         companyId: i.id,
+        //         detail: i.data() as CompanyDetail,
+        //     }
+        //     allCompany.push(company)
+        // })
         // console.log(allCompany);
-        setCompanies(allCompany);
-        setFilterCompany(allCompany);
+        // setCompanies(allCompany);
+        // setFilterCompany(allCompany);
+
         setIsFetching(false);
     }
+
+    useEffect(() => {
+        const collRef = collection(db, "Company")
+        const allCompany: Company[] = [];
+        const q = query(collRef)
+        onSnapshot(q, (docs) => {
+            docs.forEach(i => {
+                const company: Company = {
+                    companyId: i.id,
+                    detail: i.data() as CompanyDetail,
+                }
+                allCompany.push(company)
+            })
+            setCompanies(allCompany);
+            setFilterCompany(allCompany);
+            // console.log("company update", moment().format("HH:mm"))
+        })
+    }, [])
 
     useEffect(() => {
         fetchingCompany();
