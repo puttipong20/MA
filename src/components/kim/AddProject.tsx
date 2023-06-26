@@ -76,7 +76,7 @@ const AddProject: React.FC<Props> = (props) => {
             isClosable: true,
             position: "top",
         })
-        window.location.reload();
+        // window.location.reload();
         setIsAdding(false);
     }
 
