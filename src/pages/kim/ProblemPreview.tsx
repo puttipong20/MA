@@ -69,7 +69,7 @@ export default function ProblemPreview() {
     useEffect(() => {
         fetchingReport();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [params["projectID"]])
 
     const onSearch = () => {
         // const searchInput = document.getElementById("searchInput") as HTMLInputElement;

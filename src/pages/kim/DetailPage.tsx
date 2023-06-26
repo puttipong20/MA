@@ -13,7 +13,6 @@ export default function DetailPage() {
   const backPath = `/company/${params["company"]}`
   const [isFetching, setIsfetching] = useState(false);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
-  const [showEdit, setShowEdit] = useState(false);
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true)
@@ -28,14 +27,6 @@ export default function DetailPage() {
     fetchingProjectDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const mouseEn = () => {
-    setShowEdit(true)
-  }
-
-  const mouseLeave = () => {
-    setShowEdit(false)
-  }
 
   if (isFetching) {
     return (
@@ -55,8 +46,8 @@ export default function DetailPage() {
             บริษัท :
             <Text as="span" fontWeight={"normal"}>{projectDetail?.companyName}</Text>
           </Text>
-          <Text fontWeight={"bold"} w="fit-content" onMouseLeave={mouseLeave} onMouseEnter={mouseEn} display={"flex"} align={"center"}>
-            ชื่อโปรเจค : 
+          <Text fontWeight={"bold"} w="fit-content" display={"flex"} align={"center"}>
+            ชื่อโปรเจค :
             <Text as="span" fontWeight={"normal"}>{projectDetail?.projectName}</Text>
             <Text as="span" h="fit-content" my="auto" color={"gray"} cursor={"pointer"} _hover={{ color: "black" }}>
               <AiOutlineEdit />

@@ -28,7 +28,6 @@ import { Company, CompanyDetail } from "../../@types/Type";
 import AddProject from "./AddProject";
 
 import { useParams } from "react-router-dom";
-import moment from "moment";
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -126,7 +125,7 @@ const Sidebar: React.FC = () => {
                                                                 onClick={() => {
                                                                     // console.log(i.detail.companyName)
                                                                     // console.log(j.projectName)
-                                                                    // navigate(`/company/${i.companyId}/${j.id}`)
+                                                                    navigate(`/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`)
                                                                 }}
                                                             >
                                                                 {j.projectName}
