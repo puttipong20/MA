@@ -11,6 +11,7 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
+    useToast,
     useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
@@ -21,7 +22,7 @@ import { collection, addDoc, updateDoc, getDoc, doc } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { CompanyDetail, ProjectDetail } from "../../@types/Type";
 
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 interface Props {
     companyId: string,
@@ -33,7 +34,7 @@ const AddProject: React.FC<Props> = (props) => {
     const { handleSubmit, control, watch, setValue, reset } = useForm()
     const [duration, setDuration] = useState(0);
     const [isAdding, setIsAdding] = useState(false);
-
+    const toast = useToast();
     const Auth = useContext(AuthContext);
 
     const onSubmit = async (data: any) => {
@@ -65,8 +66,16 @@ const AddProject: React.FC<Props> = (props) => {
         }
         await updateDoc(companyRef, { projects: updateProject })
         // console.log(updateProject)
+
         reset();
         onClose();
+        toast({
+            title: 'เพิ่มโปรเจคสำเร็จ.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: "top",
+        })
         window.location.reload();
         setIsAdding(false);
     }

@@ -19,6 +19,8 @@ import TempCompPreview from "./pages/kim/TempCompPreview";
 import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
 import ProblemPreview from "./pages/kim/ProblemPreview";
 import AddReport from "./pages/kim/AddReport";
+import DetailPage from "./pages/kim/DetailPage";
+
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext)
@@ -45,6 +47,7 @@ function App() {
   } else {
     return (
       <Box w="100%" maxH="100vh">
+
         <Routes>
           {/* <Route path="/precompany" element={<PreCompany />} /> */}
           <Route path="/" element={<Home />} />
@@ -57,12 +60,13 @@ function App() {
 
           <Route path="/company" element={<Project />} />
           <Route path="/company/:company" element={<Project><ProjectPreviewComp /></Project>} />
-          <Route path="/company/:company/:project/detail" element={<Project></Project>} />
+          <Route path="/company/:company/:projectID/detail" element={<Project><DetailPage /></Project>} />
           {/* <Route path="/company/:company/:project/detail" element={<Project></Project>} /> */}
           <Route path="/company/:company/:projectID/:projectName/problemReport" element={<Project><ProblemPreview /></Project>} />
           <Route path="/company/:company/:projectID/:projectName/addReport" element={<AddReport />} />
           <Route path="/tempCompany" element={<TempCompPreview />} />
         </Routes>
+
         {/* <LogoutBtn /> */}
       </Box>
     )

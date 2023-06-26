@@ -4,7 +4,7 @@ import {
     Flex,
 } from '@chakra-ui/react'
 
-import AppSidebar from '../../Components/kim/AppSidebar';
+import AppSidebar from '../../components/kim/AppSidebar';
 
 import classes from "./Project.module.css"
 
@@ -20,7 +20,7 @@ const Project: React.FC<Props> = (props) => {
                     <AppSidebar />
                 </Heading>
             </Box>
-            <Box w="calc(100% - 15%)" >
+            <Box w="calc(100% - 15%)" p="1rem" >
                 {props.children}
                 {/* <ProjectPreviewComp /> */}
             </Box>

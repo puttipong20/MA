@@ -26,7 +26,6 @@ import { BsSearch } from 'react-icons/bs'
 
 import { LuMoreHorizontal } from "react-icons/lu"
 import { CgDetailsMore } from "react-icons/cg"
-import { RiDeleteBin7Line } from "react-icons/ri"
 import { TiDocumentText } from "react-icons/ti"
 import { AiOutlineEdit } from "react-icons/ai"
 
@@ -37,6 +36,7 @@ import { db } from '../../services/config-db';
 import { Project, ProjectDetail } from '../../@types/Type';
 
 import { search } from 'ss-search';
+import DeleteProject from './DeleteProject';
 
 export default function ProjectPreviewComp() {
     const [isFetching, setIsFetching] = useState(false);
@@ -48,7 +48,7 @@ export default function ProjectPreviewComp() {
 
     const fetchingData = async () => {
         setIsFetching(true);
-        console.clear();
+        // console.clear();
         // console.log(params);
         const projectCollection = collection(db, "Project")
         const q = query(projectCollection, where("companyID", "==", params["company"]))
@@ -74,7 +74,7 @@ export default function ProjectPreviewComp() {
         const inputRef = document.getElementById("projectSearch") as HTMLInputElement;
         const value = inputRef.value;
 
-        const searchField = ["projectName"];
+        const searchField = ["detail.projectName"];
         const result = search(projects, searchField, value) as Project[];
         setFilterProjects(result);
     }
@@ -145,10 +145,19 @@ export default function ProjectPreviewComp() {
                                                             <LuMoreHorizontal />
                                                         </MenuButton>
                                                         <MenuList p={"0"} borderRadius={"0"}>
-                                                            <MenuItem color={"gray"}><Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project</MenuItem>
-                                                            <MenuItem color={"green"}><Text w="20%" display="flex" justifyContent={"center"}><AiOutlineEdit /></Text>แก้ไข</MenuItem>
-                                                            <MenuItem color={"blue"}><Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา</MenuItem>
-                                                            <MenuItem color={"red"}><Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project</MenuItem>
+                                                            <MenuItem color={"gray"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/detail`) }}>
+                                                                <Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project
+                                                            </MenuItem>
+                                                            <MenuItem color={"green"}>
+                                                                <Text w="20%" display="flex" justifyContent={"center"}><AiOutlineEdit /></Text>แก้ไข
+                                                            </MenuItem>
+                                                            <MenuItem color={"blue"}>
+                                                                <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา
+                                                            </MenuItem>
+                                                            <MenuItem color={"red"}>
+                                                                <DeleteProject projectId={i.projectId} />
+                                                                {/* <Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project */}
+                                                            </MenuItem>
                                                         </MenuList>
                                                     </Menu>
                                                 </Td>
