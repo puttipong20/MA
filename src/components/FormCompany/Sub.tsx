@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 
-import { AuthContext } from "../../context/AuthContext";
+// import { AuthContext } from "../../Context/AuthContext";
 
 type ComValue = {
   companyName: string;
@@ -36,7 +36,7 @@ type ComValue = {
 };
 
 const FormAddCompany = () => {
-  const Auth = useContext(AuthContext);
+  //   const Auth = useContext(AuthContext);
   const {
     handleSubmit,
     reset,
@@ -78,14 +78,14 @@ const FormAddCompany = () => {
         }
       }).then(async (response) => {
         const { number } = response;
-        const docRef = collection(db, "Company");
-        await addDoc(docRef, {
+        const docRef = await addDoc(collection(db, "CompanyAdd"), {
           ...data,
           no: `บริษัทที่ ${number}`,
-          createdAt: createDate,
+          createAt: createDate,
+          //   createBy: Auth.uid,
           companyUpdate: updatedDate,
-          createBy: Auth.uid,
         });
+        // console.log("Document written with ID: ", docRef.id);
       });
       toast({
         title: "เพิ่มข้อมูลบริษัทสำเร็จ",
@@ -96,18 +96,10 @@ const FormAddCompany = () => {
         isClosable: true,
       });
     } catch (e) {
-      toast({
-        title: `เพิ่มบริษัทไม่สำเร็จ`,
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "top",
-      });
-      console.error(e);
+      console.error("errors adding: ", e);
     }
     reset();
     setIsLoading(false);
-    onClose();
   };
 
   return (

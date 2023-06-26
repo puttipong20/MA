@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -23,110 +23,28 @@ import {
   IconButton,
   MenuList,
   MenuItem,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import FormAddCompany from "../../components/FormCompany/FormCompany";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
-// import ViewCompany from "../korn/viewCompany";
-import { MdDelete, MdOutlineHomeWork } from "react-icons/md";
-import { RiEditLine } from "react-icons/ri";
+import EditCompany from "./EditCompany";
+import DeleteCompany from "./DeleteCompany";
+import ViewCompany from "./ViewCompany";
 
-// function DelEditCompany({ item, fetchData }) {
-//   const { isOpen, onOpen, onClose } = useDisclosure();
-
-//   const cancelRef = React.useRef();
-//   const handleRemove = async (id: any) => {
-//     const bookDoc = doc(db, "CompanyAdd", id);
-//     await deleteDoc(bookDoc).then(async () => {
-//       await fetchData();
-//     });
-//   };
-
-//   return (
-//     <>
-//       <Button
-//         colorScheme="#FFFFFF"
-//         w="100%"
-//         justifyContent="flex-start"
-//         color="#FF3E3E"
-//         onClick={onOpen}
-//         fontSize="16px"
-//         fontFamily="Prompt"
-//         fontWeight="400"
-//         leftIcon={<MdDelete size={"20px"} />}
-//       >
-//         ลบข้อมูล
-//       </Button>
-//       <AlertDialog
-//         isOpen={isOpen}
-//         leastDestructiveRef={cancelRef}
-//         onClose={onClose}
-//       >
-//         <AlertDialogOverlay>
-//           <AlertDialogContent>
-//             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-//               ลบข้อมูล
-//             </AlertDialogHeader>
-
-//             <AlertDialogBody>คุณต้องการลบข้อมูล ใช่หรือไม่</AlertDialogBody>
-
-//             <AlertDialogFooter>
-//               <Button
-//                 fontFamily={"Prompt"}
-//                 fontSize={"14px"}
-//                 fontWeight={"600"}
-//                 ref={cancelRef}
-//                 onClick={onClose}
-//               >
-//                 ยกเลิก
-//               </Button>
-//               <Button
-//                 fontFamily={"Prompt"}
-//                 fontSize={"14px"}
-//                 fontWeight={"600"}
-//                 colorScheme="red"
-//                 onClick={() => {
-//                   handleRemove(item.id);
-//                   onClose();
-//                 }}
-//                 ml={3}
-//               >
-//                 ลบข้อมูล
-//               </Button>
-//             </AlertDialogFooter>
-//           </AlertDialogContent>
-//         </AlertDialogOverlay>
-//       </AlertDialog>
-//     </>
-//   );
-// }
-
-const PreCompany = (props: any) => {
+function PreCompany(props: any) {
   const [comForm, setComForm] = useState<any[]>([]);
   // const [search, setSearch] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
 
-  const fetchData = useCallback(async () => {
-    const CompanyDoc = collection(db, "CompanyAdd");
-    onSnapshot(CompanyDoc, (snapshot) => {
+  const fetchData = async () => {
+    const CompanyDoc = collection(db, "Company");
+    const q = query(CompanyDoc, orderBy("createdAt", "asc"));
+    // onSnapshot(CompanyDoc, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       return setComForm(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
       );
@@ -137,12 +55,11 @@ const PreCompany = (props: any) => {
     //     snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     //   );
     // });
-  }, []);
-    
+  };
+
   useEffect(() => {
     fetchData();
-    // getData();
-  }, [params, comForm]);
+  }, [params]);
 
   const handleNext = () => {
     navigate(`/companypage/${props.type}`);
@@ -151,7 +68,7 @@ const PreCompany = (props: any) => {
   return (
     <div className="container">
       <form>
-        <Container maxW="90%">
+        <Container maxW="90%" pb="10">
           <Box>
             <Center w="100%" mb="1rem">
               <HStack
@@ -323,40 +240,18 @@ const PreCompany = (props: any) => {
                               }
                             />
                             <MenuList backgroundColor="white">
-                              <MenuItem
-                                h="50px"
-                                backgroundColor="whiter"
-                                onClick={() => {
-                                  navigate(`/companypage/${com.id}`);
-                                }}
-                              >
-                                <Flex ml="5">
-                                  <MdOutlineHomeWork color="gray" />
-                                  <Text ml="2" color="gray">
-                                    ข้อมูลบริษัท
-                                  </Text>
-                                </Flex>
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <ViewCompany id={com?.id} data={com} />
                               </MenuItem>
-                              <MenuItem h="50px" backgroundColor="whiter">
-                                <Flex ml="5">
-                                  <RiEditLine color="green" />
-                                  <Text ml="2" color="green">
-                                    แก้ไข
-                                  </Text>
-                                </Flex>
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <EditCompany id={com.id} data={com} />
                               </MenuItem>
-                              <MenuItem h="50px" backgroundColor="whiter">
-                                <Flex ml="5">
-                                  <MdDelete color="red"></MdDelete>
-                                  <Text ml="2" color="red">
-                                    ลบข้อมูล
-                                  </Text>
-                                </Flex>
-                                {/* <DelEditCompany
-                                  fetchData={getData}
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <DeleteCompany
+                                  fetchData={fetchData}
                                   item={com}
                                   id={com?.id}
-                                /> */}
+                                />
                               </MenuItem>
                             </MenuList>
                           </Menu>
@@ -372,6 +267,6 @@ const PreCompany = (props: any) => {
       </form>
     </div>
   );
-};
+}
 
 export default PreCompany;

@@ -1,17 +1,22 @@
 import { doc, onSnapshot } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { db } from "../../services/config-db";
 import {
   Text,
   VStack,
   HStack,
   Flex,
-  Heading,
-  Container,
   Box,
   Stack,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
+  ModalHeader,
 } from "@chakra-ui/react";
+import { MdOutlineHomeWork } from "react-icons/md";
 
 type Cvalue = {
   companyName: string;
@@ -20,16 +25,16 @@ type Cvalue = {
   userPhone: string;
   userTax: string;
   userPerson: string;
-  createAt: string;
+  createdAt: string;
   companyUpdate: string;
 };
 
-const ViewCompany: React.FC = () => {
+const ViewCompany = ({id}:any) => {
   const [cValue, setCValue] = useState<Cvalue>();
-  const { id } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   async function fetchData() {
-    onSnapshot(doc(db, "CompanyAdd", id as string), (doc) => {
+    onSnapshot(doc(db, "Company", id), (doc) => {
       const data: Cvalue = {
         companyName: doc.data()?.companyName,
         companyAddress: doc.data()?.companyAddress,
@@ -37,7 +42,7 @@ const ViewCompany: React.FC = () => {
         userPhone: doc.data()?.userPhone,
         userTax: doc.data()?.userTax,
         userPerson: doc.data()?.userPerson,
-        createAt: doc.data()?.createAt,
+        createdAt: doc.data()?.createdAt,
         companyUpdate: doc.data()?.companyUpdate,
       };
       setCValue(data);
@@ -49,72 +54,85 @@ const ViewCompany: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <Flex justify="center" p="10" bg="#4C7BF4" color="white">
-        <Heading fontFamily={"inherit"}>ข้อมูลบริษัท</Heading>
-      </Flex>
-      <form>
-        <Container w="100%" mt="10" mb="10">
-          <Box>
-            <Stack mb="5" spacing={4}>
-              <Box border="1px solid lightgray" p={4} borderRadius="10px">
+    <>
+      <Box onClick={onOpen} w="100%" h="100%" display="flex">
+        <Flex
+          color="gray"
+          fontSize="16px"
+          fontFamily="Prompt"
+          fontWeight="400"
+          align="center"
+          ml="8"
+        >
+          <MdOutlineHomeWork color="gray" />
+          <Text ml="2">ดูข้อมูลบริษัท</Text>
+        </Flex>
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+        <ModalOverlay />
+        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
+          <ModalCloseButton />
+          <ModalHeader textAlign="center">ข้อมูลบริษัท</ModalHeader>
+          <ModalBody>
+            <form>
+              <Stack>
                 <VStack align="left">
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       ชื่อบริษัท :
                     </Text>
-                    <Text w="70%">{cValue?.companyName}</Text>
+                    <Text w="50%">{cValue?.companyName}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       ที่อยู่บริษัท :
                     </Text>
-                    <Text w="70%">{cValue?.companyAddress}</Text>
+                    <Text w="50%">{cValue?.companyAddress}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       ชื่อผู้ติดต่อ :
                     </Text>
-                    <Text w="70%">{cValue?.userName}</Text>
+                    <Text w="50%">{cValue?.userName}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       เบอร์โทรติดต่อ :
                     </Text>
-                    <Text w="70%">{cValue?.userPhone}</Text>
+                    <Text w="50%">{cValue?.userPhone}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       เลขประจำตัวผู้เสียภาษี :
                     </Text>
-                    <Text w="70%">{cValue?.userTax}</Text>
+                    <Text w="50%">{cValue?.userTax}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       ประเภทบุคคล :
                     </Text>
-                    <Text w="70%">{cValue?.userPerson}</Text>
+                    <Text w="50%">{cValue?.userPerson}</Text>
                   </HStack>
                   <br />
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       สร้างเมื่อ :
                     </Text>
-                    <Text w="70%">{cValue?.createAt}</Text>
+                    <Text w="50%">{cValue?.createdAt}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
-                    <Text w="30%" fontWeight="bold">
+                    <Text w="50%" fontWeight="bold">
                       อัพเดทเมื่อ :
                     </Text>
-                    <Text w="70%">{cValue?.companyUpdate}</Text>
+                    <Text w="50%">{cValue?.companyUpdate}</Text>
                   </HStack>
                 </VStack>
-              </Box>
-            </Stack>
-          </Box>
-        </Container>
-      </form>
-    </div>
+              </Stack>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

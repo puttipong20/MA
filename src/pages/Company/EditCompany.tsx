@@ -1,5 +1,5 @@
-import { addDoc, collection, doc, runTransaction } from "firebase/firestore";
-import { useState, useContext } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { db } from "../../services/config-db";
 import {
@@ -21,10 +21,11 @@ import {
   Radio,
   RadioGroup,
   FormErrorMessage,
+  Text,
+  ModalHeader,
 } from "@chakra-ui/react";
 import moment from "moment";
-
-import { AuthContext } from "../../context/AuthContext";
+import { RiEditLine } from "react-icons/ri";
 
 type ComValue = {
   companyName: string;
@@ -35,12 +36,12 @@ type ComValue = {
   userPerson: string;
 };
 
-const FormAddCompany = () => {
-  const Auth = useContext(AuthContext);
+const FormEditCompany = ({ data, id }: any) => {
   const {
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors },
   } = useForm<ComValue>();
 
@@ -48,85 +49,83 @@ const FormAddCompany = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const createDate = moment().format("DD-MM-YYYY HH:mm:ss");
   const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
 
+  useEffect(() => {
+    if (data) {
+      setValue("companyName", data?.companyName);
+      setValue("companyAddress", data?.companyAddress);
+      setValue("userName", data?.userName);
+      setValue("userPhone", data?.userPhone);
+      setValue("userTax", data?.userTax);
+      setValue("userPerson", data?.userPerson);
+    }
+    //eslint-disable-next-line
+  }, []);
+
   const onSubmit = async (data: any) => {
+    // setIsLoading(true);
     setIsLoading(true);
-    try {
-      runTransaction(db, async (transaction) => {
-        const refReference = doc(db, "Reference", "Company");
-        const data = await transaction.get(refReference);
+    // console.log(data);
 
-        if (!data.exists()) {
-          transaction.set(refReference, {
-            number: 1,
+    if (id) {
+      // const DocRef = doc(db, "Company", id);
+      // await updateDoc(DocRef, {
+      //   ...data,
+      //   companyUpdate: updatedDate,
+      const DocRef = doc(db, "Company", id);
+      await updateDoc(DocRef, {
+        ...data,
+        companyUpdate: updatedDate,
+      })
+        .then(() => {
+          toast({
+            title: "อัพเดทบริษัทสำเร็จ",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+            position: "top",
           });
-          return {
-            number: 1,
-          };
-        } else {
-          const value = parseInt(data.data()?.number) || 0;
-          const number: number = value + 1;
-
-          transaction.set(refReference, {
-            number: number,
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.error(e);
+          toast({
+            title: "อัพเดทบริษัทไม่สำเร็จ",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+            position: "top",
           });
-          return {
-            number: number,
-          };
-        }
-      }).then(async (response) => {
-        const { number } = response;
-        const docRef = collection(db, "Company");
-        await addDoc(docRef, {
-          ...data,
-          no: `บริษัทที่ ${number}`,
-          createdAt: createDate,
-          companyUpdate: updatedDate,
-          createBy: Auth.uid,
         });
-      });
-      toast({
-        title: "เพิ่มข้อมูลบริษัทสำเร็จ",
-        description: "ข้อมูลบริษัทได้ถูกเพิ่มแล้ว",
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (e) {
-      toast({
-        title: `เพิ่มบริษัทไม่สำเร็จ`,
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "top",
-      });
-      console.error(e);
     }
     reset();
-    setIsLoading(false);
     onClose();
+    // setIsLoading(false);
   };
 
   return (
-    <div>
-      <Box>
-        <Button
-          onClick={onOpen}
-          color="gray.100"
-          bg="#4C7BF4"
-          _hover={{ color: "white", bg: "#4C7BF4" }}
+    <>
+      <Box onClick={onOpen} w="100%" h="100%" display="flex">
+        <Flex
+          color="green"
+          fontSize="16px"
+          fontFamily="Prompt"
+          fontWeight="400"
+          align="center"
+          ml="8"
         >
-          เพิ่มข้อมูลบริษัท
-        </Button>
+          <RiEditLine color="green" />
+          <Text ml="2">แก้ไข</Text>
+        </Flex>
       </Box>
+
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
         <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
           <ModalCloseButton />
-          <ModalBody py="3rem">
+          <ModalHeader textAlign="center">แก้ไขข้อมูลบริษัท</ModalHeader>
+          <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
@@ -136,7 +135,7 @@ const FormAddCompany = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>ชื่อบริษัท</FormLabel>
+                      <FormLabel fontSize="16px">ชื่อบริษัท</FormLabel>
                       <Input
                         value={value}
                         onChange={onChange}
@@ -152,7 +151,7 @@ const FormAddCompany = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>ที่อยู่บริษัท</FormLabel>
+                      <FormLabel fontSize="16px">ที่อยู่บริษัท</FormLabel>
                       <Textarea
                         value={value}
                         onChange={onChange}
@@ -168,7 +167,7 @@ const FormAddCompany = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>ชื่อผู้ติดต่อ</FormLabel>
+                      <FormLabel fontSize="16px">ชื่อผู้ติดต่อ</FormLabel>
                       <Input
                         value={value}
                         onChange={onChange}
@@ -186,7 +185,7 @@ const FormAddCompany = () => {
                   }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>เบอร์โทรติดต่อ</FormLabel>
+                      <FormLabel fontSize="16px">เบอร์โทรติดต่อ</FormLabel>
                       <Input
                         type="tel"
                         value={value}
@@ -213,7 +212,9 @@ const FormAddCompany = () => {
                   }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>เลขประจำตัวผู้เสียภาษี</FormLabel>
+                      <FormLabel fontSize="16px">
+                        เลขประจำตัวผู้เสียภาษี
+                      </FormLabel>
                       <Input
                         type="number"
                         value={value}
@@ -234,7 +235,7 @@ const FormAddCompany = () => {
                   render={({ field: { name, value, onChange, onBlur } }) => {
                     return (
                       <FormControl isInvalid={Boolean(errors[name])}>
-                        <FormLabel>ประเภทบุคคล</FormLabel>
+                        <FormLabel fontSize="16px">ประเภทบุคคล</FormLabel>
                         <RadioGroup
                           value={value}
                           onChange={onChange}
@@ -268,8 +269,8 @@ const FormAddCompany = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 
-export default FormAddCompany;
+export default FormEditCompany;
