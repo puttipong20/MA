@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { RiDeleteBin7Line } from 'react-icons/ri'
 import { useState } from "react";
-import { collection, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { CompanyDetail } from '../../@types/Type';
 

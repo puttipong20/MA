@@ -27,11 +27,11 @@ import { BsSearch } from 'react-icons/bs'
 import { LuMoreHorizontal } from "react-icons/lu"
 import { CgDetailsMore } from "react-icons/cg"
 import { TiDocumentText } from "react-icons/ti"
-import { AiOutlineEdit, AiOutlineReload } from "react-icons/ai"
+import { AiOutlineReload } from "react-icons/ai"
 
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { collection, query, where, getDocs, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { Project, ProjectDetail } from '../../@types/Type';
 
@@ -39,6 +39,9 @@ import { search } from 'ss-search';
 import DeleteProject from './DeleteProject';
 
 import classes from "./ProjectPreview.module.css";
+// import EditProject from './EditProject';
+
+import moment from 'moment';
 
 export default function ProjectPreviewComp() {
     const [isFetching, setIsFetching] = useState(false);
@@ -50,38 +53,21 @@ export default function ProjectPreviewComp() {
 
     const fetchingData = async () => {
         setIsFetching(true);
-        // console.clear();
-        // console.log(params);
         const projectCollection = collection(db, "Project")
         const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
-
         const allProject: Project[] = [];
-        onSnapshot(q, docs => {
-            docs.forEach((i) => {
-                const project: Project = {
-                    projectId: i.id,
-                    detail: i.data() as ProjectDetail
-                }
-                setCompanyName(project.detail.companyName);
-                allProject.push(project);
-            })
-            setProjects(allProject);
-            setFilterProjects(allProject);
-        })
-        // const companies = await getDocs(q)
-        // companies.forEach(i => {
-        //     // console.log(i.data());
-        //     // console.log(i.data());
-        //     const project: Project = {
-        //         projectId: i.id,
-        //         detail: i.data() as ProjectDetail
-        //     }
-        //     setCompanyName(project.detail.companyName);
-        //     allProject.push(project);
-        // }
-        // )
-        // setProjects(allProject);
-        // setFilterProjects(allProject);
+        const companies = await getDocs(q)
+        companies.forEach(i => {
+            const project: Project = {
+                projectId: i.id,
+                detail: i.data() as ProjectDetail
+            }
+            setCompanyName(project.detail.companyName);
+            allProject.push(project);
+        }
+        )
+        setProjects(allProject);
+        setFilterProjects(allProject);
         setIsFetching(false);
     }
 
@@ -95,7 +81,11 @@ export default function ProjectPreviewComp() {
     }
 
     useEffect(() => {
-        fetchingData();
+        const projectCollection = collection(db, "Project")
+        const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
+        onSnapshot(q, () => {
+            fetchingData();
+        })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params["project"], params["company"]])
 
@@ -151,10 +141,10 @@ export default function ProjectPreviewComp() {
                                         <Tr cursor={"pointer"} _hover={{ bg: "#eee" }} key={index}>
                                             <Td textAlign={"center"}>{index + 1}</Td>
                                             <Td textAlign={"center"}>{i.detail.projectName}</Td>
-                                            <Td textAlign={"center"}>{i.detail.LastestMA.startMA}</Td>
-                                            <Td textAlign={"center"}>{i.detail.LastestMA.endMA}</Td>
-                                            <Td textAlign={"center"}>{i.detail.LastestMA.cost}</Td>
-                                            <Td textAlign={"center"}>{i.detail.createdAt}</Td>
+                                            <Td textAlign={"center"}>{moment(i.detail.LastestMA.startMA).format("DD/MM/YYYY")}</Td>
+                                            <Td textAlign={"center"}>{moment(i.detail.LastestMA.endMA).format("DD/MM/YYYY")}</Td>
+                                            <Td textAlign={"right"}>{Number(i.detail.LastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
+                                            <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                             <Td textAlign={"center"}><Button onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
                                             <Td textAlign={"center"}>
                                                 <Menu>
@@ -165,9 +155,9 @@ export default function ProjectPreviewComp() {
                                                         <MenuItem color={"gray"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/detail`) }}>
                                                             <Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project
                                                         </MenuItem>
-                                                        <MenuItem color={"green"}>
-                                                            <Text w="20%" display="flex" justifyContent={"center"}><AiOutlineEdit /></Text>แก้ไข
-                                                        </MenuItem>
+                                                        {/* <MenuItem color={"green"}>
+                                                            <EditProject projectId={i.projectId} />
+                                                        </MenuItem> */}
                                                         <MenuItem color={"blue"}>
                                                             <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา
                                                         </MenuItem>

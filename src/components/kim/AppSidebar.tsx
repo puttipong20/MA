@@ -36,6 +36,7 @@ const Sidebar: React.FC = () => {
     const [companies, setCompanies] = useState<Company[]>([])
     const [filterCompany, setFilterCompany] = useState<Company[]>([])
     const [isFetching, setIsFetching] = useState(false);
+    const [openIndex, setOpenIndex] = useState<number>(-1)
 
     const onSearch = () => {
         const inputRef = document.getElementById("searchInput") as HTMLInputElement;
@@ -48,45 +49,35 @@ const Sidebar: React.FC = () => {
 
     const fetchingCompany = async () => {
         setIsFetching(true);
+        let count = 0;
         const collRef = collection(db, "Company")
-        // const collData = await getDocs(collRef);
+        const collData = await getDocs(collRef);
+        const allCompany: Company[] = [];
 
-        // collData.forEach(i => {
-        //     const company: Company = {
-        //         companyId: i.id,
-        //         detail: i.data() as CompanyDetail,
-        //     }
-        //     allCompany.push(company)
-        // })
+        collData.forEach(i => {
+            const company: Company = {
+                companyId: i.id,
+                detail: i.data() as CompanyDetail,
+            }
+            if (company.companyId === params["company"]) { setOpenIndex(count) }
+            allCompany.push(company)
+            count += 1;
+        })
         // console.log(allCompany);
-        // setCompanies(allCompany);
-        // setFilterCompany(allCompany);
+        setCompanies(allCompany);
+        setFilterCompany(allCompany);
 
         setIsFetching(false);
     }
 
     useEffect(() => {
         const collRef = collection(db, "Company")
-        const allCompany: Company[] = [];
         const q = query(collRef)
-        onSnapshot(q, (docs) => {
-            docs.forEach(i => {
-                const company: Company = {
-                    companyId: i.id,
-                    detail: i.data() as CompanyDetail,
-                }
-                allCompany.push(company)
-            })
-            setCompanies(allCompany);
-            setFilterCompany(allCompany);
-            // console.log("company update", moment().format("HH:mm"))
+        onSnapshot(q, () => {
+            fetchingCompany()
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    useEffect(() => {
-        fetchingCompany();
-    }, [])
-
 
     return (
         <Box maxH="100%" position="relative">
@@ -113,13 +104,13 @@ const Sidebar: React.FC = () => {
                 </Flex> :
                 <Box>
 
-                    <Accordion allowToggle>
+                    <Accordion allowToggle defaultIndex={[openIndex]}>
                         {
                             filterCompany.map((i, index) => {
                                 return (
-                                    <AccordionItem key={index} userSelect={"none"} >
+                                    <AccordionItem key={index} userSelect={"none"}>
                                         <AccordionButton>
-                                            <Text fontWeight={params["companyID"] === i.companyId ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
+                                            <Text fontWeight={params["company"] === i.companyId ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
                                             <AccordionIcon />
                                         </AccordionButton>
                                         <AccordionPanel>

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom'
 import { Box, Text, Button, Spinner, Divider, Table, Thead, Tr } from "@chakra-ui/react"
 import { BiArrowBack } from 'react-icons/bi';
-import { doc, getDoc} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { ProjectDetail } from "../../@types/Type";
+import { AiOutlineEdit } from "react-icons/ai"
 
 export default function DetailPage() {
   const params = useParams()
@@ -12,6 +13,7 @@ export default function DetailPage() {
   const backPath = `/company/${params["company"]}`
   const [isFetching, setIsfetching] = useState(false);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
+  const [showEdit, setShowEdit] = useState(false);
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true)
@@ -27,6 +29,13 @@ export default function DetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const mouseEn = () => {
+    setShowEdit(true)
+  }
+
+  const mouseLeave = () => {
+    setShowEdit(false)
+  }
 
   if (isFetching) {
     return (
@@ -42,28 +51,33 @@ export default function DetailPage() {
           <Button onClick={() => { navigate(backPath) }}><BiArrowBack /></Button>
         </Box>
         <Box>
-          <Text fontWeight={"bold"}>
-            บริษัท : <Text as="span" fontWeight={"normal"}>{projectDetail?.companyName}</Text>
+          <Text fontWeight={"bold"} w="fit-content">
+            บริษัท :
+            <Text as="span" fontWeight={"normal"}>{projectDetail?.companyName}</Text>
           </Text>
-          <Text fontWeight={"bold"}>
-            ชื่อโปรเจค : <Text as="span" fontWeight={"normal"}>{projectDetail?.projectName}</Text>
+          <Text fontWeight={"bold"} w="fit-content" onMouseLeave={mouseLeave} onMouseEnter={mouseEn} display={"flex"} align={"center"}>
+            ชื่อโปรเจค : 
+            <Text as="span" fontWeight={"normal"}>{projectDetail?.projectName}</Text>
+            <Text as="span" h="fit-content" my="auto" color={"gray"} cursor={"pointer"} _hover={{ color: "black" }}>
+              <AiOutlineEdit />
+            </Text>
           </Text>
-          <Text fontWeight={"bold"}>
+          <Text fontWeight={"bold"} w="fit-content">
             ถูกสร้างเมื่อ : <Text as="span" fontWeight={"normal"}>{projectDetail?.createdAt}</Text>
           </Text>
-          <Text fontWeight={"bold"}>
+          <Text fontWeight={"bold"} w="fit-content">
             เริ่มต้นสัญญาMA : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.startMA}</Text>
           </Text>
-          <Text fontWeight={"bold"}>
+          <Text fontWeight={"bold"} w="fit-content">
             สิ้นสุดสัญญาMA : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.endMA}</Text>
           </Text>
-          <Text fontWeight={"bold"}>
+          <Text fontWeight={"bold"} w="fit-content">
             ราคา : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.cost}</Text>
           </Text>
         </Box>
         <Divider />
         <Box>
-          <Text fontWeight={"bold"}>
+          <Text fontWeight={"bold"} w="fit-content">
             ประวัติการทำสัญญา
           </Text>
           <Table>

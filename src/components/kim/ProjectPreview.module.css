@@ -1,5 +1,6 @@
 .table::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 .table::-webkit-scrollbar-thumb {
