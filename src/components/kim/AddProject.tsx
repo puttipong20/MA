@@ -156,7 +156,7 @@ const AddProject: React.FC<Props> = (props) => {
                                     )}
                                 />
                             </HStack>
-                            <Text fontWeight={"bold"} mb="1rem">ระยะเวลา = {duration} วัน</Text>
+                            <Text mb="1rem">ระยะเวลา = <Text as="span" fontWeight={"bold"}>{duration}</Text> วัน</Text>
                             <Controller
                                 name="cost"
                                 control={control}

@@ -1,6 +1,6 @@
 .sidebar::-webkit-scrollbar {
     width: 5px;
-    position: fixed;
+    /* position: fixed; */
 }
 
 .sidebar::-webkit-scrollbar-thumb {

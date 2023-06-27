@@ -150,7 +150,7 @@ export default function ProjectPreviewComp() {
                                             <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                             <Td textAlign={"center"}>
                                                 <Button
-                                                    colorScheme='gray' fontWeight={"normal"}
+                                                    colorScheme='blue' opacity={"0.7"} fontWeight={"normal"}
                                                     onClick={() => {
                                                         Company.setProject(i.projectId, i.detail.projectName)
                                                         navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`)
