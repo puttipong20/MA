@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "crafting-ma",
-=======
-  "name": "crafting-ticket-v2",
->>>>>>> Kim
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,35 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "axios": "^1.4.0",
     "firebase": "^9.23.0",
     "framer-motion": "^10.12.16",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.45.0",
-    "react-router-dom": "^6.13.0"
-=======
-    "@ajna/pagination": "^1.4.19",
-    "@chakra-ui/icons": "^2.0.19",
-    "@chakra-ui/react": "^2.7.0",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "axios": "^1.4.0",
-    "firebase": "^9.22.1",
-    "framer-motion": "^10.12.16",
+    "fuse.js": "^6.6.2",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.44.3",
-    "react-icons": "^4.9.0",
-    "react-paginate": "^8.2.0",
-    "react-router-dom": "^6.12.0",
+    "react-hook-form": "^7.45.0",
+    "react-icons": "^4.10.1",
+    "react-router-dom": "^6.13.0",
     "ss-search": "^1.7.0"
->>>>>>> Kim
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
