@@ -16,18 +16,18 @@ import {
 } from "@chakra-ui/react";
 // import { AiOutlinePlusCircle } from "react-icons/ai";
 // import { CgDetailsMore } from "react-icons/cg";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
 
-import { useNavigate } from "react-router-dom";
 import { search } from "ss-search";
 import TempAddCompany from "./TempAddCompany";
 import { Company, CompanyDetail } from "../../@types/Type";
 import AddProject from "./AddProject";
 
-import { useParams } from "react-router-dom";
+import { CompanyContext } from "../../context/CompanyContext";
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -36,6 +36,7 @@ const Sidebar: React.FC = () => {
     const [filterCompany, setFilterCompany] = useState<Company[]>([])
     const [isFetching, setIsFetching] = useState(false);
     const [openIndex, setOpenIndex] = useState<number>(-1)
+    const Company = useContext(CompanyContext);
 
     const onSearch = () => {
         const inputRef = document.getElementById("searchInput") as HTMLInputElement;
@@ -65,7 +66,6 @@ const Sidebar: React.FC = () => {
         // console.log(allCompany);
         setCompanies(allCompany);
         setFilterCompany(allCompany);
-
         setIsFetching(false);
     }
 
@@ -77,6 +77,18 @@ const Sidebar: React.FC = () => {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        filterCompany.forEach((i) => {
+            if (i.companyId === params["company"]) { Company.setCompany(i.companyId, i.detail.companyName) }
+            const project = i.detail.projects
+            if (project) {
+                project.forEach((j) => {
+                    if (j.id === params["projectID"]) { Company.setProject(j.id, j.projectName) }
+                })
+            }
+        })
+    })
 
     return (
         <Box maxH="100%" position="relative">
@@ -102,10 +114,10 @@ const Sidebar: React.FC = () => {
                     <Spinner />
                 </Flex> :
                 <Box>
-
                     <Accordion allowToggle defaultIndex={[openIndex]}>
                         {
                             filterCompany.map((i, index) => {
+                                // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
                                 return (
                                     <AccordionItem key={index} userSelect={"none"}>
                                         <AccordionButton>
@@ -114,8 +126,9 @@ const Sidebar: React.FC = () => {
                                         </AccordionButton>
                                         <AccordionPanel>
                                             <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
-                                                {i.detail.projects !== undefined ?
+                                                {(i.detail.projects !== undefined && i.detail.projects.length !== 0) ?
                                                     i.detail.projects?.map((j, index) => {
+                                                        // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                                                         return (
                                                             <Text
                                                                 key={index}

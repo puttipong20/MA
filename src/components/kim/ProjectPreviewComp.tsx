@@ -21,7 +21,7 @@ import {
     MenuList,
     MenuItem,
 } from '@chakra-ui/react'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { BsSearch } from 'react-icons/bs'
 
 import { LuMoreHorizontal } from "react-icons/lu"
@@ -43,6 +43,8 @@ import classes from "./ProjectPreview.module.css";
 import moment from 'moment';
 import Renewal from './Renewal';
 
+import { CompanyContext } from '../../context/CompanyContext';
+
 export default function ProjectPreviewComp() {
     const [isFetching, setIsFetching] = useState(false);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -50,6 +52,7 @@ export default function ProjectPreviewComp() {
     const [companyName, setCompanyName] = useState("");
     const params = useParams();
     const navigate = useNavigate();
+    const Company = useContext(CompanyContext);
 
     const fetchingData = async () => {
         setIsFetching(true);
@@ -145,14 +148,29 @@ export default function ProjectPreviewComp() {
                                             <Td textAlign={"center"}>{moment(i.detail.LastestMA.endMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"right"}>{Number(i.detail.LastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
-                                            <Td textAlign={"center"}><Button colorScheme='gray' fontWeight={"normal"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
+                                            <Td textAlign={"center"}>
+                                                <Button
+                                                    colorScheme='gray' fontWeight={"normal"}
+                                                    onClick={() => {
+                                                        Company.setProject(i.projectId, i.detail.projectName)
+                                                        navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`)
+                                                    }}
+                                                >
+                                                    ดูรายการปัญหา
+                                                </Button>
+                                            </Td>
                                             <Td textAlign={"center"}>
                                                 <Menu>
                                                     <MenuButton as={Button} colorScheme='blue'>
                                                         <LuMoreHorizontal />
                                                     </MenuButton>
                                                     <MenuList p={"0"} borderRadius={"0"}>
-                                                        <MenuItem color={"gray"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/detail`) }}>
+                                                        <MenuItem color={"gray"}
+                                                            onClick={() => {
+                                                                Company.setProject(i.projectId, i.detail.projectName)
+                                                                navigate(`/company/${params["company"]}/${i.detail.projectName}/${i.projectId}/detail`)
+                                                            }}
+                                                        >
                                                             <Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project
                                                         </MenuItem>
                                                         {/* <MenuItem color={"green"}>

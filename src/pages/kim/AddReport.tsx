@@ -25,9 +25,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdUpload } from "react-icons/md";
 
 import { AuthContext } from "../../context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../services/config-db";
-import { CompanyDetail } from "../../@types/Type";
+import { CompanyContext } from "../../context/CompanyContext";
 
 type FormValues = {
     ticketsProblems: string;
@@ -51,6 +49,7 @@ const AddReport = () => {
     } = useForm<FormValues>();
 
     const Auth = useContext(AuthContext);
+    const Company = useContext(CompanyContext);
 
     const [allImgUpload, setAllImgUpload] = useState<any[]>([])
 
@@ -64,12 +63,21 @@ const AddReport = () => {
 
     const goBackPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
 
+    useEffect(() => {
+        console.clear();
+        console.log(Company)
+        if (Company.companyId === "") {
+            navigate(goBackPath);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const onSubmit = async (data: any) => {
         setIsLoading(true);
         // console.clear();
-        const docRef = doc(db, "Company", params["company"] as string)
-        const fetchDoc = await getDoc(docRef)
-        const companyDetail = fetchDoc.data() as CompanyDetail
+        // const docRef = doc(db, "Company", params["company"] as string)
+        // const fetchDoc = await getDoc(docRef)
+        // const companyDetail = fetchDoc.data() as CompanyDetail
 
         const dataToAdd = {
             title:
@@ -83,14 +91,14 @@ const AddReport = () => {
             createAt: data.ticketsDate,
             name: data.ticketsName,
             RepImg: allImgUpload,
-            company: companyDetail.companyName,
+            company: Company.companyName,
             // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-            companyId: params["company"],
-            projectName: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-            projectID: params["projectID"],
+            companyId: Company.companyId,
+            projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ''),
+            projectID: Company.projectId,
             uid: Auth.uid
         }
-        console.log(dataToAdd);
+        // console.log(dataToAdd);
         try {
             await axios
                 .post(
