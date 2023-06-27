@@ -62,8 +62,8 @@ function PreCompany(props: any) {
     fetchData();
   }, [params]);
 
-  const handleNext = () => {
-    navigate(`/companypage/${props.type}`);
+  const handleNext = (id: string) => {
+    navigate(`/company/${id}`);
   };
 
   return (
@@ -226,16 +226,36 @@ function PreCompany(props: any) {
                         cursor="pointer"
                         _hover={{ bg: "gray.100" }}
                       >
-                        <Td textAlign="center" onClick={handleNext}>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id);
+                          }}
+                          textAlign="center"
+                        >
                           {com.no}
                         </Td>
-                        <Td textAlign="left" onClick={handleNext}>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id);
+                          }}
+                          textAlign="left"
+                        >
                           {com.companyName}
                         </Td>
-                        <Td textAlign="left" onClick={handleNext}>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id);
+                          }}
+                          textAlign="left"
+                        >
                           {com.userName}
                         </Td>
-                        <Td textAlign="left" onClick={handleNext}>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id);
+                          }}
+                          textAlign="left"
+                        >
                           {com.userPhone}
                         </Td>
                         <Td textAlign="center">

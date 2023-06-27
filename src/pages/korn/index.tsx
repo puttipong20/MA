@@ -33,7 +33,7 @@ import {
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import FormAddCompany from "../../C\omponents/korn/FormModal";
+// import FormAddCompany from "../../C\omponents/korn/FormModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   collection,
