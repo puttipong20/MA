@@ -114,7 +114,7 @@ const Sidebar: React.FC = () => {
                                         </AccordionButton>
                                         <AccordionPanel>
                                             <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
-                                                {i.detail.projects !== undefined ?
+                                                {(i.detail.projects !== undefined && i.detail.projects.length !== 0) ?
                                                     i.detail.projects?.map((j, index) => {
                                                         return (
                                                             <Text
