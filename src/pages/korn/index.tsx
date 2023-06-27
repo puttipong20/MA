@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -23,53 +23,149 @@ import {
   IconButton,
   MenuList,
   MenuItem,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import FormAddCompany from "../../components/FormCompany/FormCompany";
+import FormAddCompany from "../../C\omponents/korn/FormModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { db } from "../../services/config-db";
-import EditCompany from "./EditCompany";
-import DeleteCompany from "./DeleteCompany";
-import ViewCompany from "./ViewCompany";
-import Fuse from "fuse.js";
+import ViewCompany from "../korn/viewCompany";
+import { MdDelete } from "react-icons/md";
 
-function PreCompany(props: any) {
+type Pcompany = {
+  no: string;
+  company: string;
+  name: string;
+  phone: string;
+};
+
+// function DelEditCompany({ item, fetchData }) {
+//   const { isOpen, onOpen, onClose } = useDisclosure();
+
+//   const cancelRef = React.useRef();
+//   const handleRemove = async (id: any) => {
+//     const bookDoc = doc(db, "CompanyAdd", id);
+//     await deleteDoc(bookDoc).then(async () => {
+//       await fetchData();
+//     });
+//   };
+
+//   return (
+//     <>
+//       <Button
+//         colorScheme="#FFFFFF"
+//         w="100%"
+//         justifyContent="flex-start"
+//         color="#FF3E3E"
+//         onClick={onOpen}
+//         fontSize="16px"
+//         fontFamily="Prompt"
+//         fontWeight="400"
+//         leftIcon={<MdDelete size={"20px"} />}
+//       >
+//         ลบข้อมูล
+//       </Button>
+//       <AlertDialog
+//         isOpen={isOpen}
+//         leastDestructiveRef={cancelRef}
+//         onClose={onClose}
+//       >
+//         <AlertDialogOverlay>
+//           <AlertDialogContent>
+//             <AlertDialogHeader fontSize="lg" fontWeight="bold">
+//               ลบข้อมูล
+//             </AlertDialogHeader>
+
+//             <AlertDialogBody>คุณต้องการลบข้อมูล ใช่หรือไม่</AlertDialogBody>
+
+//             <AlertDialogFooter>
+//               <Button
+//                 fontFamily={"Prompt"}
+//                 fontSize={"14px"}
+//                 fontWeight={"600"}
+//                 ref={cancelRef}
+//                 onClick={onClose}
+//               >
+//                 ยกเลิก
+//               </Button>
+//               <Button
+//                 fontFamily={"Prompt"}
+//                 fontSize={"14px"}
+//                 fontWeight={"600"}
+//                 colorScheme="red"
+//                 onClick={() => {
+//                   handleRemove(item.id);
+//                   onClose();
+//                 }}
+//                 ml={3}
+//               >
+//                 ลบข้อมูล
+//               </Button>
+//             </AlertDialogFooter>
+//           </AlertDialogContent>
+//         </AlertDialogOverlay>
+//       </AlertDialog>
+//     </>
+//   );
+// }
+
+const PreCompany = (props: any) => {
   const [comForm, setComForm] = useState<any[]>([]);
-  const [search, setSearch] = useState<any[]>([]);
+  // const [search, setSearch] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
 
-  const fetchData = async () => {
-    const CompanyDoc = collection(db, "Company");
-    const q = query(CompanyDoc, orderBy("createdAt", "asc"));
-    // onSnapshot(CompanyDoc, (snapshot) => {
-    onSnapshot(q, (snapshot) => {
+  const fetchData = useCallback(async () => {
+    const CompanyDoc = collection(db, "CompanyAdd");
+    onSnapshot(CompanyDoc, (snapshot) => {
       return setComForm(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
       );
     });
-    const search = collection(db, "Company");
-    onSnapshot(search, (snapshot) => {
-      return setSearch(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
-    });
-  };
-
+    // const search = collection(db, "CompanyAdd");
+    // onSnapshot(search, (snapshot) => {
+    //   return setSearch(
+    //     snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    //   );
+    // });
+  }, []);
+  // const getData = async () => {
+  //   const q = query(collection(db, "CompanyAdd"));
+  //   const querySnaphot = await getDocs(q);
+  //   const companyForm: {}[] = [];
+  //   querySnaphot.forEach((doc) => {
+  //     companyForm.push({ id: doc.id, ...doc.data() });
+  //   });
+  //   setComForm(companyForm);
+  // };
   useEffect(() => {
     fetchData();
-  }, [params]);
+    // getData();
+  }, [params, comForm]);
 
   const handleNext = () => {
-    navigate(`/companypage/${props.type}`);
+    navigate(`/precompany/${props.type}`);
   };
 
   return (
     <div className="container">
       <form>
-        <Container maxW="100%" pb="10">
+        <Container maxW="90%">
           <Box>
             <Center w="100%" mb="1rem">
               <HStack
@@ -113,24 +209,12 @@ function PreCompany(props: any) {
                   type="text"
                   background="#F4F7FE"
                   border="none"
+                  placeholder="Search"
                   borderRadius="16px"
-                  placeholder="ค้นหาบริษัท"
+                  id="searchInput"
                   focusBorderColor="none"
-                  onChange={(event) => {
-                    let keyword = event.currentTarget.value;
-                    const fuse = new Fuse(search, {
-                      keys: ["companyName", "userPhone", "userName"],
-                      findAllMatches: true,
-                      shouldSort: true,
-                    });
-                    const results = fuse.search(keyword);
-
-                    const searchResults =
-                      keyword === ""
-                        ? search
-                        : results.map((value: any) => value.item);
-                    setComForm(searchResults);
-                  }}
+                  //   onKeyDown={keyHandle}
+                  //   onChange={onSearch}
                 />
               </InputGroup>
               <Button
@@ -252,19 +336,23 @@ function PreCompany(props: any) {
                                 />
                               }
                             />
+                            {/* </MenuButton> */}
                             <MenuList backgroundColor="white">
-                              <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <ViewCompany id={com?.id} data={com} />
+                              <MenuItem backgroundColor="whiter">
+                                <ViewCompany id={props.id} />
+                                {/* <ViweCompany id={rs?.id} /> */}
                               </MenuItem>
-                              <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <EditCompany id={com.id} data={com} />
+                              <MenuItem backgroundColor="whiter">
+                                test2
+                                {/* <FormCompany user={user} data={rs} id={rs.id} /> */}
                               </MenuItem>
-                              <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <DeleteCompany
-                                  fetchData={fetchData}
+                              <MenuItem backgroundColor="whiter">
+                                test3
+                                {/* <DelEditCompany
+                                  fetchData={getData}
                                   item={com}
                                   id={com?.id}
-                                />
+                                /> */}
                               </MenuItem>
                             </MenuList>
                           </Menu>
@@ -280,6 +368,6 @@ function PreCompany(props: any) {
       </form>
     </div>
   );
-}
+};
 
 export default PreCompany;

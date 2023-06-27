@@ -16,9 +16,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { FC, useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../services/config-db";
-import ResetModal from "../components/Modal";
-import { AuthContext } from "../context/AuthContext";
+import { auth, db } from "../../services/config-db";
+import ResetModal from "../../components/pae/Modal";
+import { AuthContext } from "../../context/AuthContext";
 import { doc, getDoc } from "firebase/firestore";
 
 const Login: FC = () => {
