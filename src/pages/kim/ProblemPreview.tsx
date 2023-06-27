@@ -32,6 +32,10 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { Report, ReportDetail } from "../../@types/Type";
 
+import classes from "./ProblemPreview.module.css"
+
+import moment from "moment";
+
 export default function ProblemPreview() {
     const { control, watch } = useForm();
     const [isFetching, setIsFetching] = useState(false);
@@ -69,7 +73,7 @@ export default function ProblemPreview() {
     useEffect(() => {
         fetchingReport();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [params["projectID"]])
 
     const onSearch = () => {
         // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
@@ -173,7 +177,7 @@ export default function ProblemPreview() {
                     </Button>
                 </Flex>
             </Box>
-            <Box maxW="100%" overflowX="auto">
+            <Box maxW="100%" overflowX="auto" className={classes.table}>
                 <Table>
                     <Thead>
                         <Tr background={"#4c7bf4"}>
@@ -263,9 +267,15 @@ export default function ProblemPreview() {
                                     </Tr> :
                                     filterReports.map((r, index) => {
                                         return (
-                                            <Tr key={index}>
+                                            <Tr key={index}
+                                                _hover={{ bg: "#eee" }}
+                                                cursor={"pointer"}
+                                                onClick={() => {
+                                                    navigate(`/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`)
+                                                }}
+                                            >
                                                 <Td textAlign={"center"}>{r.docs.ref}</Td>
-                                                <Td textAlign={"center"}>{r.docs.createAt}</Td>
+                                                <Td textAlign={"center"}>{moment(r.docs.createAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                                 <Td textAlign={"center"}>{r.docs.title}</Td>
                                                 <Td textAlign={"center"}>{r.docs.name}</Td>
                                                 <Td>
