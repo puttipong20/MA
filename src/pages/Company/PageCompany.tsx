@@ -33,10 +33,11 @@ import { db } from "../../services/config-db";
 import EditCompany from "./EditCompany";
 import DeleteCompany from "./DeleteCompany";
 import ViewCompany from "./ViewCompany";
+import Fuse from "fuse.js";
 
 function PreCompany(props: any) {
   const [comForm, setComForm] = useState<any[]>([]);
-  // const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState<any[]>([]);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -49,12 +50,12 @@ function PreCompany(props: any) {
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
       );
     });
-    // const search = collection(db, "CompanyAdd");
-    // onSnapshot(search, (snapshot) => {
-    //   return setSearch(
-    //     snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    //   );
-    // });
+    const search = collection(db, "Company");
+    onSnapshot(search, (snapshot) => {
+      return setSearch(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
   };
 
   useEffect(() => {
@@ -112,12 +113,24 @@ function PreCompany(props: any) {
                   type="text"
                   background="#F4F7FE"
                   border="none"
-                  placeholder="Search"
                   borderRadius="16px"
-                  id="searchInput"
+                  placeholder="ค้นหาบริษัท"
                   focusBorderColor="none"
-                  //   onKeyDown={keyHandle}
-                  //   onChange={onSearch}
+                  onChange={(event) => {
+                    let keyword = event.currentTarget.value;
+                    const fuse = new Fuse(search, {
+                      keys: ["companyName", "userPhone", "userName"],
+                      findAllMatches: true,
+                      shouldSort: true,
+                    });
+                    const results = fuse.search(keyword);
+
+                    const searchResults =
+                      keyword === ""
+                        ? search
+                        : results.map((value: any) => value.item);
+                    setComForm(searchResults);
+                  }}
                 />
               </InputGroup>
               <Button

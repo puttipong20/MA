@@ -21,6 +21,7 @@ import {
   Radio,
   RadioGroup,
   FormErrorMessage,
+  ModalHeader,
 } from "@chakra-ui/react";
 import moment from "moment";
 
@@ -126,7 +127,8 @@ const FormAddCompany = () => {
         <ModalOverlay />
         <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
           <ModalCloseButton />
-          <ModalBody py="3rem">
+          <ModalHeader textAlign="center">เพิ่มข้อมูลบริษัท</ModalHeader>
+          <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
