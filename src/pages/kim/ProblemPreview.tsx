@@ -53,7 +53,7 @@ export default function ProblemPreview() {
 
     const fetchingReport = async () => {
         setIsFetching(true);
-        console.clear();
+        // console.clear();
         const collRef = collection(db, "Report")
         const q = query(collRef, where("projectID", "==", params["projectID"]))
         const fetchReport = await getDocs(q)
@@ -97,7 +97,7 @@ export default function ProblemPreview() {
             <Box position="relative">
                 <Flex>
                     <Box>
-                        <Text>Project / {projectName}</Text>
+                        <Text>รายงานปัญหา / {projectName}</Text>
                         <Heading>{projectName}</Heading>
                         {/* <Text>Current UID : {props.uid}</Text> */}
                     </Box>

@@ -127,7 +127,7 @@ export default function ProjectPreviewComp() {
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} w="20rem" fontFamily={"inherit"}>วันที่สิ้นสุดสัญญา MA</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>ค่าบริการ</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>สร้างเมื่อ</Th>
-                                <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>จำนวนรายการปัญหา</Th>
+                                <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>รายการปัญหา</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>จัดการ</Th>
                             </Tr>
                         </Thead>
@@ -145,7 +145,7 @@ export default function ProjectPreviewComp() {
                                             <Td textAlign={"center"}>{moment(i.detail.LastestMA.endMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"right"}>{Number(i.detail.LastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
                                             <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
-                                            <Td textAlign={"center"}><Button colorScheme='yellow' fontWeight={"normal"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
+                                            <Td textAlign={"center"}><Button colorScheme='gray' fontWeight={"normal"} onClick={() => { navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`) }}>ดูรายการปัญหา</Button></Td>
                                             <Td textAlign={"center"}>
                                                 <Menu>
                                                     <MenuButton as={Button} colorScheme='blue'>
