@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState, useContext } from "react";
 import {
   Box,
   Center,
@@ -35,11 +36,14 @@ import DeleteCompany from "./DeleteCompany";
 import ViewCompany from "./ViewCompany";
 import Fuse from "fuse.js";
 
-function PreCompany(props: any) {
+import { CompanyContext } from "../../context/CompanyContext";
+
+function PreCompany() {
   const [comForm, setComForm] = useState<any[]>([]);
   const [search, setSearch] = useState<any[]>([]);
   const params = useParams();
   const navigate = useNavigate();
+  const Company = useContext(CompanyContext);
 
   const fetchData = async () => {
     const CompanyDoc = collection(db, "Company");
@@ -62,7 +66,9 @@ function PreCompany(props: any) {
     fetchData();
   }, [params]);
 
-  const handleNext = (id: string) => {
+  const handleNext = (id: string, name: string) => {
+    Company.setCompany(id, name)
+    // console.log(Company.companyId, Company.companyName)
     navigate(`/company/${id}`);
   };
 
@@ -117,7 +123,7 @@ function PreCompany(props: any) {
                   placeholder="ค้นหาบริษัท"
                   focusBorderColor="none"
                   onChange={(event) => {
-                    let keyword = event.currentTarget.value;
+                    const keyword = event.currentTarget.value;
                     const fuse = new Fuse(search, {
                       keys: ["companyName", "userPhone", "userName"],
                       findAllMatches: true,
@@ -228,7 +234,7 @@ function PreCompany(props: any) {
                       >
                         <Td
                           onClick={() => {
-                            handleNext(com.id);
+                            handleNext(com.id, com.companyName);
                           }}
                           textAlign="center"
                         >
@@ -236,7 +242,7 @@ function PreCompany(props: any) {
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id);
+                            handleNext(com.id, com.companyName);
                           }}
                           textAlign="left"
                         >
@@ -244,7 +250,7 @@ function PreCompany(props: any) {
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id);
+                            handleNext(com.id, com.companyName);
                           }}
                           textAlign="left"
                         >
@@ -252,7 +258,7 @@ function PreCompany(props: any) {
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id);
+                            handleNext(com.id, com.companyName);
                           }}
                           textAlign="left"
                         >

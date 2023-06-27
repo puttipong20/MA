@@ -15,14 +15,12 @@ import Project from "./pages/kim/Project";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
 import AuthCheck from "./components/AuthCheck";
-import TempCompPreview from "./pages/kim/TempCompPreview";
 import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
 import ProblemPreview from "./pages/kim/ProblemPreview";
 import AddReport from "./pages/kim/AddReport";
 import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from './pages/Company/PageCompany'
-
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext)
@@ -51,24 +49,17 @@ function App() {
       <Box w="100%" maxH="100vh">
 
         <Routes>
-          {/* <Route path="/precompany" element={<PreCompany />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/preview/:id" element={<Preview />} /> */}
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/dev/:type/:id" element={<DetailForDev />} /> */}
-          {/* <Route path="/detail/:id" element={<DetailForUser />} /> */}
-          {/* <Route path="/Add/:id" element={<FormAddReport />} /> */}
 
-          {/* <Route path="/company" element={<Project />} /> */}
+          <Route path="/company" element={<Project><PageCompany /></Project>} />
           <Route path="/company/:company" element={<Project><ProjectPreviewComp /></Project>} />
-          <Route path="/company/:company/:projectID/detail" element={<Project><DetailPage /></Project>} />
-          {/* <Route path="/company/:company/:project/detail" element={<Project></Project>} /> */}
+          <Route path="/company/:company/:projectID/:projectName/detail" element={<Project><DetailPage /></Project>} />
           <Route path="/company/:company/:projectID/:projectName/problemReport" element={<Project><ProblemPreview /></Project>} />
           <Route path="/company/:company/:projectID/:projectName/addReport" element={<AddReport />} />
           <Route path="/company/:company/:projectID/:projectName/:problemID" element={<DetailForDev />} />
-          <Route path="/tempCompany" element={<TempCompPreview />} />
-          <Route path="/company" element={<Project><PageCompany /></Project>} />
+          {/* <Route path="/tempCompany" element={<TempCompPreview />} /> */}
         </Routes>
 
         {/* <LogoutBtn /> */}

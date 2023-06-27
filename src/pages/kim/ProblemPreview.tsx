@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import {
     Box,
     Button,
@@ -36,6 +36,8 @@ import classes from "./ProblemPreview.module.css"
 
 import moment from "moment";
 
+import { CompanyContext } from "../../context/CompanyContext";
+
 export default function ProblemPreview() {
     const { control, watch } = useForm();
     const [isFetching, setIsFetching] = useState(false);
@@ -44,6 +46,7 @@ export default function ProblemPreview() {
     const searchRef = useRef<HTMLInputElement>(null);
     const params = useParams();
     const navigate = useNavigate();
+    const Company = useContext(CompanyContext);
 
     const statusFilter = watch("statusFilter") || "";
     const wait = "รอรับเรื่อง";
@@ -271,6 +274,7 @@ export default function ProblemPreview() {
                                                 _hover={{ bg: "#eee" }}
                                                 cursor={"pointer"}
                                                 onClick={() => {
+                                                    Company.setReport(r.id)
                                                     navigate(`/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`)
                                                 }}
                                             >

@@ -35,6 +35,8 @@ const CompanyContextProvider: React.FC<Props> = (props) => {
 
     const setReport = (id: string) => { setReportId(id) }
 
+
+
     const context = {
         companyId: companyId,
         companyName: companyName,
