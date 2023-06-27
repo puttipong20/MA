@@ -60,7 +60,7 @@ function App() {
           {/* <Route path="/detail/:id" element={<DetailForUser />} /> */}
           {/* <Route path="/Add/:id" element={<FormAddReport />} /> */}
 
-          <Route path="/company" element={<Project />} />
+          {/* <Route path="/company" element={<Project />} /> */}
           <Route path="/company/:company" element={<Project><ProjectPreviewComp /></Project>} />
           <Route path="/company/:company/:projectID/detail" element={<Project><DetailPage /></Project>} />
           {/* <Route path="/company/:company/:project/detail" element={<Project></Project>} /> */}
@@ -68,7 +68,7 @@ function App() {
           <Route path="/company/:company/:projectID/:projectName/addReport" element={<AddReport />} />
           <Route path="/company/:company/:projectID/:projectName/:problemID" element={<DetailForDev />} />
           <Route path="/tempCompany" element={<TempCompPreview />} />
-          <Route path="/pageCompany" element={<Project><PageCompany /></Project>} />
+          <Route path="/company" element={<Project><PageCompany /></Project>} />
         </Routes>
 
         {/* <LogoutBtn /> */}
