@@ -46,7 +46,7 @@ export type ProjectDetail = {
   MAlogs?: { startMA: string; endMA: string; cost: number }[];
   LastestMA: { startMA: string; endMA: string; cost: number };
 
-  newLastestMA: MA;
+  newLastestMA?: MA;
   newMAlogs?: MA[];
 
   companyID: string;

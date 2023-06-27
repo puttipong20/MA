@@ -149,7 +149,7 @@ const Sidebar: React.FC = () => {
                                                     <Text fontWeight={"normal"} textAlign={"center"}>ยังไม่มีข้อมูล Project ของบริษัทนี้</Text>
                                                 }
                                                 <AddProject companyId={i.companyId} companyName={i.detail.companyName} />
-                                                <Button colorScheme="linkedin" fontWeight={"normal"} onClick={() => { navigate(`/company/${i.companyId}`) }}>ข้อมูลลูกค้า/บริษัท</Button>
+                                                <Button colorScheme="linkedin" fontWeight={"normal"} fontSize={"0.9rem"} onClick={() => { navigate(`/company/${i.companyId}`) }}>ข้อมูลลูกค้า/บริษัท</Button>
                                             </VStack>
                                         </AccordionPanel>
                                     </AccordionItem>
