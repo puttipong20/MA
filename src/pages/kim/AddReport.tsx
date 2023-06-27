@@ -25,6 +25,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdUpload } from "react-icons/md";
 
 import { AuthContext } from "../../context/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../services/config-db";
+import { CompanyDetail } from "../../@types/Type";
 
 type FormValues = {
     ticketsProblems: string;
@@ -63,7 +66,11 @@ const AddReport = () => {
 
     const onSubmit = async (data: any) => {
         setIsLoading(true);
-        console.clear();
+        // console.clear();
+        const docRef = doc(db, "Company", params["company"] as string)
+        const fetchDoc = await getDoc(docRef)
+        const companyDetail = fetchDoc.data() as CompanyDetail
+
         const dataToAdd = {
             title:
                 data.ticketsProblems === "other"
@@ -76,9 +83,10 @@ const AddReport = () => {
             createAt: data.ticketsDate,
             name: data.ticketsName,
             RepImg: allImgUpload,
+            company: companyDetail.companyName,
             // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-            companyId:params["company"],
-            projectName:params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
+            companyId: params["company"],
+            projectName: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
             projectID: params["projectID"],
             uid: Auth.uid
         }
