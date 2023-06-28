@@ -42,29 +42,52 @@ const Renewal: React.FC<Props> = (props) => {
     const [isUpdate, setIsUpdate] = useState(false)
     const toast = useToast();
     const logs = props.MAlog
+    const currentDate = moment().format("YYYY-MM-DD")
 
     const onSubmit = async (data: any) => {
         setIsUpdate(true);
         const renewStart = data.renewStart;
         const renewEnd = data.renewEnd;
+
+        let status: "advance" | "expire" | "active" = "advance";
+
+        if (currentDate < renewStart) {
+            status = "advance"
+        } else {
+            if (currentDate > renewEnd) {
+                status = "expire"
+            } else {
+                status = "active"
+            }
+        }
+
         const newContract: MA = {
             startMA: renewStart,
             endMA: renewEnd,
             cost: data.renewCost,
-            status: "advance",
+            status: status,
         }
         logs?.push(newContract)
-        console.log(newContract);
-        console.log(props.MAlog)
+        // console.log(newContract);
+        // console.log(props.MAlog)
 
-        await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs })
-
-        toast({
-            title: 'เพิ่มโปรเจคสำเร็จ.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-            position: "top",
+        await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs }).then(() => {
+            toast({
+                title: 'เพิ่มโปรเจคสำเร็จ.',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: "top",
+            })
+        }).catch((e) => {
+            toast({
+                title: 'เกิดข้อผิดพลาด',
+                description: e,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                position: "top",
+            })
         })
         reset();
         setIsUpdate(false);

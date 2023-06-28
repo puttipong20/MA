@@ -82,7 +82,7 @@ export default function DetailPage() {
             </Text> */}
           </Text>
           <Text fontWeight={"bold"} w="fit-content">
-            ถูกสร้างเมื่อ : <Text as="span" fontWeight={"normal"}>{moment(projectDetail?.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Text>
+            ถูกสร้างเมื่อ : <Text as="span" fontWeight={"normal"}>{projectDetail && moment(projectDetail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Text>
           </Text>
           <Text fontWeight={"bold"} w="fit-content">
             เริ่มต้นสัญญาMA : <Text as="span" fontWeight={"normal"}>{activeMA && dateFormat(activeMA.startMA)}</Text>
