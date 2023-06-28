@@ -226,6 +226,7 @@ function PreCompany() {
                 </Thead>
                 <Tbody>
                   {comForm.map((com: any, index: any) => {
+                    // console.log(com)
                     return (
                       <Tr
                         key={index}
@@ -238,7 +239,7 @@ function PreCompany() {
                           }}
                           textAlign="center"
                         >
-                          {com.no}
+                          {index + 1}
                         </Td>
                         <Td
                           onClick={() => {

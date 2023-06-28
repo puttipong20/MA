@@ -37,13 +37,32 @@ const AddProject: React.FC<Props> = (props) => {
     const toast = useToast();
     const Auth = useContext(AuthContext);
 
+    useEffect(() => {
+        reset()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const onSubmit = async (data: any) => {
         setIsAdding(true);
+        const currentDate = moment().format("YYYY-MM-DD")
+        let status: "advance" | "expire" | "active" | "deleted" | "cancel" = "active";
+        if (currentDate >= data.startMA) {
+            if (currentDate < data.endMA) {
+                status = "active"
+            } else {
+                status = "expire"
+            }
+        } else {
+            status = "advance"
+        }
         const lastestMA: MA = {
             startMA: data.startMA,
             endMA: data.endMA,
             cost: data.cost,
-            status: "active"
+            createdBy: Auth.uid,
+            updateLogs: [{ note: "initial Project", timeStamp: currentDate, updatedBy: Auth.uid }],
+            createdAt: currentDate,
+            status: status
         }
         const detail: ProjectDetail = {
             companyID: props.companyId,
@@ -162,6 +181,7 @@ const AddProject: React.FC<Props> = (props) => {
                                 />
                             </HStack>
                             <Text mb="1rem">ระยะเวลา = <Text as="span" fontWeight={"bold"}>{duration}</Text> วัน</Text>
+                            {duration < 1 && <Text color="red">ระยะเวลาอย่างน้อย 1 วัน</Text>}
                             <Controller
                                 name="cost"
                                 control={control}
@@ -175,7 +195,7 @@ const AddProject: React.FC<Props> = (props) => {
                             />
                             <HStack w="100%" justify={"space-around"} mt="10px">
                                 <Button onClick={() => { onClose() }} colorScheme="gray">ปิด</Button>
-                                <Button type="submit" colorScheme="blue" isLoading={isAdding}>เพิ่ม</Button>
+                                <Button type="submit" colorScheme="blue" isLoading={isAdding} isDisabled={duration < 1}>เพิ่ม</Button>
                             </HStack>
                         </form>
                     </ModalBody>

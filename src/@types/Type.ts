@@ -38,14 +38,19 @@ export type MA = {
   startMA: string;
   endMA: string;
   cost: number;
-  status: "expire" | "active" | "advance";
+  // หมดอายุ กำลังใช้งาน ล่วงหน้า ลบ ยกเลิก
+  status: "expire" | "active" | "advance" | "deleted" | "cancel";
+  cancelNote?: string | "";
+  createdBy: string;
+  createdAt: string;
+  note?: string | "";
+  updateLogs: { updatedBy: string; timeStamp: string; note: string | "" }[];
 };
 
 export type ProjectDetail = {
-  projectName: string;
-  
   MAlogs: MA[];
 
+  projectName: string;
   companyID: string;
   companyName: string;
   createdAt: string;

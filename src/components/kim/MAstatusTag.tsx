@@ -2,7 +2,7 @@ import React from 'react'
 import { Badge } from "@chakra-ui/react"
 
 interface Props {
-    status: "active" | "expire" | "advance"
+    status: "active" | "expire" | "advance" | "cancel" | "delete"
 }
 
 const MAstatusTag: React.FC<Props> = (props) => {
