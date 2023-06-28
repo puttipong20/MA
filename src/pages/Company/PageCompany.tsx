@@ -233,7 +233,7 @@ function PreCompany() {
                         }}
                         textAlign="center"
                       >
-                        {com.no}
+                        {index + 1}
                       </Td>
                       <Td
                         onClick={() => {
