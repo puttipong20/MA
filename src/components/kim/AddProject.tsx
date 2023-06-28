@@ -20,7 +20,7 @@ import { useForm, Controller } from "react-hook-form";
 
 import { collection, addDoc, updateDoc, getDoc, doc } from "firebase/firestore";
 import { db } from "../../services/config-db";
-import { CompanyDetail, ProjectDetail } from "../../@types/Type";
+import { CompanyDetail, MA, ProjectDetail } from "../../@types/Type";
 
 import { AuthContext } from "../../context/AuthContext";
 
@@ -39,14 +39,21 @@ const AddProject: React.FC<Props> = (props) => {
 
     const onSubmit = async (data: any) => {
         setIsAdding(true);
+        const lastestMA: MA = {
+            startMA: data.startMA,
+            endMA: data.endMA,
+            cost: data.cost,
+            status: "active"
+        }
         const detail: ProjectDetail = {
             companyID: props.companyId,
             companyName: props.companyName,
             createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
             createdBy: Auth.uid,
             projectName: data.projectName,
-            LastestMA: { startMA: data.startMA, endMA: data.endMA, cost: data.cost }
+            MAlogs: [lastestMA]
         }
+        // console.log(detail);
         const companyRef = doc(db, "Company", props.companyId);
         const company = await getDoc(companyRef)
         const companyDetail = company.data() as CompanyDetail;
@@ -65,7 +72,6 @@ const AddProject: React.FC<Props> = (props) => {
             updateProject = [project]
         }
         await updateDoc(companyRef, { projects: updateProject })
-        // console.log(updateProject)
 
         reset();
         onClose();
@@ -76,7 +82,6 @@ const AddProject: React.FC<Props> = (props) => {
             isClosable: true,
             position: "top",
         })
-        // window.location.reload();
         setIsAdding(false);
     }
 

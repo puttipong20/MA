@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Box,
+    Button,
     Flex,
     Text,
-    Button,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -15,6 +16,7 @@ import {
     FormControl,
     Input,
 } from '@chakra-ui/react'
+import { useState } from "react";
 import moment from 'moment';
 import { useForm, Controller } from 'react-hook-form';
 // import { useState } from "react";
@@ -23,33 +25,81 @@ import { useForm, Controller } from 'react-hook-form';
 // import { CompanyDetail } from '../../@types/Type';
 
 import { TiDocumentText } from 'react-icons/ti';
+import { MA } from '../../@types/Type';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../services/config-db';
 
 interface Props {
     companyId?: string,
-    projectId?: string
+    projectId: string,
+    activeMA?: MA,
+    MAlog: MA[] | undefined,
 }
 
 const Renewal: React.FC<Props> = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { handleSubmit, control } = useForm();
+    const { handleSubmit, control, reset } = useForm();
+    const [isUpdate, setIsUpdate] = useState(false)
     const toast = useToast();
-    const onSubmit = (data: any) => {
-        console.log(data);
-        console.log(props)
-        toast({
-            title: 'เพิ่มโปรเจคสำเร็จ.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-            position: "top",
+    const logs = props.MAlog
+    const currentDate = moment().format("YYYY-MM-DD")
+
+    const onSubmit = async (data: any) => {
+        setIsUpdate(true);
+        const renewStart = data.renewStart;
+        const renewEnd = data.renewEnd;
+
+        let status: "advance" | "expire" | "active" = "advance";
+
+        if (currentDate < renewStart) {
+            status = "advance"
+        } else {
+            if (currentDate > renewEnd) {
+                status = "expire"
+            } else {
+                status = "active"
+            }
+        }
+
+        const newContract: MA = {
+            startMA: renewStart,
+            endMA: renewEnd,
+            cost: data.renewCost,
+            status: status,
+        }
+        logs?.push(newContract)
+        // console.log(newContract);
+        // console.log(props.MAlog)
+
+        await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs }).then(() => {
+            toast({
+                title: 'เพิ่มโปรเจคสำเร็จ.',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: "top",
+            })
+        }).catch((e) => {
+            toast({
+                title: 'เกิดข้อผิดพลาด',
+                description: e,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                position: "top",
+            })
         })
+        reset();
+        setIsUpdate(false);
     }
 
     return (
         <Box w="100%">
-            <Text onClick={onOpen} display={"flex"}>
-                <Text as="span" w="20%" textAlign={"center"} display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา
-            </Text>
+            {/* <Text display={"flex"}>
+                <Text as="span" w="20%" textAlign={"center"} display="flex" justifyContent={"center"}><TiDocumentText /></Text>
+                <Text as="span">การต่อสัญญา</Text>
+            </Text> */}
+            <Button onClick={onOpen} leftIcon={<TiDocumentText />} colorScheme='blue'>การต่อสัญญา</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -63,7 +113,7 @@ const Renewal: React.FC<Props> = (props) => {
                                     control={control}
                                     defaultValue={moment().format("YYYY-MM-DD")}
                                     render={({ field }) => (
-                                        <FormControl>
+                                        <FormControl isRequired>
                                             <Text>วันเริ่มต้นสัญญาใหม่</Text>
                                             <Input type="date" {...field} />
                                         </FormControl>
@@ -74,7 +124,7 @@ const Renewal: React.FC<Props> = (props) => {
                                     control={control}
                                     defaultValue={moment().add(1, "year").format("YYYY-MM-DD")}
                                     render={({ field }) => (
-                                        <FormControl>
+                                        <FormControl isRequired>
                                             <Text>วันสิ้นสุดสัญญาใหม่</Text>
                                             <Input type="date" {...field} />
                                         </FormControl>
@@ -85,7 +135,7 @@ const Renewal: React.FC<Props> = (props) => {
                                     control={control}
                                     defaultValue={""}
                                     render={({ field }) => (
-                                        <FormControl>
+                                        <FormControl isRequired>
                                             <Text>ค่าบริการ</Text>
                                             <Input type="number" min="0" placeholder='0.00' {...field} />
                                         </FormControl>
@@ -93,7 +143,7 @@ const Renewal: React.FC<Props> = (props) => {
                                 />
                                 <Flex justify={"flex-end"} gap="20px" mt="10px">
                                     <Button colorScheme='gray' onClick={onClose}>ยกเลิก</Button>
-                                    <Button colorScheme='green' type="submit">ยืนยัน</Button>
+                                    <Button colorScheme='green' type="submit" isLoading={isUpdate}>ยืนยัน</Button>
                                 </Flex>
                             </form>
                         </Box>

@@ -157,9 +157,9 @@ const Sidebar: React.FC = () => {
                             })
                         }
                     </Accordion>
-                    <Box w="100%" display="flex" justifyContent={"center"} alignItems={"center"} mt="5px">
+                    {/* <Box w="100%" display="flex" justifyContent={"center"} alignItems={"center"} mt="5px">
                         <TempAddCompany />
-                    </Box>
+                    </Box> */}
                 </Box>
             }
         </Box>

@@ -20,6 +20,7 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
+    Badge,
 } from '@chakra-ui/react'
 import { useState, useEffect, useContext } from "react";
 import { BsSearch } from 'react-icons/bs'
@@ -41,7 +42,7 @@ import classes from "./ProjectPreview.module.css";
 // import EditProject from './EditProject';
 
 import moment from 'moment';
-import Renewal from './Renewal';
+// import Renewal from './Renewal';
 
 import { CompanyContext } from '../../context/CompanyContext';
 
@@ -124,11 +125,12 @@ export default function ProjectPreviewComp() {
                     <Table textAlign={"center"}>
                         <Thead >
                             <Tr bg={"#4c7bf4"}>
-                                <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>ลำดับที่</Th>
+                                {/* <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>ลำดับที่</Th> */}
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>Project</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} w="20rem" fontFamily={"inherit"}>วันที่เริ่มต้นสัญญา MA</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} w="20rem" fontFamily={"inherit"}>วันที่สิ้นสุดสัญญา MA</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>ค่าบริการ</Th>
+                                <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>สถานะสัญญา</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>สร้างเมื่อ</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>รายการปัญหา</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>จัดการ</Th>
@@ -140,13 +142,23 @@ export default function ProjectPreviewComp() {
                                     <Td colSpan={7} textAlign={"center"}>ไม่มีข้อมูล project ของบริษัทนี้</Td>
                                 </Tr> :
                                 filterProject.map((i, index) => {
+                                    const lastestMA = i.detail.MAlogs.filter(i => i.status === "active")[0]
+                                    // console.log(lastestMA)
+                                    let display = "";
+                                    let color = "";
+                                    if (lastestMA) {
+                                        const state = lastestMA.status;
+                                        state === "active" ? display = "กำลังใช้งาน" : state === "advance" ? display = "ล่วงหน้า" : display = "หมดอายุ"
+                                        state === "active" ? color = "green" : state === "advance" ? color = "blue" : color = "red"
+                                    }
                                     return (
                                         <Tr _hover={{ bg: "#eee" }} key={index}>
-                                            <Td textAlign={"center"}>{index + 1}</Td>
+                                            {/* <Td textAlign={"center"}>{index + 1}</Td> */}
                                             <Td textAlign={"center"}>{i.detail.projectName}</Td>
-                                            <Td textAlign={"center"}>{moment(i.detail.LastestMA.startMA).format("DD/MM/YYYY")}</Td>
-                                            <Td textAlign={"center"}>{moment(i.detail.LastestMA.endMA).format("DD/MM/YYYY")}</Td>
-                                            <Td textAlign={"right"}>{Number(i.detail.LastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
+                                            <Td textAlign={"center"}>{lastestMA && moment(lastestMA.startMA).format("DD/MM/YYYY")}</Td>
+                                            <Td textAlign={"center"}>{lastestMA && moment(lastestMA.endMA).format("DD/MM/YYYY")}</Td>
+                                            <Td textAlign={"right"}>{lastestMA && Number(lastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
+                                            <Td textAlign={"center"} fontSize={"1rem"}><Badge colorScheme={color}>{display}</Badge></Td>
                                             <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                             <Td textAlign={"center"}>
                                                 <Button
@@ -168,7 +180,7 @@ export default function ProjectPreviewComp() {
                                                         <MenuItem color={"gray"}
                                                             onClick={() => {
                                                                 Company.setProject(i.projectId, i.detail.projectName)
-                                                                navigate(`/company/${params["company"]}/${i.detail.projectName}/${i.projectId}/detail`)
+                                                                navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/detail`)
                                                             }}
                                                         >
                                                             <Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project
@@ -176,10 +188,10 @@ export default function ProjectPreviewComp() {
                                                         {/* <MenuItem color={"green"}>
                                                             <EditProject projectId={i.projectId} />
                                                         </MenuItem> */}
-                                                        <MenuItem color={"blue"}>
-                                                            <Renewal />
+                                                        {/* <MenuItem color={"blue"}> */}
+                                                            {/* <Renewal /> */}
                                                             {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
-                                                        </MenuItem>
+                                                        {/* </MenuItem> */}
                                                         <MenuItem color={"red"}>
                                                             <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
                                                             {/* <Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project */}
