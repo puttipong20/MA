@@ -64,15 +64,9 @@ const FormEditCompany = ({ data, id }: any) => {
   }, []);
 
   const onSubmit = async (data: any) => {
-    // setIsLoading(true);
     setIsLoading(true);
-    // console.log(data);
 
     if (id) {
-      // const DocRef = doc(db, "Company", id);
-      // await updateDoc(DocRef, {
-      //   ...data,
-      //   companyUpdate: updatedDate,
       const DocRef = doc(db, "Company", id);
       await updateDoc(DocRef, {
         ...data,
@@ -101,7 +95,7 @@ const FormEditCompany = ({ data, id }: any) => {
     }
     reset();
     onClose();
-    // setIsLoading(false);
+    // window.location.reload();
   };
 
   return (
