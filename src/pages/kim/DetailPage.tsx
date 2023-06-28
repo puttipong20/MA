@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom'
-import { Box, Text, Button, Spinner, Divider, Table, Thead, Tr, Th, Tbody, Td, Flex } from "@chakra-ui/react"
+import { Box, Text, Button, Spinner, Divider, Table, Thead, Tr, Th, Tbody, Td, Flex, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react"
 import { BiArrowBack } from 'react-icons/bi';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/config-db';
@@ -11,6 +11,7 @@ import { BiDotsHorizontalRounded } from "react-icons/bi"
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
 import MAstatusTag from "../../components/kim/MAstatusTag";
+import CancelContract from "../../components/kim/CancelContract";
 
 export default function DetailPage() {
   const params = useParams()
@@ -134,7 +135,18 @@ export default function DetailPage() {
                         <Td textAlign={"center"}>{dateFormat(ma.endMA)}</Td>
                         <Td textAlign={"center"}><MAstatusTag status={ma.status} /></Td>
                         <Td textAlign={"right"}>{convertNumber(ma.cost)}</Td>
-                        <Td textAlign={"center"}><Button colorScheme="blue"><BiDotsHorizontalRounded /></Button></Td>
+                        <Td textAlign={"center"}>
+                          <Menu>
+                            <MenuButton as={Button} colorScheme="blue">
+                              <BiDotsHorizontalRounded />
+                            </MenuButton>
+                            <MenuList p="0" borderRadius={"0"}>
+                              <MenuItem p="0">
+                                <CancelContract/>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
                       </Tr>
                     )
                   })
