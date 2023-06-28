@@ -16,7 +16,7 @@ import {
     FormControl,
     Input,
 } from '@chakra-ui/react'
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import moment from 'moment';
 import { useForm, Controller } from 'react-hook-form';
 // import { useState } from "react";
@@ -29,49 +29,110 @@ import { MA } from '../../@types/Type';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 
+import { AuthContext } from '../../context/AuthContext';
+
 interface Props {
     companyId?: string,
     projectId: string,
     activeMA?: MA,
-    MAlog: MA[] | undefined,
+    MAlog: MA[],
 }
 
 const Renewal: React.FC<Props> = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { handleSubmit, control, reset } = useForm();
+    const { handleSubmit, control, reset, watch } = useForm();
     const [isUpdate, setIsUpdate] = useState(false)
+    const [duration, setDuration] = useState(0)
     const toast = useToast();
     const logs = props.MAlog
     const currentDate = moment().format("YYYY-MM-DD")
+    const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss")
+    const Auth = useContext(AuthContext);
+
+    const checkTimeOverlap = (s1: string, e1: string, s2: string, e2: string) => {
+        const start1 = new Date(s1)
+        const start2 = new Date(s2)
+        const end1 = new Date(e1)
+        const end2 = new Date(e2)
+
+        if (start1 <= end2 && end1 >= start2) {
+            // console.log(true)
+            return true
+        } else {
+            // console.log(false)
+            return false
+        }
+    }
+
+    const startMA = watch("renewStart") || moment().format("YYYY-MM-DD")
+    const endMA = watch("renewEnd") || moment().add(1, 'year').format("YYYY-MM-DD")
+
+    const durationData = (startDate: string, endDate: string) => {
+        const a = new Date(startDate) as any;
+        const b = new Date(endDate) as any;
+
+        const d = (Math.floor((b - a)) / (1000 * 60 * 60 * 24))
+        setDuration(d)
+    }
+
+    useEffect(() => {
+        durationData(startMA, endMA);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [startMA, endMA])
 
     const onSubmit = async (data: any) => {
+        // console.clear();
         setIsUpdate(true);
         const renewStart = data.renewStart;
         const renewEnd = data.renewEnd;
 
         let status: "advance" | "expire" | "active" = "advance";
-
-        if (currentDate < renewStart) {
-            status = "advance"
-        } else {
-            if (currentDate > renewEnd) {
-                status = "expire"
+        const overlap = logs.every(m => checkTimeOverlap(m.startMA, m.endMA, renewStart, renewEnd))
+        // console.log(overlap)
+        // console.log(logs)
+        if (!overlap) {
+            if (currentDate < renewStart) {
+                status = "advance"
             } else {
-                status = "active"
+                if (currentDate > renewEnd) {
+                    status = "expire"
+                } else {
+                    status = "active"
+                }
             }
-        }
 
-        const newContract: MA = {
-            startMA: renewStart,
-            endMA: renewEnd,
-            cost: data.renewCost,
-            status: status,
-        }
-        logs?.push(newContract)
-        // console.log(newContract);
-        // console.log(props.MAlog)
+            const newContract: MA = {
+                startMA: renewStart,
+                endMA: renewEnd,
+                cost: data.renewCost,
+                status: status,
+                createdBy: Auth.uid,
+                createdAt: currentDateTime,
+                updateLogs: [{ updatedBy: Auth.uid, timeStamp: currentDateTime, note: "renewal contract" }]
+            }
+            logs?.push(newContract)
+            // console.log(newContract);
+            // console.log(props.MAlog)
 
-        await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs }).then(() => {
+            await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs }).then(() => {
+                toast({
+                    title: 'เพิ่มโปรเจคสำเร็จ.',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                })
+            }).catch((e) => {
+                toast({
+                    title: 'เกิดข้อผิดพลาด',
+                    description: e,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                })
+            })
+            reset();
             toast({
                 title: 'เพิ่มโปรเจคสำเร็จ.',
                 status: 'success',
@@ -79,17 +140,16 @@ const Renewal: React.FC<Props> = (props) => {
                 isClosable: true,
                 position: "top",
             })
-        }).catch((e) => {
+        } else {
             toast({
-                title: 'เกิดข้อผิดพลาด',
-                description: e,
+                title: 'ช่วงเวลาไม่ถูกต้อง',
+                description: "กรุณาเลือกช่วงเวลาใหม่ที่ไม่ทับกับสัญญาอื่นๆ",
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
                 position: "top",
             })
-        })
-        reset();
+        }
         setIsUpdate(false);
     }
 
@@ -99,7 +159,7 @@ const Renewal: React.FC<Props> = (props) => {
                 <Text as="span" w="20%" textAlign={"center"} display="flex" justifyContent={"center"}><TiDocumentText /></Text>
                 <Text as="span">การต่อสัญญา</Text>
             </Text> */}
-            <Button onClick={onOpen} leftIcon={<TiDocumentText />} colorScheme='blue'>การต่อสัญญา</Button>
+            <Button onClick={() => { onOpen(); reset(); }} leftIcon={<TiDocumentText />} colorScheme='blue'>การต่อสัญญา</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -130,6 +190,8 @@ const Renewal: React.FC<Props> = (props) => {
                                         </FormControl>
                                     )}
                                 />
+                                <Text>ระยะเวลา = <Text as="span" fontWeight={"bold"}>{duration}</Text> วัน</Text>
+                                {duration < 1 && <Text as="span" color="red">ระยะเวลาอย่างน้อย 1 วัน</Text>}
                                 <Controller
                                     name="renewCost"
                                     control={control}
@@ -143,7 +205,7 @@ const Renewal: React.FC<Props> = (props) => {
                                 />
                                 <Flex justify={"flex-end"} gap="20px" mt="10px">
                                     <Button colorScheme='gray' onClick={onClose}>ยกเลิก</Button>
-                                    <Button colorScheme='green' type="submit" isLoading={isUpdate}>ยืนยัน</Button>
+                                    <Button colorScheme='green' type="submit" isLoading={isUpdate} isDisabled={duration < 1}>ยืนยัน</Button>
                                 </Flex>
                             </form>
                         </Box>

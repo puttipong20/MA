@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom'
@@ -105,7 +106,7 @@ export default function DetailPage() {
               ประวัติการทำสัญญา
             </Text>
             <Box>
-              <Renewal MAlog={projectDetail?.MAlogs} projectId={projectID} />
+              <Renewal MAlog={projectDetail!.MAlogs} projectId={projectID} />
             </Box>
           </Flex>
           <Table>
@@ -115,6 +116,7 @@ export default function DetailPage() {
                 <Th textAlign={"center"}>วันที่เริ่มต้นสัญญาMA</Th>
                 <Th textAlign={"center"}>วันที่สิ้นสุดสัญญาMA</Th>
                 <Th textAlign={"center"}>สถานะ</Th>
+                <Th textAlign={"center"}>วันที่สร้าง</Th>
                 <Th textAlign={"right"}>ค่าบริการ</Th>
                 <Th textAlign={"center"}>การจัดการ</Th>
               </Tr>
@@ -134,6 +136,7 @@ export default function DetailPage() {
                         <Td textAlign={"center"}>{dateFormat(ma.startMA)}</Td>
                         <Td textAlign={"center"}>{dateFormat(ma.endMA)}</Td>
                         <Td textAlign={"center"}><MAstatusTag status={ma.status} /></Td>
+                        <Td textAlign={"center"}>{moment(ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                         <Td textAlign={"right"}>{convertNumber(ma.cost)}</Td>
                         <Td textAlign={"center"}>
                           <Menu>
@@ -142,7 +145,7 @@ export default function DetailPage() {
                             </MenuButton>
                             <MenuList p="0" borderRadius={"0"}>
                               <MenuItem p="0">
-                                <CancelContract/>
+                                <CancelContract />
                               </MenuItem>
                             </MenuList>
                           </Menu>
