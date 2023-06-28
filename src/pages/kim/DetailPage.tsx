@@ -17,7 +17,7 @@ export default function DetailPage() {
   const navigate = useNavigate();
   const backPath = `/company/${params["company"]}`
 
-  const [isFetching, setIsfetching] = useState(false);
+  const [isFetching, setIsfetching] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
   const [activeMA, setActiveMA] = useState<MA>();
 
@@ -58,7 +58,7 @@ export default function DetailPage() {
 
   if (isFetching) {
     return (
-      <Box>
+      <Box w="100%" h="100%" display={"flex"} justifyContent={"center"} alignItems={"center"}>
         <Spinner />
       </Box>
     )
@@ -75,7 +75,7 @@ export default function DetailPage() {
             <Text as="span" fontWeight={"normal"}>{projectDetail?.companyName}</Text>
           </Text>
           <Text fontWeight={"bold"} w="fit-content" display={"flex"} align={"center"}>
-            ชื่อโปรเจค :{" "}
+            ชื่อโปรเจค :
             <Text as="span" fontWeight={"normal"}>{projectDetail?.projectName}</Text>
             {/* <Text as="span" h="fit-content" my="auto" color={"gray"} cursor={"pointer"} _hover={{ color: "black" }}>
               <AiOutlineEdit />
@@ -122,9 +122,9 @@ export default function DetailPage() {
               {
                 projectDetail?.MAlogs
                   .sort((a, b) => {
-                    const startA = new Date(a.startMA) as any
-                    const startB = new Date(b.startMA) as any
-                    return startB - startA
+                    const endA = new Date(a.endMA) as any
+                    const endB = new Date(b.endMA) as any
+                    return endB - endA
                   })
                   .map((ma, index) => {
                     return (
