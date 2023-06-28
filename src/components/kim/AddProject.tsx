@@ -45,6 +45,7 @@ const AddProject: React.FC<Props> = (props) => {
     const onSubmit = async (data: any) => {
         setIsAdding(true);
         const currentDate = moment().format("YYYY-MM-DD")
+        const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss")
         let status: "advance" | "expire" | "active" | "deleted" | "cancel" = "active";
         if (currentDate >= data.startMA) {
             if (currentDate < data.endMA) {
@@ -60,14 +61,14 @@ const AddProject: React.FC<Props> = (props) => {
             endMA: data.endMA,
             cost: data.cost,
             createdBy: Auth.uid,
-            updateLogs: [{ note: "initial Project", timeStamp: currentDate, updatedBy: Auth.uid }],
-            createdAt: currentDate,
+            updateLogs: [{ note: "initial Project", timeStamp: currentDateTime, updatedBy: Auth.uid }],
+            createdAt: currentDateTime,
             status: status
         }
         const detail: ProjectDetail = {
             companyID: props.companyId,
             companyName: props.companyName,
-            createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+            createdAt: currentDateTime,
             createdBy: Auth.uid,
             projectName: data.projectName,
             MAlogs: [lastestMA]
