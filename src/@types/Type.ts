@@ -34,20 +34,17 @@ export type Report = {
 
 // ======================================================================================
 
-type MA = {
+export type MA = {
   startMA: string;
   endMA: string;
   cost: number;
-  status: "expire" | "current" | "advance";
+  status: "expire" | "active" | "advance";
 };
 
 export type ProjectDetail = {
   projectName: string;
-  MAlogs?: { startMA: string; endMA: string; cost: number }[];
-  LastestMA: { startMA: string; endMA: string; cost: number };
-
-  newLastestMA?: MA;
-  newMAlogs?: MA[];
+  
+  MAlogs: MA[];
 
   companyID: string;
   companyName: string;

@@ -19,6 +19,7 @@ export default function DetailPage() {
     console.clear();
     const projectID = params["projectID"] as string;
     const project = await getDoc(doc(db, "Project", projectID))
+    console.log(params, project.data())
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false)
   }
@@ -64,6 +65,12 @@ export default function DetailPage() {
           </Text>
           <Text fontWeight={"bold"} w="fit-content">
             ค่าบริการ : <Text as="span" fontWeight={"normal"}>{projectDetail?.LastestMA.cost}</Text>
+          </Text>
+        </Box>
+        <Divider />
+        <Box>
+          <Text fontWeight={"bold"} w="fit-content">
+            สัญญาปัจจุบัน
           </Text>
         </Box>
         <Divider />

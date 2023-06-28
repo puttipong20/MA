@@ -21,16 +21,18 @@ import AddReport from "./pages/kim/AddReport";
 import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from './pages/Company/PageCompany'
+// import ContactUpdate from "./components/ContactUpdate";
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext)
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const initial = async () => {
     setIsLoading(true)
     if (!Auth.uid) {
       await AuthCheck(Auth, navigate);
     }
+    // await ContactUpdate()
     setIsLoading(false)
   }
 
@@ -40,8 +42,8 @@ function App() {
   }, [])
 
   if (isLoading) {
-    <Box>
-      <Text>Authen Checking</Text>
+    <Box w="100vw" h="100vh" display="flex" justifyContent={"center"} alignItems={"center"}>
+      <Text>Checking</Text>
       <Spinner />
     </Box>
   } else {
@@ -61,7 +63,6 @@ function App() {
           <Route path="/company/:company/:projectID/:projectName/:problemID" element={<DetailForDev />} />
           {/* <Route path="/tempCompany" element={<TempCompPreview />} /> */}
         </Routes>
-
         {/* <LogoutBtn /> */}
       </Box>
     )
