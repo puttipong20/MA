@@ -57,7 +57,7 @@ const Login: FC = () => {
             position: "top",
           });
           // console.log(Auth)
-          navigate("/")
+          navigate("/company")
           // if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
           setIsLoading(false)
 

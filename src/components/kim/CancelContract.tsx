@@ -16,10 +16,17 @@ import {
 export default function CancelContract() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
-    
+
     const handleClick = () => {
         console.log("clicked!");
         onOpen();
+        toast({
+            title: 'เพิ่มโปรเจคสำเร็จ.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: "top",
+        })
     }
 
     return (

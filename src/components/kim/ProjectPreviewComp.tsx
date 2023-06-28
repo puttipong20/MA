@@ -70,6 +70,7 @@ export default function ProjectPreviewComp() {
             allProject.push(project);
         }
         )
+        console.log(allProject);
         setProjects(allProject);
         setFilterProjects(allProject);
         setIsFetching(false);
@@ -86,7 +87,7 @@ export default function ProjectPreviewComp() {
 
     useEffect(() => {
         const projectCollection = collection(db, "Project")
-        const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
+        const q = query(projectCollection)
         onSnapshot(q, () => {
             fetchingData();
         })
@@ -189,8 +190,8 @@ export default function ProjectPreviewComp() {
                                                             <EditProject projectId={i.projectId} />
                                                         </MenuItem> */}
                                                         {/* <MenuItem color={"blue"}> */}
-                                                            {/* <Renewal /> */}
-                                                            {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
+                                                        {/* <Renewal /> */}
+                                                        {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
                                                         {/* </MenuItem> */}
                                                         <MenuItem color={"red"}>
                                                             <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
