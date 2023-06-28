@@ -21,7 +21,7 @@ import AddReport from "./pages/kim/AddReport";
 import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from './pages/Company/PageCompany'
-// import ContactUpdate from "./components/ContactUpdate";
+// import ContactUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext)

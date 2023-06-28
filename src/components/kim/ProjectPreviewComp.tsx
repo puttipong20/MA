@@ -42,7 +42,7 @@ import classes from "./ProjectPreview.module.css";
 // import EditProject from './EditProject';
 
 import moment from 'moment';
-import Renewal from './Renewal';
+// import Renewal from './Renewal';
 
 import { CompanyContext } from '../../context/CompanyContext';
 
@@ -188,10 +188,10 @@ export default function ProjectPreviewComp() {
                                                         {/* <MenuItem color={"green"}>
                                                             <EditProject projectId={i.projectId} />
                                                         </MenuItem> */}
-                                                        <MenuItem color={"blue"}>
-                                                            <Renewal />
+                                                        {/* <MenuItem color={"blue"}> */}
+                                                            {/* <Renewal /> */}
                                                             {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
-                                                        </MenuItem>
+                                                        {/* </MenuItem> */}
                                                         <MenuItem color={"red"}>
                                                             <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
                                                             {/* <Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project */}
