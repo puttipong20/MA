@@ -34,21 +34,23 @@ export type Report = {
 
 // ======================================================================================
 
-type MA = {
+export type MA = {
   startMA: string;
   endMA: string;
   cost: number;
-  status: "expire" | "current" | "advance";
+  // หมดอายุ กำลังใช้งาน ล่วงหน้า ลบ ยกเลิก
+  status: "expire" | "active" | "advance" | "deleted" | "cancel";
+  cancelNote?: string | "";
+  createdBy: string;
+  createdAt: string;
+  note?: string | "";
+  updateLogs: { updatedBy: string; timeStamp: string; note: string | "" }[];
 };
 
 export type ProjectDetail = {
+  MAlogs: MA[];
+
   projectName: string;
-  MAlogs?: { startMA: string; endMA: string; cost: number }[];
-  LastestMA: { startMA: string; endMA: string; cost: number };
-
-  newLastestMA?: MA;
-  newMAlogs?: MA[];
-
   companyID: string;
   companyName: string;
   createdAt: string;
