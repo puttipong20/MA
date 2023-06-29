@@ -1,3 +1,4 @@
+import { useState, useContext } from "react";
 import {
     Box,
     Button,
@@ -12,26 +13,55 @@ import {
     useToast,
     ModalFooter,
 } from '@chakra-ui/react'
+import { collection, getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ImCancelCircle } from "react-icons/im"
-export default function CancelContract() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const toast = useToast();
+import { db } from '../../services/config-db';
+import { MA } from "../../@types/Type";
+import moment from "moment";
+import { AuthContext } from "../../context/AuthContext";
 
-    const handleClick = () => {
-        console.log("clicked!");
-        onOpen();
-        toast({
-            title: 'เพิ่มโปรเจคสำเร็จ.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-            position: "top",
+interface Props {
+    projectID: string,
+    maID: string,
+    reload: () => void,
+}
+
+const CancelContract: React.FC<Props> = (props) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isLoading, setIsLoading] = useState(false);
+    const toast = useToast();
+    const Auth = useContext(AuthContext);
+
+    const cancelContract = async () => {
+        setIsLoading(true);
+        const projectRef = doc(db, "Project", props.projectID)
+        const MAref = collection(projectRef, "MAlogs")
+        const MAdoc = doc(MAref, props.maID)
+        const MAhistory = (await getDoc(MAdoc)).data() as MA
+        const oldUpdateLog = MAhistory.updateLogs;
+        const newUpdateLog = {
+            note: "cancel contract",
+            timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
+            updatedBy: Auth.uid
+        }
+        const updatedLog = [...oldUpdateLog, newUpdateLog]
+        // console.log(updatedLog)
+        await updateDoc(MAdoc, { updateLogs: updatedLog, status: "cancel" }).then(() => {
+            toast({
+                title: "ยกเลิกสัญญาสำเร็จ",
+                status: "success",
+                duration: 3000,
+                position: "top"
+            })
         })
+        onClose();
+        props.reload();
+        setIsLoading(false);
     }
 
     return (
-        <Box w="100%" p={"0.5rem"} onClick={handleClick} userSelect={"none"}>
-            <Text color="red" fontWeight={"bold"} w="100%" display="flex" alignItems={"center"}>
+        <Box w="100%" p={"0.5rem"} userSelect={"none"}>
+            <Text color="red" fontWeight={"bold"} w="100%" display="flex" alignItems={"center"} onClick={onOpen}>
                 <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
                     <ImCancelCircle />
                 </Text>
@@ -51,7 +81,7 @@ export default function CancelContract() {
                     <ModalFooter>
                         <Flex gap={"20px"}>
                             <Button onClick={onClose}>ปิด</Button>
-                            <Button onClick={onClose} colorScheme='red'>ยกเลิก</Button>
+                            <Button onClick={cancelContract} colorScheme='red' isLoading={isLoading}>ยกเลิกสัญญา</Button>
                         </Flex>
                     </ModalFooter>
                 </ModalContent>
@@ -59,3 +89,5 @@ export default function CancelContract() {
         </Box>
     )
 }
+
+export default CancelContract;

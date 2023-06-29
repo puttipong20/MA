@@ -35,7 +35,7 @@ interface Props {
     companyId?: string,
     projectId: string,
     activeMA?: MA,
-    MAlog: MA[],
+    MAlog: { id: string, ma: MA }[],
 }
 
 const Renewal: React.FC<Props> = (props) => {
@@ -87,7 +87,7 @@ const Renewal: React.FC<Props> = (props) => {
         const renewEnd = data.renewEnd;
 
         let status: "advance" | "expire" | "active" = "advance";
-        const overlap = logs.every(m => checkTimeOverlap(m.startMA, m.endMA, renewStart, renewEnd))
+        const overlap = logs.every(m => checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd))
         // console.log(overlap)
         // console.log(logs)
         if (!overlap) {
