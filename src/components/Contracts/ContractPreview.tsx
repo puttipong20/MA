@@ -1,6 +1,19 @@
-import { Box, Center, Container, HStack, VStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Container,
+  HStack,
+  VStack,
+  Text,
+  Divider,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { MA } from "../../@types/Type";
 
 const ContractPreview = () => {
+  const [recordCont, setRecordCont] = useState<{ id: string; ma: MA }[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <div className="container">
       <Container maxW="100%" pb="10">
@@ -31,11 +44,12 @@ const ContractPreview = () => {
               </VStack>
             </HStack>
           </Center>
+          <Divider my="1rem" />
           <Box>
             <Box>
               <HStack>
                 <Text>หมายเหตุ :</Text>
-                <Text>ทดสอบ</Text>
+                <Text>{ }</Text>
               </HStack>
               <HStack>
                 <Text>แก้ไขเมื่อ :</Text>
@@ -45,6 +59,7 @@ const ContractPreview = () => {
                 <Text>แก้ไขโดย :</Text>
                 <Text>แอดมิน</Text>
               </HStack>
+              <Divider my="1rem" />
             </Box>
           </Box>
         </Box>

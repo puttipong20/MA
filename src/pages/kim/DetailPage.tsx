@@ -210,10 +210,18 @@ export default function DetailPage() {
                     return (
                       <Tr key={index}>
                         <Td textAlign={"center"}>{index + 1}</Td>
-                        <Td textAlign={"center"}>{dateFormat(MA.ma.startMA)}</Td>
+                        <Td textAlign={"center"}>
+                          {dateFormat(MA.ma.startMA)}
+                        </Td>
                         <Td textAlign={"center"}>{dateFormat(MA.ma.endMA)}</Td>
-                        <Td textAlign={"center"}><MAstatusTag status={MA.ma.status} /></Td>
-                        <Td textAlign={"center"}>{moment(MA.ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
+                        <Td textAlign={"center"}>
+                          <MAstatusTag status={MA.ma.status} />
+                        </Td>
+                        <Td textAlign={"center"}>
+                          {moment(MA.ma.createdAt).format(
+                            "DD/MM/YYYY HH:mm:ss"
+                          )}
+                        </Td>
                         <Td textAlign={"right"}>{convertNumber(MA.ma.cost)}</Td>
                         <Td textAlign={"center"}>
                           <Menu>
@@ -221,78 +229,101 @@ export default function DetailPage() {
                               <BiDotsHorizontalRounded />
                             </MenuButton>
                             <MenuList p="0" borderRadius={"0"}>
-
-                              <MenuItem>
+                              <MenuItem
+                                onClick={() => {
+                                  navigate(
+                                    `/company/${params["company"]}/${params["projectId"]}/${params["projectName"]}/detail/ContractRecord`
+                                  );
+                                }}
+                              >
                                 <Box w="100%" p={"0.5rem"}>
-                                  <Text fontWeight={"bold"} color="green" w="100%" display="flex" alignItems={"center"}>
-                                    <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+                                  <Text
+                                    fontWeight={"bold"}
+                                    color="green"
+                                    w="100%"
+                                    display="flex"
+                                    alignItems={"center"}
+                                  >
+                                    <Text
+                                      as="span"
+                                      w="20%"
+                                      display={"flex"}
+                                      justifyContent={"center"}
+                                    >
                                       <AiOutlineHistory />
                                     </Text>
                                     ดูประวัติการแก้ไข
                                   </Text>
                                 </Box>
                               </MenuItem>
-                              
-                              {
-                                MA.ma.status != "cancel" &&
+
+                              {MA.ma.status != "cancel" && (
                                 <MenuItem>
-                                  <CancelContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} />
+                                  <CancelContract
+                                    maID={MA.id}
+                                    projectID={projectID}
+                                    reload={fetchingProjectDetail}
+                                  />
                                 </MenuItem>
-                              }
+                              )}
 
-                            <MenuItem>
-                              <Box w="100%" p={"0.5rem"}>
-                                <Text
-                                  fontWeight={"bold"}
-                                  color="#FFA500"
-                                  w="100%"
-                                  display="flex"
-                                  alignItems={"center"}
-                                >
+                              <MenuItem>
+                                <Box w="100%" p={"0.5rem"}>
                                   <Text
-                                    as="span"
-                                    w="20%"
-                                    display={"flex"}
-                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                    color="#FFA500"
+                                    w="100%"
+                                    display="flex"
+                                    alignItems={"center"}
                                   >
-                                    <AiOutlineDelete />
+                                    <Text
+                                      as="span"
+                                      w="20%"
+                                      display={"flex"}
+                                      justifyContent={"center"}
+                                    >
+                                      <AiOutlineDelete />
+                                    </Text>
+                                    ลบ
                                   </Text>
-                                  ลบ
-                                </Text>
-                              </Box>
-                            </MenuItem>
+                                </Box>
+                              </MenuItem>
 
-                            <MenuItem>
-                              <Box w="100%" p={"0.5rem"}>
-                                <Text
-                                  fontWeight={"bold"}
-                                  color="blue"
-                                  w="100%"
-                                  display="flex"
-                                  alignItems={"center"}
-                                >
+                              <MenuItem>
+                                <Box w="100%" p={"0.5rem"}>
                                   <Text
-                                    as="span"
-                                    w="20%"
-                                    display={"flex"}
-                                    justifyContent={"center"}
+                                    fontWeight={"bold"}
+                                    color="blue"
+                                    w="100%"
+                                    display="flex"
+                                    alignItems={"center"}
                                   >
-                                    <AiOutlineEdit />
+                                    <Text
+                                      as="span"
+                                      w="20%"
+                                      display={"flex"}
+                                      justifyContent={"center"}
+                                    >
+                                      <AiOutlineEdit />
+                                    </Text>
+                                    แก้ไข
                                   </Text>
-                                  แก้ไข
-                                </Text>
-                              </Box>
-                            </MenuItem>
-                            <MenuItem>
-                              <Box>
-                                  <EditContract data={MA.ma} maId={MA.id} projectId={projectID} />
-                              </Box>
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  );
+                                </Box>
+                              </MenuItem>
+                              <MenuItem>
+                                <Box>
+                                  <EditContract
+                                    data={MA.ma}
+                                    maId={MA.id}
+                                    projectId={projectID}
+                                  />
+                                </Box>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    );
                 })}
             </Tbody>
           </Table>
