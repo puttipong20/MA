@@ -23,7 +23,6 @@ import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
 
 import { search } from "ss-search";
-import TempAddCompany from "./TempAddCompany";
 import { Company, CompanyDetail } from "../../@types/Type";
 import AddProject from "./AddProject";
 
