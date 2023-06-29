@@ -30,12 +30,23 @@ const ContractPreview = () => {
                 </Text>
               </VStack>
             </HStack>
-                  </Center>
-                  <Box>
-                      <Box>
-                          
-                      </Box>
-                  </Box>
+          </Center>
+          <Box>
+            <Box>
+              <HStack>
+                <Text>หมายเหตุ :</Text>
+                <Text>ทดสอบ</Text>
+              </HStack>
+              <HStack>
+                <Text>แก้ไขเมื่อ :</Text>
+                <Text>12/12/12</Text>
+              </HStack>
+              <HStack>
+                <Text>แก้ไขโดย :</Text>
+                <Text>แอดมิน</Text>
+              </HStack>
+            </Box>
+          </Box>
         </Box>
       </Container>
     </div>

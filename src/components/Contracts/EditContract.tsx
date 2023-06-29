@@ -22,13 +22,7 @@ import { RiEditLine } from "react-icons/ri";
 import moment from "moment";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../services/config-db";
-
-type ContractValue = {
-  startMA: string;
-  endMA: string;
-  cost: number;
-  note: string;
-};
+import { MA } from "../../@types/Type";
 
 const EditContract = ({ data, id }: any) => {
   const {
@@ -37,13 +31,13 @@ const EditContract = ({ data, id }: any) => {
     control,
     setValue,
     formState: { errors },
-  } = useForm<ContractValue>();
+  } = useForm<MA>();
 
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const createDate = moment().format("DD-MM-YYYY HH:mm:ss");
+  const EditDate = moment().format("DD-MM-YYYY HH:mm:ss");
 
   useEffect(() => {
     if (data) {
@@ -51,26 +45,12 @@ const EditContract = ({ data, id }: any) => {
       setValue("endMA", data?.endMA);
       setValue("cost", data?.cost);
     }
+    console.log(data);
   }, []);
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     if (id) {
-      const addRef = collection(db, "PreContract");
-      await addDoc(addRef, {
-        note: data.note,
-        editAt: createDate,
-        editBy: "ทดสอบ",
-      }).then(() => {
-        toast({
-          title: "อัพเดทสัญญาสำเร็จ",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-        });
-        setIsLoading(false);
-      });
       const DocRef = doc(db, "Project", id);
       await updateDoc(DocRef, {
         ...data,
@@ -95,13 +75,14 @@ const EditContract = ({ data, id }: any) => {
             position: "top",
           });
         });
+      console.log(DocRef)
     }
     reset();
     onClose();
   };
 
   return (
-    <div>
+    <>
       <Box onClick={onOpen} w="100%" h="100%" display="flex">
         <Flex
           color="green"
@@ -209,7 +190,7 @@ const EditContract = ({ data, id }: any) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 
