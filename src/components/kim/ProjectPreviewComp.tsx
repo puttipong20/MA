@@ -70,7 +70,7 @@ export default function ProjectPreviewComp() {
             allProject.push(project);
         }
         )
-        console.log(allProject);
+        // console.log(allProject);
         setProjects(allProject);
         setFilterProjects(allProject);
         setIsFetching(false);

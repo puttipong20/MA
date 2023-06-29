@@ -1,4 +1,3 @@
-import { CloseIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -13,6 +12,7 @@ import {
     useToast,
     ModalFooter,
 } from '@chakra-ui/react'
+import { ImCancelCircle } from "react-icons/im"
 export default function CancelContract() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
@@ -30,10 +30,10 @@ export default function CancelContract() {
     }
 
     return (
-        <Box w="100%" p="0.5rem" onClick={handleClick} userSelect={"none"}>
-            <Text color="red" w="100%" display="flex">
-                <Text as="span" w="20%" textAlign={"center"}>
-                    <CloseIcon />
+        <Box w="100%" p={"0.5rem"} onClick={handleClick} userSelect={"none"}>
+            <Text color="red" fontWeight={"bold"} w="100%" display="flex" alignItems={"center"}>
+                <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+                    <ImCancelCircle />
                 </Text>
                 ยกเลิกสัญญา
             </Text>

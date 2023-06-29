@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom'
 import { Box, Text, Button, Spinner, Divider, Table, Thead, Tr, Th, Tbody, Td, Flex, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react"
 import { BiArrowBack } from 'react-icons/bi';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi"
+import { AiOutlineHistory, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai"
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
@@ -21,6 +22,7 @@ export default function DetailPage() {
 
   const [isFetching, setIsfetching] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
+  const [logs,setLogs] = useState<MA[]>([]);
   const [activeMA, setActiveMA] = useState<MA>();
 
   const projectID = params["projectID"] as string;
@@ -28,12 +30,20 @@ export default function DetailPage() {
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true)
-    // console.clear();
+    console.clear();
     const project = await getDoc(projectRef)
+    const MAref = collection(projectRef, "MAlogs")
+    const MAFetch = await getDocs(MAref)
+    const MAlogs: MA[] = [];
+    MAFetch.forEach((ma) => {
+      MAlogs.push(ma.data() as MA)
+    })
+    setLogs(MAlogs)
+
     // console.log(params, project.data())
-    const projectData = project.data() as ProjectDetail;
-    const active = projectData.MAlogs.filter(i => i.status === "active")[0]
-    const lastest = projectData.MAlogs[0];
+    // const projectData = project.data() as ProjectDetail;
+    const active = MAlogs.filter(i => i.status === "active")[0]
+    const lastest = MAlogs[0];
     if (active) {
       setActiveMA(active)
     } else {
@@ -123,7 +133,7 @@ export default function DetailPage() {
             </Thead>
             <Tbody>
               {
-                projectDetail?.MAlogs
+                logs
                   .sort((a, b) => {
                     const endA = new Date(a.endMA) as any
                     const endB = new Date(b.endMA) as any
@@ -144,8 +154,42 @@ export default function DetailPage() {
                               <BiDotsHorizontalRounded />
                             </MenuButton>
                             <MenuList p="0" borderRadius={"0"}>
-                              <MenuItem p="0">
+
+                              <MenuItem>
+                                <Box w="100%" p={"0.5rem"}>
+                                  <Text fontWeight={"bold"} color="green" w="100%" display="flex" alignItems={"center"}>
+                                    <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+                                      <AiOutlineHistory />
+                                    </Text>
+                                    ดูประวัติการแก้ไข
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+
+                              <MenuItem>
                                 <CancelContract />
+                              </MenuItem>
+
+                              <MenuItem>
+                                <Box w="100%" p={"0.5rem"}>
+                                  <Text fontWeight={"bold"} color="#FFA500" w="100%" display="flex" alignItems={"center"}>
+                                    <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+                                      <AiOutlineDelete />
+                                    </Text>
+                                    ลบ
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+
+                              <MenuItem>
+                                <Box w="100%" p={"0.5rem"}>
+                                  <Text fontWeight={"bold"} color="blue" w="100%" display="flex" alignItems={"center"}>
+                                    <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+                                      <AiOutlineEdit />
+                                    </Text>
+                                    แก้ไข
+                                  </Text>
+                                </Box>
                               </MenuItem>
                             </MenuList>
                           </Menu>
