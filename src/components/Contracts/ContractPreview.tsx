@@ -1,5 +1,4 @@
 import { Box, Center, Container, HStack, VStack, Text } from "@chakra-ui/react";
-import React from "react";
 
 const ContractPreview = () => {
   return (
