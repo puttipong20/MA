@@ -22,33 +22,32 @@ export default function DetailPage() {
 
   const [isFetching, setIsfetching] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
-  const [logs, setLogs] = useState<MA[]>([]);
+  const [logs, setLogs] = useState<{ id: string, ma: MA }[]>([]);
   const [activeMA, setActiveMA] = useState<MA>();
 
   const projectID = params["projectID"] as string;
   const projectRef = doc(db, "Project", projectID)
+  const MAref = collection(projectRef, "MAlogs")
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true)
     console.clear();
     const project = await getDoc(projectRef)
-    const MAref = collection(projectRef, "MAlogs")
+
     const MAFetch = await getDocs(MAref)
-    const MAlogs: MA[] = [];
+    const MAlogs: { id: string, ma: MA }[] = [];
     MAFetch.forEach((ma) => {
-      MAlogs.push(ma.data() as MA)
+      MAlogs.push({ id: ma.id, ma: ma.data() as MA })
     })
-    console.log(MAlogs)
     setLogs(MAlogs)
 
-    // console.log(params, project.data())
-    // const projectData = project.data() as ProjectDetail;
-    const active = MAlogs.filter(i => i.status === "active")[0]
-    const lastest = MAlogs[MAlogs.length - 1];
+    const active = MAlogs.filter(i => i.ma.status === "active")[0]
+    const lastest = MAlogs[0];
+    // console.log(lastest)
     if (active) {
-      setActiveMA(active)
+      setActiveMA(active.ma)
     } else {
-      setActiveMA(lastest)
+      setActiveMA(lastest.ma)
     }
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false)
@@ -136,19 +135,19 @@ export default function DetailPage() {
               {
                 logs
                   .sort((a, b) => {
-                    const endA = new Date(a.endMA) as any
-                    const endB = new Date(b.endMA) as any
+                    const endA = new Date(a.ma.endMA) as any
+                    const endB = new Date(b.ma.endMA) as any
                     return endB - endA
                   })
-                  .map((ma, index) => {
+                  .map((MA, index) => {
                     return (
                       <Tr key={index}>
                         <Td textAlign={"center"}>{index + 1}</Td>
-                        <Td textAlign={"center"}>{dateFormat(ma.startMA)}</Td>
-                        <Td textAlign={"center"}>{dateFormat(ma.endMA)}</Td>
-                        <Td textAlign={"center"}><MAstatusTag status={ma.status} /></Td>
-                        <Td textAlign={"center"}>{moment(ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
-                        <Td textAlign={"right"}>{convertNumber(ma.cost)}</Td>
+                        <Td textAlign={"center"}>{dateFormat(MA.ma.startMA)}</Td>
+                        <Td textAlign={"center"}>{dateFormat(MA.ma.endMA)}</Td>
+                        <Td textAlign={"center"}><MAstatusTag status={MA.ma.status} /></Td>
+                        <Td textAlign={"center"}>{moment(MA.ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
+                        <Td textAlign={"right"}>{convertNumber(MA.ma.cost)}</Td>
                         <Td textAlign={"center"}>
                           <Menu>
                             <MenuButton as={Button} colorScheme="blue">
@@ -166,10 +165,13 @@ export default function DetailPage() {
                                   </Text>
                                 </Box>
                               </MenuItem>
-
-                              <MenuItem>
-                                <CancelContract />
-                              </MenuItem>
+                              
+                              {
+                                MA.ma.status != "cancel" &&
+                                <MenuItem>
+                                  <CancelContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} />
+                                </MenuItem>
+                              }
 
                               <MenuItem>
                                 <Box w="100%" p={"0.5rem"}>
