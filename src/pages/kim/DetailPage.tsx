@@ -22,7 +22,7 @@ export default function DetailPage() {
 
   const [isFetching, setIsfetching] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
-  const [logs,setLogs] = useState<MA[]>([]);
+  const [logs, setLogs] = useState<MA[]>([]);
   const [activeMA, setActiveMA] = useState<MA>();
 
   const projectID = params["projectID"] as string;
@@ -38,12 +38,13 @@ export default function DetailPage() {
     MAFetch.forEach((ma) => {
       MAlogs.push(ma.data() as MA)
     })
+    console.log(MAlogs)
     setLogs(MAlogs)
 
     // console.log(params, project.data())
     // const projectData = project.data() as ProjectDetail;
     const active = MAlogs.filter(i => i.status === "active")[0]
-    const lastest = MAlogs[0];
+    const lastest = MAlogs[MAlogs.length - 1];
     if (active) {
       setActiveMA(active)
     } else {
@@ -116,7 +117,7 @@ export default function DetailPage() {
               ประวัติการทำสัญญา
             </Text>
             <Box>
-              <Renewal MAlog={projectDetail!.MAlogs} projectId={projectID} />
+              <Renewal MAlog={logs} projectId={projectID} />
             </Box>
           </Flex>
           <Table>
