@@ -21,6 +21,7 @@ import AddReport from "./pages/kim/AddReport";
 import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from './pages/Company/PageCompany'
+import ContractPreview from "./components/Contracts/ContractPreview";
 // import ContactUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ function App() {
       <Box w="100%" maxH="100vh">
 
         <Routes>
+          <Route path="/contpreview" element={<ContractPreview />} />
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
