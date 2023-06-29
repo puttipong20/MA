@@ -47,34 +47,34 @@ export default function DetailPage() {
 
   const [isFetching, setIsfetching] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail>();
-  const [logs, setLogs] = useState<{ id: string, ma: MA }[]>([]);
+  const [logs, setLogs] = useState<{ id: string; ma: MA }[]>([]);
   const [activeMA, setActiveMA] = useState<MA>();
 
   const projectID = params["projectID"] as string;
-  const projectRef = doc(db, "Project", projectID)
-  const MAref = collection(projectRef, "MAlogs")
+  const projectRef = doc(db, "Project", projectID);
+  const MAref = collection(projectRef, "MAlogs");
 
-  const MACtx = useContext(MAcontext)
+  const MACtx = useContext(MAcontext);
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
     console.clear();
-    const project = await getDoc(projectRef)
+    const project = await getDoc(projectRef);
 
-    const MAFetch = await getDocs(MAref)
-    const MAlogs: { id: string, ma: MA }[] = [];
+    const MAFetch = await getDocs(MAref);
+    const MAlogs: { id: string; ma: MA }[] = [];
     MAFetch.forEach((ma) => {
-      MAlogs.push({ id: ma.id, ma: ma.data() as MA })
-    })
-    setLogs(MAlogs)
+      MAlogs.push({ id: ma.id, ma: ma.data() as MA });
+    });
+    setLogs(MAlogs);
 
-    const active = MAlogs.filter(i => i.ma.status === "active")[0]
+    const active = MAlogs.filter((i) => i.ma.status === "active")[0];
     const lastest = MAlogs[0];
     // console.log(lastest)
     if (active) {
-      setActiveMA(active.ma)
+      setActiveMA(active.ma);
     } else {
-      setActiveMA(lastest.ma)
+      setActiveMA(lastest.ma);
     }
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false);
@@ -147,46 +147,43 @@ export default function DetailPage() {
                 moment(projectDetail.createdAt).format("DD/MM/YYYY HH:mm:ss")}
             </Text>
           </Text>
-          {
-            activeMA && activeMA.status === "deleted" ?
-              <Box>
-
-                <Text fontWeight={"bold"} w="fit-content">
-                  สัญญา :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    ไม่มีสัญญา
-                  </Text>
+          {activeMA && activeMA.status === "deleted" ? (
+            <Box>
+              <Text fontWeight={"bold"} w="fit-content">
+                สัญญา :{" "}
+                <Text as="span" fontWeight={"normal"}>
+                  ไม่มีสัญญา
                 </Text>
-              </Box>
-              :
-              <Box>
-                <Text fontWeight={"bold"} w="fit-content">
-                  เริ่มต้นสัญญาMA :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && dateFormat(activeMA.startMA)}
-                  </Text>
+              </Text>
+            </Box>
+          ) : (
+            <Box>
+              <Text fontWeight={"bold"} w="fit-content">
+                เริ่มต้นสัญญาMA :{" "}
+                <Text as="span" fontWeight={"normal"}>
+                  {activeMA && dateFormat(activeMA.startMA)}
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  สิ้นสุดสัญญาMA :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && dateFormat(activeMA.endMA)}
-                  </Text>
+              </Text>
+              <Text fontWeight={"bold"} w="fit-content">
+                สิ้นสุดสัญญาMA :{" "}
+                <Text as="span" fontWeight={"normal"}>
+                  {activeMA && dateFormat(activeMA.endMA)}
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  สถานะ :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && <MAstatusTag status={activeMA.status} />}
-                  </Text>
+              </Text>
+              <Text fontWeight={"bold"} w="fit-content">
+                สถานะ :{" "}
+                <Text as="span" fontWeight={"normal"}>
+                  {activeMA && <MAstatusTag status={activeMA.status} />}
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  ค่าบริการ :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && convertNumber(activeMA.cost)}
-                  </Text>
+              </Text>
+              <Text fontWeight={"bold"} w="fit-content">
+                ค่าบริการ :{" "}
+                <Text as="span" fontWeight={"normal"}>
+                  {activeMA && convertNumber(activeMA.cost)}
                 </Text>
-              </Box>
-          }
-
+              </Text>
+            </Box>
+          )}
         </Box>
         <Divider my="1rem" />
         <Box>
@@ -211,63 +208,98 @@ export default function DetailPage() {
               </Tr>
             </Thead>
             <Tbody>
-              {
-                logs
-                  .sort((a, b) => {
-                    const endA = new Date(a.ma.endMA) as any
-                    const endB = new Date(b.ma.endMA) as any
-                    return endB - endA
-                  })
-                  .filter(ma => ma.ma.status !== "deleted")
-                  .map((MA, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Td textAlign={"center"}>{index + 1}</Td>
-                        <Td textAlign={"center"}>{dateFormat(MA.ma.startMA)}</Td>
-                        <Td textAlign={"center"}>{dateFormat(MA.ma.endMA)}</Td>
-                        <Td textAlign={"center"}><MAstatusTag status={MA.ma.status} /></Td>
-                        <Td textAlign={"center"}>{moment(MA.ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
-                        <Td textAlign={"right"}>{convertNumber(MA.ma.cost)}</Td>
-                        <Td textAlign={"center"}>
-                          <Menu>
-                            <MenuButton as={Button} colorScheme="blue">
-                              <BiDotsHorizontalRounded />
-                            </MenuButton>
-                            <MenuList p="0" borderRadius={"0"}>
-
-                              <MenuItem>
-                                <Box w="100%" p={"0.5rem"} onClick={()=>{MACtx.setMA(MA.ma)}}>
-                                  <Text fontWeight={"bold"} color="blue" w="100%" display="flex" alignItems={"center"}>
-                                    <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
-                                      <AiOutlineHistory />
-                                    </Text>
-                                    ดูประวัติการแก้ไข
+              {logs
+                .sort((a, b) => {
+                  const endA = new Date(a.ma.endMA) as any;
+                  const endB = new Date(b.ma.endMA) as any;
+                  return endB - endA;
+                })
+                .filter((ma) => ma.ma.status !== "deleted")
+                .map((MA, index) => {
+                  return (
+                    <Tr key={index}>
+                      <Td textAlign={"center"}>{index + 1}</Td>
+                      <Td textAlign={"center"}>{dateFormat(MA.ma.startMA)}</Td>
+                      <Td textAlign={"center"}>{dateFormat(MA.ma.endMA)}</Td>
+                      <Td textAlign={"center"}>
+                        <MAstatusTag status={MA.ma.status} />
+                      </Td>
+                      <Td textAlign={"center"}>
+                        {moment(MA.ma.createdAt).format("DD/MM/YYYY HH:mm:ss")}
+                      </Td>
+                      <Td textAlign={"right"}>{convertNumber(MA.ma.cost)}</Td>
+                      <Td textAlign={"center"}>
+                        <Menu>
+                          <MenuButton as={Button} colorScheme="blue">
+                            <BiDotsHorizontalRounded />
+                          </MenuButton>
+                          <MenuList p="0" borderRadius={"0"}>
+                            <MenuItem>
+                              <Box
+                                w="100%"
+                                p={"0.5rem"}
+                                onClick={() => {
+                                  MACtx.setMA(MA.ma);
+                                  navigate(
+                                    `/company/${params["company"]}/${params["projectId"]}/${params["projectName"]}/detail/ContractRecord`
+                                  );
+                                }}
+                              >
+                                <Text
+                                  fontWeight={"bold"}
+                                  color="blue"
+                                  w="100%"
+                                  display="flex"
+                                  alignItems={"center"}
+                                >
+                                  <Text
+                                    as="span"
+                                    w="20%"
+                                    display={"flex"}
+                                    justifyContent={"center"}
+                                  >
+                                    <AiOutlineHistory />
                                   </Text>
-                                </Box>
-                              </MenuItem>
+                                  ดูประวัติการแก้ไข
+                                </Text>
+                              </Box>
+                            </MenuItem>
 
-                              {
-                                MA.ma.status != "cancel" &&
-                                <MenuItem>
-                                  <UpdateContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} status="cancel" />
-                                </MenuItem>
-                              }
-
+                            {MA.ma.status != "cancel" && (
                               <MenuItem>
-                                <UpdateContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} status="deleted" />
+                                <UpdateContract
+                                  maID={MA.id}
+                                  projectID={projectID}
+                                  reload={fetchingProjectDetail}
+                                  status="cancel"
+                                />
                               </MenuItem>
+                            )}
 
-                              <MenuItem>
-                                <Box>
-                                  <EditContract data={MA.ma} maId={MA.id} projectId={projectID} />
-                                </Box>
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </Td>
-                      </Tr>
-                    );
-                  })}
+                            <MenuItem>
+                              <UpdateContract
+                                maID={MA.id}
+                                projectID={projectID}
+                                reload={fetchingProjectDetail}
+                                status="deleted"
+                              />
+                            </MenuItem>
+
+                            <MenuItem>
+                              <Box>
+                                <EditContract
+                                  data={MA.ma}
+                                  maId={MA.id}
+                                  projectId={projectID}
+                                />
+                              </Box>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                    </Tr>
+                  );
+                })}
             </Tbody>
           </Table>
         </Box>

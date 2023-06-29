@@ -20,7 +20,7 @@ import { useEffect, useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { RiEditLine } from "react-icons/ri";
 import moment from "moment";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { MA } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
@@ -38,7 +38,6 @@ const EditContract = ({ data, maId, projectId }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const Auth = useContext(AuthContext);
-  const EditDate = moment().format("DD-MM-YYYY HH:mm:ss");
 
   useEffect(() => {
     if (data) {
@@ -46,49 +45,13 @@ const EditContract = ({ data, maId, projectId }: any) => {
       setValue("endMA", data?.endMA);
       setValue("cost", data?.cost);
     }
-    // console.log(data);
   }, []);
 
-  // const onSubmit = async (data: any) => {
-  //   setIsLoading(true);
-  //   if (maId) {
-  //     const projectRef = doc(db, "Project", projectId)
-  //     const MAref = collection(doc(db, "Project", projectId), "MALogs")
-  //     const MAdoc = doc(MAref,maId)
-  //     // const DocRef = doc(db, "Project", "");
-
-  //     await updateDoc(MAdoc, {
-  //       ...data,
-  //     })
-  //       .then(() => {
-  //         toast({
-  //           title: "อัพเดทสัญญาสำเร็จ",
-  //           status: "success",
-  //           duration: 2000,
-  //           isClosable: true,
-  //           position: "top",
-  //         });
-  //         setIsLoading(false);
-  //       })
-  //       .catch((e) => {
-  //         console.error(e);
-  //         toast({
-  //           title: "อัพเดทสัญญาไม่สำเร็จ",
-  //           status: "error",
-  //           duration: 2000,
-  //           isClosable: true,
-  //           position: "top",
-  //         });
-  //       });
-  //   }
-  //   reset();
-  //   onClose();
-  // };
-
   const onSubmit = async (data: any) => {
+    setIsLoading(true);
     const projectRef = doc(db, "Project", projectId);
     const MAref = collection(projectRef, "MAlogs");
-    const MADetail = ((await getDoc(doc(MAref, maId))).data()) as MA;
+    const MADetail = (await getDoc(doc(MAref, maId))).data() as MA;
     const oldUpdateLog = MADetail.updateLogs;
     const newUpdateLog = {
       note: data.note,
@@ -101,8 +64,28 @@ const EditContract = ({ data, maId, projectId }: any) => {
       endMA: data.endMA,
       cost: data.cost,
       updateLogs: merge,
-    }).then(() => { console.log("updated!") })
-    onClose()
+    })
+      .then(() => {
+        toast({
+          title: "อัพเดทสัญญาสำเร็จ",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+        });
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        toast({
+          title: "อัพเดทสัญญาไม่สำเร็จ",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+        });
+      });
+    onClose();
   };
 
   return (

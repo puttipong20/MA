@@ -154,7 +154,7 @@ function PreCompany() {
             border="1px"
             borderColor="#f4f4f4"
             w="100%"
-            h="70%"
+            height="68vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
