@@ -20,6 +20,7 @@ import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
+import ProfileMenu from "./components/ProfileMenu";
 // import ContactUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
@@ -54,6 +55,13 @@ function App() {
   } else {
     return (
       <Box w="100%" maxH="100vh">
+        {
+          Auth.uid &&
+          <Box position="fixed" right="1rem" top="1rem">
+            <ProfileMenu />
+          </Box>
+        }
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
