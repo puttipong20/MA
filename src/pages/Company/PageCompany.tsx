@@ -24,6 +24,7 @@ import {
   IconButton,
   MenuList,
   MenuItem,
+  Spinner,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
@@ -42,11 +43,13 @@ import { CompanyContext } from "../../context/CompanyContext";
 function PreCompany() {
   const [comForm, setComForm] = useState<any[]>([]);
   const [filComForm, setFilComForm] = useState<any[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async () => {
+    setIsFetching(true);
     const CompanyDoc = collection(db, "Company");
     const q = query(CompanyDoc, orderBy("createdAt", "asc"));
     onSnapshot(q, (snapshot) => {
@@ -55,6 +58,7 @@ function PreCompany() {
       });
       setComForm(allCompany);
       setFilComForm(allCompany);
+      setIsFetching(false);
     });
   };
 
@@ -147,6 +151,7 @@ function PreCompany() {
             </Button>
           </Flex>
         </Box>
+
         <Box>
           <Box
             mt="10"
@@ -154,7 +159,8 @@ function PreCompany() {
             border="1px"
             borderColor="#f4f4f4"
             w="100%"
-            height="68vh"
+            h="100%"
+            maxH="68vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
@@ -219,81 +225,93 @@ function PreCompany() {
                   </Th>
                 </Tr>
               </Thead>
-              <Tbody>
-                {filComForm.map((com: any, index: any) => {
-                  return (
-                    <Tr
-                      key={index}
-                      cursor="pointer"
-                      _hover={{ bg: "gray.100" }}
-                    >
-                      <Td
-                        onClick={() => {
-                          handleNext(com.id, com.companyName);
-                        }}
-                        textAlign="center"
+              {isFetching ? (
+                <Flex w="100%" h="10vh" align={"center"} justify="center" border={"1px"}>
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="md"
+                  />
+                </Flex>
+              ) : (
+                <Tbody>
+                  {filComForm.map((com: any, index: any) => {
+                    return (
+                      <Tr
+                        key={index}
+                        cursor="pointer"
+                        _hover={{ bg: "gray.100" }}
                       >
-                        {index + 1}
-                      </Td>
-                      <Td
-                        onClick={() => {
-                          handleNext(com.id, com.companyName);
-                        }}
-                        textAlign="left"
-                      >
-                        {com.companyName}
-                      </Td>
-                      <Td
-                        onClick={() => {
-                          handleNext(com.id, com.companyName);
-                        }}
-                        textAlign="left"
-                      >
-                        {com.userName}
-                      </Td>
-                      <Td
-                        onClick={() => {
-                          handleNext(com.id, com.companyName);
-                        }}
-                        textAlign="left"
-                      >
-                        {com.userPhone}
-                      </Td>
-                      <Td textAlign="center">
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            colorScheme="white"
-                            bg="white"
-                            _hover={{ bg: "gray.100" }}
-                            icon={
-                              <BiDotsHorizontalRounded
-                                size="25px"
-                                color="#4C7BF4"
-                              />
-                            }
-                          />
-                          <MenuList backgroundColor="white">
-                            <MenuItem h="50px" p={0} backgroundColor="whiter">
-                              <ViewCompany id={com?.id} data={com} />
-                            </MenuItem>
-                            <MenuItem h="50px" p={0} backgroundColor="whiter">
-                              <EditCompany id={com.id} data={com} />
-                            </MenuItem>
-                            <MenuItem h="50px" p={0} backgroundColor="whiter">
-                              <DeleteCompany
-                                fetchData={fetchData}
-                                item={com}
-                                id={com?.id}
-                              />
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id, com.companyName);
+                          }}
+                          textAlign="center"
+                        >
+                          {index + 1}
+                        </Td>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id, com.companyName);
+                          }}
+                          textAlign="left"
+                        >
+                          {com.companyName}
+                        </Td>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id, com.companyName);
+                          }}
+                          textAlign="left"
+                        >
+                          {com.userName}
+                        </Td>
+                        <Td
+                          onClick={() => {
+                            handleNext(com.id, com.companyName);
+                          }}
+                          textAlign="left"
+                        >
+                          {com.userPhone}
+                        </Td>
+                        <Td textAlign="center">
+                          <Menu>
+                            <MenuButton
+                              as={IconButton}
+                              colorScheme="white"
+                              bg="white"
+                              _hover={{ bg: "gray.100" }}
+                              icon={
+                                <BiDotsHorizontalRounded
+                                  size="25px"
+                                  color="#4C7BF4"
+                                />
+                              }
+                            />
+                            <MenuList backgroundColor="white">
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <ViewCompany id={com?.id} data={com} />
+                              </MenuItem>
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <EditCompany id={com.id} data={com} />
+                              </MenuItem>
+                              <MenuItem h="50px" p={0} backgroundColor="whiter">
+                                <DeleteCompany
+                                  fetchData={fetchData}
+                                  item={com}
+                                  id={com?.id}
+                                />
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              )}
             </Table>
           </Box>
         </Box>
