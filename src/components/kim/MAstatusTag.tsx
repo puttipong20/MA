@@ -9,8 +9,31 @@ const MAstatusTag: React.FC<Props> = (props) => {
     const status = props.status
     let display = "";
     let color = "";
-    status === "active" ? display = "กำลังใช้งาน" : status === "advance" ? display = "ล่วงหน้า" : display = "หมดอายุ"
-    status === "active" ? color = "green" : status === "advance" ? color = "blue" : color = "red"
+
+    switch (status) {
+        case "active":
+            color = "green";
+            display = "กำลังใช้งาน";
+            break;
+        case "expire":
+            color = "red";
+            display = "หมดอายุ";
+            break;
+        case "advance":
+            color = "blue";
+            display = "ล่วงหน้า";
+            break;
+        case "cancel":
+            color = "red";
+            display = "ยกเลิก";
+            break;
+        case "deleted":
+            color = "orange";
+            display = "ลบ";
+            break;
+        default:
+            break;
+    }
     return (
         <Badge colorScheme={color} w="100px" textAlign={"center"}>{display}</Badge>
     )
