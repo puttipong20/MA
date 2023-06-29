@@ -33,15 +33,13 @@ import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import {
   AiOutlineHistory,
-  AiOutlineDelete,
-  AiOutlineEdit,
 } from "react-icons/ai";
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
 import MAstatusTag from "../../components/kim/MAstatusTag";
-import CancelContract from "../../components/kim/CancelContract";
 import EditContract from "../../components/Contracts/EditContract";
+import UpdateContract from "../../components/kim/UpdateContract";
 
 export default function DetailPage() {
   const params = useParams();
@@ -140,9 +138,6 @@ export default function DetailPage() {
             <Text as="span" fontWeight={"normal"}>
               {projectDetail?.projectName}
             </Text>
-            {/* <Text as="span" h="fit-content" my="auto" color={"gray"} cursor={"pointer"} _hover={{ color: "black" }}>
-              <AiOutlineEdit />
-            </Text> */}
           </Text>
           <Text fontWeight={"bold"} w="fit-content">
             ถูกสร้างเมื่อ :{" "}
@@ -206,6 +201,7 @@ export default function DetailPage() {
                     const endB = new Date(b.ma.endMA) as any
                     return endB - endA
                   })
+                  .filter(ma => ma.ma.status !== "deleted")
                   .map((MA, index) => {
                     return (
                       <Tr key={index}>
@@ -224,7 +220,7 @@ export default function DetailPage() {
 
                               <MenuItem>
                                 <Box w="100%" p={"0.5rem"}>
-                                  <Text fontWeight={"bold"} color="green" w="100%" display="flex" alignItems={"center"}>
+                                  <Text fontWeight={"bold"} color="blue" w="100%" display="flex" alignItems={"center"}>
                                     <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
                                       <AiOutlineHistory />
                                     </Text>
@@ -232,68 +228,29 @@ export default function DetailPage() {
                                   </Text>
                                 </Box>
                               </MenuItem>
-                              
+
                               {
                                 MA.ma.status != "cancel" &&
                                 <MenuItem>
-                                  <CancelContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} />
+                                  <UpdateContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} status="cancel" />
                                 </MenuItem>
                               }
 
-                            <MenuItem>
-                              <Box w="100%" p={"0.5rem"}>
-                                <Text
-                                  fontWeight={"bold"}
-                                  color="#FFA500"
-                                  w="100%"
-                                  display="flex"
-                                  alignItems={"center"}
-                                >
-                                  <Text
-                                    as="span"
-                                    w="20%"
-                                    display={"flex"}
-                                    justifyContent={"center"}
-                                  >
-                                    <AiOutlineDelete />
-                                  </Text>
-                                  ลบ
-                                </Text>
-                              </Box>
-                            </MenuItem>
+                              <MenuItem>
+                                <UpdateContract maID={MA.id} projectID={projectID} reload={fetchingProjectDetail} status="deleted" />
+                              </MenuItem>
 
-                            <MenuItem>
-                              <Box w="100%" p={"0.5rem"}>
-                                <Text
-                                  fontWeight={"bold"}
-                                  color="blue"
-                                  w="100%"
-                                  display="flex"
-                                  alignItems={"center"}
-                                >
-                                  <Text
-                                    as="span"
-                                    w="20%"
-                                    display={"flex"}
-                                    justifyContent={"center"}
-                                  >
-                                    <AiOutlineEdit />
-                                  </Text>
-                                  แก้ไข
-                                </Text>
-                              </Box>
-                            </MenuItem>
-                            <MenuItem>
-                              <Box>
+                              <MenuItem>
+                                <Box>
                                   <EditContract data={MA.ma} maId={MA.id} projectId={projectID} />
-                              </Box>
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  );
-                })}
+                                </Box>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
             </Tbody>
           </Table>
         </Box>
