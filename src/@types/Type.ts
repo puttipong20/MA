@@ -47,8 +47,13 @@ export type MA = {
   updateLogs: { updatedBy: string; timeStamp: string; note: string | "" }[];
 };
 
+// export type MA = {
+//   MAid: string;
+//   MAdetail: MA;
+// };
+
 export type ProjectDetail = {
-  MAlogs: MA[];
+  // MAlogs: MA[];
 
   projectName: string;
   companyID: string;

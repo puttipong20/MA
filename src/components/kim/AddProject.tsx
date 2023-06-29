@@ -71,7 +71,7 @@ const AddProject: React.FC<Props> = (props) => {
             createdAt: currentDateTime,
             createdBy: Auth.uid,
             projectName: data.projectName,
-            MAlogs: [lastestMA]
+            // MAlogs: [lastestMA]
         }
         // console.log(detail);
         const companyRef = doc(db, "Company", props.companyId);
@@ -80,6 +80,8 @@ const AddProject: React.FC<Props> = (props) => {
         const projectRef = collection(db, "Project");
         const newProjectRef = await addDoc(projectRef, detail);
         // console.log(newProjectRef.id, "has been added!")
+        const MAref = collection(doc(db, "Project", newProjectRef.id), "MAlogs")
+        await addDoc(MAref, lastestMA)
         const project = {
             id: newProjectRef.id,
             projectName: data.projectName

@@ -26,7 +26,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import { TiDocumentText } from 'react-icons/ti';
 import { MA } from '../../@types/Type';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 
 import { AuthContext } from '../../context/AuthContext';
@@ -110,11 +110,12 @@ const Renewal: React.FC<Props> = (props) => {
                 createdAt: currentDateTime,
                 updateLogs: [{ updatedBy: Auth.uid, timeStamp: currentDateTime, note: "renewal contract" }]
             }
-            logs?.push(newContract)
+            // logs?.push(newContract)
             // console.log(newContract);
             // console.log(props.MAlog)
-
-            await updateDoc(doc(db, "Project", props.projectId), { MAlogs: logs }).then(() => {
+            // console.log(logs)
+            const MAref = collection(doc(db, "Project", props.projectId), "MAlogs")
+            await addDoc(MAref, newContract).then(() => {
                 toast({
                     title: 'เพิ่มโปรเจคสำเร็จ.',
                     status: 'success',
