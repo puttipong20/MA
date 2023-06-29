@@ -31,7 +31,7 @@ import {
 import { db } from "../../services/config-db";
 import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineHistory, AiOutlineReload } from "react-icons/ai";
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
@@ -192,7 +192,7 @@ export default function DetailPage() {
         <Box>
           <Flex justify={"space-between"} align={"center"}>
             <Text fontWeight={"bold"} w="fit-content">
-              ประวัติการทำสัญญา
+              ประวัติการทำสัญญา <Button colorScheme="blue" onClick={fetchingProjectDetail}><AiOutlineReload /></Button>
             </Text>
             <Box>
               <Renewal MAlog={logs} projectId={projectID} />
@@ -236,7 +236,7 @@ export default function DetailPage() {
                             <MenuList p="0" borderRadius={"0"}>
 
                               <MenuItem>
-                                <Box w="100%" p={"0.5rem"} onClick={()=>{MACtx.setMA(MA.ma)}}>
+                                <Box w="100%" p={"0.5rem"} onClick={() => { MACtx.setMA(MA.ma) }}>
                                   <Text fontWeight={"bold"} color="blue" w="100%" display="flex" alignItems={"center"}>
                                     <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
                                       <AiOutlineHistory />
