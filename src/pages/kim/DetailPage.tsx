@@ -31,7 +31,7 @@ import {
 import { db } from "../../services/config-db";
 import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineHistory, AiOutlineReload } from "react-icons/ai";
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
@@ -189,7 +189,7 @@ export default function DetailPage() {
         <Box>
           <Flex justify={"space-between"} align={"center"}>
             <Text fontWeight={"bold"} w="fit-content">
-              ประวัติการทำสัญญา
+              ประวัติการทำสัญญา <Button colorScheme="blue" onClick={fetchingProjectDetail}><AiOutlineReload /></Button>
             </Text>
             <Box>
               <Renewal MAlog={logs} projectId={projectID} />
