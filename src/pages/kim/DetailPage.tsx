@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -31,15 +31,14 @@ import {
 import { db } from "../../services/config-db";
 import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import {
-  AiOutlineHistory,
-} from "react-icons/ai";
+import { AiOutlineHistory } from "react-icons/ai";
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
 import MAstatusTag from "../../components/kim/MAstatusTag";
 import EditContract from "../../components/Contracts/EditContract";
 import UpdateContract from "../../components/kim/UpdateContract";
+import { MAcontext } from "../../context/MAContext";
 
 export default function DetailPage() {
   const params = useParams();
@@ -54,6 +53,8 @@ export default function DetailPage() {
   const projectID = params["projectID"] as string;
   const projectRef = doc(db, "Project", projectID)
   const MAref = collection(projectRef, "MAlogs")
+
+  const MACtx = useContext(MAcontext)
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
@@ -146,30 +147,46 @@ export default function DetailPage() {
                 moment(projectDetail.createdAt).format("DD/MM/YYYY HH:mm:ss")}
             </Text>
           </Text>
-          <Text fontWeight={"bold"} w="fit-content">
-            เริ่มต้นสัญญาMA :{" "}
-            <Text as="span" fontWeight={"normal"}>
-              {activeMA && dateFormat(activeMA.startMA)}
-            </Text>
-          </Text>
-          <Text fontWeight={"bold"} w="fit-content">
-            สิ้นสุดสัญญาMA :{" "}
-            <Text as="span" fontWeight={"normal"}>
-              {activeMA && dateFormat(activeMA.endMA)}
-            </Text>
-          </Text>
-          <Text fontWeight={"bold"} w="fit-content">
-            สถานะ :{" "}
-            <Text as="span" fontWeight={"normal"}>
-              {activeMA && <MAstatusTag status={activeMA.status} />}
-            </Text>
-          </Text>
-          <Text fontWeight={"bold"} w="fit-content">
-            ค่าบริการ :{" "}
-            <Text as="span" fontWeight={"normal"}>
-              {activeMA && convertNumber(activeMA.cost)}
-            </Text>
-          </Text>
+          {
+            activeMA && activeMA.status === "deleted" ?
+              <Box>
+
+                <Text fontWeight={"bold"} w="fit-content">
+                  สัญญา :{" "}
+                  <Text as="span" fontWeight={"normal"}>
+                    ไม่มีสัญญา
+                  </Text>
+                </Text>
+              </Box>
+              :
+              <Box>
+                <Text fontWeight={"bold"} w="fit-content">
+                  เริ่มต้นสัญญาMA :{" "}
+                  <Text as="span" fontWeight={"normal"}>
+                    {activeMA && dateFormat(activeMA.startMA)}
+                  </Text>
+                </Text>
+                <Text fontWeight={"bold"} w="fit-content">
+                  สิ้นสุดสัญญาMA :{" "}
+                  <Text as="span" fontWeight={"normal"}>
+                    {activeMA && dateFormat(activeMA.endMA)}
+                  </Text>
+                </Text>
+                <Text fontWeight={"bold"} w="fit-content">
+                  สถานะ :{" "}
+                  <Text as="span" fontWeight={"normal"}>
+                    {activeMA && <MAstatusTag status={activeMA.status} />}
+                  </Text>
+                </Text>
+                <Text fontWeight={"bold"} w="fit-content">
+                  ค่าบริการ :{" "}
+                  <Text as="span" fontWeight={"normal"}>
+                    {activeMA && convertNumber(activeMA.cost)}
+                  </Text>
+                </Text>
+              </Box>
+          }
+
         </Box>
         <Divider my="1rem" />
         <Box>
@@ -219,7 +236,7 @@ export default function DetailPage() {
                             <MenuList p="0" borderRadius={"0"}>
 
                               <MenuItem>
-                                <Box w="100%" p={"0.5rem"}>
+                                <Box w="100%" p={"0.5rem"} onClick={()=>{MACtx.setMA(MA.ma)}}>
                                   <Text fontWeight={"bold"} color="blue" w="100%" display="flex" alignItems={"center"}>
                                     <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
                                       <AiOutlineHistory />

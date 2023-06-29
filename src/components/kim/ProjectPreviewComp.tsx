@@ -55,34 +55,10 @@ export default function ProjectPreviewComp() {
     const navigate = useNavigate();
     const Company = useContext(CompanyContext);
 
-    // const fetchingData = async () => {
-    //     // setIsFetching(true);
-    //     const projectCollection = collection(db, "Project")
-    //     const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
-    //     const allProject: [Project, MA[]][] = [];
-    //     const projects = await getDocs(q)
-    //     projects.forEach(async (i) => {
-    //         const project: Project = {
-    //             projectId: i.id,
-    //             detail: i.data() as ProjectDetail
-    //         }
-    //         const MAref = collection(doc(db, "Project", i.id), "MAlogs");
-    //         const MAlogs = await getDocs(MAref)
-    //         const logs: MA[] = [];
-    //         MAlogs.forEach(m => logs.push({ id: m.id, ...m.data() } as MA))
-    //         setCompanyName(project.detail.companyName);
-    //         allProject.push([project, logs]);
-    //     })
-    //     // console.log(allProject);
-    //     setProjects(allProject);
-    //     setFilterProjects(allProject);
-    //     // setIsFetching(false);
-    // }
-
     const fetchingData = async () => {
         setIsFetching(true);
         const projectRef = collection(db, "Project");
-        const qProject = query(projectRef, where("companyID", "==", params["company"]),orderBy("createdAt","desc"));
+        const qProject = query(projectRef, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"));
         const projects = await getDocs(qProject);
         const allProjects: { project: Project, ma: MA[] }[] = [];
 
@@ -183,10 +159,19 @@ export default function ProjectPreviewComp() {
                                     return (
                                         <Tr _hover={{ bg: "#eee" }} key={index}>
                                             <Td textAlign={"center"}>{i.project.detail.projectName}</Td>
-                                            <Td textAlign={"center"}>{lastestMA && moment(lastestMA.startMA).format("DD/MM/YYYY")}</Td>
-                                            <Td textAlign={"center"}>{lastestMA && moment(lastestMA.endMA).format("DD/MM/YYYY")}</Td>
-                                            <Td textAlign={"right"}>{lastestMA && Number(lastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
-                                            <Td textAlign={"center"} fontSize={"1rem"}><Badge colorScheme={color}>{display}</Badge></Td>
+
+                                            {!lastestMA ?
+                                                <Td colSpan={4} textAlign={"center"}>
+                                                    ไม่มีสัญญาที่กำลังใช้งาน
+                                                </Td>
+                                                :
+                                                <>
+                                                    <Td textAlign={"center"}>{lastestMA && moment(lastestMA.startMA).format("DD/MM/YYYY")}</Td>
+                                                    <Td textAlign={"center"}>{lastestMA && moment(lastestMA.endMA).format("DD/MM/YYYY")}</Td>
+                                                    <Td textAlign={"right"}>{lastestMA && Number(lastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
+                                                    <Td textAlign={"center"} fontSize={"1rem"}><Badge colorScheme={color}>{display}</Badge></Td>
+                                                </>
+                                            }
                                             <Td textAlign={"center"}>{moment(i.project.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                             <Td textAlign={"center"}>
                                                 <Button

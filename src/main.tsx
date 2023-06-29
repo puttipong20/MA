@@ -6,14 +6,17 @@ import "./main.css";
 import myTheme from "./theme.tsx";
 import AuthContextProvider from "./context/AuthContext.tsx";
 import CompanyContextProvider from "./context/CompanyContext.tsx";
+import MAcontextProvider from "./context/MAContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ChakraProvider theme={myTheme}>
     <BrowserRouter>
       <AuthContextProvider>
-        <CompanyContextProvider>
-          <App />
-        </CompanyContextProvider>
+        <MAcontextProvider>
+          <CompanyContextProvider>
+            <App />
+          </CompanyContextProvider>
+        </MAcontextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   </ChakraProvider>
