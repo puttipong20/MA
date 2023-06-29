@@ -71,7 +71,7 @@ const AddProject: React.FC<Props> = (props) => {
             createdAt: currentDateTime,
             createdBy: Auth.uid,
             projectName: data.projectName,
-            MAlogs: [lastestMA]
+            // MAlogs: [lastestMA]
         }
         // console.log(detail);
         const companyRef = doc(db, "Company", props.companyId);

@@ -31,9 +31,9 @@ import { AiOutlineReload } from "react-icons/ai"
 
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { collection, getDocs, query, where, orderBy, onSnapshot } from 'firebase/firestore';
+import { doc, collection, getDocs, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../../services/config-db';
-import { Project, ProjectDetail } from '../../@types/Type';
+import { MA, Project, ProjectDetail } from '../../@types/Type';
 
 import { search } from 'ss-search';
 import DeleteProject from './DeleteProject';
@@ -48,40 +48,70 @@ import { CompanyContext } from '../../context/CompanyContext';
 
 export default function ProjectPreviewComp() {
     const [isFetching, setIsFetching] = useState(false);
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [filterProject, setFilterProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<{ project: Project, ma: MA[] }[]>([]);
+    const [filterProject, setFilterProjects] = useState<{ project: Project, ma: MA[] }[]>([]);
     const [companyName, setCompanyName] = useState("");
     const params = useParams();
     const navigate = useNavigate();
     const Company = useContext(CompanyContext);
 
+    // const fetchingData = async () => {
+    //     // setIsFetching(true);
+    //     const projectCollection = collection(db, "Project")
+    //     const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
+    //     const allProject: [Project, MA[]][] = [];
+    //     const projects = await getDocs(q)
+    //     projects.forEach(async (i) => {
+    //         const project: Project = {
+    //             projectId: i.id,
+    //             detail: i.data() as ProjectDetail
+    //         }
+    //         const MAref = collection(doc(db, "Project", i.id), "MAlogs");
+    //         const MAlogs = await getDocs(MAref)
+    //         const logs: MA[] = [];
+    //         MAlogs.forEach(m => logs.push({ id: m.id, ...m.data() } as MA))
+    //         setCompanyName(project.detail.companyName);
+    //         allProject.push([project, logs]);
+    //     })
+    //     // console.log(allProject);
+    //     setProjects(allProject);
+    //     setFilterProjects(allProject);
+    //     // setIsFetching(false);
+    // }
+
     const fetchingData = async () => {
         setIsFetching(true);
-        const projectCollection = collection(db, "Project")
-        const q = query(projectCollection, where("companyID", "==", params["company"]), orderBy("createdAt", "desc"))
-        const allProject: Project[] = [];
-        const companies = await getDocs(q)
-        companies.forEach(i => {
-            const project: Project = {
-                projectId: i.id,
-                detail: i.data() as ProjectDetail
-            }
+        const projectRef = collection(db, "Project");
+        const qProject = query(projectRef, where("companyID", "==", params["company"]),orderBy("createdAt","desc"));
+        const projects = await getDocs(qProject);
+        const allProjects: { project: Project, ma: MA[] }[] = [];
+
+        await Promise.all(projects.docs.map(async (p) => {
+            const projectID = p.id;
+            const project: Project = { projectId: projectID, detail: p.data() as ProjectDetail };
             setCompanyName(project.detail.companyName);
-            allProject.push(project);
-        }
-        )
-        // console.log(allProject);
-        setProjects(allProject);
-        setFilterProjects(allProject);
+            const MAref = collection(doc(db, "Project", projectID), "MAlogs");
+            const MAlogs = await getDocs(MAref);
+            const logs: MA[] = [];
+            MAlogs.forEach(m => logs.push(m.data() as MA));
+            const merge: { project: Project, ma: MA[] } = { project: project, ma: logs };
+            // console.log(merge);
+            allProjects.push(merge);
+        }));
+
+        setProjects(allProjects);
+        setFilterProjects(allProjects);
+        // console.log(allProjects);
         setIsFetching(false);
-    }
+    };
+
 
     const onSearch = () => {
         const inputRef = document.getElementById("projectSearch") as HTMLInputElement;
         const value = inputRef.value;
 
         const searchField = ["detail.projectName"];
-        const result = search(projects, searchField, value) as Project[];
+        const result = search(projects, searchField, value) as { project: Project, ma: MA[] }[];
         setFilterProjects(result);
     }
 
@@ -126,7 +156,6 @@ export default function ProjectPreviewComp() {
                     <Table textAlign={"center"}>
                         <Thead >
                             <Tr bg={"#4c7bf4"}>
-                                {/* <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>ลำดับที่</Th> */}
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} fontFamily={"inherit"}>Project</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} w="20rem" fontFamily={"inherit"}>วันที่เริ่มต้นสัญญา MA</Th>
                                 <Th color="#fff" textAlign={"center"} fontWeight={"normal"} w="20rem" fontFamily={"inherit"}>วันที่สิ้นสุดสัญญา MA</Th>
@@ -143,8 +172,7 @@ export default function ProjectPreviewComp() {
                                     <Td colSpan={7} textAlign={"center"}>ไม่มีข้อมูล project ของบริษัทนี้</Td>
                                 </Tr> :
                                 filterProject.map((i, index) => {
-                                    const lastestMA = i.detail.MAlogs.filter(i => i.status === "active")[0]
-                                    // console.log(lastestMA)
+                                    const lastestMA = i.ma.filter(j => j.status === "active")[0]
                                     let display = "";
                                     let color = "";
                                     if (lastestMA) {
@@ -154,19 +182,18 @@ export default function ProjectPreviewComp() {
                                     }
                                     return (
                                         <Tr _hover={{ bg: "#eee" }} key={index}>
-                                            {/* <Td textAlign={"center"}>{index + 1}</Td> */}
-                                            <Td textAlign={"center"}>{i.detail.projectName}</Td>
+                                            <Td textAlign={"center"}>{i.project.detail.projectName}</Td>
                                             <Td textAlign={"center"}>{lastestMA && moment(lastestMA.startMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"center"}>{lastestMA && moment(lastestMA.endMA).format("DD/MM/YYYY")}</Td>
                                             <Td textAlign={"right"}>{lastestMA && Number(lastestMA.cost).toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Td>
                                             <Td textAlign={"center"} fontSize={"1rem"}><Badge colorScheme={color}>{display}</Badge></Td>
-                                            <Td textAlign={"center"}>{moment(i.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
+                                            <Td textAlign={"center"}>{moment(i.project.detail.createdAt).format("DD/MM/YYYY HH:mm:ss")}</Td>
                                             <Td textAlign={"center"}>
                                                 <Button
                                                     colorScheme='blue' opacity={"0.7"} fontWeight={"normal"}
                                                     onClick={() => {
-                                                        Company.setProject(i.projectId, i.detail.projectName)
-                                                        navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/problemReport`)
+                                                        Company.setProject(i.project.projectId, i.project.detail.projectName)
+                                                        navigate(`/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`)
                                                     }}
                                                 >
                                                     ดูรายการปัญหา
@@ -180,22 +207,14 @@ export default function ProjectPreviewComp() {
                                                     <MenuList p={"0"} borderRadius={"0"}>
                                                         <MenuItem color={"gray"}
                                                             onClick={() => {
-                                                                Company.setProject(i.projectId, i.detail.projectName)
-                                                                navigate(`/company/${params["company"]}/${i.projectId}/${i.detail.projectName}/detail`)
+                                                                Company.setProject(i.project.projectId, i.project.detail.projectName)
+                                                                navigate(`/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`)
                                                             }}
                                                         >
                                                             <Text w="20%" display="flex" justifyContent={"center"}><CgDetailsMore /></Text>ดูข้อมูล Project
                                                         </MenuItem>
-                                                        {/* <MenuItem color={"green"}>
-                                                            <EditProject projectId={i.projectId} />
-                                                        </MenuItem> */}
-                                                        {/* <MenuItem color={"blue"}> */}
-                                                        {/* <Renewal /> */}
-                                                        {/* <Text w="20%" display="flex" justifyContent={"center"}><TiDocumentText /></Text>การต่อสัญญา */}
-                                                        {/* </MenuItem> */}
                                                         <MenuItem color={"red"}>
-                                                            <DeleteProject companyId={i.detail.companyID} projectId={i.projectId} />
-                                                            {/* <Text w="20%" display="flex" justifyContent={"center"}><RiDeleteBin7Line /></Text>ลบ Project */}
+                                                            <DeleteProject companyId={i.project.detail.companyID} projectId={i.project.projectId} />
                                                         </MenuItem>
                                                     </MenuList>
                                                 </Menu>
