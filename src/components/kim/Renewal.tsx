@@ -32,10 +32,10 @@ import { db } from "../../services/config-db";
 import { AuthContext } from "../../context/AuthContext";
 
 interface Props {
-    companyId?: string,
-    projectId: string,
-    activeMA?: MA,
-    MAlog: { id: string, ma: MA }[],
+  companyId?: string;
+  projectId: string;
+  activeMA?: MA;
+  MAlog: { id: string; ma: MA }[];
 }
 
 const Renewal: React.FC<Props> = (props) => {
@@ -89,7 +89,7 @@ const Renewal: React.FC<Props> = (props) => {
 
     let status: "advance" | "expire" | "active" = "advance";
     const overlap = logs.every((m) =>
-      checkTimeOverlap(m.startMA, m.endMA, renewStart, renewEnd)
+      checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd)
     );
     // console.log(overlap)
     // console.log(logs)
@@ -127,7 +127,7 @@ const Renewal: React.FC<Props> = (props) => {
       await addDoc(MAref, newContract)
         .then(() => {
           toast({
-            title: "เพิ่มโปรเจคสำเร็จ.",
+            title: "ต่อสัญญาสำเร็จ",
             status: "success",
             duration: 3000,
             isClosable: true,
@@ -145,13 +145,7 @@ const Renewal: React.FC<Props> = (props) => {
           });
         });
       reset();
-      toast({
-        title: "เพิ่มโปรเจคสำเร็จ.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
+      onClose();
     } else {
       toast({
         title: "ช่วงเวลาไม่ถูกต้อง",
@@ -165,93 +159,9 @@ const Renewal: React.FC<Props> = (props) => {
     setIsUpdate(false);
   };
 
-    const startMA = watch("renewStart") || moment().format("YYYY-MM-DD")
-    const endMA = watch("renewEnd") || moment().add(1, 'year').format("YYYY-MM-DD")
-
-    const durationData = (startDate: string, endDate: string) => {
-        const a = new Date(startDate) as any;
-        const b = new Date(endDate) as any;
-
-        const d = (Math.floor((b - a)) / (1000 * 60 * 60 * 24))
-        setDuration(d)
-    }
-
-    useEffect(() => {
-        durationData(startMA, endMA);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [startMA, endMA])
-
-    const onSubmit = async (data: any) => {
-        // console.clear();
-        setIsUpdate(true);
-        const renewStart = data.renewStart;
-        const renewEnd = data.renewEnd;
-
-        let status: "advance" | "expire" | "active" = "advance";
-        const overlap = logs.every(m => checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd))
-        // console.log(overlap)
-        // console.log(logs)
-        if (!overlap) {
-            if (currentDate < renewStart) {
-                status = "advance"
-            } else {
-                if (currentDate > renewEnd) {
-                    status = "expire"
-                } else {
-                    status = "active"
-                }
-            }
-
-            const newContract: MA = {
-                startMA: renewStart,
-                endMA: renewEnd,
-                cost: data.renewCost,
-                status: status,
-                createdBy: Auth.uid,
-                createdAt: currentDateTime,
-                updateLogs: [{ updatedBy: Auth.uid, timeStamp: currentDateTime, note: "renewal contract" }]
-            }
-            // logs?.push(newContract)
-            // console.log(newContract);
-            // console.log(props.MAlog)
-            // console.log(logs)
-            const MAref = collection(doc(db, "Project", props.projectId), "MAlogs")
-            await addDoc(MAref, newContract).then(() => {
-                toast({
-                    title: 'ต่อสัญญาสำเร็จ',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: "top",
-                })
-            }).catch((e) => {
-                toast({
-                    title: 'เกิดข้อผิดพลาด',
-                    description: e,
-                    status: 'error',
-                    duration: 3000,
-                    isClosable: true,
-                    position: "top",
-                })
-            })
-            reset();
-            onClose();
-        } else {
-            toast({
-                title: 'ช่วงเวลาไม่ถูกต้อง',
-                description: "กรุณาเลือกช่วงเวลาใหม่ที่ไม่ทับกับสัญญาอื่นๆ",
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-                position: "top",
-            })
-        }
-        setIsUpdate(false);
-    }
-
-    return (
-        <Box w="100%">
-            {/* <Text display={"flex"}>
+  return (
+    <Box w="100%">
+      {/* <Text display={"flex"}>
                 <Text as="span" w="20%" textAlign={"center"} display="flex" justifyContent={"center"}><TiDocumentText /></Text>
                 <Text as="span">การต่อสัญญา</Text>
             </Text> */}

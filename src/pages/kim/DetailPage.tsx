@@ -285,7 +285,7 @@ export default function DetailPage() {
                             </MenuItem>
                             <MenuItem>
                               <Box>
-                                <EditContract data={MA.ma} id={MA.id} />
+                                  <EditContract data={MA.ma} maId={MA.id} projectId={projectID} />
                               </Box>
                             </MenuItem>
                           </MenuList>
