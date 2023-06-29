@@ -117,7 +117,7 @@ const Renewal: React.FC<Props> = (props) => {
             const MAref = collection(doc(db, "Project", props.projectId), "MAlogs")
             await addDoc(MAref, newContract).then(() => {
                 toast({
-                    title: 'เพิ่มโปรเจคสำเร็จ.',
+                    title: 'ต่อสัญญาสำเร็จ',
                     status: 'success',
                     duration: 3000,
                     isClosable: true,
@@ -134,13 +134,7 @@ const Renewal: React.FC<Props> = (props) => {
                 })
             })
             reset();
-            toast({
-                title: 'เพิ่มโปรเจคสำเร็จ.',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-                position: "top",
-            })
+            onClose();
         } else {
             toast({
                 title: 'ช่วงเวลาไม่ถูกต้อง',

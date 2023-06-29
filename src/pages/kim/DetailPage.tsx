@@ -27,18 +27,19 @@ export default function DetailPage() {
 
   const projectID = params["projectID"] as string;
   const projectRef = doc(db, "Project", projectID)
+  const MAref = collection(projectRef, "MAlogs")
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true)
     console.clear();
     const project = await getDoc(projectRef)
-    const MAref = collection(projectRef, "MAlogs")
+
     const MAFetch = await getDocs(MAref)
     const MAlogs: MA[] = [];
     MAFetch.forEach((ma) => {
       MAlogs.push(ma.data() as MA)
     })
-    console.log(MAlogs)
+    // console.log(MAlogs)
     setLogs(MAlogs)
 
     // console.log(params, project.data())
