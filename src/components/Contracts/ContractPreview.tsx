@@ -6,15 +6,13 @@ import {
   VStack,
   Text,
   Divider,
-  Table,
+  Button,
 } from "@chakra-ui/react";
-import { useState, useContext, useEffect } from "react";
-import { MA } from "../../@types/Type";
+import { useContext } from "react";
 import { MAcontext } from "../../context/MAContext";
 import { useNavigate } from "react-router-dom";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 const ContractPreview = () => {
-  // const [recordCont, setRecordCont] = useState<any[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const MACtx = useContext(MAcontext);
 
@@ -28,11 +26,12 @@ const ContractPreview = () => {
             <Center w="100%" mb="1rem">
               <HStack
                 w="100%"
-                justifyContent="space-between"
-                alignItems="flex-end"
+                justifyContent="flex-start"
+                alignItems="center"
               >
+                <Button onClick={() => { navigate(-1) }} colorScheme={"blue"}><ArrowBackIcon /></Button>
                 <VStack
-                  pt="1rem"
+                  // pt="1rem"
                   justifyContent="flex-start"
                   alignItems="flex-star"
                   spacing="2px"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Flex,
@@ -45,6 +46,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
       setValue("endMA", data?.endMA);
       setValue("cost", data?.cost);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async (data: any) => {
@@ -89,20 +91,21 @@ const EditContract = ({ data, maId, projectId }: any) => {
   };
 
   return (
-    <>
-      <Box onClick={onOpen} w="100%" h="100%" display="flex">
-        <Flex
-          color="green"
-          fontSize="16px"
-          fontFamily="Prompt"
-          fontWeight="400"
-          align="center"
-          ml="8"
-        >
-          <RiEditLine color="green" />
-          <Text ml="2">แก้ไขสัญญา</Text>
-        </Flex>
-      </Box>
+    <Box w="100%" p={"0.5rem"} userSelect={"none"}>
+      <Text
+        color={"green"}
+        fontWeight={"bold"}
+        w="100%"
+        display="flex"
+        alignItems={"center"}
+        onClick={onOpen}
+
+      >
+        <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+          <RiEditLine />
+        </Text>
+        แก้ไขสัญญา
+      </Text>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
@@ -197,7 +200,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 };
 
