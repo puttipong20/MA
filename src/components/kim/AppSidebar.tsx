@@ -126,7 +126,7 @@ const Sidebar: React.FC = () => {
                     <InputLeftElement>
                         <SearchIcon />
                     </InputLeftElement>
-                    <Input placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
+                    <Input fontSize={"0.8rem"} placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
                 </InputGroup>
             </Box>
             <Divider my="5px" />

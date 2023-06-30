@@ -13,7 +13,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../../services/config-db";
@@ -71,6 +71,13 @@ const Login: FC = () => {
         });
       });
   };
+
+  useEffect(() => {
+    if (Auth.uid !== "") {
+      navigate("/")
+    }
+  })
+
   return (
     <Container p={0} m={0} maxW={"100%"}>
       <Box
