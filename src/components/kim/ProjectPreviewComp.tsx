@@ -1,11 +1,8 @@
 import {
   Box,
-  // Badge,
   Text,
-  Heading,
   InputGroup,
   Input,
-  InputLeftElement,
   Flex,
   Button,
   Table,
@@ -32,7 +29,6 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { BsSearch } from "react-icons/bs";
 
-import { LuMoreHorizontal } from "react-icons/lu";
 import { CgDetailsMore } from "react-icons/cg";
 import { AiOutlineReload } from "react-icons/ai";
 
@@ -176,7 +172,7 @@ export default function ProjectPreviewComp() {
                   </Text>
                 </Text>
               </VStack>
-              {/* <Stack>
+              <Stack>
                 <Button
                   _hover={{ opacity: 0.8 }}
                   bg="#4C7BF4"
@@ -186,7 +182,7 @@ export default function ProjectPreviewComp() {
                 >
                   <AiOutlineReload />
                 </Button>
-              </Stack> */}
+              </Stack>
             </HStack>
           </Center>
           <Flex justifyContent="flex-start" gap="20px">
@@ -237,7 +233,7 @@ export default function ProjectPreviewComp() {
                   Project
                 </Th>
                 <Th
-                  minW="15rem"
+                  minW="14rem"
                   fontSize="16px"
                   color="#fff"
                   textAlign={"center"}
@@ -314,6 +310,12 @@ export default function ProjectPreviewComp() {
                   <Td colSpan={7} textAlign={"center"}>
                     Loading . . .
                     <Spinner />
+                  </Td>
+                </Tr>
+              ) : filterProject.length === 0 ? (
+                <Tr>
+                  <Td colSpan={7} textAlign={"center"}>
+                    ยังไม่มีข้อมูลโปรเจค
                   </Td>
                 </Tr>
               ) : (

@@ -5,8 +5,8 @@ import {
   HStack,
   VStack,
   Text,
-  Divider,
   Button,
+  Divider,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { MAcontext } from "../../context/MAContext";
@@ -59,7 +59,7 @@ const ContractPreview = () => {
                 </VStack>
               </HStack>
             </Center>
-            {/* <Divider my="1rem" /> */}
+            <Divider my="1rem" />
             <Box>
               <Box>
                 {MACtx.ma.updateLogs.map((u, index) => (
@@ -93,7 +93,6 @@ const ContractPreview = () => {
                       </Text>
                       <Text>{u.note}</Text>
                     </HStack>
-                    {/* <Divider my="1rem" /> */}
                   </Box>
                 ))}
               </Box>

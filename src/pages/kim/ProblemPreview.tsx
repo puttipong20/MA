@@ -8,7 +8,6 @@ import {
   Flex,
   FormControl,
   HStack,
-  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
