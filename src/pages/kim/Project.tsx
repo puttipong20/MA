@@ -17,14 +17,15 @@ const Project: React.FC<Props> = (props) => {
             <Box h="100%"
                 overflowY={"auto"}
                 className={classes.sidebar}
-                px="10px" w="15%" mr="15px"
+                px="10px" w="15%" minW={"15%"} mr="15px"
                 boxShadow={"5px 5px 5px rgba(0,0,0,0.1)"}
                 color="#fff" bg="#0F141F"
+                // color="#0F141F" bg="#fff"
                 fontFamily={"inherit"}
             >
                 <AppSidebar />
             </Box>
-            <Box w="calc(100% - 15%)" p="1rem" >
+            <Box w="calc(100% - 15%)" p="1rem" position="relative" >
                 {props.children}
             </Box>
         </Flex>

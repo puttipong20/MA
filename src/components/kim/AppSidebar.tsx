@@ -116,6 +116,8 @@ const Sidebar: React.FC = () => {
                 my="1rem"
                 w="100%"
                 textAlign={"center"}
+                transition={"all 0.3s"}
+                _hover={{ textShadow: "0px 0px 30px #fff" }}
             // border="1px solid black"
             >
                 CRAFTING LAB
