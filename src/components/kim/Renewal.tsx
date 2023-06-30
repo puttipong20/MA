@@ -171,7 +171,9 @@ const Renewal: React.FC<Props> = (props) => {
           reset();
         }}
         leftIcon={<TiDocumentText />}
-        colorScheme="blue"
+        bg="#4C7BF4"
+        color="#fff"
+        _hover={{opacity:0.8}}
       >
         การต่อสัญญา
       </Button>

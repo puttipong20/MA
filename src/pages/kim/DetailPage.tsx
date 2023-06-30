@@ -31,7 +31,7 @@ import {
 import { db } from "../../services/config-db";
 import { ProjectDetail, MA } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineHistory, AiOutlineReload } from "react-icons/ai";
 
 import moment from "moment";
 import Renewal from "../../components/kim/Renewal";
@@ -115,6 +115,9 @@ export default function DetailPage() {
       <Box>
         <Box>
           <Button
+            bg="#4C7BF4"
+            color="#fff"
+            _hover={{opacity:0.8}}
             onClick={() => {
               navigate(backPath);
             }}
@@ -189,22 +192,22 @@ export default function DetailPage() {
         <Box>
           <Flex justify={"space-between"} align={"center"}>
             <Text fontWeight={"bold"} w="fit-content">
-              ประวัติการทำสัญญา
+              ประวัติการทำสัญญา <Button colorScheme="blue" onClick={fetchingProjectDetail}><AiOutlineReload /></Button>
             </Text>
             <Box>
               <Renewal MAlog={logs} projectId={projectID} />
             </Box>
           </Flex>
-          <Table>
+          <Table mt="5px">
             <Thead>
-              <Tr>
-                <Th textAlign={"center"}>ลำดับที่</Th>
-                <Th textAlign={"center"}>วันที่เริ่มต้นสัญญาMA</Th>
-                <Th textAlign={"center"}>วันที่สิ้นสุดสัญญาMA</Th>
-                <Th textAlign={"center"}>สถานะ</Th>
-                <Th textAlign={"center"}>วันที่สร้าง</Th>
-                <Th textAlign={"right"}>ค่าบริการ</Th>
-                <Th textAlign={"center"}>การจัดการ</Th>
+              <Tr bg={"#4C7BF4"}>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>ลำดับที่</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>วันที่เริ่มต้นสัญญาMA</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>วันที่สิ้นสุดสัญญาMA</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>สถานะ</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>วันที่สร้าง</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"right"}>ค่าบริการ</Th>
+                <Th fontFamily={"inherit"} color="#fff" textAlign={"center"}>การจัดการ</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -286,13 +289,11 @@ export default function DetailPage() {
                             </MenuItem>
 
                             <MenuItem>
-                              <Box>
-                                <EditContract
-                                  data={MA.ma}
-                                  maId={MA.id}
-                                  projectId={projectID}
-                                />
-                              </Box>
+                              <EditContract
+                                data={MA.ma}
+                                maId={MA.id}
+                                projectId={projectID}
+                              />
                             </MenuItem>
                           </MenuList>
                         </Menu>

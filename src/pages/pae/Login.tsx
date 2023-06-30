@@ -32,15 +32,13 @@ const Login: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const Auth = useContext(AuthContext)
-  //funcionts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const submitData = (data: any) => {
-    console.log(data);
+    setIsLoading(true);
     const email = data.email;
     const password = data.password;
     signInWithEmailAndPassword(auth, email, password)
       .then(async (currentUser) => {
-        setIsLoading(true);
         const user = currentUser.user;
         if (user) {
           const uid = user.uid;
@@ -57,14 +55,12 @@ const Login: FC = () => {
             position: "top",
           });
           // console.log(Auth)
-          navigate("/company")
+          navigate("/")
           // if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
           setIsLoading(false)
-
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         toast({
           title: "Loggin is success.",
           description: `password or email is invalid.`,
@@ -108,6 +104,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                     <FormErrorMessage color={"black"}>
                       {errors.email?.message as string}
@@ -128,6 +126,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                   </FormControl>
                 )}
