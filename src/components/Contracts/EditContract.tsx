@@ -171,7 +171,6 @@ const EditContract = ({ data, maId, projectId }: any) => {
     <Box w="100%" p={"0.5rem"} userSelect={"none"}>
       <Text
         color={"green"}
-        fontWeight={"bold"}
         w="100%"
         display="flex"
         alignItems={"center"}

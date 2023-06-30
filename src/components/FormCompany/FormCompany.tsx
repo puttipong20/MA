@@ -118,7 +118,7 @@ const FormAddCompany = () => {
           onClick={onOpen}
           color="gray.100"
           bg="#4C7BF4"
-          _hover={{ color: "white", bg: "#4C7BF4" }}
+          _hover={{ opacity: 0.8 }}
         >
           เพิ่มข้อมูลบริษัท
         </Button>
