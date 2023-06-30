@@ -104,6 +104,9 @@ const Sidebar: React.FC = () => {
         })
     })
 
+    const code = 0;
+    const color = `rgba(${code},${code},${code},0.1)`
+
     return (
         <Box position="relative" h="fit-content" maxH="100%"  >
             <Heading
@@ -117,7 +120,8 @@ const Sidebar: React.FC = () => {
                 w="100%"
                 textAlign={"center"}
                 transition={"all 0.3s"}
-                _hover={{ textShadow: "0px 0px 30px #fff" }}
+                // _hover={{ textShadow: "0px 0px 30px #fff" }}
+                _hover={{ textShadow: "0px 0px 30px #000" }}
             // border="1px solid black"
             >
                 CRAFTING LAB
@@ -148,9 +152,9 @@ const Sidebar: React.FC = () => {
                                         userSelect={"none"}
                                         border="none"
                                         transition="all 0.3s"
-                                        _hover={{ bg: "rgba(255,255,255,0.2)" }}
+                                        _hover={{ bg: color }}
                                         borderRadius={"10px"}
-                                        bg={focusCompany ? "rgba(255,255,255,0.2)" : ""}
+                                        bg={focusCompany ? color : ""}
                                         my="5px"
                                     // borderLeft={focusCompany ? "3px solid white" : "none"}
                                     >
@@ -174,8 +178,8 @@ const Sidebar: React.FC = () => {
                                                                 transition={"all 0.1s"}
                                                                 borderRadius={"5px"}
                                                                 pl="1rem"
-                                                                bg={focusProject ? "rgba(255,255,255,0.3)" : "none"}
-                                                                _hover={{ fontWeight: "bold", bg: "rgba(255,255,255,0.1)" }}
+                                                                bg={focusProject ? color : "none"}
+                                                                _hover={{ fontWeight: "bold", bg: color }}
                                                                 onClick={() => {
                                                                     // console.log(i.detail.companyName)
                                                                     // console.log(j.projectName)
@@ -206,11 +210,12 @@ const Sidebar: React.FC = () => {
                 userSelect={"none"} cursor={"pointer"}
                 transition={"all 0.3s"}
                 borderRadius={"10px"}
-                _hover={{ bg: "rgba(255,255,255,0.2)" }}
+                _hover={{ bg: color }}
                 onClick={logout}
             >
                 <Text display="flex" alignItems={"center"} gap={"1rem"}><LuLogOut />Logout</Text>
             </Box>
+
         </Box>
     );
 };
