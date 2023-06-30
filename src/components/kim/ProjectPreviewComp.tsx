@@ -27,6 +27,7 @@ import {
   VStack,
   Stack,
   InputLeftAddon,
+  IconButton,
 } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
 import { BsSearch } from "react-icons/bs";
@@ -59,6 +60,7 @@ import moment from "moment";
 // import Renewal from './Renewal';
 
 import { CompanyContext } from "../../context/CompanyContext";
+import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
@@ -72,6 +74,7 @@ export default function ProjectPreviewComp() {
   const params = useParams();
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
+  const backPath = `/`;
 
   const fetchingData = async () => {
     setIsFetching(true);
@@ -150,6 +153,18 @@ export default function ProjectPreviewComp() {
                 alignItems="flex-star"
                 spacing="2px"
               >
+                <Button
+                  bg="#4C7BF4"
+                  color="#fff"
+                  size="sm"
+                  w="40px"
+                  _hover={{ opacity: 0.8 }}
+                  onClick={() => {
+                    navigate(backPath);
+                  }}
+                >
+                  <BiArrowBack />
+                </Button>
                 <Text
                   fontWeight="600"
                   lineHeight="25.2px"
@@ -167,7 +182,9 @@ export default function ProjectPreviewComp() {
               </VStack>
               <Stack>
                 <Button
-                  colorScheme="blue"
+                  _hover={{ opacity: 0.8 }}
+                  bg="#4C7BF4"
+                  color="#eee"
                   isLoading={isFetching}
                   onClick={fetchingData}
                 >
@@ -198,239 +215,247 @@ export default function ProjectPreviewComp() {
             </InputGroup>
           </Flex>
         </Box>
-        {isFetching ? (
-          <Flex w="100%" h="30vh" align={"center"} justify={"center"}>
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-          </Flex>
-        ) : (
-          <Box
-            mt="10"
-            borderRadius="20px"
-            border="1px"
-            borderColor="#f4f4f4"
-            w="100%"
-            height="68vh"
-            overflowY={"auto"}
-            boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
-            className={classes.table}
-          >
-            <Table textAlign={"center"} w="100%">
-              <Thead>
-                <Tr bg={"#4c7bf4"}>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    Project
-                  </Th>
-                  <Th
-                    minW="15rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    วันที่เริ่มต้นสัญญา MA
-                  </Th>
-                  <Th
-                    minW="15rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    วันที่สิ้นสุดสัญญา MA
-                  </Th>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    ค่าบริการ
-                  </Th>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    สถานะสัญญา
-                  </Th>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    สร้างเมื่อ
-                  </Th>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    รายการปัญหา
-                  </Th>
-                  <Th
-                    minW="10rem"
-                    fontSize="16px"
-                    color="#fff"
-                    textAlign={"center"}
-                    fontWeight={"normal"}
-                    fontFamily={"inherit"}
-                  >
-                    จัดการ
-                  </Th>
+        <Box
+          mt="10"
+          borderRadius="20px"
+          border="1px"
+          borderColor="#f4f4f4"
+          w="100%"
+          h="100%"
+          maxH="67vh"
+          overflowY={"auto"}
+          boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
+          className={classes.table}
+        >
+          <Table textAlign={"center"} w="100%">
+            <Thead position="sticky" top={0} zIndex="sticky">
+              <Tr bg={"#4c7bf4"}>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  Project
+                </Th>
+                <Th
+                  minW="15rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  วันที่เริ่มต้นสัญญา MA
+                </Th>
+                <Th
+                  minW="15rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  วันที่สิ้นสุดสัญญา MA
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  ค่าบริการ
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  สถานะสัญญา
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  สร้างเมื่อ
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  รายการปัญหา
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  จัดการ
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {isFetching ? (
+                <Tr>
+                  <Td colSpan={7} textAlign={"center"}>
+                    Loading . . .
+                    <Spinner />
+                  </Td>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {filterProject.length === 0 ? (
-                  <Tr>
-                    <Td colSpan={7} textAlign={"center"}>
-                      ไม่มีข้อมูล project ของบริษัทนี้
-                    </Td>
-                  </Tr>
-                ) : (
-                  filterProject.map((i, index) => {
-                    const lastestMA = i.ma.filter(
-                      (j) => j.status === "active"
-                    )[0];
-                    let display = "";
-                    let color = "";
-                    if (lastestMA) {
-                      const state = lastestMA.status;
-                      state === "active"
-                        ? (display = "กำลังใช้งาน")
-                        : state === "advance"
-                        ? (display = "ล่วงหน้า")
-                        : (display = "หมดอายุ");
-                      state === "active"
-                        ? (color = "green")
-                        : state === "advance"
-                        ? (color = "blue")
-                        : (color = "red");
-                    }
-                    return (
-                      <Tr _hover={{ bg: "#eee" }} key={index}>
-                        <Td textAlign={"center"}>
-                          {i.project.detail.projectName}
-                        </Td>
+              ) : (
+                filterProject.map((i, index) => {
+                  const lastestMA = i.ma.filter(
+                    (j) => j.status === "active"
+                  )[0];
+                  let display = "";
+                  let color = "";
+                  if (lastestMA) {
+                    const state = lastestMA.status;
+                    state === "active"
+                      ? (display = "กำลังใช้งาน")
+                      : state === "advance"
+                      ? (display = "ล่วงหน้า")
+                      : (display = "หมดอายุ");
+                    state === "active"
+                      ? (color = "green")
+                      : state === "advance"
+                      ? (color = "blue")
+                      : (color = "red");
+                  }
+                  return (
+                    <Tr key={index}>
+                      <Td textAlign={"center"}>
+                        {i.project.detail.projectName}
+                      </Td>
 
-                        {!lastestMA ? (
-                          <Td colSpan={4} textAlign={"center"}>
-                            ไม่มีสัญญาที่กำลังใช้งาน
+                      {!lastestMA ? (
+                        <Td colSpan={4} textAlign={"center"}>
+                          ไม่มีสัญญาที่กำลังใช้งาน
+                        </Td>
+                      ) : (
+                        <>
+                          <Td textAlign={"center"}>
+                            {lastestMA &&
+                              moment(lastestMA.startMA).format("DD/MM/YYYY")}
                           </Td>
-                        ) : (
-                          <>
-                            <Td textAlign={"center"}>
-                              {lastestMA &&
-                                moment(lastestMA.startMA).format("DD/MM/YYYY")}
-                            </Td>
-                            <Td textAlign={"center"}>
-                              {lastestMA &&
-                                moment(lastestMA.endMA).format("DD/MM/YYYY")}
-                            </Td>
-                            <Td textAlign={"right"}>
-                              {lastestMA &&
-                                Number(lastestMA.cost).toLocaleString("th-TH", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                            </Td>
-                            <Td textAlign={"center"} fontSize={"1rem"}>
-                              <Badge colorScheme={color}>{display}</Badge>
-                            </Td>
-                          </>
+                          <Td textAlign={"center"}>
+                            {lastestMA &&
+                              moment(lastestMA.endMA).format("DD/MM/YYYY")}
+                          </Td>
+                          <Td textAlign={"right"}>
+                            {lastestMA &&
+                              Number(lastestMA.cost).toLocaleString("th-TH", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                          </Td>
+                          <Td textAlign={"center"} fontSize={"1rem"}>
+                            <Badge colorScheme={color}>{display}</Badge>
+                          </Td>
+                        </>
+                      )}
+                      <Td textAlign={"center"}>
+                        {moment(i.project.detail.createdAt).format(
+                          "DD/MM/YYYY HH:mm:ss"
                         )}
-                        <Td textAlign={"center"}>
-                          {moment(i.project.detail.createdAt).format(
-                            "DD/MM/YYYY HH:mm:ss"
-                          )}
-                        </Td>
-                        <Td textAlign={"center"}>
-                          <Button
-                            colorScheme="blue"
-                            opacity={"0.7"}
-                            fontWeight={"normal"}
-                            onClick={() => {
-                              Company.setProject(
-                                i.project.projectId,
-                                i.project.detail.projectName
-                              );
-                              navigate(
-                                `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`
-                              );
-                            }}
-                          >
-                            ดูรายการปัญหา
-                          </Button>
-                        </Td>
-                        <Td textAlign={"center"}>
-                          <Menu>
-                            <MenuButton as={Button} colorScheme="blue">
-                              <LuMoreHorizontal />
-                            </MenuButton>
-                            <MenuList p={"0"} borderRadius={"0"}>
-                              <MenuItem
-                                color={"gray"}
-                                onClick={() => {
-                                  Company.setProject(
-                                    i.project.projectId,
-                                    i.project.detail.projectName
-                                  );
-                                  navigate(
-                                    `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
-                                  );
-                                }}
+                      </Td>
+                      <Td textAlign={"center"}>
+                        <Button
+                          bg="#FFA500"
+                          color="#eee"
+                          _hover={{ opacity: "0.8" }}
+                          fontWeight={"normal"}
+                          onClick={() => {
+                            Company.setProject(
+                              i.project.projectId,
+                              i.project.detail.projectName
+                            );
+                            navigate(
+                              `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`
+                            );
+                          }}
+                        >
+                          ดูรายการปัญหา
+                        </Button>
+                      </Td>
+                      <Td textAlign={"center"}>
+                        <Menu>
+                          <MenuButton
+                            as={IconButton}
+                            colorScheme="white"
+                            bg="white"
+                            _hover={{ bg: "gray.100" }}
+                            icon={
+                              <BiDotsHorizontalRounded
+                                size="25px"
+                                color="#4C7BF4"
+                              />
+                            }
+                          />
+                          <MenuList backgroundColor="white">
+                            <MenuItem
+                              color="gray"
+                              h="50px"
+                              p={0}
+                              backgroundColor="whiter"
+                              onClick={() => {
+                                Company.setProject(
+                                  i.project.projectId,
+                                  i.project.detail.projectName
+                                );
+                                navigate(
+                                  `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
+                                );
+                              }}
+                            >
+                              <Text
+                                w="20%"
+                                display="flex"
+                                justifyContent={"center"}
                               >
-                                <Text
-                                  w="20%"
-                                  display="flex"
-                                  justifyContent={"center"}
-                                >
-                                  <CgDetailsMore />
-                                </Text>
-                                ดูข้อมูล Project
-                              </MenuItem>
-                              <MenuItem color={"red"}>
-                                <DeleteProject
-                                  companyId={i.project.detail.companyID}
-                                  projectId={i.project.projectId}
-                                />
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </Td>
-                      </Tr>
-                    );
-                  })
-                )}
-              </Tbody>
-            </Table>
-          </Box>
-        )}
+                                <CgDetailsMore />
+                              </Text>
+                              ดูข้อมูล Project
+                            </MenuItem>
+                            <MenuItem
+                              h="50px"
+                              p={0}
+                              backgroundColor="whiter"
+                              color={"red"}
+                            >
+                              <DeleteProject
+                                companyId={i.project.detail.companyID}
+                                projectId={i.project.projectId}
+                              />
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                    </Tr>
+                  );
+                })
+              )}
+            </Tbody>
+          </Table>
+        </Box>
       </Container>
     </div>
   );

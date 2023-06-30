@@ -142,10 +142,7 @@ function PreCompany() {
               color="gray.100"
               borderRadius="16px"
               onClick={onSearch}
-              _hover={{
-                color: "white",
-                bg: "#4C7BF4",
-              }}
+              _hover={{ opacity: 0.8 }}
             >
               ค้นหา
             </Button>
@@ -160,13 +157,13 @@ function PreCompany() {
             borderColor="#f4f4f4"
             w="100%"
             h="100%"
-            maxH="68vh"
+            maxH="67vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
           >
             <Table w="100%">
-              <Thead>
+              <Thead position="sticky" top={0} zIndex="sticky">
                 <Tr bg="#4C7BF4">
                   <Th
                     minW="10rem"
@@ -225,19 +222,16 @@ function PreCompany() {
                   </Th>
                 </Tr>
               </Thead>
-              {isFetching ? (
-                <Flex w="100%" h="10vh" align={"center"} justify="center" border={"1px"}>
-                  <Spinner
-                    thickness="4px"
-                    speed="0.65s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="md"
-                  />
-                </Flex>
-              ) : (
-                <Tbody>
-                  {filComForm.map((com: any, index: any) => {
+              <Tbody>
+                {isFetching ? (
+                  <Tr>
+                    <Td colSpan={7} textAlign={"center"}>
+                      Loading . . .
+                      <Spinner />
+                    </Td>
+                  </Tr>
+                ) : (
+                  filComForm.map((com: any, index: any) => {
                     return (
                       <Tr
                         key={index}
@@ -309,9 +303,9 @@ function PreCompany() {
                         </Td>
                       </Tr>
                     );
-                  })}
-                </Tbody>
-              )}
+                  })
+                )}
+              </Tbody>
             </Table>
           </Box>
         </Box>
