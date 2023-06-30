@@ -117,7 +117,7 @@ export default function ProblemPreview() {
                 spacing="2px"
               >
                 <Button
-                  bg="#4C7BF4"
+                  bg="#4C7BF4" 
                   color="#fff"
                   size="sm"
                   w="40px"
@@ -174,7 +174,7 @@ export default function ProblemPreview() {
                 background="#F4F7FE"
                 border="none"
                 placeholder="Search by refID, problem"
-                borderRadius={"16px"}
+                borderRadius="16px"
                 id="searchInput"
                 focusBorderColor={"none"}
                 ref={searchRef}

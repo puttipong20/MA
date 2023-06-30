@@ -290,7 +290,14 @@ function PreCompany() {
                                 />
                               }
                             />
-                            <MenuList backgroundColor="white">
+                            <MenuList
+                              backgroundColor="white"
+                              pos="sticky"
+                              top="0"
+                              bg="white"
+                              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                              zIndex="sticky"
+                            >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <ViewCompany id={com?.id} data={com} />
                               </MenuItem>
