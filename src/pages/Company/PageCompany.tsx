@@ -5,7 +5,6 @@ import {
   Center,
   Container,
   HStack,
-  Stack,
   Table,
   Tbody,
   Td,
@@ -108,60 +107,64 @@ function PreCompany() {
                   บริการหลังการขายของลูกค้าทั้งหมด
                 </Text>
               </VStack>
-              <Stack pb="0.5rem">
-                <FormAddCompany />
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius="16px">
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius="16px 0 0 16px"
+          <Flex justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius="16px">
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius="16px 0 0 16px"
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  placeholder="ค้นหาบริษัท"
+                  borderRadius={"16px"}
+                  focusBorderColor={"none"}
+                  ref={searchRef}
+                  onChange={onSearch}
+                />
+              </InputGroup>
+              <Button
+                bg="#4C7BF4"
+                color="gray.100"
+                borderRadius="16px"
+                onClick={onSearch}
+                _hover={{
+                  color: "white",
+                  bg: "#4C7BF4",
+                }}
               >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                placeholder="ค้นหาบริษัท"
-                borderRadius={"16px"}
-                focusBorderColor={"none"}
-                ref={searchRef}
-                onChange={onSearch}
-              />
-            </InputGroup>
-            <Button
-              bg="#4C7BF4"
-              color="gray.100"
-              borderRadius="16px"
-              onClick={onSearch}
-              _hover={{
-                color: "white",
-                bg: "#4C7BF4",
-              }}
-            >
-              ค้นหา
-            </Button>
+                ค้นหา
+              </Button>
+            </Flex>
+            <Box>
+              <FormAddCompany />
+            </Box>
           </Flex>
         </Box>
         <Box>
           <Box
-            mt="10"
+            mt="1rem"
             borderRadius="20px"
             border="1px"
-            borderColor="#f4f4f4"
+            borderColor="#ccc"
             w="100%"
-            height="68vh"
+            height="70vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
           >
-            <Table w="100%">
+            <Table
+              w="100%" position={"relative"}
+            >
               <Thead>
-                <Tr bg="#4C7BF4">
+                <Tr bg="#4C7BF4" position="sticky" top="0" zIndex={"1"}>
                   <Th
                     minW="10rem"
                     fontSize="16px"
@@ -225,7 +228,8 @@ function PreCompany() {
                     <Tr
                       key={index}
                       cursor="pointer"
-                      _hover={{ bg: "gray.100" }}
+                      bg="#fff"
+                      _hover={{ bg: "#eee" }}
                     >
                       <Td
                         onClick={() => {

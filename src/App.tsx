@@ -20,8 +20,6 @@ import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
-// import ProfileMenu from "./components/ProfileMenu";
-// import ContactUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
@@ -32,7 +30,6 @@ function App() {
     if (!Auth.uid) {
       await AuthCheck(Auth, navigate);
     }
-    // await ContactUpdate()
     setIsLoading(false);
   };
 
@@ -55,12 +52,6 @@ function App() {
   } else {
     return (
       <Box w="100%" maxH="100vh">
-        {/* {
-          Auth.uid &&
-          <Box position="fixed" right="1rem" top="1rem">
-            <ProfileMenu />
-          </Box>
-        } */}
 
         <Routes>
           <Route path="/home" element={<Home />} />
@@ -115,9 +106,7 @@ function App() {
             path="/company/:company/:projectID/:projectName/:problemID"
             element={<DetailForDev />}
           />
-          {/* <Route path="/tempCompany" element={<TempCompPreview />} /> */}
         </Routes>
-        {/* <LogoutBtn /> */}
       </Box>
     );
   }

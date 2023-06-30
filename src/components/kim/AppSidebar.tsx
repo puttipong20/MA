@@ -116,11 +116,11 @@ const Sidebar: React.FC = () => {
                 my="1rem"
                 w="100%"
                 textAlign={"center"}
-                // border="1px solid black"
+            // border="1px solid black"
             >
                 CRAFTING LAB
             </Heading>
-            <Divider my="5px" />
+            <Divider my="5px" opacity={"0.1"} />
             <Box my="10px">
                 <InputGroup>
                     <InputLeftElement>
@@ -129,7 +129,7 @@ const Sidebar: React.FC = () => {
                     <Input fontSize={"0.8rem"} placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
                 </InputGroup>
             </Box>
-            <Divider my="5px" />
+            <Divider my="5px" opacity={"0.1"} />
             {isFetching ?
                 <Flex w="100%" justify={"center"} align={"center"}>
                     <Spinner />
@@ -139,7 +139,7 @@ const Sidebar: React.FC = () => {
                         {
                             filterCompany.map((i, index) => {
                                 // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
-                                const focus = params["company"] === i.companyId;
+                                const focusCompany = params["company"] === i.companyId;
                                 return (
                                     <AccordionItem
                                         key={index}
@@ -148,12 +148,13 @@ const Sidebar: React.FC = () => {
                                         transition="all 0.3s"
                                         _hover={{ bg: "rgba(255,255,255,0.2)" }}
                                         borderRadius={"10px"}
-                                        bg={focus ? "rgba(255,255,255,0.2)" : ""}
+                                        bg={focusCompany ? "rgba(255,255,255,0.2)" : ""}
                                         my="5px"
+                                    // borderLeft={focusCompany ? "3px solid white" : "none"}
                                     >
                                         <AccordionButton>
                                             <Flex justify={"space-between"}>
-                                                <Text fontWeight={focus ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
+                                                <Text fontWeight={focusCompany ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
                                                 {/* <AccordionIcon /> */}
                                             </Flex>
                                         </AccordionButton>
@@ -162,12 +163,17 @@ const Sidebar: React.FC = () => {
                                                 {(i.detail.projects !== undefined && i.detail.projects.length !== 0) ?
                                                     i.detail.projects?.map((j, index) => {
                                                         // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
+                                                        const focusProject = params["projectID"] === j.id;
                                                         return (
                                                             <Text
                                                                 key={index}
-                                                                fontWeight={params["projectID"] === j.id ? "bold" : "normal"}
+                                                                fontWeight={focusProject ? "bold" : "normal"}
                                                                 cursor={"pointer"}
-                                                                _hover={{ fontWeight: "bold" }}
+                                                                transition={"all 0.1s"}
+                                                                borderRadius={"5px"}
+                                                                pl="1rem"
+                                                                bg={focusProject ? "rgba(255,255,255,0.3)" : "none"}
+                                                                _hover={{ fontWeight: "bold", bg: "rgba(255,255,255,0.1)" }}
                                                                 onClick={() => {
                                                                     // console.log(i.detail.companyName)
                                                                     // console.log(j.projectName)
@@ -192,7 +198,7 @@ const Sidebar: React.FC = () => {
                     </Accordion>
                 </Box>
             }
-            <Divider my="5px" />
+            <Divider my="5px" opacity={"0.1"} />
             <Box
                 w="100%" p="0.5rem"
                 userSelect={"none"} cursor={"pointer"}
