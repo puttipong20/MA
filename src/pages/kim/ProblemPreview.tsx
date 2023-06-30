@@ -3,6 +3,8 @@ import { useEffect, useState, useRef, useContext } from "react";
 import {
   Box,
   Button,
+  Center,
+  Container,
   Flex,
   FormControl,
   HStack,
@@ -12,6 +14,7 @@ import {
   InputLeftAddon,
   Select,
   Spinner,
+  Stack,
   Table,
   Tag,
   TagLabel,
@@ -21,6 +24,7 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -37,6 +41,7 @@ import classes from "./ProblemPreview.module.css";
 import moment from "moment";
 
 import { CompanyContext } from "../../context/CompanyContext";
+import { BiArrowBack } from "react-icons/bi";
 
 export default function ProblemPreview() {
   const { control, watch } = useForm();
@@ -47,6 +52,7 @@ export default function ProblemPreview() {
   const params = useParams();
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
+  const backPath = `/company/${params["company"]}`;
 
   const statusFilter = watch("statusFilter") || "";
   const wait = "รอรับเรื่อง";
@@ -96,239 +102,281 @@ export default function ProblemPreview() {
   }, [statusFilter]);
 
   return (
-    <Box w="100%" h="100%">
-      <Box position="relative">
-        <Flex>
-          <Box>
-            <Text>รายงานปัญหา / {projectName}</Text>
-            <Heading>{projectName}</Heading>
-            {/* <Text>Current UID : {props.uid}</Text> */}
-          </Box>
-        </Flex>
-      </Box>
-
-      <Box my="20px">
-        <Flex justifyContent={"flex-start"} gap="20px">
-          <InputGroup w="auto" borderRadius={"16px"}>
-            <InputLeftAddon
-              background="#F4F7FE"
-              border="none"
-              borderRadius={"16px 0 0 16px"}
+    <div className="container">
+      <Container maxW="100%" pb="10">
+        <Box>
+          <Center w="100%" mb="1rem">
+            <HStack
+              w="100%"
+              justifyContent="space-between"
+              alignItems="flex-end"
             >
-              <BsSearch />
-            </InputLeftAddon>
-            <Input
-              type="text"
-              background="#F4F7FE"
-              border="none"
-              placeholder="Search by refID, problem"
-              borderRadius={"16px"}
-              id="searchInput"
-              focusBorderColor={"none"}
-              ref={searchRef}
-              // onKeyDown={keyHandle}
-              onChange={onSearch}
-            />
-          </InputGroup>
-          <Button
-            background={"#1B2559"}
-            color="white"
-            borderRadius="16px"
-            onClick={onSearch}
-            _active={{ opacity: "1" }}
-            _hover={{ opacity: "1" }}
+              <VStack
+                pt="1rem"
+                justifyContent="flex-start"
+                alignItems="flex-star"
+                spacing="2px"
+              >
+                <Button
+                  bg="#4C7BF4"
+                  color="#fff"
+                  size="sm"
+                  w="40px"
+                  _hover={{ opacity: 0.8 }}
+                  onClick={() => {
+                    navigate(backPath);
+                  }}
+                >
+                  <BiArrowBack />
+                </Button>
+                <Text
+                  fontWeight="600"
+                  lineHeight="25.2px"
+                  fontSize="18px"
+                  fontFamily="Prompt"
+                >
+                  รายงานปัญหา / {projectName}
+                </Text>
+                <Text fontSize="16px" fontFamily="Prompt" color="#000000">
+                  {projectName}
+                </Text>
+              </VStack>
+              <Stack>
+                <Button
+                  bg={"#4c7bf4"}
+                  color="#fff"
+                  fontWeight={"normal"}
+                  _hover={{ opacity: 0.8 }}
+                  onClick={() => {
+                    // console.log(props)
+                    navigate(
+                      `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
+                    );
+                  }}
+                  _active={{ opacity: "1" }}
+                  borderRadius={"16px"}
+                >
+                  แจ้งปัญหาการใช้งานระบบ
+                </Button>
+              </Stack>
+            </HStack>
+          </Center>
+          <Flex justifyContent="flex-start" gap="20px">
+            <InputGroup w="auto" borderRadius={"16px"}>
+              <InputLeftAddon
+                background="#F4F7FE"
+                border="none"
+                borderRadius={"16px 0 0 16px"}
+              >
+                <BsSearch />
+              </InputLeftAddon>
+              <Input
+                type="text"
+                background="#F4F7FE"
+                border="none"
+                placeholder="Search by refID, problem"
+                borderRadius={"16px"}
+                id="searchInput"
+                focusBorderColor={"none"}
+                ref={searchRef}
+                onChange={onSearch}
+              />
+            </InputGroup>
+            <Button
+              background={"#4C7BF4"}
+              color="white"
+              borderRadius="16px"
+              onClick={onSearch}
+              _hover={{ opacity: 0.8 }}
+            >
+              ค้นหา
+            </Button>
+            <Box>
+              <Controller
+                name="statusFilter"
+                defaultValue={""}
+                control={control}
+                render={({ field }) => (
+                  <FormControl>
+                    <HStack>
+                      <Text>สถานะ</Text>
+                      <Select {...field}>
+                        <option value="">ทั้งหมด</option>
+                        <option value="รอรับเรื่อง">รอรับเรื่อง</option>
+                        <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                        <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                        <option value="ยกเลิก">ยกเลิก</option>
+                      </Select>
+                    </HStack>
+                  </FormControl>
+                )}
+              />
+            </Box>
+          </Flex>
+        </Box>
+        <Box>
+          <Box
+            mt="10"
+            borderRadius="20px"
+            border="1px"
+            borderColor="#f4f4f4"
+            w="100%"
+            h="100%"
+            maxH="67vh"
+            overflowY={"auto"}
+            boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
+            className={classes.table}
           >
-            ค้นหา
-          </Button>
-          <Box>
-            <Controller
-              name="statusFilter"
-              defaultValue={""}
-              control={control}
-              render={({ field }) => (
-                <FormControl>
-                  <HStack>
-                    <Text>สถานะ</Text>
-                    <Select {...field}>
-                      <option value="">ทั้งหมด</option>
-                      <option value="รอรับเรื่อง">รอรับเรื่อง</option>
-                      <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
-                      <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-                      <option value="ยกเลิก">ยกเลิก</option>
-                    </Select>
-                  </HStack>
-                </FormControl>
-              )}
-            />
-          </Box>
-        </Flex>
-
-        <Flex justifyContent={"flex-end"}>
-          <Button
-            bg={"#4c7bf4"}
-            color="#fff"
-            fontWeight={"normal"}
-            onClick={() => {
-              // console.log(props)
-              navigate(
-                `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
-              );
-            }}
-            _hover={{ opacity: "1" }}
-            _active={{ opacity: "1" }}
-            borderRadius={"16px"}
-          >
-            แจ้งปัญหาการใช้งานระบบ
-          </Button>
-        </Flex>
-      </Box>
-      <Box maxW="100%" overflowX="auto" className={classes.table}>
-        <Table>
-          <Thead>
-            <Tr background={"#4c7bf4"}>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                No.
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                วันที่
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                ปัญหาที่พบ
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                ชื่อผู้แจ้งปัญหา
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="12.5rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                ข้อมูลการติดต่อ
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                ชื่อผู้รับเรื่อง
-              </Th>
-              <Th
-                fontWeight={"normal"}
-                fontSize="16px"
-                minW="10rem"
-                color="#fff"
-                textAlign="center"
-                fontFamily={"inherit"}
-              >
-                การดำเนินการ
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {isFetching ? (
-              <Tr>
-                <Td colSpan={7} textAlign={"center"}>
-                  Loading . . .
-                  <Spinner />
-                </Td>
-              </Tr>
-            ) : filterReports.length === 0 ? (
-              <Tr>
-                <Td colSpan={7} textAlign={"center"}>
-                  ยังไม่มีข้อมูลการรายงาน
-                </Td>
-              </Tr>
-            ) : (
-              filterReports.map((r, index) => {
-                return (
-                  <Tr
-                    key={index}
-                    _hover={{ bg: "#eee" }}
-                    cursor={"pointer"}
-                    onClick={() => {
-                      Company.setReport(r.id);
-                      navigate(
-                        `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`
-                      );
-                    }}
+            <Table w="100%">
+              <Thead position="sticky" top={0} zIndex="sticky">
+                <Tr background={"#4c7bf4"}>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
                   >
-                    <Td textAlign={"center"}>{r.docs.ref}</Td>
-                    <Td textAlign={"center"}>
-                      {moment(r.docs.createAt).format("DD/MM/YYYY HH:mm:ss")}
-                    </Td>
-                    <Td textAlign={"center"}>{r.docs.title}</Td>
-                    <Td textAlign={"center"}>{r.docs.name}</Td>
-                    <Td>
-                      {r.docs.phone}
-                      <br />
-                      {r.docs.line}
-                      <br />
-                      {r.docs.email}
-                    </Td>
-                    <Td textAlign={"center"}>
-                      {r.docs.solution?.accepter || "-"}
-                    </Td>
-                    <Td textAlign={"center"}>
-                      {" "}
-                      <Tag
-                        w="100%"
-                        h="40px"
-                        colorScheme={
-                          wait.includes(r.docs.RepStatus)
-                            ? "yellow"
-                            : r.docs.RepStatus === done
-                            ? "green"
-                            : r.docs.RepStatus === process
-                            ? "orange"
-                            : "red"
-                        }
-                      >
-                        <TagLabel w="100%" textAlign={"center"}>
-                          {r.docs.RepStatus}
-                        </TagLabel>
-                      </Tag>
+                    No.
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    วันที่
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    ปัญหาที่พบ
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    ชื่อผู้แจ้งปัญหา
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="12.5rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    ข้อมูลการติดต่อ
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    ชื่อผู้รับเรื่อง
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="10rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    การดำเนินการ
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {isFetching ? (
+                  <Tr>
+                    <Td colSpan={7} textAlign={"center"}>
+                      Loading . . .
+                      <Spinner />
                     </Td>
                   </Tr>
-                );
-              })
-            )}
-          </Tbody>
-        </Table>
-      </Box>
-    </Box>
+                ) : filterReports.length === 0 ? (
+                  <Tr>
+                    <Td colSpan={7} textAlign={"center"}>
+                      ยังไม่มีข้อมูลการรายงาน
+                    </Td>
+                  </Tr>
+                ) : (
+                  filterReports.map((r, index) => {
+                    return (
+                      <Tr
+                        key={index}
+                        _hover={{ bg: "gray.100" }}
+                        cursor={"pointer"}
+                        onClick={() => {
+                          Company.setReport(r.id);
+                          navigate(
+                            `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`
+                          );
+                        }}
+                      >
+                        <Td textAlign={"center"}>{r.docs.ref}</Td>
+                        <Td textAlign={"center"}>
+                          {moment(r.docs.createAt).format(
+                            "DD/MM/YYYY HH:mm:ss"
+                          )}
+                        </Td>
+                        <Td textAlign={"center"}>{r.docs.title}</Td>
+                        <Td textAlign={"center"}>{r.docs.name}</Td>
+                        <Td>
+                          {r.docs.phone}
+                          <br />
+                          {r.docs.line}
+                          <br />
+                          {r.docs.email}
+                        </Td>
+                        <Td textAlign={"center"}>
+                          {r.docs.solution?.accepter || "-"}
+                        </Td>
+                        <Td textAlign={"center"}>
+                          {" "}
+                          <Tag
+                            w="100%"
+                            h="40px"
+                            colorScheme={
+                              wait.includes(r.docs.RepStatus)
+                                ? "yellow"
+                                : r.docs.RepStatus === done
+                                ? "green"
+                                : r.docs.RepStatus === process
+                                ? "orange"
+                                : "red"
+                            }
+                          >
+                            <TagLabel w="100%" textAlign={"center"}>
+                              {r.docs.RepStatus}
+                            </TagLabel>
+                          </Tag>
+                        </Td>
+                      </Tr>
+                    );
+                  })
+                )}
+              </Tbody>
+            </Table>
+          </Box>
+        </Box>
+      </Container>
+    </div>
   );
 }

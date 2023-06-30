@@ -24,18 +24,25 @@ const ContractPreview = () => {
         <Container maxW="100%" pb="10">
           <Box>
             <Center w="100%" mb="1rem">
-              <HStack
-                w="100%"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <Button onClick={() => { navigate(-1) }} colorScheme={"blue"}><ArrowBackIcon /></Button>
+              <HStack w="100%" justifyContent="flex-start" alignItems="center">
                 <VStack
-                  // pt="1rem"
+                  pt="1rem"
                   justifyContent="flex-start"
                   alignItems="flex-star"
                   spacing="2px"
                 >
+                  <Button
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                    bg="#4C7BF4"
+                    color="#fff"
+                    size="sm"
+                    w="40px"
+                    _hover={{ opacity: 0.8 }}
+                  >
+                    <ArrowBackIcon />
+                  </Button>
                   <Text
                     fontWeight="600"
                     lineHeight="25.2px"
@@ -50,27 +57,41 @@ const ContractPreview = () => {
                 </VStack>
               </HStack>
             </Center>
-            <Divider my="1rem" />
+            {/* <Divider my="1rem" /> */}
             <Box>
               <Box>
                 {MACtx.ma.updateLogs.map((u, index) => (
-                  <Box key={index}>
+                  <Box
+                    key={index}
+                    boxShadow="0 4px 6px rgba(76, 123, 244, 0.5)"
+                    p="4"
+                    pb="5"
+                    borderRadius="16px"
+                  >
                     <HStack>
-                      <Text>ครั้งที่ {index + 1}</Text>
+                      <Text fontSize="16px" fontWeight="bold">
+                        ครั้งที่ {index + 1}
+                      </Text>
                     </HStack>
                     <HStack>
-                      <Text>แก้ไขเมื่อ :</Text>
+                      <Text fontSize="16px" fontWeight="bold">
+                        แก้ไขเมื่อ :
+                      </Text>
                       <Text>{u.timeStamp}</Text>
                     </HStack>
                     <HStack>
-                      <Text>แก้ไขโดย :</Text>
+                      <Text fontSize="16px" fontWeight="bold">
+                        แก้ไขโดย :
+                      </Text>
                       <Text>{u.updatedBy}</Text>
                     </HStack>
                     <HStack>
-                      <Text>หมายเหตุ :</Text>
+                      <Text fontSize="16px" fontWeight="bold">
+                        หมายเหตุ :
+                      </Text>
                       <Text>{u.note}</Text>
                     </HStack>
-                    <Divider my="1rem" />
+                    {/* <Divider my="1rem" /> */}
                   </Box>
                 ))}
               </Box>
