@@ -8,6 +8,7 @@ export const AuthContext = createContext({
     uid: "",
     detail: { role: "", company: "" } as UserDetail,
     setNewUser: (_uid: string, _detail: UserDetail) => { },
+    clearUser: () => { }
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,10 +21,16 @@ const AuthContextProvider = (props: any) => {
         setUserDetail(newUserDetail);
     }
 
+    const clearUser = () => {
+        setUid("");
+        setUserDetail({ role: "", company: "" })
+    }
+
     const context = {
         uid: uid,
         detail: userDetail,
-        setNewUser: setUser
+        setNewUser: setUser,
+        clearUser: clearUser
     }
 
     return (

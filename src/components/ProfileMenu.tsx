@@ -1,4 +1,4 @@
-// import { useContext } from 'react'
+import { useContext } from 'react'
 import {
     Box,
     Button,
@@ -13,16 +13,17 @@ import {
     VStack,
 } from '@chakra-ui/react'
 
-// import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 import { LuLogOut } from 'react-icons/lu';
 import { auth } from '../services/config-db';
 import { signOut } from 'firebase/auth';
 
 export default function ProfileMenu() {
-    // const Auth = useContext(AuthContext);
+    const Auth = useContext(AuthContext);
 
     const logout = () => {
         signOut(auth);
+        Auth.clearUser();
     }
 
     return (
