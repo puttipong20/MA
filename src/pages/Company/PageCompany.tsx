@@ -230,7 +230,13 @@ function PreCompany() {
                       <Spinner />
                     </Td>
                   </Tr>
-                ) : (
+                ) : filComForm.length === 0 ? (
+                    <Tr>
+                      <Td colSpan={7} textAlign={"center"}>
+                        ยังไม่มีข้อมูลบริษัท
+                      </Td>
+                </Tr>
+                ):(
                   filComForm.map((com: any, index: any) => {
                     return (
                       <Tr
