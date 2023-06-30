@@ -36,6 +36,7 @@ interface Props {
   projectId: string;
   activeMA?: MA;
   MAlog: { id: string; ma: MA }[];
+  callBack: () => void;
 }
 
 const Renewal: React.FC<Props> = (props) => {
@@ -81,15 +82,27 @@ const Renewal: React.FC<Props> = (props) => {
   }, [startMA, endMA]);
 
   const onSubmit = async (data: any) => {
-    // console.clear();
+    console.clear();
     setIsUpdate(true);
     const renewStart = data.renewStart;
     const renewEnd = data.renewEnd;
 
     let status: "advance" | "expire" | "active" = "advance";
-    const overlap = logs.every((m) =>
-      checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd) === false
-    );
+    // const overlap = logs.every((m) =>
+    //   checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd) === false
+    // );
+    const overlapResult: boolean[] = [];
+    logs.forEach((ma) => {
+      const ol = checkTimeOverlap(renewStart, renewEnd, ma.ma.startMA, ma.ma.endMA);
+      // if (ol) {
+      //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "overlap")
+      // } else {
+      //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "not overlap")
+      // }
+      overlapResult.push(ol);
+    })
+    const overlap = !overlapResult.every((x) => x === false)
+    // overlap ? console.log("has some overlap") : console.log("don't have any overlap");
     // console.log(overlap)
     // console.log(logs)
     if (!overlap) {
@@ -125,6 +138,7 @@ const Renewal: React.FC<Props> = (props) => {
       const MAref = collection(doc(db, "Project", props.projectId), "MAlogs");
       await addDoc(MAref, newContract)
         .then(() => {
+          props.callBack();
           toast({
             title: "ต่อสัญญาสำเร็จ",
             status: "success",

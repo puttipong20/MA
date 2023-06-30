@@ -210,7 +210,7 @@ export default function DetailPage() {
                 </Button>
               </Text>
               <Box>
-                <Renewal MAlog={logs} projectId={projectID} />
+                <Renewal MAlog={logs} projectId={projectID} callBack={fetchingProjectDetail} />
               </Box>
             </Flex>
             <Box>
@@ -379,6 +379,7 @@ export default function DetailPage() {
                                       data={MA.ma}
                                       maId={MA.id}
                                       projectId={projectID}
+                                      callBack={fetchingProjectDetail}
                                     />
                                   </MenuItem>
                                 </MenuList>

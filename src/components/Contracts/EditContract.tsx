@@ -27,7 +27,7 @@ import { db } from "../../services/config-db";
 import { MA } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
 
-const EditContract = ({ data, maId, projectId }: any) => {
+const EditContract = ({ data, maId, projectId, callBack }: any) => {
   const {
     handleSubmit,
     reset,
@@ -126,6 +126,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
           isClosable: true,
           position: "top",
         });
+        setIsLoading(false);
       }
       // const AllMA = await(getDocs(MAref));
     }
@@ -138,7 +139,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
         updatedBy: Auth.uid,
       };
       const merge = [...oldUpdateLog, newUpdateLog];
-      console.log(data, merge)
+      // console.log(data, merge)
       await updateDoc(doc(MAref, maId), {
         startMA: data.startMA,
         endMA: data.endMA,
@@ -154,6 +155,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
             isClosable: true,
             position: "top",
           });
+          callBack();
           setIsLoading(false);
         })
         .catch((e) => {
