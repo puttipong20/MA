@@ -32,7 +32,6 @@ const Login: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const Auth = useContext(AuthContext)
-  //funcionts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const submitData = (data: any) => {
     setIsLoading(true);
@@ -56,7 +55,7 @@ const Login: FC = () => {
             position: "top",
           });
           // console.log(Auth)
-          navigate("/company")
+          navigate("/")
           // if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
           setIsLoading(false)
         }
@@ -105,6 +104,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                     <FormErrorMessage color={"black"}>
                       {errors.email?.message as string}
@@ -125,6 +126,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                   </FormControl>
                 )}

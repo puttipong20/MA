@@ -109,7 +109,7 @@ const Sidebar: React.FC = () => {
             <Heading
                 cursor={"pointer"}
                 onClick={() => {
-                    navigate("/company");
+                    navigate("/");
                 }}
                 fontSize={"1.25rem"}
                 fontFamily={"inherit"}
