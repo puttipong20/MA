@@ -16,12 +16,13 @@ import {
   Input,
   useToast,
   Button,
+  Select,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { RiEditLine } from "react-icons/ri";
 import moment from "moment";
-import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { MA } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
@@ -31,12 +32,15 @@ const EditContract = ({ data, maId, projectId }: any) => {
     handleSubmit,
     reset,
     control,
+    watch,
     setValue,
     formState: { errors },
   } = useForm<MA>();
 
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [cache, setCache] = useState<{ id: string, ma: MA }[] | null>(null)
+  const [duration, setDuration] = useState<number>(0)
   const toast = useToast();
   const Auth = useContext(AuthContext);
 
@@ -45,49 +49,122 @@ const EditContract = ({ data, maId, projectId }: any) => {
       setValue("startMA", data?.startMA);
       setValue("endMA", data?.endMA);
       setValue("cost", data?.cost);
+      setValue("status", data?.status)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const startMA = watch("startMA") || moment().format("YYYY-MM-DD");
+  const endMA = watch("endMA") || moment().add(1, "year").format("YYYY-MM-DD");
+
+  const durationData = (startDate: string, endDate: string) => {
+    const a = new Date(startDate) as any;
+    const b = new Date(endDate) as any;
+    const d = Math.floor(b - a) / (1000 * 60 * 60 * 24);
+    setDuration(d);
+  };
+
+  useEffect(() => {
+    durationData(startMA, endMA);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startMA, endMA]);
+
+  const checkTimeOverlap = (s1: string, e1: string, s2: string, e2: string) => {
+    const start1 = new Date(s1);
+    const start2 = new Date(s2);
+    const end1 = new Date(e1);
+    const end2 = new Date(e2);
+
+    if (start1 <= end2 && end1 >= start2) {
+      // console.log(true)
+      return true;
+    } else {
+      // console.log(false)
+      return false;
+    }
+  };
+
   const onSubmit = async (data: any) => {
     setIsLoading(true);
+    console.clear();
     const projectRef = doc(db, "Project", projectId);
     const MAref = collection(projectRef, "MAlogs");
     const MADetail = (await getDoc(doc(MAref, maId))).data() as MA;
-    const oldUpdateLog = MADetail.updateLogs;
-    const newUpdateLog = {
-      note: data.note,
-      timeStamp: moment().format("DD-MM-YYYY HH:mm:ss"),
-      updatedBy: Auth.uid,
-    };
-    const merge = [...oldUpdateLog, newUpdateLog];
-    await updateDoc(doc(MAref, maId), {
-      startMA: data.startMA,
-      endMA: data.endMA,
-      cost: data.cost,
-      updateLogs: merge,
-    })
-      .then(() => {
+
+    if (data.startMA !== MADetail.startMA || data.endMA !== MADetail.endMA || data.status !== MADetail.status) {
+      console.log("date updated")
+      let filter: { id: string, ma: MA }[] = [];
+      if (cache === null) {
+        const MAlogs: { id: string, ma: MA }[] = [];
+        (await getDocs(MAref)).forEach(ma => MAlogs.push({ id: ma.id, ma: ma.data() as MA }))
+        setCache(MAlogs);
+        filter = MAlogs.filter((ma) => ma.id !== maId)
+      } else {
+        filter = cache.filter((ma) => ma.id !== maId);
+      }
+      console.log(filter)
+      const overlap = filter.every(ma => checkTimeOverlap(ma.ma.startMA, ma.ma.endMA, data.startMA, data.endMA) === false)
+      if (overlap) {
         toast({
-          title: "อัพเดทสัญญาสำเร็จ",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-        });
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.error(e);
-        toast({
-          title: "อัพเดทสัญญาไม่สำเร็จ",
+          title: "ช่วงเวลาไม่ถูกต้อง",
+          description: "กรุณาเลือกช่วงเวลาที่ไม่ทับกับสัญญาอื่น",
           status: "error",
           duration: 2000,
           isClosable: true,
           position: "top",
         });
-      });
-    onClose();
+      } else {
+            toast({
+              title: "อัพเดทสัญญาสำเร็จ",
+              status: "success",
+              duration: 2000,
+              isClosable: true,
+              position: "top",
+            });
+      }
+      // const AllMA = await(getDocs(MAref));
+    } else {
+      console.log("date doesn't update, no need to fetch")
+    }
+
+    const oldUpdateLog = MADetail.updateLogs;
+    const newUpdateLog = {
+      note: data.note,
+      timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
+      updatedBy: Auth.uid,
+    };
+    const merge = [...oldUpdateLog, newUpdateLog];
+    // console.log(data, merge)
+    // await updateDoc(doc(MAref, maId), {
+    //   startMA: data.startMA,
+    //   endMA: data.endMA,
+    //   cost: data.cost,
+    //   updateLogs: merge,
+    // })
+    //   .then(() => {
+    //     toast({
+    //       title: "อัพเดทสัญญาสำเร็จ",
+    //       status: "success",
+    //       duration: 2000,
+    //       isClosable: true,
+    //       position: "top",
+    //     });
+    //     setIsLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //     toast({
+    //       title: "อัพเดทสัญญาไม่สำเร็จ",
+    //       status: "error",
+    //       duration: 2000,
+    //       isClosable: true,
+    //       position: "top",
+    //     });
+    //   });
+    // reset()
+    // onClose();
+    setIsLoading(false);
+
   };
 
   return (
@@ -99,7 +176,6 @@ const EditContract = ({ data, maId, projectId }: any) => {
         display="flex"
         alignItems={"center"}
         onClick={onOpen}
-
       >
         <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
           <RiEditLine />
@@ -147,6 +223,10 @@ const EditContract = ({ data, maId, projectId }: any) => {
                     </FormControl>
                   )}
                 />
+                <Text>ระยะเวลา = <Text as="span" fontWeight={"bold"}>{duration}</Text> วัน</Text>
+                {
+                  duration < 1 && <Text color="red">ระยะเวลาอย่างน้อย 1 วัน</Text>
+                }
                 <Controller
                   name="cost"
                   control={control}
@@ -166,17 +246,34 @@ const EditContract = ({ data, maId, projectId }: any) => {
                   )}
                 />
                 <Controller
+                  name="status"
+                  control={control}
+                  defaultValue="expire"
+                  render={({ field }) => (
+                    <FormControl>
+                      <Text>สถานะสัญญาปัจจุบัน</Text>
+                      <Select placeholder={"กรุณาเลือกสถานะของสัญญา"} {...field}>
+                        <option value="advance">ล่วงหน้า</option>
+                        <option value="active">กำลังใช้งาน</option>
+                        <option value="expire">หมดอายุ</option>
+                        <option value="cancel">ยกเลิก</option>
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+                <Controller
                   name="note"
                   control={control}
                   defaultValue=""
                   render={({ field: { name, value, onChange, onBlur } }) => (
-                    <FormControl isInvalid={Boolean(errors[name])}>
+                    <FormControl isInvalid={Boolean(errors[name])} isRequired>
                       <FormLabel>หมายเหตุ</FormLabel>
                       <Input
                         type="text"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="กรุณากรอกหมายเหตุ"
                       />
                     </FormControl>
                   )}

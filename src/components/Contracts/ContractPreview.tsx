@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { MAcontext } from "../../context/MAContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import moment from "moment";
+
 const ContractPreview = () => {
   const navigate = useNavigate();
   const MACtx = useContext(MAcontext);
@@ -60,15 +62,15 @@ const ContractPreview = () => {
                     </HStack>
                     <HStack>
                       <Text>แก้ไขเมื่อ :</Text>
-                      <Text>{u.timeStamp}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text>แก้ไขโดย :</Text>
-                      <Text>{u.updatedBy}</Text>
+                      <Text>{moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}</Text>
                     </HStack>
                     <HStack>
                       <Text>หมายเหตุ :</Text>
                       <Text>{u.note}</Text>
+                    </HStack>
+                    <HStack>
+                      <Text>แก้ไขโดย :</Text>
+                      <Text>{u.updatedBy}</Text>
                     </HStack>
                     <Divider my="1rem" />
                   </Box>

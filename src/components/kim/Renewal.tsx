@@ -65,8 +65,7 @@ const Renewal: React.FC<Props> = (props) => {
   };
 
   const startMA = watch("renewStart") || moment().format("YYYY-MM-DD");
-  const endMA =
-    watch("renewEnd") || moment().add(1, "year").format("YYYY-MM-DD");
+  const endMA = watch("renewEnd") || moment().add(1, "year").format("YYYY-MM-DD");
 
   const durationData = (startDate: string, endDate: string) => {
     const a = new Date(startDate) as any;
@@ -89,7 +88,7 @@ const Renewal: React.FC<Props> = (props) => {
 
     let status: "advance" | "expire" | "active" = "advance";
     const overlap = logs.every((m) =>
-      checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd)
+      checkTimeOverlap(m.ma.startMA, m.ma.endMA, renewStart, renewEnd) === false
     );
     // console.log(overlap)
     // console.log(logs)
@@ -173,7 +172,7 @@ const Renewal: React.FC<Props> = (props) => {
         leftIcon={<TiDocumentText />}
         bg="#4C7BF4"
         color="#fff"
-        _hover={{opacity:0.8}}
+        _hover={{ opacity: 0.8 }}
       >
         การต่อสัญญา
       </Button>

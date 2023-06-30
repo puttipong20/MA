@@ -126,7 +126,7 @@ const Sidebar: React.FC = () => {
             >
                 CRAFTING LAB
             </Heading>
-            <Divider my="5px" opacity={"0.1"} />
+            <Divider my="5px" opacity={"1"} />
             <Box my="10px">
                 <InputGroup>
                     <InputLeftElement>
@@ -135,7 +135,7 @@ const Sidebar: React.FC = () => {
                     <Input fontSize={"0.8rem"} placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
                 </InputGroup>
             </Box>
-            <Divider my="5px" opacity={"0.1"} />
+            <Divider my="5px" opacity={"1"} />
             {isFetching ?
                 <Flex w="100%" justify={"center"} align={"center"}>
                     <Spinner />
@@ -204,7 +204,7 @@ const Sidebar: React.FC = () => {
                     </Accordion>
                 </Box>
             }
-            <Divider my="5px" opacity={"0.1"} />
+            <Divider my="5px" opacity={"1"} />
             <Box
                 w="100%" p="0.5rem"
                 userSelect={"none"} cursor={"pointer"}
