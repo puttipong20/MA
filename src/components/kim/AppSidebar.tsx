@@ -3,7 +3,7 @@ import {
     AccordionItem,
     AccordionButton,
     AccordionPanel,
-    AccordionIcon,
+    // AccordionIcon,
     Box,
     Button,
     Divider,
@@ -13,6 +13,8 @@ import {
     Spinner,
     VStack,
     Flex,
+    InputLeftElement,
+    InputGroup,
 } from "@chakra-ui/react";
 // import { AiOutlinePlusCircle } from "react-icons/ai";
 // import { CgDetailsMore } from "react-icons/cg";
@@ -20,13 +22,17 @@ import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
-import { db } from "../../services/config-db";
+import { auth, db } from "../../services/config-db";
 
 import { search } from "ss-search";
 import { Company, CompanyDetail } from "../../@types/Type";
 import AddProject from "./AddProject";
 
 import { CompanyContext } from "../../context/CompanyContext";
+import { SearchIcon } from "@chakra-ui/icons";
+import { LuLogOut } from "react-icons/lu";
+import { signOut } from "firebase/auth";
+import { AuthContext } from "../../context/AuthContext";
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -36,6 +42,7 @@ const Sidebar: React.FC = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [openIndex, setOpenIndex] = useState<number>(-1)
     const Company = useContext(CompanyContext);
+    const Auth = useContext(AuthContext)
 
     const onSearch = () => {
         const inputRef = document.getElementById("searchInput") as HTMLInputElement;
@@ -58,7 +65,10 @@ const Sidebar: React.FC = () => {
                 companyId: i.id,
                 detail: i.data() as CompanyDetail,
             }
-            if (company.companyId === params["company"]) { setOpenIndex(count) }
+            if (company.companyId === params["company"]) {
+                // console.log("open index on", count);
+                setOpenIndex(count)
+            }
             allCompany.push(company)
             count += 1;
         })
@@ -66,6 +76,11 @@ const Sidebar: React.FC = () => {
         setCompanies(allCompany);
         setFilterCompany(allCompany);
         setIsFetching(false);
+    }
+
+    const logout = () => {
+        signOut(auth);
+        Auth.clearUser();
     }
 
     useEffect(() => {
@@ -90,7 +105,7 @@ const Sidebar: React.FC = () => {
     })
 
     return (
-        <Box maxH="100%" position="relative">
+        <Box position="relative" h="fit-content" maxH="100%"  >
             <Heading
                 cursor={"pointer"}
                 onClick={() => {
@@ -105,8 +120,13 @@ const Sidebar: React.FC = () => {
                 CRAFTING LAB
             </Heading>
             <Divider />
-            <Box mb="5px">
-                <Input placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
+            <Box my="10px">
+                <InputGroup>
+                    <InputLeftElement>
+                        <SearchIcon />
+                    </InputLeftElement>
+                    <Input placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
+                </InputGroup>
             </Box>
             {isFetching ?
                 <Flex w="100%" justify={"center"} align={"center"}>
@@ -117,11 +137,23 @@ const Sidebar: React.FC = () => {
                         {
                             filterCompany.map((i, index) => {
                                 // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
+                                const focus = params["company"] === i.companyId;
                                 return (
-                                    <AccordionItem key={index} userSelect={"none"}>
+                                    <AccordionItem
+                                        key={index}
+                                        userSelect={"none"}
+                                        border="none"
+                                        transition="all 0.3s"
+                                        _hover={{ bg: "rgba(255,255,255,0.2)" }}
+                                        borderRadius={"10px"}
+                                        bg={focus ? "rgba(255,255,255,0.2)" : ""}
+                                        my="5px"
+                                    >
                                         <AccordionButton>
-                                            <Text fontWeight={params["company"] === i.companyId ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
-                                            <AccordionIcon />
+                                            <Flex justify={"space-between"}>
+                                                <Text fontWeight={focus ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
+                                                {/* <AccordionIcon /> */}
+                                            </Flex>
                                         </AccordionButton>
                                         <AccordionPanel>
                                             <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
@@ -156,11 +188,19 @@ const Sidebar: React.FC = () => {
                             })
                         }
                     </Accordion>
-                    {/* <Box w="100%" display="flex" justifyContent={"center"} alignItems={"center"} mt="5px">
-                        <TempAddCompany />
-                    </Box> */}
                 </Box>
             }
+            <Divider my="5px" />
+            <Box
+                w="100%" p="0.5rem"
+                userSelect={"none"} cursor={"pointer"}
+                transition={"all 0.3s"}
+                borderRadius={"10px"}
+                _hover={{ bg: "rgba(255,255,255,0.2)" }}
+                onClick={logout}
+            >
+                <Text display="flex" alignItems={"center"} gap={"1rem"}><LuLogOut />Logout</Text>
+            </Box>
         </Box>
     );
 };
