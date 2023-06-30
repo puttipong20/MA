@@ -79,7 +79,7 @@ const ContractPreview = () => {
                       <Text fontSize="16px" fontWeight="bold">
                         แก้ไขเมื่อ :
                       </Text>
-                      <Text>{u.timeStamp}</Text>
+                      <Text>{moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}</Text>
                     </HStack>
                     <HStack>
                       <Text fontSize="16px" fontWeight="bold">

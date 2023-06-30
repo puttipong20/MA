@@ -86,25 +86,38 @@ const EditContract = ({ data, maId, projectId }: any) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    console.clear();
+    // console.clear();
+    // console.log(data);
+    let skip = false;
     const projectRef = doc(db, "Project", projectId);
     const MAref = collection(projectRef, "MAlogs");
     const MADetail = (await getDoc(doc(MAref, maId))).data() as MA;
-
     if (data.startMA !== MADetail.startMA || data.endMA !== MADetail.endMA || data.status !== MADetail.status) {
-      console.log("date updated")
-      let filter: { id: string, ma: MA }[] = [];
+      // console.log("date updated")
+      let filtered: { id: string, ma: MA }[] = [];
       if (cache === null) {
         const MAlogs: { id: string, ma: MA }[] = [];
         (await getDocs(MAref)).forEach(ma => MAlogs.push({ id: ma.id, ma: ma.data() as MA }))
         setCache(MAlogs);
-        filter = MAlogs.filter((ma) => ma.id !== maId)
+        filtered = MAlogs.filter((ma) => ma.id !== maId && (ma.ma.status === "active" || ma.ma.status === "advance"))
       } else {
-        filter = cache.filter((ma) => ma.id !== maId);
+        filtered = cache.filter((ma) => ma.id !== maId && (ma.ma.status === "active" || ma.ma.status === "advance"))
       }
-      console.log(filter)
-      const overlap = filter.every(ma => checkTimeOverlap(ma.ma.startMA, ma.ma.endMA, data.startMA, data.endMA) === false)
+      // console.log(filtered);
+      const overlapResult: boolean[] = [];
+      filtered.forEach((ma) => {
+        const ol = checkTimeOverlap(data.startMA, data.endMA, ma.ma.startMA, ma.ma.endMA);
+        // if (ol) {
+        //   console.log("input = ", data.startMA, data.endMA, "| compare = ", ma.ma.startMA, ma.ma.endMA, "overlap")
+        // } else {
+        //   console.log("input = ", data.startMA, data.endMA, "| compare = ", ma.ma.startMA, ma.ma.endMA, "not overlap")
+        // }
+        overlapResult.push(ol);
+      })
+      const overlap = !overlapResult.every((x) => x === false)
+      // overlap ? console.log("has some overlap") : console.log("don't have any overlap");
       if (overlap) {
+        skip = true
         toast({
           title: "ช่วงเวลาไม่ถูกต้อง",
           description: "กรุณาเลือกช่วงเวลาที่ไม่ทับกับสัญญาอื่น",
@@ -113,58 +126,51 @@ const EditContract = ({ data, maId, projectId }: any) => {
           isClosable: true,
           position: "top",
         });
-      } else {
-            toast({
-              title: "อัพเดทสัญญาสำเร็จ",
-              status: "success",
-              duration: 2000,
-              isClosable: true,
-              position: "top",
-            });
       }
       // const AllMA = await(getDocs(MAref));
-    } else {
-      console.log("date doesn't update, no need to fetch")
     }
 
-    const oldUpdateLog = MADetail.updateLogs;
-    const newUpdateLog = {
-      note: data.note,
-      timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
-      updatedBy: Auth.uid,
-    };
-    const merge = [...oldUpdateLog, newUpdateLog];
-    // console.log(data, merge)
-    // await updateDoc(doc(MAref, maId), {
-    //   startMA: data.startMA,
-    //   endMA: data.endMA,
-    //   cost: data.cost,
-    //   updateLogs: merge,
-    // })
-    //   .then(() => {
-    //     toast({
-    //       title: "อัพเดทสัญญาสำเร็จ",
-    //       status: "success",
-    //       duration: 2000,
-    //       isClosable: true,
-    //       position: "top",
-    //     });
-    //     setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     console.error(e);
-    //     toast({
-    //       title: "อัพเดทสัญญาไม่สำเร็จ",
-    //       status: "error",
-    //       duration: 2000,
-    //       isClosable: true,
-    //       position: "top",
-    //     });
-    //   });
-    // reset()
-    // onClose();
-    setIsLoading(false);
-
+    if (!skip) {
+      const oldUpdateLog = MADetail.updateLogs;
+      const newUpdateLog = {
+        note: data.note,
+        timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
+        updatedBy: Auth.uid,
+      };
+      const merge = [...oldUpdateLog, newUpdateLog];
+      console.log(data, merge)
+      await updateDoc(doc(MAref, maId), {
+        startMA: data.startMA,
+        endMA: data.endMA,
+        cost: data.cost,
+        status: data.status,
+        updateLogs: merge,
+      })
+        .then(() => {
+          toast({
+            title: "อัพเดทสัญญาสำเร็จ",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+            position: "top",
+          });
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.error(e);
+          toast({
+            title: "อัพเดทสัญญาไม่สำเร็จ",
+            description: e,
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+            position: "top",
+          });
+        });
+      reset()
+      onClose();
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -182,7 +188,7 @@ const EditContract = ({ data, maId, projectId }: any) => {
         แก้ไขสัญญา
       </Text>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true} >
         <ModalOverlay />
         <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
           <ModalCloseButton />

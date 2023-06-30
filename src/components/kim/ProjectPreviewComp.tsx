@@ -131,7 +131,7 @@ export default function ProjectPreviewComp() {
 
   return (
     <div className="container">
-      <Container maxW="100%" pb="10" border="1px solid black" overflow={"auto"}>
+      <Container maxW="100%" pb="10" overflow={"auto"}>
         <Box>
           <Center w="100%" mb="1rem">
             <HStack
