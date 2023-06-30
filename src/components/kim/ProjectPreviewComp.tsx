@@ -22,7 +22,6 @@ import {
   Center,
   HStack,
   VStack,
-  Stack,
   InputLeftAddon,
   IconButton,
 } from "@chakra-ui/react";
@@ -172,39 +171,39 @@ export default function ProjectPreviewComp() {
                   </Text>
                 </Text>
               </VStack>
-              <Stack>
-                <Button
-                  _hover={{ opacity: 0.8 }}
-                  bg="#4C7BF4"
-                  color="#eee"
-                  isLoading={isFetching}
-                  onClick={fetchingData}
-                >
-                  <AiOutlineReload />
-                </Button>
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius="16px">
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius="16px 0 0 16px"
-              >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                focusBorderColor={"none"}
-                borderRadius={"16px"}
-                placeholder="ค้นหา project"
-                id="projectSearch"
-                onChange={onSearch}
-              />
-            </InputGroup>
+          <Flex justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius="16px">
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius="16px 0 0 16px"
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  focusBorderColor={"none"}
+                  borderRadius={"16px"}
+                  placeholder="ค้นหา project"
+                  id="projectSearch"
+                  onChange={onSearch}
+                />
+              </InputGroup>
+            </Flex>
+            <Button
+              _hover={{ opacity: 0.8 }}
+              bg="#4C7BF4"
+              color="#eee"
+              isLoading={isFetching}
+              onClick={fetchingData}
+            >
+              <AiOutlineReload />
+            </Button>
           </Flex>
         </Box>
         <Box

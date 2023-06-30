@@ -112,40 +112,40 @@ function PreCompany() {
                   บริการหลังการขายของลูกค้าทั้งหมด
                 </Text>
               </VStack>
-              <Stack pb="0.5rem">
-                <FormAddCompany />
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius="16px">
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius="16px 0 0 16px"
+          <Flex justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius="16px">
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius="16px 0 0 16px"
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  placeholder="ค้นหาบริษัท"
+                  borderRadius={"16px"}
+                  focusBorderColor={"none"}
+                  ref={searchRef}
+                  onChange={onSearch}
+                />
+              </InputGroup>
+              <Button
+                bg="#4C7BF4"
+                color="gray.100"
+                borderRadius="16px"
+                onClick={onSearch}
+                _hover={{ opacity: 0.8 }}
               >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                placeholder="ค้นหาบริษัท"
-                borderRadius={"16px"}
-                focusBorderColor={"none"}
-                ref={searchRef}
-                onChange={onSearch}
-              />
-            </InputGroup>
-            <Button
-              bg="#4C7BF4"
-              color="gray.100"
-              borderRadius="16px"
-              onClick={onSearch}
-              _hover={{ opacity: 0.8 }}
-            >
-              ค้นหา
-            </Button>
+                ค้นหา
+              </Button>
+            </Flex>
+            <FormAddCompany />
           </Flex>
         </Box>
 
@@ -231,12 +231,12 @@ function PreCompany() {
                     </Td>
                   </Tr>
                 ) : filComForm.length === 0 ? (
-                    <Tr>
-                      <Td colSpan={7} textAlign={"center"}>
-                        ยังไม่มีข้อมูลบริษัท
-                      </Td>
-                </Tr>
-                ):(
+                  <Tr>
+                    <Td colSpan={7} textAlign={"center"}>
+                      ยังไม่มีข้อมูลบริษัท
+                    </Td>
+                  </Tr>
+                ) : (
                   filComForm.map((com: any, index: any) => {
                     return (
                       <Tr

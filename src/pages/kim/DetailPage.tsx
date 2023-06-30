@@ -61,7 +61,7 @@ export default function DetailPage() {
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
-    console.clear();
+    // console.clear();
     const project = await getDoc(projectRef);
 
     const MAFetch = await getDocs(MAref);

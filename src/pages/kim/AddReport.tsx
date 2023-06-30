@@ -64,7 +64,7 @@ const AddReport = () => {
     const goBackPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
 
     useEffect(() => {
-        console.clear();
+        // console.clear();
         console.log(Company)
         if (Company.companyId === "") {
             navigate(goBackPath);

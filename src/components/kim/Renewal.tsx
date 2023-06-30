@@ -82,7 +82,7 @@ const Renewal: React.FC<Props> = (props) => {
   }, [startMA, endMA]);
 
   const onSubmit = async (data: any) => {
-    console.clear();
+    // console.clear();
     setIsUpdate(true);
     const renewStart = data.renewStart;
     const renewEnd = data.renewEnd;
