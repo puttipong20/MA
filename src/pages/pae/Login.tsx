@@ -35,12 +35,11 @@ const Login: FC = () => {
   //funcionts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const submitData = (data: any) => {
-    console.log(data);
+    setIsLoading(true);
     const email = data.email;
     const password = data.password;
     signInWithEmailAndPassword(auth, email, password)
       .then(async (currentUser) => {
-        setIsLoading(true);
         const user = currentUser.user;
         if (user) {
           const uid = user.uid;
@@ -60,11 +59,9 @@ const Login: FC = () => {
           navigate("/company")
           // if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
           setIsLoading(false)
-
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         toast({
           title: "Loggin is success.",
           description: `password or email is invalid.`,

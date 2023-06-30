@@ -111,15 +111,16 @@ const Sidebar: React.FC = () => {
                 onClick={() => {
                     navigate("/company");
                 }}
-                fontSize={"1.5rem"}
+                fontSize={"1.25rem"}
                 fontFamily={"inherit"}
                 my="1rem"
                 w="100%"
                 textAlign={"center"}
+                // border="1px solid black"
             >
                 CRAFTING LAB
             </Heading>
-            <Divider />
+            <Divider my="5px" />
             <Box my="10px">
                 <InputGroup>
                     <InputLeftElement>
@@ -128,6 +129,7 @@ const Sidebar: React.FC = () => {
                     <Input placeholder={"Search Company"} w="100%" id="searchInput" onChange={onSearch} />
                 </InputGroup>
             </Box>
+            <Divider my="5px" />
             {isFetching ?
                 <Flex w="100%" justify={"center"} align={"center"}>
                     <Spinner />
