@@ -25,7 +25,7 @@ const Project: React.FC<Props> = (props) => {
             >
                 <AppSidebar />
             </Box>
-            <Box w="calc(100% - 15%)" p="1rem" position="relative" >
+            <Box w="calc(100% - 15%)" p="1rem" maxH="100%" overflow={"hidden"}>
                 {props.children}
             </Box>
         </Flex>

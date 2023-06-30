@@ -131,7 +131,7 @@ export default function ProjectPreviewComp() {
 
   return (
     <div className="container">
-      <Container maxW="100%" pb="10" overflow={"auto"}>
+      <Container maxW="100%" pb="10">
         <Box>
           <Center w="100%" mb="1rem">
             <HStack
@@ -220,7 +220,7 @@ export default function ProjectPreviewComp() {
           className={classes.table}
         >
           <Table textAlign={"center"} w="100%">
-            <Thead position="sticky" top={0} zIndex="sticky">
+            <Thead position="sticky" top={0} zIndex="1">
               <Tr bg={"#4c7bf4"}>
                 <Th
                   minW="10rem"
