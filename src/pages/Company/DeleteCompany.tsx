@@ -74,7 +74,7 @@ function DeleteCompany({ item, fetchData }: any) {
                   handleRemove(item.id);
                   onClose();
                 }}
-                ml={3}
+                ml={5}
               >
                 ลบข้อมูล
               </Button>

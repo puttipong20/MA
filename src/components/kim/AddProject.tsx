@@ -13,6 +13,7 @@ import {
   Text,
   useToast,
   useDisclosure,
+  ModalHeader,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
@@ -136,22 +137,30 @@ const AddProject: React.FC<Props> = (props) => {
   }, [startMA, endMA]);
   return (
     <Box>
-      <Button w="100%" bg="#4C7BF4" color="#eee" _hover={{ opacity: "0.8" }} onClick={onOpen} fontWeight={"normal"}>
+      <Button
+        w="100%"
+        bg="#4C7BF4"
+        color="#eee"
+        _hover={{ opacity: "0.8" }}
+        onClick={onOpen}
+        fontWeight={"normal"}
+      >
         เพิ่ม Project
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
           <ModalCloseButton />
-          <ModalBody p="2rem">
+          <ModalHeader textAlign="center">เพิ่มโปรเจคต์</ModalHeader>
+          <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Controller
                 name="companyName"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <FormControl mb="1rem">
+                  <FormControl mb="0.5rem">
                     <Text fontWeight={"bold"}>บริษัท/ลูกค้า</Text>
                     <Input type="text" {...field} readOnly />
                   </FormControl>
@@ -162,7 +171,7 @@ const AddProject: React.FC<Props> = (props) => {
                 control={control}
                 defaultValue={""}
                 render={({ field }) => (
-                  <FormControl mb="1rem" isRequired>
+                  <FormControl mb="0.5rem" isRequired>
                     <Text fontWeight={"bold"}>ชื่อโปรเจค</Text>
                     <Input type="text" {...field} placeholder="project name" />
                   </FormControl>
@@ -174,7 +183,7 @@ const AddProject: React.FC<Props> = (props) => {
                   control={control}
                   defaultValue={moment().format("YYYY-MM-DD")}
                   render={({ field }) => (
-                    <FormControl mb="1rem" isRequired>
+                    <FormControl mb="0.5rem" isRequired>
                       <Text fontWeight={"bold"}>start MA</Text>
                       <Input type="date" {...field} />
                     </FormControl>
@@ -185,14 +194,14 @@ const AddProject: React.FC<Props> = (props) => {
                   control={control}
                   defaultValue={moment().add(1, "year").format("YYYY-MM-DD")}
                   render={({ field }) => (
-                    <FormControl mb="1rem" isRequired>
+                    <FormControl mb="0.5rem" isRequired>
                       <Text fontWeight={"bold"}>end MA</Text>
                       <Input type="date" {...field} />
                     </FormControl>
                   )}
                 />
               </HStack>
-              <Text mb="1rem">
+              <Text mb="0.5rem">
                 ระยะเวลา ={" "}
                 <Text as="span" fontWeight={"bold"}>
                   {duration}
@@ -205,7 +214,7 @@ const AddProject: React.FC<Props> = (props) => {
                 control={control}
                 defaultValue={""}
                 render={({ field }) => (
-                  <FormControl mb="1rem" isRequired>
+                  <FormControl isRequired>
                     <Text fontWeight={"bold"}>ค่าบริการ</Text>
                     <Input
                       type="number"
@@ -216,8 +225,9 @@ const AddProject: React.FC<Props> = (props) => {
                   </FormControl>
                 )}
               />
-              <HStack w="100%" justify={"space-around"} mt="10px">
+              <HStack justify="center" mt="5">
                 <Button
+                  mr="68px"
                   onClick={() => {
                     onClose();
                   }}
@@ -227,7 +237,9 @@ const AddProject: React.FC<Props> = (props) => {
                 </Button>
                 <Button
                   type="submit"
-                  colorScheme="blue"
+                  color="gray.100"
+                  bg="#4C7BF4"
+                  _hover={{ color: "white", bg: "#4C7BF4" }}
                   isLoading={isAdding}
                   isDisabled={duration < 1}
                 >

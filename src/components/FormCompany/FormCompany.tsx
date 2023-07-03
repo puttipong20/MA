@@ -127,7 +127,7 @@ const FormAddCompany = () => {
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
+        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
           <ModalCloseButton />
           <ModalHeader textAlign="center">เพิ่มข้อมูลบริษัท</ModalHeader>
           <ModalBody>
