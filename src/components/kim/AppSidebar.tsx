@@ -93,7 +93,8 @@ const Sidebar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    filterCompany.forEach((i) => {
+    console.clear();
+    companies.forEach((i) => {
       if (i.companyId === params["company"]) {
         Company.setCompany(i.companyId, i.detail.companyName);
       }
@@ -106,6 +107,7 @@ const Sidebar: React.FC = () => {
         });
       }
     });
+    console.log(Company)
   });
 
   const code = 0;
@@ -126,7 +128,7 @@ const Sidebar: React.FC = () => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-        // border="1px solid black"
+      // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
@@ -166,7 +168,7 @@ const Sidebar: React.FC = () => {
                   borderRadius={"10px"}
                   bg={focusCompany ? color : ""}
                   my="5px"
-                  // borderLeft={focusCompany ? "3px solid white" : "none"}
+                // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
                   <AccordionButton>
                     <Flex justify={"space-between"}>
@@ -182,7 +184,7 @@ const Sidebar: React.FC = () => {
                   <AccordionPanel>
                     <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                      i.detail.projects.length !== 0 ? (
+                        i.detail.projects.length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;

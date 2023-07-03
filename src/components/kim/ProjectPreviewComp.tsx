@@ -87,7 +87,7 @@ export default function ProjectPreviewComp() {
           projectId: projectID,
           detail: p.data() as ProjectDetail,
         };
-        setCompanyName(project.detail.companyName);
+        // setCompanyName(project.detail.companyName);
         const MAref = collection(doc(db, "Project", projectID), "MAlogs");
         const MAlogs = await getDocs(MAref);
         const logs: MA[] = [];
@@ -395,10 +395,10 @@ export default function ProjectPreviewComp() {
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
                           onClick={() => {
-                            Company.setProject(
-                              i.project.projectId,
-                              i.project.detail.projectName
-                            );
+                            // Company.setProject(
+                            //   i.project.projectId,
+                            //   i.project.detail.projectName
+                            // );
                             navigate(
                               `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`
                             );
@@ -435,10 +435,10 @@ export default function ProjectPreviewComp() {
                               p={0}
                               backgroundColor="whiter"
                               onClick={() => {
-                                Company.setProject(
-                                  i.project.projectId,
-                                  i.project.detail.projectName
-                                );
+                                // Company.setProject(
+                                //   i.project.projectId,
+                                //   i.project.detail.projectName
+                                // );
                                 navigate(
                                   `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
                                 );
