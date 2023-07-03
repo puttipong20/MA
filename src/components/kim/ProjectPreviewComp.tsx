@@ -112,7 +112,7 @@ export default function ProjectPreviewComp() {
     ) as HTMLInputElement;
     const value = inputRef.value;
 
-    const searchField = ["detail.projectName"];
+    const searchField = ["project.detail.projectName"];
     const result = search(projects, searchField, value) as {
       project: Project;
       ma: MA[];
