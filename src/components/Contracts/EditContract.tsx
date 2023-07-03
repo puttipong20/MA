@@ -132,8 +132,6 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     }
 
     if (!skip) {
-      const username = Auth.detail.username
-      // console.log(username)
       const oldUpdateLog = MADetail.updateLogs;
       const newUpdateLog = {
         note: data.note,
