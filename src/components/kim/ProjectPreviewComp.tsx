@@ -316,7 +316,14 @@ export default function ProjectPreviewComp() {
                 <>
                   <Tr w="100%">
                     <Td colSpan={8} textAlign={"center"}>
-                      ยังไม่มีข้อมูลโปรเจค<AddProject companyName={companyName} companyId={params["company"] as string} />
+                      ยังไม่มีข้อมูลโปรเจค
+                    </Td>
+                  </Tr>
+                  <Tr w="100%">
+                    <Td colSpan={8}>
+                      <Box as="div" w="15%" m="auto">
+                        <AddProject companyName={companyName} companyId={params["company"] as string} />
+                      </Box>
                     </Td>
                   </Tr>
                 </>
