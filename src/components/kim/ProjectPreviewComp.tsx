@@ -408,7 +408,14 @@ export default function ProjectPreviewComp() {
                               />
                             }
                           />
-                          <MenuList backgroundColor="white">
+                          <MenuList
+                            backgroundColor="white"
+                            pos="sticky"
+                            top="0"
+                            bg="white"
+                            boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                            zIndex="sticky"
+                          >
                             <MenuItem
                               color="gray"
                               h="50px"

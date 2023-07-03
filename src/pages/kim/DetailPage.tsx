@@ -323,7 +323,14 @@ export default function DetailPage() {
                                     />
                                   }
                                 />
-                                <MenuList backgroundColor="white">
+                                <MenuList
+                                  backgroundColor="white"
+                                  pos="sticky"
+                                  top="0"
+                                  bg="white"
+                                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                                  zIndex="sticky"
+                                >
                                   <MenuItem backgroundColor="whiter">
                                     <Box
                                       w="100%"
