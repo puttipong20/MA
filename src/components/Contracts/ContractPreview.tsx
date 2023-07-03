@@ -63,7 +63,6 @@ const ContractPreview = () => {
             <Box>
               <Box>
                 {MACtx.ma.updateLogs.map((u, index) => {
-                  console.log(u);
                   return (
                     <Box
                       key={index}
@@ -87,7 +86,7 @@ const ContractPreview = () => {
                         <Text fontSize="16px" fontWeight="bold">
                           แก้ไขโดย :
                         </Text>
-                        <Text>{u.updatedBy.userName}<Text as="span" fontSize={"0.5rem"} color={"GrayText"}>({u.updatedBy.uid})</Text></Text>
+                        <Text>{u.updatedBy.username}<Text as="span" fontSize={"0.5rem"} color={"GrayText"}>({u.updatedBy.uid})</Text></Text>
                       </HStack>
                       <HStack>
                         <Text fontSize="16px" fontWeight="bold">

@@ -41,11 +41,11 @@ export type MA = {
   // หมดอายุ กำลังใช้งาน ล่วงหน้า ลบ ยกเลิก
   status: "expire" | "active" | "advance" | "deleted" | "cancel";
   cancelNote?: string | "";
-  createdBy: { userName: string; uid: string };
+  createdBy: { username: string; uid: string };
   createdAt: string;
   note?: string | "";
   updateLogs: {
-    updatedBy: { userName: string; uid: string };
+    updatedBy: { username: string; uid: string };
     timeStamp: string;
     note: string | "";
   }[];
@@ -63,7 +63,7 @@ export type ProjectDetail = {
   companyID: string;
   companyName: string;
   createdAt: string;
-  createdBy: { userName: string; uid: string };
+  createdBy: { username: string; uid: string };
 };
 
 export type Project = {
@@ -74,7 +74,7 @@ export type Project = {
 export type CompanyDetail = {
   companyName: string;
   createdAt: string;
-  createdBy: { userName: string; uid: string };
+  createdBy: { username: string; uid: string };
   compAddress: string;
   contactName: string;
   contactPhone: string;
@@ -93,5 +93,5 @@ export type Company = {
 export type UserDetail = {
   role: string;
   company: string;
-  userName: string;
+  username: string;
 };

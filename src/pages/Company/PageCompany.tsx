@@ -265,7 +265,7 @@ function PreCompany() {
                           }}
                           textAlign="left"
                         >
-                          {com.userName}
+                          {com.username}
                         </Td>
                         <Td
                           onClick={() => {

@@ -132,14 +132,17 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     }
 
     if (!skip) {
+      const username = Auth.detail.username
+      // console.log(username)
       const oldUpdateLog = MADetail.updateLogs;
       const newUpdateLog = {
         note: data.note,
         timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
-        updatedBy: Auth.uid,
+        updatedBy: { username: Auth.detail.username, uid: Auth.uid },
       };
       const merge = [...oldUpdateLog, newUpdateLog];
       // console.log(data, merge)
+      // console.log(Auth)
       await updateDoc(doc(MAref, maId), {
         startMA: data.startMA,
         endMA: data.endMA,

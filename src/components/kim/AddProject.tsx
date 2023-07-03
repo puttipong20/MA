@@ -61,12 +61,12 @@ const AddProject: React.FC<Props> = (props) => {
       startMA: data.startMA,
       endMA: data.endMA,
       cost: data.cost,
-      createdBy: { userName: Auth.detail.userName, uid: Auth.uid },
+      createdBy: { username: Auth.detail.username, uid: Auth.uid },
       updateLogs: [
         {
           note: "สร้างโปรเจกต์ใหม่",
           timeStamp: currentDateTime,
-          updatedBy: { userName: Auth.detail.userName, uid: Auth.uid },
+          updatedBy: { username: Auth.detail.username, uid: Auth.uid },
         },
       ],
       createdAt: currentDateTime,
@@ -76,7 +76,7 @@ const AddProject: React.FC<Props> = (props) => {
       companyID: props.companyId,
       companyName: props.companyName,
       createdAt: currentDateTime,
-      createdBy: { userName: Auth.detail.userName, uid: Auth.uid },
+      createdBy: { username: Auth.detail.username, uid: Auth.uid },
       projectName: data.projectName,
       // MAlogs: [lastestMA]
     };

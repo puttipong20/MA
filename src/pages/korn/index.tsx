@@ -317,7 +317,7 @@ const PreCompany = (props: any) => {
                           {com.companyName}
                         </Td>
                         <Td textAlign="left" onClick={handleNext}>
-                          {com.userName}
+                          {com.username}
                         </Td>
                         <Td textAlign="left" onClick={handleNext}>
                           {com.userPhone}

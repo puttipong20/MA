@@ -35,7 +35,7 @@ const EditForm: React.FC<Props> = (props) => {
         const docRef = doc(db, "Project", props.projectId)
         const docDetail = await getDoc(docRef)
         const detail = docDetail.data() as ProjectDetail
-        console.log(detail)
+        // console.log(detail)
         setPDetail(detail)
         setIsFetching(false)
     }

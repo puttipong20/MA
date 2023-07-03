@@ -121,11 +121,11 @@ const Renewal: React.FC<Props> = (props) => {
         endMA: renewEnd,
         cost: data.renewCost,
         status: status,
-        createdBy: { userName: Auth.detail.userName, uid: Auth.uid },
+        createdBy: { username: Auth.detail.username, uid: Auth.uid },
         createdAt: currentDateTime,
         updateLogs: [
           {
-            updatedBy: { userName: Auth.detail.userName, uid: Auth.uid },
+            updatedBy: { username: Auth.detail.username, uid: Auth.uid },
             timeStamp: currentDateTime,
             note: "renewal contract",
           },

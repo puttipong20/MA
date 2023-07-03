@@ -331,7 +331,7 @@ export default function DetailPage() {
                                       onClick={() => {
                                         MACtx.setMA(MA.ma);
                                         navigate(
-                                          `/company/${params["company"]}/${params["projectId"]}/${params["projectName"]}/detail/ContractRecord`
+                                          `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/detail/ContractRecord`
                                         );
                                       }}
                                     >
