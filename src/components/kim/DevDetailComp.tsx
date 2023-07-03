@@ -212,7 +212,7 @@ function DevDetailComp() {
                 <Controller
                   name="dateDone"
                   control={control}
-                  defaultValue={moment().format("yyyy-MM-D[T]HH:mm:ss") || ""}
+                  defaultValue={moment().format("yyyy-MM-DD[T]HH:mm:ss") || ""}
                   render={({ field }) => (
                     <FormControl>
                       <FormLabel color="#2b3674" fontWeight={"bold"}>

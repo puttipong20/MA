@@ -30,7 +30,7 @@ import { BsSearch } from "react-icons/bs";
 import { search } from "ss-search";
 import { Controller, useForm } from "react-hook-form";
 
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { Report, ReportDetail } from "../../@types/Type";
 
@@ -72,8 +72,14 @@ export default function ProblemPreview() {
       };
       allReport.push(report);
     });
-    setReports(allReport);
-    setFilterReports(allReport);
+    const sorted_reports = allReport.sort((a, b) => {
+      const dateA = new Date(a.docs.createAt) as any
+      const dateB = new Date(b.docs.createAt) as any
+
+      return dateB - dateA;
+    })
+    setReports(sorted_reports);
+    setFilterReports(sorted_reports);
     setIsFetching(false);
   };
   const projectName = params["projectName"];
