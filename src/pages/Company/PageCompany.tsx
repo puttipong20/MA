@@ -79,6 +79,7 @@ function PreCompany() {
   }, []);
 
   const handleNext = (id: string, name: string) => {
+    // localStorage.setItem("companyName", name)
     Company.setCompany(id, name);
     navigate(`/company/${id}`);
   };

@@ -24,6 +24,7 @@ import { db } from "../../services/config-db";
 import { CompanyDetail, MA, ProjectDetail } from "../../@types/Type";
 
 import { AuthContext } from "../../context/AuthContext";
+import { CompanyContext } from "../../context/CompanyContext";
 
 interface Props {
   companyId: string;
@@ -37,6 +38,7 @@ const AddProject: React.FC<Props> = (props) => {
   const [isAdding, setIsAdding] = useState(false);
   const toast = useToast();
   const Auth = useContext(AuthContext);
+  const CompanyCtx = useContext(CompanyContext);
 
   useEffect(() => {
     reset();
@@ -116,7 +118,11 @@ const AddProject: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    setValue("companyName", props.companyName);
+    if (props.companyName !== "") {
+      setValue("companyName", props.companyName);
+    } else {
+      setValue("companyName", CompanyCtx.companyName)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

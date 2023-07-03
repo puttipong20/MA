@@ -70,6 +70,7 @@ export default function ProjectPreviewComp() {
 
   const fetchingData = async () => {
     setIsFetching(true);
+    setCompanyName(Company.companyName);
     const projectRef = collection(db, "Project");
     const qProject = query(
       projectRef,
@@ -166,7 +167,7 @@ export default function ProjectPreviewComp() {
                   ข้อมูล Projects
                 </Text>
                 <Text fontSize="16px" fontFamily="Prompt" color="#000000">
-                  บริการหลังการขายของลูกค้าทั้งหมด
+                  บริการหลังการขายของลูกค้าทั้งหมดของบริษัท
                   <Text ml="2" as="span" fontWeight={"bold"}>
                     {companyName}
                   </Text>
@@ -196,15 +197,19 @@ export default function ProjectPreviewComp() {
                 />
               </InputGroup>
             </Flex>
-            <Button
-              _hover={{ opacity: 0.8 }}
-              bg="#4C7BF4"
-              color="#eee"
-              isLoading={isFetching}
-              onClick={fetchingData}
-            >
-              <AiOutlineReload />
-            </Button>
+            <Flex>
+              <Button
+                _hover={{ opacity: 0.8 }}
+                bg="#4C7BF4"
+                color="#eee"
+                isLoading={isFetching}
+                onClick={fetchingData}
+                mr="1rem"
+              >
+                <AiOutlineReload />
+              </Button>
+              <AddProject companyName={companyName} companyId={params["company"] as string} />
+            </Flex>
           </Flex>
         </Box>
         <Box
@@ -347,7 +352,7 @@ export default function ProjectPreviewComp() {
                         : (color = "red");
                   }
                   return (
-                    <Tr key={index} _hover={{bg:"gray.100"}}>
+                    <Tr key={index} _hover={{ bg: "gray.100" }}>
                       <Td textAlign={"center"}>
                         {i.project.detail.projectName}
                       </Td>

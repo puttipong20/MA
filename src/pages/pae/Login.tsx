@@ -44,7 +44,7 @@ const Login: FC = () => {
           const uid = user.uid;
           const userDetail = await getDoc(doc(db, "Profiles", uid))
           if (userDetail.exists()) {
-            Auth.setNewUser(uid, userDetail.data() as { role: string, company: string })
+            Auth.setNewUser(uid, userDetail.data() as { role: string, company: string, username: string })
           }
           toast({
             title: "Loggin is success.",
