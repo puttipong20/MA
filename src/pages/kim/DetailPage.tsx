@@ -41,6 +41,7 @@ import MAstatusTag from "../../components/kim/MAstatusTag";
 import EditContract from "../../components/Contracts/EditContract";
 import UpdateContract from "../../components/kim/UpdateContract";
 import { MAcontext } from "../../context/MAContext";
+import { CompanyContext } from "../../context/CompanyContext";
 import classes from "../../pages/kim/ProblemPreview.module.css";
 
 export default function DetailPage() {
@@ -57,6 +58,7 @@ export default function DetailPage() {
   const projectRef = doc(db, "Project", projectID);
   const MAref = collection(projectRef, "MAlogs");
 
+  const CompanyCtx = useContext(CompanyContext);
   const MACtx = useContext(MAcontext);
 
   const fetchingProjectDetail = async () => {
@@ -135,7 +137,7 @@ export default function DetailPage() {
             <Text fontWeight={"bold"} w="fit-content">
               บริษัท :
               <Text as="span" fontWeight={"normal"}>
-                {projectDetail?.companyName}
+                {CompanyCtx.companyName}
               </Text>
             </Text>
             <Text

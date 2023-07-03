@@ -34,7 +34,11 @@ import { LuLogOut } from "react-icons/lu";
 import { signOut } from "firebase/auth";
 import { AuthContext } from "../../context/AuthContext";
 
-const Sidebar: React.FC = () => {
+interface Props {
+  setTriggle: () => void,
+}
+
+const Sidebar: React.FC<Props> = (props) => {
   const navigate = useNavigate();
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -115,6 +119,15 @@ const Sidebar: React.FC = () => {
 
   return (
     <Box position="relative" h="fit-content" maxH="100%">
+      <Button
+        position="absolute"
+        top="-1rem"
+        right="-1rem"
+        display={["block", "none"]}
+        onClick={props.setTriggle}
+      >
+        X
+      </Button>
       <Heading
         cursor={"pointer"}
         onClick={() => {

@@ -25,11 +25,11 @@ const Project: React.FC<Props> = (props) => {
         // color="#fff" bg="#0F141F"
         color="#0F141F"
         bg="#fff"
-        // position={["absolute","relative"]}
-        zIndex={[2, 0]}
+        position={["absolute","static"]}
+        zIndex={[5, 0]}
         fontFamily={"inherit"}
       >
-        <AppSidebar />
+        <AppSidebar setTriggle={()=>{setIsTrigger(!isTrigger)}}/>
       </Box>
       <Box w="calc(100% - 0%)" p="1rem" maxH="100%" overflow={"hidden"}>
         <Button bg="#4C7BF4" color="white" _hover={{ opacity: "0.8" }} onClick={() => setIsTrigger(!isTrigger)} size="sm" ml="1rem">
