@@ -82,7 +82,7 @@ const Renewal: React.FC<Props> = (props) => {
   }, [startMA, endMA]);
 
   const onSubmit = async (data: any) => {
-    console.clear();
+    // console.clear();
     setIsUpdate(true);
     const renewStart = data.renewStart;
     const renewEnd = data.renewEnd;
@@ -121,11 +121,11 @@ const Renewal: React.FC<Props> = (props) => {
         endMA: renewEnd,
         cost: data.renewCost,
         status: status,
-        createdBy: Auth.uid,
+        createdBy: { username: Auth.detail.username, uid: Auth.uid },
         createdAt: currentDateTime,
         updateLogs: [
           {
-            updatedBy: Auth.uid,
+            updatedBy: { username: Auth.detail.username, uid: Auth.uid },
             timeStamp: currentDateTime,
             note: "renewal contract",
           },

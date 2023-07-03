@@ -99,7 +99,7 @@ function ProblemRequest() {
     return (
       <div className="container">
         <form>
-          <Container mt="10" mb="10">
+          <Container mt="1rem" mb="10">
             <Heading
               size="lg"
               fontFamily={"inherit"}

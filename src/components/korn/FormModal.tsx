@@ -32,7 +32,7 @@ import { AuthContext } from "../../Context/AuthContext";
 type ComValue = {
   companyName: string;
   companyAddress: string;
-  userName: string;
+  username: string;
   userPhone: string;
   userTax: string;
   userPerson: string;
@@ -170,7 +170,7 @@ const FormAddCompany = () => {
                   )}
                 />
                 <Controller
-                  name="userName"
+                  name="username"
                   control={control}
                   defaultValue=""
                   rules={{ required: true }}

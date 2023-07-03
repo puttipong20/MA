@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";

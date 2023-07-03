@@ -6,7 +6,7 @@ import { UserDetail } from "../@types/Type";
 
 export const AuthContext = createContext({
     uid: "",
-    detail: { role: "", company: "" } as UserDetail,
+    detail: { role: "", company: "", username: "" } as UserDetail,
     setNewUser: (_uid: string, _detail: UserDetail) => { },
     clearUser: () => { }
 })
@@ -14,7 +14,7 @@ export const AuthContext = createContext({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AuthContextProvider = (props: any) => {
     const [uid, setUid] = useState("");
-    const [userDetail, setUserDetail] = useState<UserDetail>({ role: "", company: "" });
+    const [userDetail, setUserDetail] = useState<UserDetail>({ role: "", company: "", username: "" });
 
     const setUser = (newUid: string, newUserDetail: UserDetail) => {
         setUid(newUid);
@@ -23,7 +23,7 @@ const AuthContextProvider = (props: any) => {
 
     const clearUser = () => {
         setUid("");
-        setUserDetail({ role: "", company: "" })
+        setUserDetail({ role: "", company: "", username: "" })
     }
 
     const context = {

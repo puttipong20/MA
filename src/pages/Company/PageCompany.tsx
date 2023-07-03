@@ -5,7 +5,6 @@ import {
   Center,
   Container,
   HStack,
-  Stack,
   Table,
   Tbody,
   Td,
@@ -18,7 +17,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Input,
-  Button,
   Menu,
   MenuButton,
   IconButton,
@@ -59,6 +57,7 @@ function PreCompany() {
       setComForm(allCompany);
       setFilComForm(allCompany);
       setIsFetching(false);
+      // console.log(allCompany);
     });
   };
 
@@ -112,46 +111,46 @@ function PreCompany() {
                   บริการหลังการขายของลูกค้าทั้งหมด
                 </Text>
               </VStack>
-              <Stack pb="0.5rem">
-                <FormAddCompany />
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius="16px">
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius="16px 0 0 16px"
+          <Flex justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius="16px">
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius="16px 0 0 16px"
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  placeholder="ค้นหาบริษัท"
+                  borderRadius={"16px"}
+                  focusBorderColor={"none"}
+                  ref={searchRef}
+                  onChange={onSearch}
+                />
+              </InputGroup>
+              {/* <Button
+                bg="#4C7BF4"
+                color="gray.100"
+                borderRadius="16px"
+                onClick={onSearch}
+                _hover={{ opacity: 0.8 }}
               >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                placeholder="ค้นหาบริษัท"
-                borderRadius={"16px"}
-                focusBorderColor={"none"}
-                ref={searchRef}
-                onChange={onSearch}
-              />
-            </InputGroup>
-            <Button
-              bg="#4C7BF4"
-              color="gray.100"
-              borderRadius="16px"
-              onClick={onSearch}
-              _hover={{ opacity: 0.8 }}
-            >
-              ค้นหา
-            </Button>
+                ค้นหา
+              </Button> */}
+            </Flex>
+            <FormAddCompany />
           </Flex>
         </Box>
 
         <Box>
           <Box
-            mt="10"
+            mt="1rem"
             borderRadius="20px"
             border="1px"
             borderColor="#f4f4f4"
@@ -231,12 +230,12 @@ function PreCompany() {
                     </Td>
                   </Tr>
                 ) : filComForm.length === 0 ? (
-                    <Tr>
-                      <Td colSpan={7} textAlign={"center"}>
-                        ยังไม่มีข้อมูลบริษัท
-                      </Td>
-                </Tr>
-                ):(
+                  <Tr>
+                    <Td colSpan={7} textAlign={"center"}>
+                      ยังไม่มีข้อมูลบริษัท
+                    </Td>
+                  </Tr>
+                ) : (
                   filComForm.map((com: any, index: any) => {
                     return (
                       <Tr
@@ -281,8 +280,8 @@ function PreCompany() {
                             <MenuButton
                               as={IconButton}
                               colorScheme="white"
-                              bg="white"
-                              _hover={{ bg: "gray.100" }}
+                              bg="none"
+                              _hover={{ bg: "white" }}
                               icon={
                                 <BiDotsHorizontalRounded
                                   size="25px"

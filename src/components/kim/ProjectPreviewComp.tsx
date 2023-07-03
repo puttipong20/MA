@@ -22,7 +22,6 @@ import {
   Center,
   HStack,
   VStack,
-  Stack,
   InputLeftAddon,
   IconButton,
 } from "@chakra-ui/react";
@@ -57,6 +56,7 @@ import moment from "moment";
 
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
+import AddProject from "./AddProject";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
@@ -172,43 +172,43 @@ export default function ProjectPreviewComp() {
                   </Text>
                 </Text>
               </VStack>
-              <Stack>
-                <Button
-                  _hover={{ opacity: 0.8 }}
-                  bg="#4C7BF4"
-                  color="#eee"
-                  isLoading={isFetching}
-                  onClick={fetchingData}
-                >
-                  <AiOutlineReload />
-                </Button>
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius="16px">
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius="16px 0 0 16px"
-              >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                focusBorderColor={"none"}
-                borderRadius={"16px"}
-                placeholder="ค้นหา project"
-                id="projectSearch"
-                onChange={onSearch}
-              />
-            </InputGroup>
+          <Flex justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius="16px">
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius="16px 0 0 16px"
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  focusBorderColor={"none"}
+                  borderRadius={"16px"}
+                  placeholder="ค้นหา project"
+                  id="projectSearch"
+                  onChange={onSearch}
+                />
+              </InputGroup>
+            </Flex>
+            <Button
+              _hover={{ opacity: 0.8 }}
+              bg="#4C7BF4"
+              color="#eee"
+              isLoading={isFetching}
+              onClick={fetchingData}
+            >
+              <AiOutlineReload />
+            </Button>
           </Flex>
         </Box>
         <Box
-          mt="10"
+          mt="1rem"
           borderRadius="20px"
           border="1px"
           borderColor="#f4f4f4"
@@ -307,22 +307,30 @@ export default function ProjectPreviewComp() {
             <Tbody>
               {isFetching ? (
                 <Tr>
-                  <Td colSpan={7} textAlign={"center"}>
+                  <Td colSpan={8} textAlign={"center"}>
                     Loading . . .
                     <Spinner />
                   </Td>
                 </Tr>
               ) : filterProject.length === 0 ? (
-                <Tr>
-                  <Td colSpan={7} textAlign={"center"}>
-                    ยังไม่มีข้อมูลโปรเจค
-                  </Td>
-                </Tr>
+                <>
+                  <Tr w="100%">
+                    <Td colSpan={8} textAlign={"center"}>
+                      ไม่มีข้อมูลโปรเจค
+                    </Td>
+                  </Tr>
+                  <Tr w="100%">
+                    <Td colSpan={8}>
+                      <Box as="div" w="15%" m="auto">
+                        <AddProject companyName={companyName} companyId={params["company"] as string} />
+                      </Box>
+                    </Td>
+                  </Tr>
+                </>
               ) : (
                 filterProject.map((i, index) => {
                   const lastestMA = i.ma.filter(
-                    (j) => j.status === "active"
-                  )[0];
+                    (j) => j.status === "active")[0];
                   let display = "";
                   let color = "";
                   if (lastestMA) {
@@ -339,7 +347,7 @@ export default function ProjectPreviewComp() {
                         : (color = "red");
                   }
                   return (
-                    <Tr key={index}>
+                    <Tr key={index} _hover={{bg:"gray.100"}}>
                       <Td textAlign={"center"}>
                         {i.project.detail.projectName}
                       </Td>
@@ -399,8 +407,8 @@ export default function ProjectPreviewComp() {
                           <MenuButton
                             as={IconButton}
                             colorScheme="white"
-                            bg="white"
-                            _hover={{ bg: "gray.100" }}
+                            bg="none"
+                            _hover={{ bg: "white" }}
                             icon={
                               <BiDotsHorizontalRounded
                                 size="25px"

@@ -18,7 +18,7 @@ const Project: React.FC<Props> = (props) => {
           overflowY={"auto"}
           className={classes.sidebar}
           px="10px"
-          w="30%"
+          w="18%"
           minW={["fit-content", "15%"]}
           mr="15px"
           boxShadow={"5px 5px 5px rgba(0,0,0,0.1)"}

@@ -20,7 +20,7 @@ import { MdOutlineHomeWork } from "react-icons/md";
 type Cvalue = {
   companyName: string;
   companyAddress: string;
-  userName: string;
+  username: string;
   userPhone: string;
   userTax: string;
   userPerson: string;
@@ -92,7 +92,7 @@ const ViewCompany:React.FC = () => {
   //     const data: Cvalue = {
   //       companyName: doc.data()?.companyName,
   //       companyAddress: doc.data()?.companyAddress,
-  //       userName: doc.data()?.userName,
+  //       username: doc.data()?.username,
   //       userPhone: doc.data()?.userPhone,
   //       userTax: doc.data()?.userTax,
   //       userPerson: doc.data()?.userPerson,
@@ -142,7 +142,7 @@ const ViewCompany:React.FC = () => {
   //           </HStack>
   //           <HStack>
   //             <Text>ชื่อผู้ติดต่อ :</Text>
-  //             <Text>{cValue?.userName}</Text>
+  //             <Text>{cValue?.username}</Text>
   //           </HStack>
   //           <HStack>
   //             <Text>เบอร์โทรติดต่อ :</Text>

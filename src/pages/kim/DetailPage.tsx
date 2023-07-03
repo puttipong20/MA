@@ -61,7 +61,7 @@ export default function DetailPage() {
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
-    console.clear();
+    // console.clear();
     const project = await getDoc(projectRef);
 
     const MAFetch = await getDocs(MAref);
@@ -290,7 +290,7 @@ export default function DetailPage() {
                       .filter((ma) => ma.ma.status !== "deleted")
                       .map((MA, index) => {
                         return (
-                          <Tr key={index}>
+                          <Tr key={index} _hover={{ bg: "gray.100" }}>
                             <Td textAlign={"center"}>{index + 1}</Td>
                             <Td textAlign={"center"}>
                               {dateFormat(MA.ma.startMA)}
@@ -314,8 +314,8 @@ export default function DetailPage() {
                                 <MenuButton
                                   as={IconButton}
                                   colorScheme="white"
-                                  bg="white"
-                                  _hover={{ bg: "gray.100" }}
+                                  bg="none"
+                                  _hover={{ bg: "white" }}
                                   icon={
                                     <BiDotsHorizontalRounded
                                       size="25px"
@@ -338,7 +338,7 @@ export default function DetailPage() {
                                       onClick={() => {
                                         MACtx.setMA(MA.ma);
                                         navigate(
-                                          `/company/${params["company"]}/${params["projectId"]}/${params["projectName"]}/detail/ContractRecord`
+                                          `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/detail/ContractRecord`
                                         );
                                       }}
                                     >

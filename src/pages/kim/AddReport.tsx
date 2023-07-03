@@ -64,7 +64,7 @@ const AddReport = () => {
     const goBackPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
 
     useEffect(() => {
-        console.clear();
+        // console.clear();
         console.log(Company)
         if (Company.companyId === "") {
             navigate(goBackPath);
@@ -180,7 +180,7 @@ const AddReport = () => {
                 <Heading fontFamily={"inherit"}>แจ้งปัญหาการใช้งานระบบ</Heading>
             </Flex>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Container mt="10" pb="10">
+                <Container mt="1rem" pb="10">
                     <Grid>
                         <Text fontWeight="bold" color="#2B3674" fontSize="2xl">
                             แจ้งปัญหาการใช้งานระบบ
