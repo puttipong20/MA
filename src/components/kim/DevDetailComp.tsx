@@ -307,11 +307,11 @@ function DevDetailComp() {
                 control={control}
                 defaultValue={detailHistory?.solution?.accepter || ""}
                 render={({ field }) => (
-                  <FormControl mb="1rem">
+                  <FormControl mb="1rem" isRequired>
                     <FormLabel color="#2b3674" fontWeight={"bold"}>
                       ชื่อผู้รับเรื่อง
                     </FormLabel>
-                    <Select {...field}>
+                    <Select {...field} placeholder={"กรุณาเลือกผู้รับเรื่อง"}>
                       {allAdminUserName.map((i, index) => {
                         return (
                           <option key={index} value={i}>{i}</option>
