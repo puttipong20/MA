@@ -68,7 +68,7 @@ function DevDetailComp() {
     const newSolution = { ...detailHistory?.solution, ...solutionUpdate };
 
     if (!newSolution["dateProcess"]) {
-      newSolution["dateProcess"] = moment().format("yyyy-MM-D[T]HH:mm:ss")
+      newSolution["dateProcess"] = moment().format("yyyy-MM-DD[T]HH:mm:ss")
     }
 
     if (currentStatus !== "เสร็จสิ้น" && currentStatus !== "ยกเลิก") {
@@ -227,7 +227,7 @@ function DevDetailComp() {
                 <Controller
                   name="dateProcess"
                   control={control}
-                  defaultValue={moment().format("yyyy-MM-D[T]HH:mm") || ""}
+                  defaultValue={moment().format("yyyy-MM-DD[T]HH:mm") || ""}
                   render={({ field }) => (
                     <FormControl>
                       <FormLabel color="#2b3674" fontWeight={"bold"}>

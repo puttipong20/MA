@@ -193,9 +193,9 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true} >
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }}>
+        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
           <ModalCloseButton />
-          <ModalHeader>แก้ไขข้อมูลสัญญา</ModalHeader>
+          <ModalHeader textAlign="center">แก้ไขข้อมูลสัญญา</ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>

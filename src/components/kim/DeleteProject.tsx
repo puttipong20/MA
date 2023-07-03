@@ -74,7 +74,7 @@ const DeleteProject: React.FC<Props> = (props) => {
                         </Text>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='gray' onClick={onClose}>ยกเลิก</Button>
+                        <Button mr="5" colorScheme='gray' onClick={onClose}>ยกเลิก</Button>
                         <Button colorScheme='red' onClick={deleteProcess} isLoading={deleting}>ยืนยัน</Button>
                     </ModalFooter>
                 </ModalContent>
