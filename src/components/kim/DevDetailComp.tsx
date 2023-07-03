@@ -208,7 +208,8 @@ function DevDetailComp() {
                 )}
               />
 
-              {(watch("RepStatus") === "เสร็จสิ้น" || watch("RepStatus") === "ยกเลิก") && (
+              {(watch("RepStatus") === "เสร็จสิ้น" ||
+                watch("RepStatus") === "ยกเลิก") && (
                 <Controller
                   name="dateDone"
                   control={control}
@@ -314,14 +315,15 @@ function DevDetailComp() {
                     <Select {...field} placeholder={"กรุณาเลือกผู้รับเรื่อง"}>
                       {allAdminUserName.map((i, index) => {
                         return (
-                          <option key={index} value={i}>{i}</option>
-                        )
+                          <option key={index} value={i}>
+                            {i}
+                          </option>
+                        );
                       })}
                     </Select>
                   </FormControl>
                 )}
               />
-
 
               <Text color="#2b3674" fontWeight={"bold"}>
                 อัพโหลดรูปภาพเพิ่มเติม
@@ -362,7 +364,7 @@ function DevDetailComp() {
               <Flex w="100%" justifyContent={"center"} gap={"3rem"} mt="2rem">
                 <Button
                   w="100px"
-                  color="blue"
+                  borderRadius="16px"
                   onClick={() => {
                     navigate(backPath);
                   }}
@@ -372,7 +374,10 @@ function DevDetailComp() {
                 </Button>
                 <Button
                   w="100px"
-                  colorScheme="blue"
+                  bg="#4C7BF4"
+                  color="#eee"
+                  _hover={{ opacity: "0.8" }}
+                  borderRadius="16px"
                   type="submit"
                   isLoading={isLoadingBtn}
                 >

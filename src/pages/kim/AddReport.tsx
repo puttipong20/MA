@@ -438,7 +438,7 @@ const AddReport = () => {
                                 bg="#4c7bf4"
                                 color="white"
                                 isLoading={isLoading}
-                                _hover={{ bg: "#4c7bf4" }}
+                                _hover={{ opacity:"0.8"}}
                             >
                                 บันทึก
                             </Button>
