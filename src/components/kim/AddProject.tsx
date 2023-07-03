@@ -64,7 +64,7 @@ const AddProject: React.FC<Props> = (props) => {
       createdBy: Auth.uid,
       updateLogs: [
         {
-          note: "initial Project",
+          note: "สร้างโปรเจกต์ใหม่",
           timeStamp: currentDateTime,
           updatedBy: Auth.uid,
         },

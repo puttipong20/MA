@@ -89,4 +89,5 @@ export type Company = {
 export type UserDetail = {
   role: string;
   company: string;
+  userName: string;
 };

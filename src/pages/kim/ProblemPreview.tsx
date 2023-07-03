@@ -320,7 +320,7 @@ export default function ProblemPreview() {
                     return (
                       <Tr
                         key={index}
-                        _hover={{ bg: "gray.100" }}
+                        _hover={{ bg: "#eee" }}
                         cursor={"pointer"}
                         onClick={() => {
                           Company.setReport(r.id);

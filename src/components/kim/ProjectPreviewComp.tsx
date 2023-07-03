@@ -316,7 +316,7 @@ export default function ProjectPreviewComp() {
                 <>
                   <Tr w="100%">
                     <Td colSpan={8} textAlign={"center"}>
-                      ยังไม่มีข้อมูลโปรเจค
+                      ไม่มีข้อมูลโปรเจค
                     </Td>
                   </Tr>
                   <Tr w="100%">

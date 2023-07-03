@@ -160,7 +160,9 @@ const Sidebar: React.FC = () => {
                                     >
                                         <AccordionButton>
                                             <Flex justify={"space-between"}>
-                                                <Text fontWeight={focusCompany ? "bold" : "normal"} textAlign={"left"}>{i.detail.companyName}</Text>
+                                                <Text fontWeight={focusCompany ? "bold" : "normal"}
+                                                    // onClick={() => { navigate(`/company/${i.companyId}`) }}
+                                                    textAlign={"left"}>{i.detail.companyName}</Text>
                                                 {/* <AccordionIcon /> */}
                                             </Flex>
                                         </AccordionButton>
