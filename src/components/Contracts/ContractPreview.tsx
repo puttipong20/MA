@@ -13,6 +13,7 @@ import { MAcontext } from "../../context/MAContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import moment from "moment";
+import classes from "../../pages/kim/ProblemPreview.module.css";
 
 const ContractPreview = () => {
   const navigate = useNavigate();
@@ -61,7 +62,16 @@ const ContractPreview = () => {
             </Center>
             <Divider my="1rem" />
             <Box>
-              <Box>
+              <Box
+                mt="1rem"
+                borderRadius="20px"
+                w="100%"
+                h="100%"
+                maxH="68vh"
+                overflowY={"auto"}
+                boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
+                className={classes.table}
+              >
                 {MACtx.ma.updateLogs.map((u, index) => {
                   return (
                     <Box
@@ -70,6 +80,8 @@ const ContractPreview = () => {
                       p="4"
                       pb="5"
                       borderRadius="16px"
+                      w="98%"
+                      ml="1rem"
                     >
                       <HStack>
                         <Text fontSize="16px" fontWeight="bold">
@@ -80,13 +92,24 @@ const ContractPreview = () => {
                         <Text fontSize="16px" fontWeight="bold">
                           แก้ไขเมื่อ :
                         </Text>
-                        <Text>{moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}</Text>
+                        <Text>
+                          {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
+                        </Text>
                       </HStack>
                       <HStack>
                         <Text fontSize="16px" fontWeight="bold">
                           แก้ไขโดย :
                         </Text>
-                        <Text>{u.updatedBy.username}<Text as="span" fontSize={"0.5rem"} color={"GrayText"}>({u.updatedBy.uid})</Text></Text>
+                        <Text>
+                          {u.updatedBy.username}
+                          <Text
+                            as="span"
+                            fontSize={"0.5rem"}
+                            color={"GrayText"}
+                          >
+                            ({u.updatedBy.uid})
+                          </Text>
+                        </Text>
                       </HStack>
                       <HStack>
                         <Text fontSize="16px" fontWeight="bold">
@@ -94,7 +117,8 @@ const ContractPreview = () => {
                         </Text>
                         <Text>{u.note}</Text>
                       </HStack>
-                    </Box>)
+                    </Box>
+                  );
                 })}
               </Box>
             </Box>

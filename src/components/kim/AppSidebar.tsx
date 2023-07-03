@@ -125,6 +125,8 @@ const Sidebar: React.FC<Props> = (props) => {
         right="-1rem"
         display={["block", "none"]}
         onClick={props.setTriggle}
+        bg="none"
+        color="red"
       >
         X
       </Button>
