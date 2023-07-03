@@ -163,14 +163,14 @@ function PreCompany() {
             className={classes.table}
           >
             <Table w="100%">
-              <Thead position="sticky" top={0} zIndex="sticky">
+              <Thead position="sticky" top={0} zIndex="1">
                 <Tr bg="#4C7BF4">
                   <Th
                     minW="10rem"
                     fontSize="16px"
                     fontWeight={"normal"}
                     color="white"
-                    w="15%"
+                    w="5%"
                     textAlign="center"
                     fontFamily={"inherit"}
                   >
@@ -290,7 +290,14 @@ function PreCompany() {
                                 />
                               }
                             />
-                            <MenuList backgroundColor="white">
+                            <MenuList
+                              backgroundColor="white"
+                              pos="sticky"
+                              top="0"
+                              bg="white"
+                              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                              zIndex="sticky"
+                            >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <ViewCompany id={com?.id} data={com} />
                               </MenuItem>
