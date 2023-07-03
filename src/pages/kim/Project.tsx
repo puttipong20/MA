@@ -1,35 +1,48 @@
-import {
-    Box,
-    Flex,
-} from '@chakra-ui/react'
-
-import AppSidebar from '../../components/kim/AppSidebar';
-
-import classes from "./Project.module.css"
+import { Box, Button, Flex } from "@chakra-ui/react";
+import AppSidebar from "../../components/kim/AppSidebar";
+import classes from "./Project.module.css";
+import { useState } from "react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 interface Props {
-    children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 const Project: React.FC<Props> = (props) => {
-    return (
-        <Flex h="100vh">
-            <Box h="100%"
-                overflowY={"auto"}
-                className={classes.sidebar}
-                px="10px" w="15%" minW={"15%"} mr="15px"
-                boxShadow={"5px 5px 5px rgba(0,0,0,0.1)"}
-                // color="#fff" bg="#0F141F"
-                color="#0F141F" bg="#fff"
-                fontFamily={"inherit"}
-            >
-                <AppSidebar />
-            </Box>
-            <Box w="calc(100% - 15%)" p="1rem" maxH="100%" overflow={"hidden"}>
-                {props.children}
-            </Box>
-        </Flex>
-    )
-}
+  const [isTrigger, setIsTrigger] = useState<boolean>(false);
+  return (
+    <Flex h="100vh" position={"relative"}>
+      {isTrigger ? (
+        <Box
+          h="100%"
+          overflowY={"auto"}
+          className={classes.sidebar}
+          px="10px"
+          w="18%"
+          minW={["fit-content", "15%"]}
+          mr="15px"
+          boxShadow={"5px 5px 5px rgba(0,0,0,0.1)"}
+          // color="#fff" bg="#0F141F"
+          color="#0F141F"
+          bg="#fff"
+          // position={["absolute","relative"]}
+          display={["flex", "block"]}
+          zIndex={[2, 0]}
+          fontFamily={"inherit"}
+        >
+          <AppSidebar />
+        </Box>
+      ) : (
+        ""
+      )}
+      <Box w="calc(100% - 0%)" p="1rem" maxH="100%" overflow={"hidden"}>
+        <Button bg="#4C7BF4" color="white" _hover={{opacity:"0.8"}} onClick={() => setIsTrigger(!isTrigger)} size="sm" ml="1rem">
+          <HamburgerIcon />
+        </Button>
+        {props.children}
+      </Box>
+    </Flex>
+  );
+};
 
-export default Project
+export default Project;

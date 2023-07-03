@@ -208,7 +208,7 @@ export default function ProjectPreviewComp() {
           </Flex>
         </Box>
         <Box
-          mt="10"
+          mt="1rem"
           borderRadius="20px"
           border="1px"
           borderColor="#f4f4f4"
@@ -347,7 +347,7 @@ export default function ProjectPreviewComp() {
                         : (color = "red");
                   }
                   return (
-                    <Tr key={index} _hover={{bg:"#ddd"}}>
+                    <Tr key={index} _hover={{bg:"gray.100"}}>
                       <Td textAlign={"center"}>
                         {i.project.detail.projectName}
                       </Td>
@@ -407,8 +407,8 @@ export default function ProjectPreviewComp() {
                           <MenuButton
                             as={IconButton}
                             colorScheme="white"
-                            bg="white"
-                            _hover={{ bg: "gray.100" }}
+                            bg="none"
+                            _hover={{ bg: "white" }}
                             icon={
                               <BiDotsHorizontalRounded
                                 size="25px"
@@ -416,7 +416,14 @@ export default function ProjectPreviewComp() {
                               />
                             }
                           />
-                          <MenuList backgroundColor="white">
+                          <MenuList
+                            backgroundColor="white"
+                            pos="sticky"
+                            top="0"
+                            bg="white"
+                            boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                            zIndex="sticky"
+                          >
                             <MenuItem
                               color="gray"
                               h="50px"

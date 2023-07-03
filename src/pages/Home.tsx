@@ -20,7 +20,7 @@ export default function Home() {
             </Box> */}
             <Box>
                 <Text>MA nav temp</Text>
-                <Button onClick={() => { navigate("/company") }}>Company - Project</Button>
+                <Button onClick={() => { navigate("/") }}>Company - Project</Button>
             </Box>
         </Box>
     )

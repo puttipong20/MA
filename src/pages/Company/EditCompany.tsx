@@ -31,7 +31,7 @@ import { RiEditLine } from "react-icons/ri";
 type ComValue = {
   companyName: string;
   companyAddress: string;
-  username: string;
+  userName: string;
   userPhone: string;
   userTax: string;
   userPerson: string;
@@ -56,7 +56,7 @@ const FormEditCompany = ({ data, id }: any) => {
     if (data) {
       setValue("companyName", data?.companyName);
       setValue("companyAddress", data?.companyAddress);
-      setValue("username", data?.username);
+      setValue("userName", data?.userName);
       setValue("userPhone", data?.userPhone);
       setValue("userTax", data?.userTax);
       setValue("userPerson", data?.userPerson);
@@ -156,7 +156,7 @@ const FormEditCompany = ({ data, id }: any) => {
                   )}
                 />
                 <Controller
-                  name="username"
+                  name="userName"
                   control={control}
                   defaultValue=""
                   rules={{ required: true }}

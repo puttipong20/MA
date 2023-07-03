@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { addDoc, collection, doc, runTransaction } from "firebase/firestore";
 import { useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -30,7 +31,7 @@ import { AuthContext } from "../../context/AuthContext";
 type ComValue = {
   companyName: string;
   companyAddress: string;
-  username: string;
+  userName: string;
   userPhone: string;
   userTax: string;
   userPerson: string;
@@ -116,6 +117,7 @@ const FormAddCompany = () => {
       <Box>
         <Button
           onClick={onOpen}
+          fontWeight={"normal"}
           color="gray.100"
           bg="#4C7BF4"
           _hover={{ opacity: 0.8 }}
@@ -164,7 +166,7 @@ const FormAddCompany = () => {
                   )}
                 />
                 <Controller
-                  name="username"
+                  name="userName"
                   control={control}
                   defaultValue=""
                   rules={{ required: true }}

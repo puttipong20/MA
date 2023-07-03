@@ -213,11 +213,11 @@ const PreCompany = (props: any) => {
                   borderRadius="16px"
                   id="searchInput"
                   focusBorderColor="none"
-                  //   onKeyDown={keyHandle}
-                  //   onChange={onSearch}
+                //   onKeyDown={keyHandle}
+                //   onChange={onSearch}
                 />
               </InputGroup>
-              <Button
+              {/* <Button
                 bg="#4C7BF4"
                 color="gray.100"
                 borderRadius="16px"
@@ -228,12 +228,12 @@ const PreCompany = (props: any) => {
                 }}
               >
                 ค้นหา
-              </Button>
+              </Button> */}
             </Flex>
           </Box>
           <Box>
             <Box
-              mt="10"
+              mt="1rem"
               borderRadius="20px"
               border="1px"
               borderColor="#f4f4f4"
@@ -327,8 +327,8 @@ const PreCompany = (props: any) => {
                             <MenuButton
                               as={IconButton}
                               colorScheme="white"
-                              bg="white"
-                              _hover={{ bg: "gray.100" }}
+                              bg="none"
+                              _hover={{ bg: "white" }}
                               icon={
                                 <BiDotsHorizontalRounded
                                   size="25px"

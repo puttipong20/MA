@@ -17,7 +17,6 @@ import {
   InputLeftAddon,
   InputGroup,
   Input,
-  Button,
   Menu,
   MenuButton,
   IconButton,
@@ -58,6 +57,7 @@ function PreCompany() {
       setComForm(allCompany);
       setFilComForm(allCompany);
       setIsFetching(false);
+      // console.log(allCompany);
     });
   };
 
@@ -134,7 +134,7 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              <Button
+              {/* <Button
                 bg="#4C7BF4"
                 color="gray.100"
                 borderRadius="16px"
@@ -142,7 +142,7 @@ function PreCompany() {
                 _hover={{ opacity: 0.8 }}
               >
                 ค้นหา
-              </Button>
+              </Button> */}
             </Flex>
             <FormAddCompany />
           </Flex>
@@ -150,7 +150,7 @@ function PreCompany() {
 
         <Box>
           <Box
-            mt="10"
+            mt="1rem"
             borderRadius="20px"
             border="1px"
             borderColor="#f4f4f4"
@@ -162,14 +162,14 @@ function PreCompany() {
             className={classes.table}
           >
             <Table w="100%">
-              <Thead position="sticky" top={0} zIndex="sticky">
+              <Thead position="sticky" top={0} zIndex="1">
                 <Tr bg="#4C7BF4">
                   <Th
                     minW="10rem"
                     fontSize="16px"
                     fontWeight={"normal"}
                     color="white"
-                    w="15%"
+                    w="5%"
                     textAlign="center"
                     fontFamily={"inherit"}
                   >
@@ -265,7 +265,7 @@ function PreCompany() {
                           }}
                           textAlign="left"
                         >
-                          {com.username}
+                          {com.userName}
                         </Td>
                         <Td
                           onClick={() => {
@@ -280,8 +280,8 @@ function PreCompany() {
                             <MenuButton
                               as={IconButton}
                               colorScheme="white"
-                              bg="white"
-                              _hover={{ bg: "gray.100" }}
+                              bg="none"
+                              _hover={{ bg: "white" }}
                               icon={
                                 <BiDotsHorizontalRounded
                                   size="25px"
@@ -289,7 +289,14 @@ function PreCompany() {
                                 />
                               }
                             />
-                            <MenuList backgroundColor="white">
+                            <MenuList
+                              backgroundColor="white"
+                              pos="sticky"
+                              top="0"
+                              bg="white"
+                              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                              zIndex="sticky"
+                            >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <ViewCompany id={com?.id} data={com} />
                               </MenuItem>

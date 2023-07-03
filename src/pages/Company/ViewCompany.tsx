@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../../services/config-db";
@@ -21,7 +22,7 @@ import { MdOutlineHomeWork } from "react-icons/md";
 type Cvalue = {
   companyName: string;
   companyAddress: string;
-  username: string;
+  userName: string;
   userPhone: string;
   userTax: string;
   userPerson: string;
@@ -38,7 +39,7 @@ const ViewCompany = ({id}:any) => {
       const data: Cvalue = {
         companyName: doc.data()?.companyName,
         companyAddress: doc.data()?.companyAddress,
-        username: doc.data()?.username,
+        userName: doc.data()?.userName,
         userPhone: doc.data()?.userPhone,
         userTax: doc.data()?.userTax,
         userPerson: doc.data()?.userPerson,
@@ -93,7 +94,7 @@ const ViewCompany = ({id}:any) => {
                     <Text w="50%" fontWeight="bold">
                       ชื่อผู้ติดต่อ :
                     </Text>
-                    <Text w="50%">{cValue?.username}</Text>
+                    <Text w="50%">{cValue?.userName}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">

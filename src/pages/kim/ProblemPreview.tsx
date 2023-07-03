@@ -13,7 +13,6 @@ import {
   InputLeftAddon,
   Select,
   Spinner,
-  Stack,
   Table,
   Tag,
   TagLabel,
@@ -140,48 +139,31 @@ export default function ProblemPreview() {
                   {projectName}
                 </Text>
               </VStack>
-              <Stack>
-                <Button
-                  bg={"#4c7bf4"}
-                  color="#fff"
-                  fontWeight={"normal"}
-                  _hover={{ opacity: 0.8 }}
-                  onClick={() => {
-                    // console.log(props)
-                    navigate(
-                      `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
-                    );
-                  }}
-                  _active={{ opacity: "1" }}
-                  borderRadius={"16px"}
-                >
-                  แจ้งปัญหาการใช้งานระบบ
-                </Button>
-              </Stack>
             </HStack>
           </Center>
-          <Flex justifyContent="flex-start" gap="20px">
-            <InputGroup w="auto" borderRadius={"16px"}>
-              <InputLeftAddon
-                background="#F4F7FE"
-                border="none"
-                borderRadius={"16px 0 0 16px"}
-              >
-                <BsSearch />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                background="#F4F7FE"
-                border="none"
-                placeholder="Search by refID, problem"
-                borderRadius={"16px"}
-                id="searchInput"
-                focusBorderColor={"none"}
-                ref={searchRef}
-                onChange={onSearch}
-              />
-            </InputGroup>
-            <Button
+          <HStack justify={"space-between"}>
+            <Flex justifyContent="flex-start" gap="20px">
+              <InputGroup w="auto" borderRadius={"16px"}>
+                <InputLeftAddon
+                  background="#F4F7FE"
+                  border="none"
+                  borderRadius={"16px 0 0 16px"}
+                >
+                  <BsSearch />
+                </InputLeftAddon>
+                <Input
+                  type="text"
+                  background="#F4F7FE"
+                  border="none"
+                  placeholder="Search by refID, problem"
+                  borderRadius="16px"
+                  id="searchInput"
+                  focusBorderColor={"none"}
+                  ref={searchRef}
+                  onChange={onSearch}
+                />
+              </InputGroup>
+              {/* <Button
               background={"#4C7BF4"}
               color="white"
               borderRadius="16px"
@@ -189,33 +171,52 @@ export default function ProblemPreview() {
               _hover={{ opacity: 0.8 }}
             >
               ค้นหา
-            </Button>
+            </Button> */}
+              <Box>
+                <Controller
+                  name="statusFilter"
+                  defaultValue={""}
+                  control={control}
+                  render={({ field }) => (
+                    <FormControl>
+                      <HStack>
+                        <Text>สถานะ</Text>
+                        <Select {...field}>
+                          <option value="">ทั้งหมด</option>
+                          <option value="รอรับเรื่อง">รอรับเรื่อง</option>
+                          <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                          <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                          <option value="ยกเลิก">ยกเลิก</option>
+                        </Select>
+                      </HStack>
+                    </FormControl>
+                  )}
+                />
+              </Box>
+            </Flex>
             <Box>
-              <Controller
-                name="statusFilter"
-                defaultValue={""}
-                control={control}
-                render={({ field }) => (
-                  <FormControl>
-                    <HStack>
-                      <Text>สถานะ</Text>
-                      <Select {...field}>
-                        <option value="">ทั้งหมด</option>
-                        <option value="รอรับเรื่อง">รอรับเรื่อง</option>
-                        <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
-                        <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-                        <option value="ยกเลิก">ยกเลิก</option>
-                      </Select>
-                    </HStack>
-                  </FormControl>
-                )}
-              />
+              <Button
+                bg={"#4c7bf4"}
+                color="#fff"
+                fontWeight={"normal"}
+                _hover={{ opacity: 0.8 }}
+                onClick={() => {
+                  // console.log(props)
+                  navigate(
+                    `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
+                  );
+                }}
+                _active={{ opacity: "1" }}
+                borderRadius={"16px"}
+              >
+                แจ้งปัญหาการใช้งานระบบ
+              </Button>
             </Box>
-          </Flex>
+          </HStack>
         </Box>
         <Box>
           <Box
-            mt="10"
+            mt="1rem"
             borderRadius="20px"
             border="1px"
             borderColor="#f4f4f4"
@@ -356,10 +357,10 @@ export default function ProblemPreview() {
                               wait.includes(r.docs.RepStatus)
                                 ? "yellow"
                                 : r.docs.RepStatus === done
-                                ? "green"
-                                : r.docs.RepStatus === process
-                                ? "orange"
-                                : "red"
+                                  ? "green"
+                                  : r.docs.RepStatus === process
+                                    ? "orange"
+                                    : "red"
                             }
                           >
                             <TagLabel w="100%" textAlign={"center"}>

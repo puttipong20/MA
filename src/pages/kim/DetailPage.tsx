@@ -290,7 +290,7 @@ export default function DetailPage() {
                       .filter((ma) => ma.ma.status !== "deleted")
                       .map((MA, index) => {
                         return (
-                          <Tr key={index}>
+                          <Tr key={index} _hover={{ bg: "gray.100" }}>
                             <Td textAlign={"center"}>{index + 1}</Td>
                             <Td textAlign={"center"}>
                               {dateFormat(MA.ma.startMA)}
@@ -314,8 +314,8 @@ export default function DetailPage() {
                                 <MenuButton
                                   as={IconButton}
                                   colorScheme="white"
-                                  bg="white"
-                                  _hover={{ bg: "gray.100" }}
+                                  bg="none"
+                                  _hover={{ bg: "white" }}
                                   icon={
                                     <BiDotsHorizontalRounded
                                       size="25px"
@@ -323,7 +323,14 @@ export default function DetailPage() {
                                     />
                                   }
                                 />
-                                <MenuList backgroundColor="white">
+                                <MenuList
+                                  backgroundColor="white"
+                                  pos="sticky"
+                                  top="0"
+                                  bg="white"
+                                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                                  zIndex="sticky"
+                                >
                                   <MenuItem backgroundColor="whiter">
                                     <Box
                                       w="100%"
