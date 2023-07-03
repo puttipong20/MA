@@ -347,7 +347,7 @@ export default function ProjectPreviewComp() {
                         : (color = "red");
                   }
                   return (
-                    <Tr key={index}>
+                    <Tr key={index} _hover={{bg:"#ddd"}}>
                       <Td textAlign={"center"}>
                         {i.project.detail.projectName}
                       </Td>
