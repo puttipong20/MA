@@ -56,6 +56,7 @@ import moment from "moment";
 
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
+import AddProject from "./AddProject";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
@@ -306,22 +307,23 @@ export default function ProjectPreviewComp() {
             <Tbody>
               {isFetching ? (
                 <Tr>
-                  <Td colSpan={7} textAlign={"center"}>
+                  <Td colSpan={8} textAlign={"center"}>
                     Loading . . .
                     <Spinner />
                   </Td>
                 </Tr>
               ) : filterProject.length === 0 ? (
-                <Tr>
-                  <Td colSpan={7} textAlign={"center"}>
-                    ยังไม่มีข้อมูลโปรเจค
-                  </Td>
-                </Tr>
+                <>
+                  <Tr w="100%">
+                    <Td colSpan={8} textAlign={"center"}>
+                      ยังไม่มีข้อมูลโปรเจค<AddProject companyName={companyName} companyId={params["company"] as string} />
+                    </Td>
+                  </Tr>
+                </>
               ) : (
                 filterProject.map((i, index) => {
                   const lastestMA = i.ma.filter(
-                    (j) => j.status === "active"
-                  )[0];
+                    (j) => j.status === "active")[0];
                   let display = "";
                   let color = "";
                   if (lastestMA) {
