@@ -62,39 +62,41 @@ const ContractPreview = () => {
             <Divider my="1rem" />
             <Box>
               <Box>
-                {MACtx.ma.updateLogs.map((u, index) => (
-                  <Box
-                    key={index}
-                    boxShadow="0 4px 6px rgba(76, 123, 244, 0.5)"
-                    p="4"
-                    pb="5"
-                    borderRadius="16px"
-                  >
-                    <HStack>
-                      <Text fontSize="16px" fontWeight="bold">
-                        ครั้งที่ {index + 1}
-                      </Text>
-                    </HStack>
-                    <HStack>
-                      <Text fontSize="16px" fontWeight="bold">
-                        แก้ไขเมื่อ :
-                      </Text>
-                      <Text>{moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text fontSize="16px" fontWeight="bold">
-                        แก้ไขโดย :
-                      </Text>
-                      <Text>{u.updatedBy}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text fontSize="16px" fontWeight="bold">
-                        หมายเหตุ :
-                      </Text>
-                      <Text>{u.note}</Text>
-                    </HStack>
-                  </Box>
-                ))}
+                {MACtx.ma.updateLogs.map((u, index) => {
+                  console.log(u);
+                  return (
+                    <Box
+                      key={index}
+                      boxShadow="0 4px 6px rgba(76, 123, 244, 0.5)"
+                      p="4"
+                      pb="5"
+                      borderRadius="16px"
+                    >
+                      <HStack>
+                        <Text fontSize="16px" fontWeight="bold">
+                          ครั้งที่ {index + 1}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Text fontSize="16px" fontWeight="bold">
+                          แก้ไขเมื่อ :
+                        </Text>
+                        <Text>{moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text fontSize="16px" fontWeight="bold">
+                          แก้ไขโดย :
+                        </Text>
+                        <Text>{u.updatedBy.userName}<Text as="span" fontSize={"0.5rem"} color={"GrayText"}>({u.updatedBy.uid})</Text></Text>
+                      </HStack>
+                      <HStack>
+                        <Text fontSize="16px" fontWeight="bold">
+                          หมายเหตุ :
+                        </Text>
+                        <Text>{u.note}</Text>
+                      </HStack>
+                    </Box>)
+                })}
               </Box>
             </Box>
           </Box>

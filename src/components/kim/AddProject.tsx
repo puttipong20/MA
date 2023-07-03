@@ -61,12 +61,12 @@ const AddProject: React.FC<Props> = (props) => {
       startMA: data.startMA,
       endMA: data.endMA,
       cost: data.cost,
-      createdBy: Auth.uid,
+      createdBy: { userName: Auth.detail.userName, uid: Auth.uid },
       updateLogs: [
         {
           note: "สร้างโปรเจกต์ใหม่",
           timeStamp: currentDateTime,
-          updatedBy: Auth.uid,
+          updatedBy: { userName: Auth.detail.userName, uid: Auth.uid },
         },
       ],
       createdAt: currentDateTime,
@@ -76,7 +76,7 @@ const AddProject: React.FC<Props> = (props) => {
       companyID: props.companyId,
       companyName: props.companyName,
       createdAt: currentDateTime,
-      createdBy: Auth.uid,
+      createdBy: { userName: Auth.detail.userName, uid: Auth.uid },
       projectName: data.projectName,
       // MAlogs: [lastestMA]
     };
@@ -136,7 +136,7 @@ const AddProject: React.FC<Props> = (props) => {
   }, [startMA, endMA]);
   return (
     <Box>
-      <Button w="100%" bg="#4C7BF4" color="#eee" _hover={{opacity:"0.8"}} onClick={onOpen} fontWeight={"normal"}>
+      <Button w="100%" bg="#4C7BF4" color="#eee" _hover={{ opacity: "0.8" }} onClick={onOpen} fontWeight={"normal"}>
         เพิ่ม Project
       </Button>
 
