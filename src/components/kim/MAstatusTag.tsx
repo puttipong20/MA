@@ -35,7 +35,7 @@ const MAstatusTag: React.FC<Props> = (props) => {
             break;
     }
     return (
-        <Badge colorScheme={color} w="100px" textAlign={"center"}>{display}</Badge>
+        <Badge borderRadius="10px" py="0.25rem" colorScheme={color} w="100px" textAlign={"center"}>{display}</Badge>
     )
 }
 

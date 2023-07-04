@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   Divider,
+  Grid,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { MAcontext } from "../../context/MAContext";
@@ -52,6 +53,7 @@ const ContractPreview = () => {
                     lineHeight="25.2px"
                     fontSize="18px"
                     fontFamily="Prompt"
+                    pt="1rem"
                   >
                     ประวัติการแก้ไข
                   </Text>
@@ -62,64 +64,66 @@ const ContractPreview = () => {
               </HStack>
             </Center>
             <Divider my="1rem" />
-            <Box>
-              <Box
-                mt="1rem"
-                pb="0.5rem"
-                borderRadius="20px"
+            <Box w="100%" overflowY={"auto"}  h="70vh" p="1rem">
+              <Grid
+                h={"max-content"}
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                  md: "repeat(3, 1fr)",
+                }}
+                gap={"15px"}
                 w="100%"
-                h="100%"
-                maxH="68vh"
-                overflowY={"auto"}
-                boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
-                className={classes.table}
+
+                pb="2rem"
               >
-                {MACtx.ma.updateLogs.sort((a, b) => {
-                  const dateA = new Date(a.timeStamp) as any
-                  const dateB = new Date(b.timeStamp) as any
-                  return dateB - dateA
-                }).map((u, index) => {
-                  return (
-                    <Box
-                      key={index}
-                      boxShadow="0 4px 6px rgba(76, 123, 244, 0.5)"
-                      p="4"
-                      pb="5"
-                      borderRadius="16px"
-                      w="98%"
-                      ml="1rem"
-                    >
-                      <HStack>
-                        <Text fontSize="16px" fontWeight="bold">
-                          ครั้งที่ {MACtx.ma.updateLogs.length - index}
-                        </Text>
-                      </HStack>
-                      <HStack>
-                        <Text fontSize="16px" fontWeight="bold">
-                          แก้ไขเมื่อ :
-                        </Text>
-                        <Text>
-                          {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
-                        </Text>
-                      </HStack>
-                      <HStack>
-                        <Text fontSize="16px" fontWeight="bold">
-                          แก้ไขโดย :
-                        </Text>
-                        <Text>
-                          {u.updatedBy.username}
-                        </Text>
-                      </HStack>
-                      <HStack>
-                        <Text fontSize="16px" fontWeight="bold">
-                          หมายเหตุ :
-                        </Text>
-                        <Text>{u.note}</Text>
-                      </HStack>
-                    </Box>
-                  );
-                })}
-              </Box>
+                {MACtx.ma.updateLogs
+                  .sort((a, b) => {
+                    const dateA = new Date(a.timeStamp) as any;
+                    const dateB = new Date(b.timeStamp) as any;
+                    return dateB - dateA;
+                  })
+                  .map((u, index) => {
+                    return (
+                      <Box
+                        key={index}
+                        boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
+                        p="4"
+                        pb="5"
+                        borderRadius="16px"
+                        w="100%"
+                      >
+                        <HStack>
+                          <Text fontSize="16px" fontWeight="bold">
+                            ครั้งที่ {MACtx.ma.updateLogs.length - index}
+                          </Text>
+                        </HStack>
+                        <HStack>
+                          <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
+                            แก้ไขเมื่อ :
+                          </Text>
+                          <Text>
+                            {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
+                          </Text>
+                        </HStack>
+                        <HStack alignItems={"start"}>
+                          <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
+                            แก้ไขโดย :
+                          </Text>
+                          <Text>{u.updatedBy.username}</Text>
+                        </HStack>
+                        <HStack alignItems={"start"}>
+                          <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
+                            หมายเหตุ :
+                          </Text>
+                          <Text>
+                            {u.note}
+                          </Text>
+                        </HStack>
+                      </Box>
+                    );
+                  })}
+              </Grid>
             </Box>
           </Box>
         </Container>
