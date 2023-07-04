@@ -135,8 +135,7 @@ function DevDetailComp() {
       setDetailHistory(reportHistory);
 
       setValue("RepStatus", reportHistory.RepStatus)
-      setValue("issueType", reportHistory.solution?.issueType)
-      setValue("issueOther", reportHistory.solution?.issueOther)
+      setValue("issue", reportHistory.solution?.issue)
       setValue("solution", reportHistory.solution?.solution)
       setValue("accepter", reportHistory.solution?.accepter)
 
@@ -236,34 +235,17 @@ function DevDetailComp() {
                       <Controller
                         name="issueType"
                         control={control}
-                        defaultValue={detailHistory?.solution?.issueType || ""}
+                        defaultValue={detailHistory?.solution?.issue || ""}
                         render={({ field }) => (
                           <FormControl mb="1rem">
                             <FormLabel color="#2b3674" fontWeight={"bold"}>
                               ปัญหาที่พบ
                             </FormLabel>
-                            <Select {...field} placeholder="ระบุลักษณะปัญหา">
-                              <option value="Bug">Bug</option>
-                              <option value="เพิ่มระบบ">เพิ่มระบบ</option>
-                              <option value="other">อื่นๆ</option>
-                            </Select>
+                            <Input {...field} type="text" placeholder="กรุณาระบุปัญหาที่พบ" />
                           </FormControl>
                         )}
                       />
                   }
-
-                  {watch("issueType") === "other" && (
-                    <Controller
-                      name="issueOther"
-                      control={control}
-                      defaultValue={detailHistory?.solution?.issueOther || ""}
-                      render={({ field }) => (
-                        <FormControl>
-                          <Input type="string" placeholder="ระบุปัญหา" {...field} />
-                        </FormControl>
-                      )}
-                    />
-                  )}
 
                   <Controller
                     name="solution"
