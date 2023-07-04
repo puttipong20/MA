@@ -45,7 +45,7 @@ const Renewal: React.FC<Props> = (props) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [duration, setDuration] = useState(0);
   const toast = useToast();
-  const logs = props.MAlog;
+  const logs = props.MAlog.filter(ma => ma.ma.status === "active" || ma.ma.status === "advance");
   const currentDate = moment().format("YYYY-MM-DD");
   const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
   const Auth = useContext(AuthContext);

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -25,9 +25,10 @@ import UploadFileComp from "./UploadFileComp";
 import ImageComp from "./ImageComp";
 
 import { db } from "../../services/config-db";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { doc, getDoc, updateDoc, } from "firebase/firestore";
 
 import { ReportDetail } from "../../@types/Type";
+import { AuthContext } from "../../context/AuthContext";
 
 function DevDetailComp() {
   const params = useParams();
@@ -41,7 +42,9 @@ function DevDetailComp() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBtn, setIsLoadingBtn] = useState(false);
 
-  const [allAdminUserName, setAllAdminUserName] = useState<string[]>([])
+  const AuthCtx = useContext(AuthContext);
+
+  const repState = watch("RepStatus") || "รอรับเรื่อง"
 
   const toast = useToast();
 
@@ -156,19 +159,6 @@ function DevDetailComp() {
     // console.log(detailHistory?.solution?.accepter)
   }, [detailHistory]);
 
-  const fetchUser = async () => {
-    const docRef = collection(db, "Profiles")
-    const q = query(docRef, where("role", "==", "admin"))
-    const accounts = await getDocs(q)
-    const accountsName: string[] = [];
-    accounts.forEach(a => accountsName.push(a.data().username as string))
-    setAllAdminUserName(accountsName);
-  }
-
-  useEffect(() => {
-    fetchUser();
-  }, [])
-
   if (isLoading) {
     <Box>
       {/* <Spinner /> */}
@@ -208,159 +198,152 @@ function DevDetailComp() {
                 )}
               />
 
-              {(watch("RepStatus") === "เสร็จสิ้น" ||
-                watch("RepStatus") === "ยกเลิก") && (
-                <Controller
-                  name="dateDone"
-                  control={control}
-                  defaultValue={moment().format("yyyy-MM-DD[T]HH:mm:ss") || ""}
-                  render={({ field }) => (
-                    <FormControl>
-                      <FormLabel color="#2b3674" fontWeight={"bold"}>
-                        วันที่เสร็จสิ้น
-                      </FormLabel>
-                      <Input type={"datetime-local"} {...field} readOnly />
-                    </FormControl>
-                  )}
-                />
-              )}
-              {/* {RepState !== "รอดำเนินการ" && RepState !== "เสร็จสิ้น" && (
-                <Controller
-                  name="dateProcess"
-                  control={control}
-                  defaultValue={moment().format("yyyy-MM-DD[T]HH:mm") || ""}
-                  render={({ field }) => (
-                    <FormControl>
-                      <FormLabel color="#2b3674" fontWeight={"bold"}>
-                        วันที่ดำเนินการ
-                      </FormLabel>
-                      <Input type={"datetime-local"} {...field} readOnly />
-                    </FormControl>
-                  )}
-                />
-              )} */}
-
-              <Controller
-                name="issueType"
-                control={control}
-                defaultValue={detailHistory?.solution?.issueType || ""}
-                render={({ field }) => (
-                  <FormControl mb="1rem">
-                    <FormLabel color="#2b3674" fontWeight={"bold"}>
-                      ปัญหาที่พบ
-                    </FormLabel>
-                    <Select {...field} placeholder="ระบุลักษณะปัญหา">
-                      <option value="Bug">Bug</option>
-                      <option value="เพิ่มระบบ">เพิ่มระบบ</option>
-                      <option value="other">อื่นๆ</option>
-                    </Select>
-                  </FormControl>
+              {(repState === "เสร็จสิ้น" ||
+                repState === "ยกเลิก") && (
+                  <Controller
+                    name="dateDone"
+                    control={control}
+                    defaultValue={moment().format("yyyy-MM-DD[T]HH:mm:ss") || ""}
+                    render={({ field }) => (
+                      <FormControl>
+                        <FormLabel color="#2b3674" fontWeight={"bold"}>
+                          วันที่เสร็จสิ้น
+                        </FormLabel>
+                        <Input type={"datetime-local"} {...field} readOnly />
+                      </FormControl>
+                    )}
+                  />
                 )}
-              />
-              {watch("issueType") === "other" && (
-                <Controller
-                  name="issueOther"
-                  control={control}
-                  defaultValue={detailHistory?.solution?.issueOther || ""}
-                  render={({ field }) => (
-                    <FormControl>
-                      <Input type="string" placeholder="ระบุปัญหา" {...field} />
-                    </FormControl>
-                  )}
-                />
-              )}
+              {
+                repState !== "รอรับเรื่อง" &&
+                <Box>
+                  {
+                    repState === "กำลังดำเนินการ" ?
+                      <Controller
+                        name="issueType"
+                        control={control}
+                        defaultValue={"กำลังตรวจสอบ"}
+                        render={({ field }) => (
+                          <FormControl mb="1rem" isReadOnly>
+                            <FormLabel color="#2b3674" fontWeight={"bold"}>
+                              ปัญหาที่พบ
+                            </FormLabel>
+                            <Input {...field} type="text" />
+                          </FormControl>
+                        )}
+                      />
+                      :
+                      <Controller
+                        name="issueType"
+                        control={control}
+                        defaultValue={detailHistory?.solution?.issueType || ""}
+                        render={({ field }) => (
+                          <FormControl mb="1rem">
+                            <FormLabel color="#2b3674" fontWeight={"bold"}>
+                              ปัญหาที่พบ
+                            </FormLabel>
+                            <Select {...field} placeholder="ระบุลักษณะปัญหา">
+                              <option value="Bug">Bug</option>
+                              <option value="เพิ่มระบบ">เพิ่มระบบ</option>
+                              <option value="other">อื่นๆ</option>
+                            </Select>
+                          </FormControl>
+                        )}
+                      />
+                  }
 
-              <Controller
-                name="solution"
-                control={control}
-                defaultValue={detailHistory?.solution?.solution || ""}
-                render={({ field }) => (
-                  <FormControl mb="1rem">
-                    <FormLabel color="#2b3674" fontWeight={"bold"}>
-                      รายละเอียดการแก้ไข
-                    </FormLabel>
-                    <Textarea
-                      {...field}
-                      resize={"none"}
-                      rows={10}
-                      placeholder={"ระบุรายละเอียดเพิ่มเติม"}
+                  {watch("issueType") === "other" && (
+                    <Controller
+                      name="issueOther"
+                      control={control}
+                      defaultValue={detailHistory?.solution?.issueOther || ""}
+                      render={({ field }) => (
+                        <FormControl>
+                          <Input type="string" placeholder="ระบุปัญหา" {...field} />
+                        </FormControl>
+                      )}
                     />
-                  </FormControl>
-                )}
-              />
+                  )}
 
-              {/* <Controller
-                name="accepter"
-                control={control}
-                defaultValue={detailHistory?.solution?.accepter || ""}
-                render={({ field }) => (
-                  <FormControl mb="1rem">
-                    <FormLabel color="#2b3674" fontWeight={"bold"}>
-                      ชื่อผู้รับเรื่อง
-                    </FormLabel>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                )}
-              /> */}
+                  <Controller
+                    name="solution"
+                    control={control}
+                    defaultValue={detailHistory?.solution?.solution || ""}
+                    render={({ field }) => (
+                      <FormControl mb="1rem">
+                        <FormLabel color="#2b3674" fontWeight={"bold"}>
+                          รายละเอียดการแก้ไข
+                        </FormLabel>
+                        <Textarea
+                          {...field}
+                          resize={"none"}
+                          rows={10}
+                          placeholder={"ระบุรายละเอียดเพิ่มเติม"}
+                        />
+                      </FormControl>
+                    )}
+                  />
 
-              <Controller
-                name="accepter"
-                control={control}
-                defaultValue={detailHistory?.solution?.accepter || ""}
-                render={({ field }) => (
-                  <FormControl mb="1rem" isRequired>
-                    <FormLabel color="#2b3674" fontWeight={"bold"}>
-                      ชื่อผู้รับเรื่อง
-                    </FormLabel>
-                    <Select {...field} placeholder={"กรุณาเลือกผู้รับเรื่อง"}>
-                      {allAdminUserName.map((i, index) => {
+                  <Controller
+                    name="accepter"
+                    control={control}
+                    defaultValue={AuthCtx.detail.username}
+                    render={({ field }) => (
+                      <FormControl mb="1rem" isRequired isReadOnly>
+                        <FormLabel color="#2b3674" fontWeight={"bold"}>
+                          ชื่อผู้รับเรื่อง
+                        </FormLabel>
+                        <Input type="email" {...field} />
+                        {/* <Select {...field} placeholder={"กรุณาเลือกผู้รับเรื่อง"}>
+                          {allAdminUserName.map((i, index) => {
+                            return (
+                              <option key={index} value={i}>
+                                {i}
+                              </option>
+                            );
+                          })}
+                        </Select> */}
+                      </FormControl>
+                    )}
+                  />
+
+                  <Text color="#2b3674" fontWeight={"bold"}>
+                    อัพโหลดรูปภาพเพิ่มเติม
+                  </Text>
+                  <Box p="20px">
+                    <Grid
+                      templateColumns={"repeat(3,1fr)"}
+                      w={imageUpload.length >= 3 ? "fit-content" : "100%"}
+                      gap={"1.5rem"}
+                      mx="auto"
+                    >
+                      {imageUpload.map((i, index) => {
                         return (
-                          <option key={index} value={i}>
-                            {i}
-                          </option>
+                          <ImageComp
+                            key={index}
+                            src={i}
+                            index={index}
+                            removeHandle={removeFile}
+                          />
                         );
                       })}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-
-              <Text color="#2b3674" fontWeight={"bold"}>
-                อัพโหลดรูปภาพเพิ่มเติม
-              </Text>
-              <Box p="20px">
-                <Grid
-                  templateColumns={"repeat(3,1fr)"}
-                  w={imageUpload.length >= 3 ? "fit-content" : "100%"}
-                  gap={"1.5rem"}
-                  mx="auto"
-                >
-                  {imageUpload.map((i, index) => {
-                    return (
-                      <ImageComp
-                        key={index}
-                        src={i}
-                        index={index}
-                        removeHandle={removeFile}
-                      />
-                    );
-                  })}
-                  <Box>
-                    <label htmlFor="imageInput">
-                      <UploadFileComp count={imageUpload.length} />
-                    </label>
-                    <Input
-                      type="file"
-                      display="none"
-                      id="imageInput"
-                      accept="image/png, image/jpeg"
-                      onChange={uploadFile}
-                      multiple
-                    />
+                      <Box>
+                        <label htmlFor="imageInput">
+                          <UploadFileComp count={imageUpload.length} />
+                        </label>
+                        <Input
+                          type="file"
+                          display="none"
+                          id="imageInput"
+                          accept="image/png, image/jpeg"
+                          onChange={uploadFile}
+                          multiple
+                        />
+                      </Box>
+                    </Grid>
                   </Box>
-                </Grid>
-              </Box>
-
+                </Box>
+              }
               <Flex w="100%" justifyContent={"center"} gap={"3rem"} mt="2rem">
                 <Button
                   w="100px"

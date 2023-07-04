@@ -243,6 +243,13 @@ export default function DetailPage() {
                         color="#fff"
                         textAlign={"center"}
                       >
+                        วันที่สร้าง
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
                         วันที่เริ่มต้นสัญญาMA
                       </Th>
                       <Th
@@ -258,13 +265,6 @@ export default function DetailPage() {
                         textAlign={"center"}
                       >
                         สถานะ
-                      </Th>
-                      <Th
-                        fontFamily={"inherit"}
-                        color="#fff"
-                        textAlign={"center"}
-                      >
-                        วันที่สร้าง
                       </Th>
                       <Th
                         fontFamily={"inherit"}
@@ -295,6 +295,11 @@ export default function DetailPage() {
                           <Tr key={index} _hover={{ bg: "gray.100" }}>
                             <Td textAlign={"center"}>{index + 1}</Td>
                             <Td textAlign={"center"}>
+                              {moment(MA.ma.createdAt).format(
+                                "DD/MM/YYYY HH:mm:ss"
+                              )}
+                            </Td>
+                            <Td textAlign={"center"}>
                               {dateFormat(MA.ma.startMA)}
                             </Td>
                             <Td textAlign={"center"}>
@@ -303,11 +308,7 @@ export default function DetailPage() {
                             <Td textAlign={"center"}>
                               <MAstatusTag status={MA.ma.status} />
                             </Td>
-                            <Td textAlign={"center"}>
-                              {moment(MA.ma.createdAt).format(
-                                "DD/MM/YYYY HH:mm:ss"
-                              )}
-                            </Td>
+
                             <Td textAlign={"right"}>
                               {convertNumber(MA.ma.cost)}
                             </Td>

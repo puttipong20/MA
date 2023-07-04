@@ -73,7 +73,11 @@ const ContractPreview = () => {
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}
               >
-                {MACtx.ma.updateLogs.map((u, index) => {
+                {MACtx.ma.updateLogs.sort((a, b) => {
+                  const dateA = new Date(a.timeStamp) as any
+                  const dateB = new Date(b.timeStamp) as any
+                  return dateB - dateA
+                }).map((u, index) => {
                   return (
                     <Box
                       key={index}
@@ -86,7 +90,7 @@ const ContractPreview = () => {
                     >
                       <HStack>
                         <Text fontSize="16px" fontWeight="bold">
-                          ครั้งที่ {index + 1}
+                          ครั้งที่ {MACtx.ma.updateLogs.length - index}
                         </Text>
                       </HStack>
                       <HStack>
@@ -103,13 +107,6 @@ const ContractPreview = () => {
                         </Text>
                         <Text>
                           {u.updatedBy.username}
-                          <Text
-                            as="span"
-                            fontSize={"0.5rem"}
-                            color={"GrayText"}
-                          >
-                            ({u.updatedBy.uid})
-                          </Text>
                         </Text>
                       </HStack>
                       <HStack>
