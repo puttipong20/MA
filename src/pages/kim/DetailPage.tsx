@@ -21,6 +21,8 @@ import {
   MenuItem,
   IconButton,
   Container,
+  Card,
+  HStack,
 } from "@chakra-ui/react";
 import { BiArrowBack } from "react-icons/bi";
 import {
@@ -119,7 +121,7 @@ export default function DetailPage() {
     return (
       <div className="container">
         <Container maxW="100%" pb="10">
-          <Box mt="3">
+          <Box mt="3" pb="1rem">
             <Button
               bg="#4C7BF4"
               color="#fff"
@@ -133,69 +135,88 @@ export default function DetailPage() {
               <BiArrowBack />
             </Button>
           </Box>
-          <Box>
-            <Text fontWeight={"bold"} w="fit-content">
-              บริษัท :
-              <Text as="span" fontWeight={"normal"}>
-                {CompanyCtx.companyName}
-              </Text>
-            </Text>
-            <Text
-              fontWeight={"bold"}
-              w="fit-content"
-              display={"flex"}
-              align={"center"}
-            >
-              ชื่อโปรเจค :
-              <Text as="span" fontWeight={"normal"}>
-                {projectDetail?.projectName}
-              </Text>
-            </Text>
-            <Text fontWeight={"bold"} w="fit-content">
-              ถูกสร้างเมื่อ :{" "}
-              <Text as="span" fontWeight={"normal"}>
-                {projectDetail &&
-                  moment(projectDetail.createdAt).format("DD/MM/YYYY HH:mm:ss")}
-              </Text>
-            </Text>
-            {activeMA && activeMA.status === "deleted" ? (
-              <Box>
-                <Text fontWeight={"bold"} w="fit-content">
-                  สัญญา :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    ไม่มีสัญญา
-                  </Text>
+          <Card p={"1rem"} w="max-content">
+            <Box>
+              <HStack>
+                <Text w="7.5rem" fontWeight={"bold"}>
+                  บริษัท
                 </Text>
-              </Box>
-            ) : (
-              <Box>
-                <Text fontWeight={"bold"} w="fit-content">
-                  เริ่มต้นสัญญาMA :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && dateFormat(activeMA.startMA)}
-                  </Text>
+                <Text as="span" fontWeight={"normal"}>
+                  : {CompanyCtx.companyName}
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  สิ้นสุดสัญญาMA :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && dateFormat(activeMA.endMA)}
-                  </Text>
+              </HStack>
+              <HStack>
+                <Text
+                  fontWeight={"bold"}
+                  w="7.5rem"
+                  display={"flex"}
+                  align={"center"}
+                >
+                  ชื่อโปรเจค
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  สถานะ :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && <MAstatusTag status={activeMA.status} />}
-                  </Text>
+                <Text as="span" fontWeight={"normal"}>
+                  : {projectDetail?.projectName}
                 </Text>
-                <Text fontWeight={"bold"} w="fit-content">
-                  ค่าบริการ :{" "}
-                  <Text as="span" fontWeight={"normal"}>
-                    {activeMA && convertNumber(activeMA.cost)}
-                  </Text>
+              </HStack>
+              <HStack>
+                <Text fontWeight={"bold"} w="7.5rem">
+                  ถูกสร้างเมื่อ
                 </Text>
-              </Box>
-            )}
-          </Box>
+                <Text as="span" fontWeight={"normal"}>
+                  :{" "}
+                  {projectDetail &&
+                    moment(projectDetail.createdAt).format(
+                      "DD/MM/YYYY HH:mm:ss"
+                    )}
+                </Text>
+              </HStack>
+              {activeMA && activeMA.status === "deleted" ? (
+                <HStack>
+                  <Text fontWeight={"bold"} w="7.5rem">
+                    สัญญา{" "}
+                  </Text>
+                  <Text as="span" fontWeight={"normal"}>
+                    : ไม่มีสัญญา
+                  </Text>
+                </HStack>
+              ) : (
+                <>
+                  <HStack>
+                    <Text fontWeight={"bold"} w="7.5rem">
+                      เริ่มต้นสัญญาMA
+                    </Text>
+                    <Text as="span" fontWeight={"normal"}>
+                      : {activeMA && dateFormat(activeMA.startMA)}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={"bold"} w="7.5rem">
+                      สิ้นสุดสัญญาMA
+                    </Text>
+                    <Text as="span" fontWeight={"normal"}>
+                      : {activeMA && dateFormat(activeMA.endMA)}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={"bold"} w="7.5rem">
+                      สถานะ{" "}
+                    </Text>
+                    <Text as="span" fontWeight={"normal"}>
+                      : {activeMA && <MAstatusTag status={activeMA.status} />}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <Text fontWeight={"bold"} w="7.5rem">
+                      ค่าบริการ{" "}
+                    </Text>
+                    <Text as="span" fontWeight={"normal"}>
+                      : {activeMA && convertNumber(activeMA.cost)}
+                    </Text>
+                  </HStack>
+                </>
+              )}
+            </Box>
+          </Card>
           <Divider my="1rem" />
           <Box>
             <Flex justify={"space-between"} align={"center"}>
@@ -212,7 +233,11 @@ export default function DetailPage() {
                 </Button>
               </Text>
               <Box>
-                <Renewal MAlog={logs} projectId={projectID} callBack={fetchingProjectDetail} />
+                <Renewal
+                  MAlog={logs}
+                  projectId={projectID}
+                  callBack={fetchingProjectDetail}
+                />
               </Box>
             </Flex>
             <Box>
