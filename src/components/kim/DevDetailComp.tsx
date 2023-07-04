@@ -25,7 +25,7 @@ import UploadFileComp from "./UploadFileComp";
 import ImageComp from "./ImageComp";
 
 import { db } from "../../services/config-db";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { doc, getDoc, updateDoc, } from "firebase/firestore";
 
 import { ReportDetail } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
@@ -41,7 +41,6 @@ function DevDetailComp() {
   const [detailHistory, setDetailHistory] = useState<ReportDetail>();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingBtn, setIsLoadingBtn] = useState(false);
-  const [allAdminUserName, setAllAdminUserName] = useState<string[]>([])
 
   const AuthCtx = useContext(AuthContext);
 
@@ -159,19 +158,6 @@ function DevDetailComp() {
     }
     // console.log(detailHistory?.solution?.accepter)
   }, [detailHistory]);
-
-  const fetchUser = async () => {
-    const docRef = collection(db, "Profiles")
-    const q = query(docRef, where("role", "==", "admin"))
-    const accounts = await getDocs(q)
-    const accountsName: string[] = [];
-    accounts.forEach(a => accountsName.push(a.data().username as string))
-    setAllAdminUserName(accountsName);
-  }
-
-  useEffect(() => {
-    fetchUser();
-  }, [])
 
   if (isLoading) {
     <Box>
