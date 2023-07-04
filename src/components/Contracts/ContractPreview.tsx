@@ -64,6 +64,7 @@ const ContractPreview = () => {
             <Box>
               <Box
                 mt="1rem"
+                pb="0.5rem"
                 borderRadius="20px"
                 w="100%"
                 h="100%"
