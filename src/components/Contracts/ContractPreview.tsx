@@ -102,13 +102,6 @@ const ContractPreview = () => {
                         </Text>
                         <Text>
                           {u.updatedBy.username}
-                          <Text
-                            as="span"
-                            fontSize={"0.5rem"}
-                            color={"GrayText"}
-                          >
-                            ({u.updatedBy.uid})
-                          </Text>
                         </Text>
                       </HStack>
                       <HStack>
