@@ -30,7 +30,7 @@ import { BsSearch } from "react-icons/bs";
 import { search } from "ss-search";
 import { Controller, useForm } from "react-hook-form";
 
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { Report, ReportDetail } from "../../@types/Type";
 
@@ -92,7 +92,7 @@ export default function ProblemPreview() {
     // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
     const value = searchRef.current?.value;
     const searchText = value + " " + statusFilter || "";
-    const searchField = ["docs.title", "docs.ref", "docs.RepStatus"];
+    const searchField = ["docs.title", "docs.ref", "docs.RepStatus","docs.name"];
     // console.clear();
     // console.log(searchText)
     const result = search(reports, searchField, searchText) as Report[];

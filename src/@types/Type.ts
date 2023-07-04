@@ -2,8 +2,7 @@ export type Solution = {
   accepter: string;
   solution: string;
   solutionImg: string[];
-  issueType: string;
-  issueOther: string; //(if issueType == other)
+  issue: string;
   dateProcess: string;
   dateDone: string;
 };
