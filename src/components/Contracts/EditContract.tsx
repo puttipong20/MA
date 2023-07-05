@@ -207,6 +207,13 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     }
   }, [status, start, end])
 
+  const clear = () => {
+    reset();
+    setActiveError(false)
+    setAdvanceError(false)
+    setExpireError(false)
+  }
+
   return (
     <Box w="100%" p={"0.5rem"} userSelect={"none"}>
       <Text
@@ -295,7 +302,6 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                         <option value="advance">ล่วงหน้า</option>
                         <option value="active">กำลังใช้งาน</option>
                         <option value="expire">หมดอายุ</option>
-                        <option value="cancel">ยกเลิก</option>
                       </Select>
                     </FormControl>
                   )}
@@ -324,7 +330,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                 {expireError && <Text>วันที่ไม่ถูกต้อง : วันที่สิ้นสุดสัญญาต้องน้อยกว่าวันที่ปัจจุบัน</Text>}
               </Box>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button mr="68px" onClick={() => clear()}>
                   เคลียร์
                 </Button>
                 <Button

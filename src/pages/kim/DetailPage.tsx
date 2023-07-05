@@ -73,10 +73,15 @@ export default function DetailPage() {
     MAFetch.forEach((ma) => {
       MAlogs.push({ id: ma.id, ma: ma.data() as MA });
     });
-    setLogs(MAlogs);
+    const sorted_MAlogs = MAlogs.sort((a, b) => {
+      const dateA = new Date(a.ma.endMA) as any
+      const dateB = new Date(b.ma.endMA) as any
+      return dateA - dateB
+    })
+    setLogs(sorted_MAlogs);
 
-    const active = MAlogs.filter((i) => i.ma.status === "active")[0];
-    const lastest = MAlogs[0];
+    const active = sorted_MAlogs.filter((i) => i.ma.status === "active")[0];
+    const lastest = sorted_MAlogs[sorted_MAlogs.length - 1];
     // console.log(lastest)
     if (active) {
       setActiveMA(active.ma);
