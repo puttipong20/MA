@@ -82,13 +82,13 @@ export default function DetailPage() {
 
     const active = sorted_MAlogs.filter((i) => i.ma.status === "active")[0];
     const lastest = sorted_MAlogs.filter((i) => i.ma.status === "active" || i.ma.status === "advance" || i.ma.status === "expire").at(-1);
-    console.log(lastest)
+    // console.log(lastest)
     if (active) {
-      console.log("active")
+      // console.log("active")
       setActiveMA(active.ma);
     } else {
       if (lastest) {
-        console.log("lastest")
+        // console.log("lastest")
         setActiveMA(lastest.ma);
       }
     }
