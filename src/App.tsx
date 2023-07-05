@@ -1,4 +1,4 @@
-import { Box, Button, Spinner, Text } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 // import FormAddReport from "./pages/FormAddReport";
 // import DetailForDev from "./pages/DetailForDev";
@@ -35,10 +35,6 @@ function App() {
     setIsLoading(false);
   };
 
-  const testUpdate = () => {
-    ContractUpdate();
-  }
-
   useEffect(() => {
     initial();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,8 +56,6 @@ function App() {
   } else {
     return (
       <Box w="100%" maxH="100vh" position={"relative"}>
-        <Button position="absolute" top="0" right="0" colorScheme="blue" onClick={testUpdate} zIndex={100}>Test</Button>
-
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
