@@ -1,4 +1,4 @@
-import { Box, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 // import FormAddReport from "./pages/FormAddReport";
 // import DetailForDev from "./pages/DetailForDev";
@@ -20,6 +20,7 @@ import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
+import ContractUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
@@ -30,8 +31,13 @@ function App() {
     if (!Auth.uid) {
       await AuthCheck(Auth, navigate);
     }
+    await ContractUpdate();
     setIsLoading(false);
   };
+
+  const testUpdate = () => {
+    ContractUpdate();
+  }
 
   useEffect(() => {
     initial();
@@ -39,19 +45,22 @@ function App() {
   }, []);
 
   if (isLoading) {
-    <Box
-      w="100vw"
-      h="100vh"
-      display="flex"
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Text>Checking</Text>
-      <Spinner />
-    </Box>;
+    return (
+      <Box
+        w="100vw"
+        h="100vh"
+        display="flex"
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text>Authen Checking . . .</Text>
+        <Spinner />
+      </Box>
+    )
   } else {
     return (
-      <Box w="100%" maxH="100vh">
+      <Box w="100%" maxH="100vh" position={"relative"}>
+        <Button position="absolute" top="0" right="0" colorScheme="blue" onClick={testUpdate} zIndex={100}>Test</Button>
 
         <Routes>
           <Route path="/home" element={<Home />} />
