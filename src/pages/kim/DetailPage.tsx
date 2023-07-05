@@ -81,12 +81,16 @@ export default function DetailPage() {
     setLogs(sorted_MAlogs);
 
     const active = sorted_MAlogs.filter((i) => i.ma.status === "active")[0];
-    const lastest = sorted_MAlogs[sorted_MAlogs.length - 1];
-    // console.log(lastest)
+    const lastest = sorted_MAlogs.filter((i) => i.ma.status === "active" || i.ma.status === "advance" || i.ma.status === "expire").at(-1);
+    console.log(lastest)
     if (active) {
+      console.log("active")
       setActiveMA(active.ma);
     } else {
-      setActiveMA(lastest.ma);
+      if (lastest) {
+        console.log("lastest")
+        setActiveMA(lastest.ma);
+      }
     }
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false);
@@ -175,7 +179,7 @@ export default function DetailPage() {
                     )}
                 </Text>
               </HStack>
-              {activeMA && activeMA.status === "deleted" ? (
+              {!activeMA ? (
                 <HStack>
                   <Text fontWeight={"bold"} w="7.5rem">
                     สัญญา{" "}
@@ -253,7 +257,7 @@ export default function DetailPage() {
                 borderColor="#f4f4f4"
                 w="100%"
                 h="100%"
-                maxH="36vh"
+                maxH={"36vh"}
                 overflowY={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}
