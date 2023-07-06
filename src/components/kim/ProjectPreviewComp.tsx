@@ -166,7 +166,7 @@ export default function ProjectPreviewComp() {
                 >
                   ข้อมูล Projects
                 </Text>
-                <Text fontSize="16px" fontFamily="Prompt" color="#000000">
+                <Text fontSize="16px" fontFamily="Prompt">
                   บริการหลังการขายของลูกค้าทั้งหมดของบริษัท
                   <Text ml="2" as="span" fontWeight={"bold"}>
                     {companyName}

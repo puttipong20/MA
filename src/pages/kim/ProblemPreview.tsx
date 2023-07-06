@@ -141,7 +141,7 @@ export default function ProblemPreview() {
                 >
                   รายงานปัญหา / {projectName}
                 </Text>
-                <Text fontSize="16px" fontFamily="Prompt" color="#000000">
+                <Text fontSize="16px" fontFamily="Prompt">
                   {projectName}
                 </Text>
               </VStack>

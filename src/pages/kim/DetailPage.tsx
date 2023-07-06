@@ -135,7 +135,7 @@ export default function DetailPage() {
               <BiArrowBack />
             </Button>
           </Box>
-          <Card p={"1rem"} w="max-content">
+          <Card p={"1rem"} w="max-content" maxW="100%">
             <Box>
               <HStack>
                 <Text w="7.5rem" fontWeight={"bold"}>
@@ -163,8 +163,7 @@ export default function DetailPage() {
                   ถูกสร้างเมื่อ
                 </Text>
                 <Text as="span" fontWeight={"normal"}>
-                  :{" "}
-                  {projectDetail &&
+                  : {projectDetail &&
                     moment(projectDetail.createdAt).format(
                       "DD/MM/YYYY HH:mm:ss"
                     )}
@@ -173,7 +172,7 @@ export default function DetailPage() {
               {activeMA && activeMA.status === "deleted" ? (
                 <HStack>
                   <Text fontWeight={"bold"} w="7.5rem">
-                    สัญญา{" "}
+                    สัญญา
                   </Text>
                   <Text as="span" fontWeight={"normal"}>
                     : ไม่มีสัญญา
@@ -199,7 +198,7 @@ export default function DetailPage() {
                   </HStack>
                   <HStack>
                     <Text fontWeight={"bold"} w="7.5rem">
-                      สถานะ{" "}
+                      สถานะ
                     </Text>
                     <Text as="span" fontWeight={"normal"}>
                       : {activeMA && <MAstatusTag status={activeMA.status} />}
@@ -207,7 +206,7 @@ export default function DetailPage() {
                   </HStack>
                   <HStack>
                     <Text fontWeight={"bold"} w="7.5rem">
-                      ค่าบริการ{" "}
+                      ค่าบริการ
                     </Text>
                     <Text as="span" fontWeight={"normal"}>
                       : {activeMA && convertNumber(activeMA.cost)}
@@ -221,7 +220,7 @@ export default function DetailPage() {
           <Box>
             <Flex justify={"space-between"} align={"center"}>
               <Text fontWeight={"bold"} w="fit-content">
-                ประวัติการทำสัญญา{" "}
+                ประวัติการทำสัญญา
                 <Button
                   size="sm"
                   bg="#4C7BF4"
