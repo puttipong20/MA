@@ -160,8 +160,12 @@ function DevDetailComp() {
   }, [detailHistory]);
 
   useEffect(() => {
+    // console.log(AuthCtx)
     if ((repState === "เสร็จสิ้น" || repState === "ยกเลิก") && watch("issue") === "กำลังตรวจสอบ") {
       setValue("issue", "");
+    }
+    if (repState==="กำลังดำเนินการ"){
+      setValue("issue","กำลังตรวจสอบ")
     }
   }, [repState])
 
@@ -279,7 +283,7 @@ function DevDetailComp() {
                   <Controller
                     name="accepter"
                     control={control}
-                    defaultValue={AuthCtx.detail.username}
+                    defaultValue={AuthCtx.username}
                     render={({ field }) => (
                       <FormControl mb="1rem" isRequired isReadOnly>
                         <FormLabel color="#2b3674" fontWeight={"bold"}>

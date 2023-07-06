@@ -21,11 +21,11 @@ const auth = getAuth();
 const db = getFirestore();
 const storage = getStorage();
 
-if (window.location.hostname === "localhost") {
-  connectAuthEmulator(auth, "http://localhost:9099");
-  connectFunctionsEmulator(functions, "localhost", 5001);
-  connectFirestoreEmulator(db, "localhost", 8080);
-  connectStorageEmulator(storage, "localhost", 9199);
-}
+// if (window.location.hostname === "localhost") {
+//   connectAuthEmulator(auth, "http://localhost:9099");
+//   connectFunctionsEmulator(functions, "localhost", 5001);
+//   connectFirestoreEmulator(db, "localhost", 8080);
+//   connectStorageEmulator(storage, "localhost", 9199);
+// }
 
 export { functions, auth, storage, db };

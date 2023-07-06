@@ -38,10 +38,10 @@ const Login: FC = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (currentUser) => {
         const user = currentUser.user;
-        if (user) {
+        if (user !== null) {
           const uid = user.uid;
           // console.log(user)
-          Auth.setNewUser(uid, user.displayName || "noUsername")
+          Auth.setNewUser(uid, user.displayName ? user.displayName : user.email as string)
           toast({
             title: "Loggin is success.",
             status: "success",

@@ -32,7 +32,7 @@ const ResetModal: FC = () => {
   const toast = useToast();
   //functions
   const resetPassword = (data: any) => {
-    console.log(data);
+    // console.log(data);
     const email = data.userEmail;
     sendPasswordResetEmail(auth, email)
       .then(() => {

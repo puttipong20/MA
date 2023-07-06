@@ -64,7 +64,7 @@ const AddReport = () => {
 
   useEffect(() => {
     // console.clear();
-    console.log(Company);
+    // console.log(Company);
     if (Company.companyId === "") {
       navigate(goBackPath);
     }
