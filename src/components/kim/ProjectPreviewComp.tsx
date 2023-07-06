@@ -209,7 +209,9 @@ export default function ProjectPreviewComp() {
               >
                 <AiOutlineReload />
               </Button>
-              <AddProject companyName={companyName} companyId={params["company"] as string} />
+              {!isFetching &&
+                <AddProject companyName={companyName} companyId={params["company"] as string} />
+              }
             </Flex>
           </Flex>
         </Box>
