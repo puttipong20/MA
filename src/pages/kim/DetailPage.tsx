@@ -73,15 +73,24 @@ export default function DetailPage() {
     MAFetch.forEach((ma) => {
       MAlogs.push({ id: ma.id, ma: ma.data() as MA });
     });
-    setLogs(MAlogs);
+    const sorted_MAlogs = MAlogs.sort((a, b) => {
+      const dateA = new Date(a.ma.endMA) as any
+      const dateB = new Date(b.ma.endMA) as any
+      return dateA - dateB
+    })
+    setLogs(sorted_MAlogs);
 
-    const active = MAlogs.filter((i) => i.ma.status === "active")[0];
-    const lastest = MAlogs[0];
+    const active = sorted_MAlogs.filter((i) => i.ma.status === "active")[0];
+    const lastest = sorted_MAlogs.filter((i) => i.ma.status === "active" || i.ma.status === "advance" || i.ma.status === "expire").at(-1);
     // console.log(lastest)
     if (active) {
+      // console.log("active")
       setActiveMA(active.ma);
     } else {
-      setActiveMA(lastest.ma);
+      if (lastest) {
+        // console.log("lastest")
+        setActiveMA(lastest.ma);
+      }
     }
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false);
@@ -169,7 +178,7 @@ export default function DetailPage() {
                     )}
                 </Text>
               </HStack>
-              {activeMA && activeMA.status === "deleted" ? (
+              {!activeMA ? (
                 <HStack>
                   <Text fontWeight={"bold"} w="7.5rem">
                     สัญญา
@@ -247,7 +256,7 @@ export default function DetailPage() {
                 borderColor="#f4f4f4"
                 w="100%"
                 h="100%"
-                maxH="36vh"
+                maxH={"36vh"}
                 overflowY={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}

@@ -176,6 +176,44 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     }
   };
 
+
+  const [activeError, setActiveError] = useState(false)
+  const [advanceError, setAdvanceError] = useState(false)
+  const [expireError, setExpireError] = useState(false)
+
+  const status = watch("status") || "";
+  const start = watch("startMA") || "";
+  const end = watch("endMA") || "";
+  useEffect(() => {
+    // console.log("change")
+    const currentDate = moment().format("YYYY-MM-DD")
+    if (status === "active") {
+      // console.log("สัญญา : กำลังใช้งาน", !((start <= currentDate) && (currentDate <= end)))
+      setActiveError(!((start <= currentDate) && (currentDate <= end)))
+      setAdvanceError(false);
+      setExpireError(false);
+    }
+    if (status === "advance") {
+      // console.log("สัญญา : ล่วงหน้า", (start > currentDate))
+      setAdvanceError(!(start > currentDate))
+      setActiveError(false)
+      setExpireError(false)
+    }
+    if (status === "expire") {
+      // console.log("สัญญา : หมดอายุ", (currentDate > end))
+      setExpireError(!(currentDate > end))
+      setActiveError(false)
+      setAdvanceError(false)
+    }
+  }, [status, start, end])
+
+  const clear = () => {
+    reset();
+    setActiveError(false)
+    setAdvanceError(false)
+    setExpireError(false)
+  }
+
   return (
     <Box w="100%" p={"0.5rem"} userSelect={"none"}>
       <Text
@@ -264,7 +302,6 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                         <option value="advance">ล่วงหน้า</option>
                         <option value="active">กำลังใช้งาน</option>
                         <option value="expire">หมดอายุ</option>
-                        <option value="cancel">ยกเลิก</option>
                       </Select>
                     </FormControl>
                   )}
@@ -287,8 +324,13 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                   )}
                 />
               </Stack>
+              <Box color="red">
+                {activeError && <Text>วันที่ไม่ถูกต้อง : วันที่ปัจจุบันต้องอยู่ในช่วงของสัญญา</Text>}
+                {advanceError && <Text>วันที่ไม่ถูกต้อง : วันที่เริ่มต้นสัญญาต้องมากกว่าวันที่ปัจจุบัน</Text>}
+                {expireError && <Text>วันที่ไม่ถูกต้อง : วันที่สิ้นสุดสัญญาต้องน้อยกว่าวันที่ปัจจุบัน</Text>}
+              </Box>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button mr="68px" onClick={() => clear()}>
                   เคลียร์
                 </Button>
                 <Button
@@ -297,6 +339,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                   bg="#4C7BF4"
                   _hover={{ color: "white", bg: "#4C7BF4" }}
                   isLoading={isLoading}
+                  isDisabled={activeError || advanceError || expireError}
                 >
                   บันทึก
                 </Button>

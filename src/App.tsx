@@ -20,6 +20,7 @@ import DetailPage from "./pages/kim/DetailPage";
 import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
+import ContractUpdate from "./components/ContractUpdate";
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
@@ -30,6 +31,7 @@ function App() {
     if (!Auth.uid) {
       await AuthCheck(Auth, navigate);
     }
+    await ContractUpdate();
     setIsLoading(false);
   };
 
@@ -39,20 +41,21 @@ function App() {
   }, []);
 
   if (isLoading) {
-    <Box
-      w="100vw"
-      h="100vh"
-      display="flex"
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Text>Checking</Text>
-      <Spinner />
-    </Box>;
+    return (
+      <Box
+        w="100vw"
+        h="100vh"
+        display="flex"
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text>Authen Checking . . .</Text>
+        <Spinner />
+      </Box>
+    )
   } else {
     return (
-      <Box w="100%" maxH="100vh">
-
+      <Box w="100%" maxH="100vh" position={"relative"}>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />

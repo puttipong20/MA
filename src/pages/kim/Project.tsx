@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import AppSidebar from "../../components/kim/AppSidebar";
 import classes from "./Project.module.css";
 import { useState } from "react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 interface Props {
   children?: React.ReactNode;
@@ -25,15 +25,20 @@ const Project: React.FC<Props> = (props) => {
         // color="#fff" bg="#0F141F"
         color="#0F141F"
         bg="#fff"
-        position={["absolute","static"]}
+        position={["absolute", "static"]}
         zIndex={[5, 0]}
         fontFamily={"inherit"}
       >
-        <AppSidebar setTriggle={()=>{setIsTrigger(!isTrigger)}}/>
+        <AppSidebar setTriggle={() => { setIsTrigger(!isTrigger) }} />
       </Box>
       <Box w="calc(100% - 0%)" p="1rem" maxH="100%" overflow={"hidden"}>
         <Button bg="#4C7BF4" color="white" _hover={{ opacity: "0.8" }} onClick={() => setIsTrigger(!isTrigger)} size="sm" ml="1rem">
-          <HamburgerIcon />
+          {
+            isTrigger ?
+              <CloseIcon />
+              :
+              <HamburgerIcon />
+          }
         </Button>
         {props.children}
       </Box>

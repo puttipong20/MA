@@ -101,7 +101,7 @@ const Sidebar: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.clear();
+    // console.clear();
     companies.forEach((i) => {
       if (i.companyId === params["company"]) {
         Company.setCompany(i.companyId, i.detail.companyName);
@@ -115,7 +115,7 @@ const Sidebar: React.FC<Props> = (props) => {
         });
       }
     });
-    console.log(Company);
+    // console.log(Company)
   });
 
   const code = 0;
