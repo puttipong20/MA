@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useContext } from "react";
@@ -158,10 +159,19 @@ function DevDetailComp() {
     // console.log(detailHistory?.solution?.accepter)
   }, [detailHistory]);
 
+  useEffect(() => {
+    if ((repState === "เสร็จสิ้น" || repState === "ยกเลิก") && watch("issue") === "กำลังตรวจสอบ") {
+      setValue("issue", "");
+    }
+  }, [repState])
+
   if (isLoading) {
-    <Box>
-      {/* <Spinner /> */}
-    </Box>;
+    return (
+
+      <Box>
+        {/* <Spinner /> */}
+      </Box>
+    )
   } else {
     return (
       <Container>
@@ -235,9 +245,9 @@ function DevDetailComp() {
                       <Controller
                         name="issue"
                         control={control}
-                        defaultValue={detailHistory?.solution?.issue || ""}
+                        defaultValue={detailHistory?.solution?.issue === "กำลังตรวจสอบ" ? "" : detailHistory?.solution?.issue}
                         render={({ field }) => (
-                          <FormControl mb="1rem">
+                          <FormControl mb="1rem" isRequired>
                             <FormLabel color="#2b3674" fontWeight={"bold"}>
                               ปัญหาที่พบ
                             </FormLabel>
