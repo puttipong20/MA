@@ -41,7 +41,7 @@ const Login: FC = () => {
         if (user) {
           const uid = user.uid;
           // console.log(user)
-          Auth.setNewUser(uid, user.displayName || "noUsername")
+          Auth.setNewUser(uid, user.displayName ? user.displayName : "noUsername")
           toast({
             title: "Loggin is success.",
             status: "success",
