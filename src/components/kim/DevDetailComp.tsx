@@ -133,7 +133,7 @@ function DevDetailComp() {
         ...(history.data() as ReportDetail),
       };
       setDetailHistory(reportHistory);
-
+      // console.log(reportHistory)
       setValue("RepStatus", reportHistory.RepStatus)
       setValue("issue", reportHistory.solution?.issue)
       setValue("solution", reportHistory.solution?.solution)
@@ -219,7 +219,7 @@ function DevDetailComp() {
                   {
                     repState === "กำลังดำเนินการ" ?
                       <Controller
-                        name="issueType"
+                        name="issue"
                         control={control}
                         defaultValue={"กำลังตรวจสอบ"}
                         render={({ field }) => (
@@ -233,7 +233,7 @@ function DevDetailComp() {
                       />
                       :
                       <Controller
-                        name="issueType"
+                        name="issue"
                         control={control}
                         defaultValue={detailHistory?.solution?.issue || ""}
                         render={({ field }) => (
