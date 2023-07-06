@@ -105,23 +105,23 @@ const ContractPreview = () => {
                         </HStack>
                         <HStack>
                           <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
-                            แก้ไขเมื่อ :
+                            แก้ไขเมื่อ
                           </Text>
                           <Text>
-                            {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
+                            : {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
                           </Text>
                         </HStack>
                         <HStack alignItems={"start"}>
                           <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
-                            แก้ไขโดย :
+                            แก้ไขโดย
                           </Text>
-                          <Text>{u.updatedBy.username}</Text>
+                          <Text>: {u.updatedBy.username}</Text>
                         </HStack>
                         <HStack alignItems={"start"}>
                           <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
-                            หมายเหตุ :
+                            หมายเหตุ
                           </Text>
-                          <Text>{u.note}</Text>
+                          <Text>: {u.note}</Text>
                         </HStack>
                       </Box>
                     );
