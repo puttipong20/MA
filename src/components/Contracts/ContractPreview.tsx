@@ -15,7 +15,7 @@ import { MAcontext } from "../../context/MAContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import moment from "moment";
-import classes from "../../pages/kim/ProblemPreview.module.css";
+// import classes from "../../pages/kim/ProblemPreview.module.css";
 
 const ContractPreview = () => {
   const navigate = useNavigate();
