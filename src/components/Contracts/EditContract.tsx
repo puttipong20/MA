@@ -136,7 +136,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
       const newUpdateLog = {
         note: data.note,
         timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
-        updatedBy: { username: Auth.detail.username, uid: Auth.uid },
+        updatedBy: { username: Auth.username, uid: Auth.uid },
       };
       const merge = [...oldUpdateLog, newUpdateLog];
       // console.log(data, merge)
