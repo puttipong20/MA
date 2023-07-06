@@ -17,7 +17,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../services/config-db";
+import { auth, db } from "../../services/config-db";
 import { doc, setDoc } from "firebase/firestore";
 
 const Register: FC = () => {

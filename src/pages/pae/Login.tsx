@@ -13,13 +13,12 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../services/config-db";
-import ResetModal from "../components/Modal";
-import { AuthContext } from "../context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../../services/config-db";
+import ResetModal from "../../components/pae/Modal";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login: FC = () => {
   //hook state
@@ -32,38 +31,31 @@ const Login: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const Auth = useContext(AuthContext)
-  //funcionts
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const submitData = (data: any) => {
-    console.log(data);
+    setIsLoading(true);
     const email = data.email;
     const password = data.password;
     signInWithEmailAndPassword(auth, email, password)
       .then(async (currentUser) => {
-        setIsLoading(true);
         const user = currentUser.user;
         if (user) {
           const uid = user.uid;
-          const userDetail = await getDoc(doc(db, "Profiles", uid))
-          if (userDetail.exists()) {
-            Auth.setNewUser(uid, userDetail.data() as { role: string, company: string })
-          }
+          // console.log(user)
+          Auth.setNewUser(uid, user.displayName || "noUsername")
           toast({
             title: "Loggin is success.",
-            description: `${user.email} is loggin`,
             status: "success",
-            duration: 1000,
+            duration: 2000,
             isClosable: true,
             position: "top",
           });
           // console.log(Auth)
-          if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
+          navigate("/")
           setIsLoading(false)
-
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         toast({
           title: "Loggin is success.",
           description: `password or email is invalid.`,
@@ -74,9 +66,15 @@ const Login: FC = () => {
         });
       });
   };
+
+  useEffect(() => {
+    if (Auth.uid !== "") {
+      navigate("/")
+    }
+  })
+
   return (
     <Container p={0} m={0} maxW={"100%"}>
-      <Button>hello world</Button>
       <Box
         w={"100%"}
         h={"100vh"}
@@ -108,6 +106,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                     <FormErrorMessage color={"black"}>
                       {errors.email?.message as string}
@@ -128,6 +128,8 @@ const Login: FC = () => {
                       color={"white"}
                       value={value}
                       onChange={onChange}
+                      border="1px solid #eee"
+                      _focus={{ border: "1px solid #fff" }}
                     />
                   </FormControl>
                 )}

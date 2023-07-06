@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Crafting_ma
+=======
+# crafting-ticket-v2
+>>>>>>> Kim
 
 
 
@@ -15,14 +19,22 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
+<<<<<<< HEAD
 git remote add origin https://gitlab.com/puttipongpanomprai/crafting_ma.git
+=======
+git remote add origin https://gitlab.com/puttipongpanomprai/crafting-ticket-v2.git
+>>>>>>> Kim
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
+<<<<<<< HEAD
 - [ ] [Set up project integrations](https://gitlab.com/puttipongpanomprai/crafting_ma/-/settings/integrations)
+=======
+- [ ] [Set up project integrations](https://gitlab.com/puttipongpanomprai/crafting-ticket-v2/-/settings/integrations)
+>>>>>>> Kim
 
 ## Collaborate with your team
 
@@ -30,7 +42,11 @@ git push -uf origin main
 - [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
 - [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
 - [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
+<<<<<<< HEAD
 - [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+=======
+- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+>>>>>>> Kim
 
 ## Test and Deploy
 
