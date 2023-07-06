@@ -91,6 +91,9 @@ export default function DetailPage() {
         // console.log("lastest")
         setActiveMA(lastest.ma);
       }
+      else {
+        setActiveMA(undefined)
+      }
     }
     setProjectDetail(project.data() as ProjectDetail);
     setIsfetching(false);
