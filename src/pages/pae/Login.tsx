@@ -4,7 +4,6 @@ import {
   Center,
   Container,
   Flex,
-  Text,
   FormControl,
   FormLabel,
   Heading,
@@ -15,7 +14,7 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FC, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../services/config-db";
 import ResetModal from "../../components/pae/Modal";
 import { AuthContext } from "../../context/AuthContext";
@@ -143,11 +142,11 @@ const Login: FC = () => {
                     Login
                   </Button>
                   <Box>
-                    <Link to={"/register"}>
+                    {/* <Link to={"/register"}>
                       <Text mx={5} color={"white"}>
                         Register
                       </Text>
-                    </Link>
+                    </Link> */}
                   </Box>
                 </Flex>
               </Center>

@@ -47,7 +47,7 @@ const UpdateContract: React.FC<Props> = (props) => {
         const newUpdateLog = {
             note: `${props.status} contract`,
             timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
-            updatedBy: { username: Auth.detail.username, uid: Auth.uid },
+            updatedBy: { username: Auth.username, uid: Auth.uid },
         };
         const updatedLog = [...oldUpdateLog, newUpdateLog];
         // console.log(updatedLog)

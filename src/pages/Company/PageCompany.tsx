@@ -108,7 +108,7 @@ function PreCompany() {
                 >
                   ข้อมูลลูกค้า
                 </Text>
-                <Text fontSize="16px" fontFamily="Prompt" color="#000000">
+                <Text fontSize="16px" fontFamily="Prompt" >
                   บริการหลังการขายของลูกค้าทั้งหมด
                 </Text>
               </VStack>
@@ -204,7 +204,7 @@ function PreCompany() {
                     fontWeight={"normal"}
                     color="white"
                     w="15%"
-                    textAlign="center"
+                    textAlign="left"
                     fontFamily={"inherit"}
                   >
                     เบอร์โทรติดต่อ

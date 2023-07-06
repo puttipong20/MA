@@ -57,14 +57,20 @@ const ContractPreview = () => {
                   >
                     ประวัติการแก้ไข
                   </Text>
-                  <Text fontSize="16px" fontFamily="Prompt" color="#000000">
+                  <Text fontSize="16px" fontFamily="Prompt">
                     ข้อมูลการแก้ไข
                   </Text>
                 </VStack>
               </HStack>
             </Center>
             <Divider my="1rem" />
-            <Box w="100%" overflowY={"auto"}  h="70vh" p="1rem">
+            <Box
+              w="100%"
+              overflowY={"auto"}
+              h="70vh"
+              p="1rem"
+              className={classes.table}
+            >
               <Grid
                 h={"max-content"}
                 templateColumns={{
@@ -74,7 +80,6 @@ const ContractPreview = () => {
                 }}
                 gap={"15px"}
                 w="100%"
-
                 pb="2rem"
               >
                 {MACtx.ma.updateLogs
@@ -116,9 +121,7 @@ const ContractPreview = () => {
                           <Text minW="4.5rem" fontSize="16px" fontWeight="bold">
                             หมายเหตุ :
                           </Text>
-                          <Text>
-                            {u.note}
-                          </Text>
+                          <Text>{u.note}</Text>
                         </HStack>
                       </Box>
                     );

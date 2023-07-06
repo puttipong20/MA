@@ -21,7 +21,6 @@ import {
   useToast,
   Radio,
   RadioGroup,
-  FormErrorMessage,
   Text,
   ModalHeader,
 } from "@chakra-ui/react";
@@ -135,6 +134,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อบริษัท"
                       />
                     </FormControl>
                   )}
@@ -151,6 +151,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุที่อยู่บริษัท"
                       />
                     </FormControl>
                   )}
@@ -167,6 +168,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อผู้ติดต่อ"
                       />
                     </FormControl>
                   )}
@@ -186,6 +188,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเบอร์โทรศัพท์"
                       />
                     </FormControl>
                   )}
@@ -196,14 +199,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   defaultValue=""
                   rules={{
                     required: true,
-                    minLength: {
-                      value: 13,
-                      message: "กรุณาใส่เลขประจำตัวให้ครบ 13 หลัก",
-                    },
-                    maxLength: {
-                      value: 13,
-                      message: "คุณใส่เลขประจำตัวเกิน 13 หลัก",
-                    },
                   }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
@@ -211,14 +206,11 @@ const FormEditCompany = ({ data, id }: any) => {
                         เลขประจำตัวผู้เสียภาษี
                       </FormLabel>
                       <Input
-                        type="number"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเลขประจำตัวผู้เสียภาษี"
                       />
-                      <FormErrorMessage>
-                        {errors.userTax?.message}
-                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />

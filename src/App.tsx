@@ -5,7 +5,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 // import Preview from "./pages/Preview";
 // import DetailForUser from "./pages/DetailForUser";
 import Login from "./pages/pae/Login";
-import Register from "./pages/pae/Register";
+// import Register from "./pages/pae/Register";
 
 import Home from "./pages/Home";
 import Project from "./pages/kim/Project";
@@ -60,7 +60,7 @@ function App() {
       <Box w="100%" maxH="100vh" position={"relative"}>
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />
 
           <Route
