@@ -16,10 +16,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { FC, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../../services/config-db";
+import { auth } from "../../services/config-db";
 import ResetModal from "../../components/pae/Modal";
 import { AuthContext } from "../../context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
 
 const Login: FC = () => {
   //hook state
@@ -42,21 +41,17 @@ const Login: FC = () => {
         const user = currentUser.user;
         if (user) {
           const uid = user.uid;
-          const userDetail = await getDoc(doc(db, "Profiles", uid))
-          if (userDetail.exists()) {
-            Auth.setNewUser(uid, userDetail.data() as { role: string, company: string, username: string })
-          }
+          // console.log(user)
+          Auth.setNewUser(uid, user.displayName || "noUsername")
           toast({
             title: "Loggin is success.",
-            description: `${user.email} is loggin`,
             status: "success",
-            duration: 1000,
+            duration: 2000,
             isClosable: true,
             position: "top",
           });
           // console.log(Auth)
           navigate("/")
-          // if (Auth.detail.company) navigate(`/preview/${Auth.detail.company}`);
           setIsLoading(false)
         }
       })

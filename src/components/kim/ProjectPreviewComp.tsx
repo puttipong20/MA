@@ -124,11 +124,12 @@ export default function ProjectPreviewComp() {
   useEffect(() => {
     const projectCollection = collection(db, "Project");
     const q = query(projectCollection);
+    setCompanyName(Company.companyName)
     onSnapshot(q, () => {
       fetchingData();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params["project"], params["company"]]);
+  }, [params["project"], params["company"], Company.companyId]);
 
   return (
     <div className="container">
