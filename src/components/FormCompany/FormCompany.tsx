@@ -21,7 +21,6 @@ import {
   useToast,
   Radio,
   RadioGroup,
-  FormErrorMessage,
   ModalHeader,
 } from "@chakra-ui/react";
 import moment from "moment";
@@ -145,6 +144,7 @@ const FormAddCompany = () => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อบริษัท"
                       />
                     </FormControl>
                   )}
@@ -161,6 +161,7 @@ const FormAddCompany = () => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุที่อยู่บริษัท"
                       />
                     </FormControl>
                   )}
@@ -177,6 +178,7 @@ const FormAddCompany = () => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อผู้ติดต่อ"
                       />
                     </FormControl>
                   )}
@@ -196,6 +198,7 @@ const FormAddCompany = () => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเบอร์โทรศัพท์"
                       />
                     </FormControl>
                   )}
@@ -214,6 +217,7 @@ const FormAddCompany = () => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเลขประจำตัวผู้เสียภาษี"
                       />
                     </FormControl>
                   )}

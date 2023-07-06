@@ -134,6 +134,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อบริษัท"
                       />
                     </FormControl>
                   )}
@@ -150,6 +151,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุที่อยู่บริษัท"
                       />
                     </FormControl>
                   )}
@@ -166,6 +168,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุชื่อผู้ติดต่อ"
                       />
                     </FormControl>
                   )}
@@ -185,6 +188,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเบอร์โทรศัพท์"
                       />
                     </FormControl>
                   )}
@@ -205,6 +209,7 @@ const FormEditCompany = ({ data, id }: any) => {
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        placeholder="ระบุเลขประจำตัวผู้เสียภาษี"
                       />
                     </FormControl>
                   )}
