@@ -25,7 +25,7 @@ const EditForm: React.FC<Props> = (props) => {
     const [pDetail, setPDetail] = useState<ProjectDetail>()
 
     const onSubmit = (data: any) => {
-        console.log(data);
+        // console.log(data);
         props.onClose()
     }
 

@@ -160,9 +160,12 @@ function DevDetailComp() {
   }, [detailHistory]);
 
   useEffect(() => {
-    console.log(AuthCtx)
+    // console.log(AuthCtx)
     if ((repState === "เสร็จสิ้น" || repState === "ยกเลิก") && watch("issue") === "กำลังตรวจสอบ") {
       setValue("issue", "");
+    }
+    if (repState==="กำลังดำเนินการ"){
+      setValue("issue","กำลังตรวจสอบ")
     }
   }, [repState])
 
