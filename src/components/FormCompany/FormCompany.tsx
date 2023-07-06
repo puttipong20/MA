@@ -206,27 +206,15 @@ const FormAddCompany = () => {
                   defaultValue=""
                   rules={{
                     required: true,
-                    minLength: {
-                      value: 13,
-                      message: "กรุณาใส่เลขประจำตัวให้ครบ 13 หลัก",
-                    },
-                    maxLength: {
-                      value: 13,
-                      message: "คุณใส่เลขประจำตัวเกิน 13 หลัก",
-                    },
                   }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เลขประจำตัวผู้เสียภาษี</FormLabel>
                       <Input
-                        type="number"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                       />
-                      <FormErrorMessage>
-                        {errors.userTax?.message}
-                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />
