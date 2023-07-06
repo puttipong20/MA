@@ -28,10 +28,12 @@ function App() {
 
   const initial = async () => {
     setIsLoading(true);
-    if (!Auth.uid) {
+    if (Auth.uid === "") {
       await AuthCheck(Auth, navigate);
+      setIsLoading(false);
+    } else {
+      await ContractUpdate();
     }
-    await ContractUpdate();
     setIsLoading(false);
   };
 
