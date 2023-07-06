@@ -34,10 +34,10 @@ const Project: React.FC<Props> = (props) => {
       <Box w="calc(100% - 0%)" p="1rem" maxH="100%" overflow={"hidden"}>
         <Button bg="#4C7BF4" color="white" _hover={{ opacity: "0.8" }} onClick={() => setIsTrigger(!isTrigger)} size="sm" ml="1rem">
           {
-            isTrigger?
-            <CloseIcon/>
-            :
-            <HamburgerIcon />
+            isTrigger ?
+              <CloseIcon />
+              :
+              <HamburgerIcon />
           }
         </Button>
         {props.children}
