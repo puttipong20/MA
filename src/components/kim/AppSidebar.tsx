@@ -15,6 +15,8 @@ import {
   Flex,
   InputLeftElement,
   InputGroup,
+  // IconButton,
+  // useColorMode,
 } from "@chakra-ui/react";
 // import { AiOutlinePlusCircle } from "react-icons/ai";
 // import { CgDetailsMore } from "react-icons/cg";
@@ -33,9 +35,10 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { LuLogOut } from "react-icons/lu";
 import { signOut } from "firebase/auth";
 import { AuthContext } from "../../context/AuthContext";
+// import { FaLightbulb } from "react-icons/fa";
 
 interface Props {
-  setTriggle: () => void,
+  setTriggle: () => void;
 }
 
 const Sidebar: React.FC<Props> = (props) => {
@@ -47,6 +50,7 @@ const Sidebar: React.FC<Props> = (props) => {
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
   const Auth = useContext(AuthContext);
+  // const { colorMode, toggleColorMode } = useColorMode();
 
   const onSearch = () => {
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
@@ -130,6 +134,21 @@ const Sidebar: React.FC<Props> = (props) => {
       >
         X
       </Button>
+      {/* <Flex
+        justify="center"
+      >
+        <IconButton
+          aria-label={`Switch to ${
+            colorMode === "light" ? "dark" : "light"
+          } mode`}
+          icon={<FaLightbulb />}
+          onClick={toggleColorMode}
+          variant="ghost"
+          color={colorMode === "light" ? "gray.900" : "gray.500"}
+          _hover={{opacity:"0.8"}}
+        />
+      </Flex> */}
+
       <Heading
         cursor={"pointer"}
         onClick={() => {
@@ -143,7 +162,7 @@ const Sidebar: React.FC<Props> = (props) => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-      // border="1px solid black"
+        // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
@@ -183,7 +202,7 @@ const Sidebar: React.FC<Props> = (props) => {
                   borderRadius={"10px"}
                   bg={focusCompany ? color : ""}
                   my="5px"
-                // borderLeft={focusCompany ? "3px solid white" : "none"}
+                  // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
                   <AccordionButton>
                     <Flex justify={"space-between"}>
@@ -199,7 +218,7 @@ const Sidebar: React.FC<Props> = (props) => {
                   <AccordionPanel>
                     <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                        i.detail.projects.length !== 0 ? (
+                      i.detail.projects.length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;
