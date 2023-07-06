@@ -90,7 +90,5 @@ export type Company = {
 // ======================================================================================
 
 export type UserDetail = {
-  role: string;
-  company: string;
   username: string;
 };

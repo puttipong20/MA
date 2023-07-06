@@ -12,8 +12,7 @@ const convertTime = (date: string) => {
 const ContactUpdate = async () => {
     const currentDate = moment().format("YYYY-MM-DD");
     const lastestUpdate = localStorage.getItem("lastestUpdate")
-    if (lastestUpdate !== currentDate) {
-        // alert("updating")
+    if (lastestUpdate !== currentDate || lastestUpdate === undefined) {
         const projectCollection = collection(db, "Project");
         const projects = await getDocs(projectCollection);
         projects.forEach(async (project) => {
@@ -30,13 +29,13 @@ const ContactUpdate = async () => {
                 if (status === "active" || status === "advance") {
                     if (currentDate < start) {
                         updateDoc(MAdoc, { status: "advance" })
-                        console.log(maID, ": advance")
+                        // console.log(maID, ": advance")
                     } else if (currentDate > end) {
                         updateDoc(MAdoc, { status: "expire" })
-                        console.log(maID, ": expire")
+                        // console.log(maID, ": expire")
                     } else {
                         updateDoc(MAdoc, { status: "active" })
-                        console.log(maID, ": expire")
+                        // console.log(maID, ": expire")
                     }
                 }
             })
