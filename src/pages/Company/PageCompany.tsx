@@ -2,6 +2,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import {
   Box,
+  Button,
   Center,
   Container,
   HStack,
@@ -28,7 +29,7 @@ import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import FormAddCompany from "../../components/FormCompany/FormCompany";
 import { useNavigate } from "react-router-dom";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import EditCompany from "./EditCompany";
 import DeleteCompany from "./DeleteCompany";
@@ -38,29 +39,36 @@ import classes from "../../pages/kim/ProblemPreview.module.css";
 
 import { CompanyContext } from "../../context/CompanyContext";
 
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 function PreCompany() {
   const [comForm, setComForm] = useState<any[]>([]);
   const [filComForm, setFilComForm] = useState<any[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
+  // const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
   const searchRef = useRef<HTMLInputElement>(null);
-  const { isLoading:loadData, refetch:fetchData } = useQuery("fetch-company",
-    async () => {
-      const CompanyDoc = collection(db, "Company");
-    const q = query(CompanyDoc, orderBy("createdAt", "asc"));
-    onSnapshot(q, (snapshot) => {
-      const allCompany = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      });
-      setComForm(allCompany);
-      setFilComForm(allCompany);
-      setIsFetching(false);
+  const queryClient = useQueryClient();
+
+  const fetchData = async () => {
+    const CompanyDoc = collection(db, 'Company');
+    const q = query(CompanyDoc, orderBy('createdAt', 'asc'));
+    const snapshot = await getDocs(q);
+    const allCompany = snapshot.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
     });
+    setComForm(allCompany);
+    setFilComForm(allCompany);
+    // return allCompany;
+  }
+
+  const { isLoading } = useQuery('fetch-company', fetchData);
+
+  useEffect(() => {
+    if (!isLoading) {
+      queryClient.invalidateQueries('fetch-company');
     }
-  )
+  }, [isLoading, queryClient]);
 
   // const fetchData = async () => {
   //   setIsFetching(true);
@@ -151,15 +159,16 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              {/* <Button
+              <Button
                 bg="#4C7BF4"
                 color="gray.100"
                 borderRadius="16px"
-                onClick={onSearch}
+                isLoading={isLoading}
+                onClick={fetchData}
                 _hover={{ opacity: 0.8 }}
               >
-                ค้นหา
-              </Button> */}
+                reload
+              </Button>
             </Flex>
             <FormAddCompany />
           </Flex>
@@ -239,7 +248,7 @@ function PreCompany() {
                 </Tr>
               </Thead>
               <Tbody>
-                {loadData ? (
+                {isLoading ? (
                   <Tr>
                     <Td colSpan={7} textAlign={"center"}>
                       Loading . . .
