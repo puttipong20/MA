@@ -61,7 +61,7 @@ function PreCompany() {
     // return allCompany;
   }
 
-  const { isLoading } = useQuery('fetch-company', fetchData);
+  const { isLoading, refetch } = useQuery('fetch-company', fetchData);
 
   useEffect(() => {
     if (!isLoading) {
@@ -159,7 +159,7 @@ function PreCompany() {
                 />
               </InputGroup>
             </Flex>
-            <FormAddCompany />
+            <FormAddCompany refetch={refetch} />
           </Flex>
         </Box>
 
