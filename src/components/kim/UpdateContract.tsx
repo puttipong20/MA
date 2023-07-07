@@ -45,7 +45,7 @@ const UpdateContract: React.FC<Props> = (props) => {
         const MAhistory = (await getDoc(MAdoc)).data() as MA;
         const oldUpdateLog = MAhistory.updateLogs;
         const newUpdateLog = {
-            note: `${props.status} contract`,
+            note: `${action}สัญญา`,
             timeStamp: moment().format("YYYY-MM-DD HH:mm:ss"),
             updatedBy: { username: Auth.username, uid: Auth.uid },
         };
