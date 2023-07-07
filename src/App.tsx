@@ -21,8 +21,7 @@ import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
 import ContractUpdate from "./components/ContractUpdate";
-import TestQuery from "./pages/TestQuery";
-import QueryProject from "./pages/QueryProject";
+
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
@@ -64,8 +63,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />
-          <Route path="/testq" element={<TestQuery />} />
-          <Route path="/projectq/:compId" element={<QueryProject />} />
+
           <Route
             path="/"
             element={
