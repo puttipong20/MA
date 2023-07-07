@@ -55,8 +55,9 @@ const Login: FC = () => {
         }
       })
       .catch(() => {
+        setIsLoading(false)
         toast({
-          title: "Loggin is success.",
+          title: "Loggin unsuccess.",
           description: `password or email is invalid.`,
           status: "error",
           duration: 5000,
