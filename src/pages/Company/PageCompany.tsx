@@ -77,14 +77,9 @@ function PreCompany() {
   //   });
   // };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-
-
-
-
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const onSearch = () => {
     const value = searchRef.current?.value;
