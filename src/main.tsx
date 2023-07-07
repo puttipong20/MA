@@ -7,17 +7,21 @@ import myTheme from "./theme.tsx";
 import AuthContextProvider from "./context/AuthContext.tsx";
 import CompanyContextProvider from "./context/CompanyContext.tsx";
 import MAcontextProvider from "./context/MAContext.tsx";
+import { QueryClient, QueryClientProvider } from "react-query"
 
+const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ChakraProvider theme={myTheme}>
-    <BrowserRouter>
-      <AuthContextProvider>
-        <MAcontextProvider>
-          <CompanyContextProvider>
-            <App />
-          </CompanyContextProvider>
-        </MAcontextProvider>
-      </AuthContextProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthContextProvider>
+          <MAcontextProvider>
+            <CompanyContextProvider>
+              <App />
+            </CompanyContextProvider>
+          </MAcontextProvider>
+        </AuthContextProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </ChakraProvider>
 );

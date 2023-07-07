@@ -38,6 +38,8 @@ import classes from "../../pages/kim/ProblemPreview.module.css";
 
 import { CompanyContext } from "../../context/CompanyContext";
 
+import { useQuery } from "react-query";
+
 function PreCompany() {
   const [comForm, setComForm] = useState<any[]>([]);
   const [filComForm, setFilComForm] = useState<any[]>([]);
@@ -45,10 +47,9 @@ function PreCompany() {
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
   const searchRef = useRef<HTMLInputElement>(null);
-
-  const fetchData = async () => {
-    setIsFetching(true);
-    const CompanyDoc = collection(db, "Company");
+  const { isLoading:loadData, refetch:fetchData } = useQuery("fetch-company",
+    async () => {
+      const CompanyDoc = collection(db, "Company");
     const q = query(CompanyDoc, orderBy("createdAt", "asc"));
     onSnapshot(q, (snapshot) => {
       const allCompany = snapshot.docs.map((doc) => {
@@ -57,13 +58,28 @@ function PreCompany() {
       setComForm(allCompany);
       setFilComForm(allCompany);
       setIsFetching(false);
-      // console.log(allCompany);
     });
-  };
+    }
+  )
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // const fetchData = async () => {
+  //   setIsFetching(true);
+  //   const CompanyDoc = collection(db, "Company");
+  //   const q = query(CompanyDoc, orderBy("createdAt", "asc"));
+  //   onSnapshot(q, (snapshot) => {
+  //     const allCompany = snapshot.docs.map((doc) => {
+  //       return { ...doc.data(), id: doc.id };
+  //     });
+  //     setComForm(allCompany);
+  //     setFilComForm(allCompany);
+  //     setIsFetching(false);
+  //     // console.log(allCompany);
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const onSearch = () => {
     const value = searchRef.current?.value;
@@ -223,7 +239,7 @@ function PreCompany() {
                 </Tr>
               </Thead>
               <Tbody>
-                {isFetching ? (
+                {loadData ? (
                   <Tr>
                     <Td colSpan={7} textAlign={"center"}>
                       Loading . . .
