@@ -53,7 +53,7 @@ exports.addReport_v2 = functions
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
               Authorization:
-                "Bearer fxok3ULpcw8OTBEIB7c5j8KCXVyGzynWrck1PXqBScg",
+                "Bearer xT5Kr9T0Zr7g6LTMDEo2XxfAxVtJ7agvAkFnuEEQqzu",
             },
             form: {
               message: `
