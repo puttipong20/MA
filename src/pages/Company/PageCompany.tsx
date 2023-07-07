@@ -43,22 +43,23 @@ import { useQuery } from "react-query";
 function PreCompany() {
   const [comForm, setComForm] = useState<any[]>([]);
   const [filComForm, setFilComForm] = useState<any[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
+  // const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
   const searchRef = useRef<HTMLInputElement>(null);
-  const { isLoading:loadData, refetch:fetchData } = useQuery("fetch-company",
+  const { isLoading: loadData, refetch: fetchData } = useQuery("fetch-company",
     async () => {
+      // setIsFetching(true);
       const CompanyDoc = collection(db, "Company");
-    const q = query(CompanyDoc, orderBy("createdAt", "asc"));
-    onSnapshot(q, (snapshot) => {
-      const allCompany = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+      const q = query(CompanyDoc, orderBy("createdAt", "asc"));
+      onSnapshot(q, (snapshot) => {
+        const allCompany = snapshot.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        setComForm(allCompany);
+        setFilComForm(allCompany);
+        // setIsFetching(false);
       });
-      setComForm(allCompany);
-      setFilComForm(allCompany);
-      setIsFetching(false);
-    });
     }
   )
 

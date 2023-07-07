@@ -216,7 +216,7 @@ const Sidebar: React.FC<Props> = (props) => {
                     </Flex>
                   </AccordionButton>
                   <AccordionPanel>
-                    <VStack fontSize={"0.8rem"} align={"left"} pl="5%">
+                    <VStack fontSize={"0.9rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
                       i.detail.projects.length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
