@@ -36,7 +36,7 @@ type ComValue = {
   userPerson: string;
 };
 
-const FormAddCompany = ({refetch}:{refetch:() => void}) => {
+const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
   const Auth = useContext(AuthContext);
   const {
     handleSubmit,
@@ -87,15 +87,18 @@ const FormAddCompany = ({refetch}:{refetch:() => void}) => {
           companyUpdate: updatedDate,
           createBy: Auth.uid,
         });
-        
-      toast({
-        title: "เพิ่มข้อมูลบริษัทสำเร็จ",
-        description: "ข้อมูลบริษัทได้ถูกเพิ่มแล้ว",
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
+
+        toast({
+          title: "เพิ่มข้อมูลบริษัทสำเร็จ",
+          description: "ข้อมูลบริษัทได้ถูกเพิ่มแล้ว",
+          status: "success",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setIsLoading(false);
+        reset();
+        onClose();
       }).finally(() => {
         refetch()
       })
@@ -109,9 +112,7 @@ const FormAddCompany = ({refetch}:{refetch:() => void}) => {
       });
       console.error(e);
     }
-    reset();
-    setIsLoading(false);
-    onClose();
+
   };
 
   return (
