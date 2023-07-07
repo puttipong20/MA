@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Flex,
@@ -10,21 +11,34 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { deleteDoc, doc } from "firebase/firestore";
-import React from "react";
+import React, { useState } from "react";
 import { db } from "../../services/config-db";
 import { MdDelete } from "react-icons/md";
 
 function DeleteCompany({ item, fetchData }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const toast = useToast();
   const cancelRef = React.useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleRemove = async (id: any) => {
+    setIsLoading(true)
     const bookDoc = doc(db, "Company", id);
     await deleteDoc(bookDoc).then(async () => {
-      await fetchData();
+      toast({
+        title: "ลบโปรเจกต์สำเร็จ",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      })
+      fetchData();
+      onClose()
     });
+    setIsLoading(false);
   };
 
   return (
@@ -71,9 +85,9 @@ function DeleteCompany({ item, fetchData }: any) {
                 fontWeight={"600"}
                 colorScheme="red"
                 onClick={() => {
-                  handleRemove(item.id);
-                  onClose();
+                  handleRemove(item.companyId);
                 }}
+                isLoading={isLoading}
                 ml={5}
               >
                 ลบข้อมูล

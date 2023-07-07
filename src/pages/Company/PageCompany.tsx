@@ -23,6 +23,7 @@ import {
   MenuList,
   MenuItem,
   Spinner,
+  Button,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
@@ -38,55 +39,36 @@ import classes from "../../pages/kim/ProblemPreview.module.css";
 
 import { CompanyContext } from "../../context/CompanyContext";
 
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { Company, CompanyDetail } from "../../@types/Type";
 
 function PreCompany() {
-  const [comForm, setComForm] = useState<any[]>([]);
-  const [filComForm, setFilComForm] = useState<any[]>([]);
-  // const [isFetching, setIsFetching] = useState(false);
+  const [comForm, setComForm] = useState<Company[]>([]);
+  const [filComForm, setFilComForm] = useState<Company[]>([]);
   const navigate = useNavigate();
   const Company = useContext(CompanyContext);
   const searchRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
 
-  const fetchData = async () => {
-    const CompanyDoc = collection(db, 'Company');
-    const q = query(CompanyDoc, orderBy('createdAt', 'asc'));
-    const snapshot = await getDocs(q);
-    const allCompany = snapshot.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
-    });
-    setComForm(allCompany);
-    setFilComForm(allCompany);
-    // return allCompany;
+  const fetchCompany = async () => {
+    const CompanyRef = collection(db, "Company")
+    const q = query(CompanyRef, orderBy("createdAt", "desc"))
+    const Companies = await getDocs(q)
+    return Companies
   }
 
-  const { isLoading, refetch } = useQuery('fetch-company', fetchData);
+  const { data, isLoading, isFetching, refetch } = useQuery({ queryKey: ["company"], queryFn: fetchCompany, refetchOnWindowFocus: false })
+
+  const clickToRefetch = () => {
+    refetch();
+  }
 
   useEffect(() => {
-    if (!isLoading) {
-      queryClient.invalidateQueries('fetch-company');
-    }
-  }, [isLoading, queryClient]);
-
-  // const fetchData = async () => {
-  //   setIsFetching(true);
-  //   const CompanyDoc = collection(db, "Company");
-  //   const q = query(CompanyDoc, orderBy("createdAt", "asc"));
-  //   onSnapshot(q, (snapshot) => {
-  //     const allCompany = snapshot.docs.map((doc) => {
-  //       return { ...doc.data(), id: doc.id };
-  //     });
-  //     setComForm(allCompany);
-  //     setFilComForm(allCompany);
-  //     setIsFetching(false);
-  //     // console.log(allCompany);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+    const companies: Company[] = [];
+    data?.forEach(d => companies.push({ companyId: d.id, detail: { ...d.data() as CompanyDetail } }))
+    // console.log(companies);
+    setComForm(companies)
+    setFilComForm(companies)
+  }, [data])
 
   const onSearch = () => {
     const value = searchRef.current?.value;
@@ -158,6 +140,7 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
+              <Button onClick={clickToRefetch} >Reload</Button>
             </Flex>
             <FormAddCompany refetch={refetch} />
           </Flex>
@@ -237,7 +220,7 @@ function PreCompany() {
                 </Tr>
               </Thead>
               <Tbody>
-                {isLoading ? (
+                {(isLoading || isFetching) ? (
                   <Tr>
                     <Td colSpan={7} textAlign={"center"}>
                       Loading . . .
@@ -251,7 +234,7 @@ function PreCompany() {
                     </Td>
                   </Tr>
                 ) : (
-                  filComForm.map((com: any, index: any) => {
+                  filComForm.map((com, index) => {
                     return (
                       <Tr
                         key={index}
@@ -260,7 +243,7 @@ function PreCompany() {
                       >
                         <Td
                           onClick={() => {
-                            handleNext(com.id, com.companyName);
+                            handleNext(com.companyId, com.detail.companyName);
                           }}
                           textAlign="center"
                         >
@@ -268,27 +251,27 @@ function PreCompany() {
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id, com.companyName);
+                            handleNext(com.companyId, com.detail.companyName);
                           }}
                           textAlign="left"
                         >
-                          {com.companyName}
+                          {com.detail.companyName}
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id, com.companyName);
+                            handleNext(com.companyId, com.detail.companyName);
                           }}
                           textAlign="left"
                         >
-                          {com.userName}
+                          {com.detail.userName}
                         </Td>
                         <Td
                           onClick={() => {
-                            handleNext(com.id, com.companyName);
+                            handleNext(com.companyId, com.detail.companyName);
                           }}
                           textAlign="left"
                         >
-                          {com.userPhone}
+                          {com.detail.userPhone}
                         </Td>
                         <Td textAlign="center">
                           <Menu>
@@ -313,16 +296,16 @@ function PreCompany() {
                               zIndex="sticky"
                             >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <ViewCompany id={com?.id} data={com} />
+                                <ViewCompany id={com.companyId} data={com.detail} />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <EditCompany id={com.id} data={com} />
+                                <EditCompany id={com.companyId} data={com.detail} />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <DeleteCompany
-                                  fetchData={fetchData}
+                                  fetchData={refetch}
                                   item={com}
-                                  id={com?.id}
+                                  id={com.companyId}
                                 />
                               </MenuItem>
                             </MenuList>

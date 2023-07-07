@@ -61,7 +61,7 @@ const FormEditCompany = ({ data, id }: any) => {
       setValue("userPerson", data?.userPerson);
     }
     //eslint-disable-next-line
-  }, []);
+  }, [data]);
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -100,7 +100,7 @@ const FormEditCompany = ({ data, id }: any) => {
 
   return (
     <>
-      <Box onClick={onOpen} w="100%" h="100%" display="flex">
+      <Box onClick={() => { console.log(data); onOpen() }} w="100%" h="100%" display="flex">
         <Flex
           color="green"
           fontSize="16px"

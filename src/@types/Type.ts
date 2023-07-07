@@ -71,15 +71,15 @@ export type Project = {
 };
 
 export type CompanyDetail = {
+  companyAddress: string;
   companyName: string;
-  createdAt: string;
   createdBy: { username: string; uid: string };
-  compAddress: string;
-  contactName: string;
-  contactPhone: string;
-  taxNumber: string;
-  type: "normal" | "corp";
+  createdAt: string;
   projects?: { projectName: string; id: string }[] | [];
+  userName: string;
+  userPhone: string;
+  userTax: string;
+  userPerson: "normal" | "corp";
 };
 
 export type Company = {
