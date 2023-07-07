@@ -159,16 +159,6 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              <Button
-                bg="#4C7BF4"
-                color="gray.100"
-                borderRadius="16px"
-                isLoading={isLoading}
-                onClick={fetchData}
-                _hover={{ opacity: 0.8 }}
-              >
-                reload
-              </Button>
             </Flex>
             <FormAddCompany />
           </Flex>
