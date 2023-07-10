@@ -29,7 +29,7 @@ function DeleteCompany({ item, fetchData }: any) {
     const bookDoc = doc(db, "Company", id);
     await deleteDoc(bookDoc).then(async () => {
       toast({
-        title: "ลบโปรเจกต์สำเร็จ",
+        title: "ลบบริษัทสำเร็จ",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -67,7 +67,7 @@ function DeleteCompany({ item, fetchData }: any) {
               ลบข้อมูล
             </AlertDialogHeader>
 
-            <AlertDialogBody>คุณต้องการลบข้อมูล ใช่หรือไม่</AlertDialogBody>
+            <AlertDialogBody>คุณต้องการลบข้อมูลบริษัท ใช่หรือไม่</AlertDialogBody>
 
             <AlertDialogFooter>
               <Button
