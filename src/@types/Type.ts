@@ -20,10 +20,11 @@ export type ReportDetail = {
   phone: string;
   title: string;
   company: string;
-  ref: string;
+  ref?: string;
   uid: string;
-  lastestUpdate: string;
-  solution: Solution | undefined;
+  reportBy: { uid: string; username: string };
+  latestUpdate?: { uid: string; username: string };
+  solution?: Solution | undefined;
 };
 
 export type Report = {
