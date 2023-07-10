@@ -459,7 +459,7 @@ export default function ProjectPreviewComp() {
                               >
                                 <CgDetailsMore />
                               </Text>
-                              ดูข้อมูล Project
+                              ดูข้อมูลสัญญา MA
                             </MenuItem>
                             <MenuItem
                               h="50px"
