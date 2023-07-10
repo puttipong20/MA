@@ -162,7 +162,7 @@ const Sidebar: React.FC<Props> = (props) => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-        // border="1px solid black"
+      // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
@@ -196,19 +196,21 @@ const Sidebar: React.FC<Props> = (props) => {
                 <AccordionItem
                   key={index}
                   userSelect={"none"}
-                  border="none"
+                  borderTop="1px solid rgb(0,0,0,0.1)"
+                  borderBottom="1px solid rgb(0,0,0,0.1)"
                   transition="all 0.3s"
                   _hover={{ bg: color }}
                   borderRadius={"10px"}
                   bg={focusCompany ? color : ""}
                   my="5px"
-                  // borderLeft={focusCompany ? "3px solid white" : "none"}
+                // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
                   <AccordionButton>
                     <Flex justify={"space-between"}>
                       <Text
                         fontWeight={focusCompany ? "bold" : "normal"}
                         textAlign={"left"}
+                        onClick={() => { navigate(`/company/${i.companyId}`) }}
                       >
                         {i.detail.companyName}
                       </Text>
@@ -218,7 +220,7 @@ const Sidebar: React.FC<Props> = (props) => {
                   <AccordionPanel>
                     <VStack fontSize={"0.9rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                      i.detail.projects.length !== 0 ? (
+                        i.detail.projects.length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;
@@ -253,16 +255,6 @@ const Sidebar: React.FC<Props> = (props) => {
                         companyId={i.companyId}
                         companyName={i.detail.companyName}
                       />
-                      <Button
-                        colorScheme="linkedin"
-                        fontWeight={"normal"}
-                        fontSize={"0.9rem"}
-                        onClick={() => {
-                          navigate(`/company/${i.companyId}`);
-                        }}
-                      >
-                        ข้อมูลลูกค้า/บริษัท
-                      </Button>
                     </VStack>
                   </AccordionPanel>
                 </AccordionItem>

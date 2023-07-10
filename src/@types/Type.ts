@@ -22,7 +22,7 @@ export type ReportDetail = {
   company: string;
   ref: string;
   uid: string;
-
+  lastestUpdate: string;
   solution: Solution | undefined;
 };
 
@@ -63,6 +63,7 @@ export type ProjectDetail = {
   companyName: string;
   createdAt: string;
   createdBy: { username: string; uid: string };
+  lastestUpdate: string;
 };
 
 export type Project = {
@@ -80,6 +81,7 @@ export type CompanyDetail = {
   userPhone: string;
   userTax: string;
   userPerson: "normal" | "corp";
+  modifyBy: string;
 };
 
 export type Company = {
