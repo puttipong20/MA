@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { addDoc, collection, doc, runTransaction } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { db } from "../../services/config-db";
@@ -54,40 +54,14 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    try {
-      runTransaction(db, async (transaction) => {
-        const refReference = doc(db, "Reference", "Company");
-        const data = await transaction.get(refReference);
-
-        if (!data.exists()) {
-          transaction.set(refReference, {
-            number: 1,
-          });
-          return {
-            number: 1,
-          };
-        } else {
-          const value = parseInt(data.data()?.number) || 0;
-          const number: number = value + 1;
-
-          transaction.set(refReference, {
-            number: number,
-          });
-          return {
-            number: number,
-          };
-        }
-      }).then(async (response) => {
-        const { number } = response;
-        const docRef = collection(db, "Company");
-        await addDoc(docRef, {
-          ...data,
-          no: `บริษัทที่ ${number}`,
-          createdAt: createDate,
-          companyUpdate: updatedDate,
-          createBy: Auth.uid,
-        });
-
+    const docRef = collection(db, "Company");
+    await addDoc(docRef, {
+      ...data,
+      createdAt: createDate,
+      companyUpdate: updatedDate,
+      createBy: Auth.uid,
+    })
+      .then(() => {
         toast({
           title: "เพิ่มข้อมูลบริษัทสำเร็จ",
           description: "ข้อมูลบริษัทได้ถูกเพิ่มแล้ว",
@@ -96,23 +70,22 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
           duration: 3000,
           isClosable: true,
         });
+      })
+      .catch(() => {
+        toast({
+          title: `เพิ่มบริษัทไม่สำเร็จ`,
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+          position: "top",
+        });
+      })
+      .finally(() => {
+        refetch();
         setIsLoading(false);
         reset();
         onClose();
-      }).finally(() => {
-        refetch()
-      })
-    } catch (e) {
-      toast({
-        title: `เพิ่มบริษัทไม่สำเร็จ`,
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-        position: "top",
       });
-      console.error(e);
-    }
-
   };
 
   return (
