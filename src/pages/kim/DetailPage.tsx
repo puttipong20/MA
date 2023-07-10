@@ -227,7 +227,7 @@ export default function DetailPage() {
                 </>
               )}
               <Text w="100%" textAlign={"right"} color="GrayText">
-                Latest update : {projectDetail?.lastestUpdate ? projectDetail?.lastestUpdate : projectDetail?.createdBy.username}
+                Latest update : {projectDetail?.latestUpdate ? projectDetail?.latestUpdate.username : projectDetail?.createdBy.username}
               </Text>
             </Box>
           </Card>
