@@ -234,6 +234,7 @@ const Sidebar: React.FC<Props> = (props) => {
                               pl="1rem"
                               bg={focusProject ? color : "none"}
                               _hover={{ fontWeight: "bold", bg: color }}
+                              position="relative"
                               onClick={() => {
                                 // console.log(i.detail.companyName)
                                 // console.log(j.projectName)
@@ -242,6 +243,7 @@ const Sidebar: React.FC<Props> = (props) => {
                                 );
                               }}
                             >
+                              <Text as="span" position="absolute" left="-0.1rem">-</Text>
                               {j.projectName}
                             </Text>
                           );
