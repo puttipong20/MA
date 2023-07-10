@@ -354,9 +354,12 @@ export default function ProjectPreviewComp() {
                         ? (color = "blue")
                         : (color = "red");
                   }
+                  const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
-                    <Tr key={index} _hover={{ bg: "gray.100" }}>
-                      <Td textAlign={"center"}>
+                    <Tr key={index} _hover={{ bg: "gray.100" }} cursor={"pointer"}>
+                      <Td textAlign={"center"} onClick={() => {
+                        navigate(navigateLink);
+                      }}>
                         {i.project.detail.projectName}
                       </Td>
 
@@ -366,22 +369,30 @@ export default function ProjectPreviewComp() {
                         </Td>
                       ) : (
                         <>
-                          <Td textAlign={"center"}>
+                          <Td textAlign={"center"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               moment(lastestMA.startMA).format("DD/MM/YYYY")}
                           </Td>
-                          <Td textAlign={"center"}>
+                          <Td textAlign={"center"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               moment(lastestMA.endMA).format("DD/MM/YYYY")}
                           </Td>
-                          <Td textAlign={"right"}>
+                          <Td textAlign={"right"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               Number(lastestMA.cost).toLocaleString("th-TH", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })}
                           </Td>
-                          <Td textAlign={"center"} fontSize={"1rem"}>
+                          <Td textAlign={"center"} fontSize={"1rem"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             <Badge colorScheme={color}>{display}</Badge>
                           </Td>
                         </>
@@ -398,13 +409,7 @@ export default function ProjectPreviewComp() {
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
                           onClick={() => {
-                            // Company.setProject(
-                            //   i.project.projectId,
-                            //   i.project.detail.projectName
-                            // );
-                            navigate(
-                              `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`
-                            );
+                            navigate(navigateLink);
                           }}
                         >
                           ดูรายการปัญหา
