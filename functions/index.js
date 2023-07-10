@@ -10,9 +10,10 @@ const db = admin.firestore();
 exports.addReport_v2 = functions
   .https.onRequest((req, res) => {
     cors()(req, res, async () => {
-      const { company, title, detail, phone, line, email, createAt } = req.body;
+      const token = process.env.VITE_LINE_NOTIFY
+      const { company, title, detail, projectName} = req.body;
 
-      const incrementRef = db.collection("autoIncrement").doc(company);
+      const incrementRef = db.collection("autoIncrement").doc(projectName);
       try {
         db.runTransaction(async (transaction) => {
           const doc = await transaction.get(incrementRef);
@@ -40,7 +41,7 @@ exports.addReport_v2 = functions
             .collection("Report")
             .add({
               ...req.body,
-              ref: `${company}${number}`,
+              ref: `000${number}`,
               RepStatus: "รอรับเรื่อง",
             })
             .then((response) => {
@@ -52,25 +53,22 @@ exports.addReport_v2 = functions
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
               Authorization:
-                "Bearer xT5Kr9T0Zr7g6LTMDEo2XxfAxVtJ7agvAkFnuEEQqzu",
+                `Bearer ${token}`,
             },
             form: {
               message: `
-company: ${company}
-ref: ${company}${number}
-title: ${title}
-detail: ${detail}
-phone: ${phone}
-line ID : ${line}
-mail: ${email}
-AT : ${createAt}
+บริษัท : ${company}
+โปรเจค : ${projectName}
+เลขอ้างอิง : 000${number}
+ปัญหา : ${title}
+รายละเอียด : ${detail}
                 `,
             },
           });
         });
       } catch (e) {
         res.send(
-          `${e} and value need : ( company,title,detail,phone,line,email,createAt )`
+          `${e} and value need : ( company,title,detail )`
         );
       }
     });
@@ -115,20 +113,6 @@ exports.getReportByid_v2 = functions
           });
       } catch (e) {
         res.send(e, "need : ( RepId )");
-      }
-    });
-  });
-exports.updateReport_v2 = functions
-  .https.onRequest((req, res) => {
-    cors()(req, res, async () => {
-      const { RepId, RepStatus } = req.body;
-      try {
-        await db.collection("Report").doc(RepId).update({
-          RepStatus,
-        });
-        res.send("Updated successful.");
-      } catch (e) {
-        res.send(`${e} and UPDATE : ( RepId, RepStatus )`);
       }
     });
   });

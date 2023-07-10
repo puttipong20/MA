@@ -98,7 +98,8 @@ const AddReport = () => {
     try {
       await axios
         .post(
-          "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2",
+          // "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2", // *** prod ***
+          "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2",
           dataToAdd
         )
         .then(() => {
