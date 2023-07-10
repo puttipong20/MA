@@ -18,7 +18,7 @@ import ImgModal from "./ImgModal";
 type Fvalue = {
   problem: string;
   details: string;
-  phone: number;
+  phone: string;
   lineID: string;
   email: string;
   date: string;
@@ -145,19 +145,19 @@ function ProblemRequest() {
                       <Text w="30%" fontWeight="bold">
                         เบอร์ติดต่อ :
                       </Text>
-                      <Text w="70%">{fValue?.phone}</Text>
+                      <Text w="70%">{fValue?.phone === "" ? "-" : fValue?.phone}</Text>
                     </HStack>
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
                         E-mail :
                       </Text>
-                      <Text w="70%">{fValue?.email}</Text>
+                      <Text w="70%">{fValue?.email === "" ? "-" : fValue?.email}</Text>
                     </HStack>
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
                         Line :
                       </Text>
-                      <Text w="70%">{fValue?.lineID}</Text>
+                      <Text w="70%">{fValue?.lineID === "" ? "-" : fValue?.lineID}</Text>
                     </HStack>
                     <br />
                     <HStack alignItems="flex-start">
