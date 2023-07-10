@@ -41,6 +41,7 @@ import { CompanyContext } from "../../context/CompanyContext";
 
 import { useQuery } from "react-query";
 import { Company, CompanyDetail } from "../../@types/Type";
+import { AiOutlineReload } from "react-icons/ai";
 
 function PreCompany() {
   const [comForm, setComForm] = useState<Company[]>([]);
@@ -140,7 +141,7 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              <Button onClick={clickToRefetch} >Reload</Button>
+              <Button onClick={clickToRefetch} bg="#4C7BF4" color="#fff" _hover={{ opacity: 0.8 }} _active={{ opacity: 0.9 }}><AiOutlineReload /></Button>
             </Flex>
             <FormAddCompany refetch={refetch} />
           </Flex>
