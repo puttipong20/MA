@@ -127,7 +127,7 @@ const Renewal: React.FC<Props> = (props) => {
           {
             updatedBy: { username: Auth.username, uid: Auth.uid },
             timeStamp: currentDateTime,
-            note: "renewal contract",
+            note: "ต่อสัญญา",
           },
         ],
       };

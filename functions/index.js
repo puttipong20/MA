@@ -8,7 +8,6 @@ admin.initializeApp();
 const db = admin.firestore();
 
 exports.addReport_v2 = functions
-  .region("asia-southeast1")
   .https.onRequest((req, res) => {
     cors()(req, res, async () => {
       const { company, title, detail, phone, line, email, createAt } = req.body;
@@ -53,7 +52,7 @@ exports.addReport_v2 = functions
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
               Authorization:
-                "Bearer fxok3ULpcw8OTBEIB7c5j8KCXVyGzynWrck1PXqBScg",
+                "Bearer xT5Kr9T0Zr7g6LTMDEo2XxfAxVtJ7agvAkFnuEEQqzu",
             },
             form: {
               message: `
@@ -78,7 +77,6 @@ AT : ${createAt}
   });
 
 exports.getReport_v2 = functions
-  .region("asia-southeast1")
   .https.onRequest((req, res) => {
     cors()(req, res, async () => {
       const allReport = [];
@@ -104,7 +102,6 @@ exports.getReport_v2 = functions
     });
   });
 exports.getReportByid_v2 = functions
-  .region("asia-southeast1")
   .https.onRequest((req, res) => {
     cors()(req, res, async () => {
       const { RepId } = req.body;
@@ -122,7 +119,6 @@ exports.getReportByid_v2 = functions
     });
   });
 exports.updateReport_v2 = functions
-  .region("asia-southeast1")
   .https.onRequest((req, res) => {
     cors()(req, res, async () => {
       const { RepId, RepStatus } = req.body;
@@ -150,5 +146,3 @@ exports.deleteReport_v2 = functions
       }
     });
   });
-
-  exports.schedule = functions.pubsub.schedule

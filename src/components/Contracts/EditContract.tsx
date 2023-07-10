@@ -184,6 +184,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
   const status = watch("status") || "";
   const start = watch("startMA") || "";
   const end = watch("endMA") || "";
+  
   useEffect(() => {
     // console.log("change")
     const currentDate = moment().format("YYYY-MM-DD")
