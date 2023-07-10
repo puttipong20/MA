@@ -92,7 +92,7 @@ export default function ProblemPreview() {
     // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
     const value = searchRef.current?.value;
     const searchText = value + " " + statusFilter || "";
-    const searchField = ["docs.title", "docs.ref", "docs.RepStatus","docs.name"];
+    const searchField = ["docs.title", "docs.ref", "docs.RepStatus", "docs.name"];
     // console.clear();
     // console.log(searchText)
     const result = search(reports, searchField, searchText) as Report[];
@@ -345,11 +345,11 @@ export default function ProblemPreview() {
                         <Td textAlign={"center"}>{r.docs.title}</Td>
                         <Td textAlign={"center"}>{r.docs.name}</Td>
                         <Td>
-                          {r.docs.phone}
+                          {r.docs.phone === "" ? "-" : r.docs.phone}
                           <br />
-                          {r.docs.line}
+                          {r.docs.line === "" ? "-" : r.docs.line}
                           <br />
-                          {r.docs.email}
+                          {r.docs.email === "" ? "-" : r.docs.email}
                         </Td>
                         <Td textAlign={"center"}>
                           {r.docs.solution?.accepter || "-"}

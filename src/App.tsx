@@ -21,6 +21,7 @@ import DetailForDev from "./pages/kim/DetailForDev";
 import PageCompany from "./pages/Company/PageCompany";
 import ContractPreview from "./components/Contracts/ContractPreview";
 import ContractUpdate from "./components/ContractUpdate";
+
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);

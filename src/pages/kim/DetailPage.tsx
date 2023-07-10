@@ -232,12 +232,13 @@ export default function DetailPage() {
           <Box>
             <Flex justify={"space-between"} align={"center"}>
               <Text fontWeight={"bold"} w="fit-content">
-                ประวัติการทำสัญญา
+                ประวัติการทำสัญญา{" "}
                 <Button
                   size="sm"
                   bg="#4C7BF4"
                   color="#eee"
                   _hover={{ opacity: 0.8 }}
+                  _active={{ opacity: 0.9 }}
                   onClick={fetchingProjectDetail}
                 >
                   <AiOutlineReload />
