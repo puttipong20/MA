@@ -226,6 +226,9 @@ export default function DetailPage() {
                   </HStack>
                 </>
               )}
+              <Text w="100%" textAlign={"right"} color="GrayText">
+                Latest update : {projectDetail?.lastestUpdate ? projectDetail?.lastestUpdate : projectDetail?.createdBy.username}
+              </Text>
             </Box>
           </Card>
           <Divider my="1rem" />
