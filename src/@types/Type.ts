@@ -64,7 +64,7 @@ export type ProjectDetail = {
   companyName: string;
   createdAt: string;
   createdBy: { username: string; uid: string };
-  lastestUpdate: string;
+  latestUpdate: { username: string; uid: string };
 };
 
 export type Project = {
@@ -82,7 +82,7 @@ export type CompanyDetail = {
   userPhone: string;
   userTax: string;
   userPerson: "normal" | "corp";
-  modifyBy: string;
+  modifyBy: { username: string; uid: string };
 };
 
 export type Company = {
