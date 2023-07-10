@@ -23,7 +23,7 @@ export type ReportDetail = {
   ref?: string;
   uid: string;
   reportBy: { uid: string; username: string };
-  latestUpdate?: { uid: string; username: string };
+  latestUpdate?: { uid: string; username: string; timestamp: string };
   solution?: Solution | undefined;
 };
 
@@ -64,7 +64,7 @@ export type ProjectDetail = {
   companyName: string;
   createdAt: string;
   createdBy: { username: string; uid: string };
-  latestUpdate: { username: string; uid: string };
+  latestUpdate?: { username: string; uid: string; timestamp: string };
 };
 
 export type Project = {
@@ -82,7 +82,7 @@ export type CompanyDetail = {
   userPhone: string;
   userTax: string;
   userPerson: "normal" | "corp";
-  modifyBy: { username: string; uid: string };
+  modifyBy?: { username: string; uid: string; timestamp: string };
 };
 
 export type Company = {
