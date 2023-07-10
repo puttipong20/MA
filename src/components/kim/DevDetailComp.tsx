@@ -347,7 +347,6 @@ function DevDetailComp() {
                   onClick={() => {
                     navigate(backPath);
                   }}
-                  isLoading={isLoadingBtn}
                 >
                   ปิด
                 </Button>
