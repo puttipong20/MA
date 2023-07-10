@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { addDoc, collection, doc, runTransaction } from "firebase/firestore";
+import { addDoc, collection, } from "firebase/firestore";
 import { useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { db } from "../../services/config-db";
@@ -55,38 +55,12 @@ const FormAddCompany = () => {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      runTransaction(db, async (transaction) => {
-        const refReference = doc(db, "Reference", "Company");
-        const data = await transaction.get(refReference);
-
-        if (!data.exists()) {
-          transaction.set(refReference, {
-            number: 1,
-          });
-          return {
-            number: 1,
-          };
-        } else {
-          const value = parseInt(data.data()?.number) || 0;
-          const number: number = value + 1;
-
-          transaction.set(refReference, {
-            number: number,
-          });
-          return {
-            number: number,
-          };
-        }
-      }).then(async (response) => {
-        const { number } = response;
-        const docRef = collection(db, "Company");
-        await addDoc(docRef, {
-          ...data,
-          no: `บริษัทที่ ${number}`,
-          createdAt: createDate,
-          companyUpdate: updatedDate,
-          createBy: Auth.uid,
-        });
+      const docRef = collection(db, "Company");
+      await addDoc(docRef, {
+        ...data,
+        createdAt: createDate,
+        companyUpdate: updatedDate,
+        createBy: Auth.uid,
       });
       toast({
         title: "เพิ่มข้อมูลบริษัทสำเร็จ",
