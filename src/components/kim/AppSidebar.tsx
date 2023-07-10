@@ -23,7 +23,7 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../../services/config-db";
 
 import { search } from "ss-search";
@@ -65,7 +65,8 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(true);
     let count = 0;
     const collRef = collection(db, "Company");
-    const collData = await getDocs(collRef);
+    const q = query(collRef, orderBy("companyName", "asc"))
+    const collData = await getDocs(q);
     const allCompany: Company[] = [];
 
     collData.forEach((i) => {
@@ -234,6 +235,7 @@ const Sidebar: React.FC<Props> = (props) => {
                               pl="1rem"
                               bg={focusProject ? color : "none"}
                               _hover={{ fontWeight: "bold", bg: color }}
+                              position="relative"
                               onClick={() => {
                                 // console.log(i.detail.companyName)
                                 // console.log(j.projectName)
@@ -242,6 +244,7 @@ const Sidebar: React.FC<Props> = (props) => {
                                 );
                               }}
                             >
+                              <Text as="span" position="absolute" left="-0.1rem">-</Text>
                               {j.projectName}
                             </Text>
                           );
