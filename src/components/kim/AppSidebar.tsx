@@ -23,7 +23,7 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../../services/config-db";
 
 import { search } from "ss-search";
@@ -65,7 +65,8 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(true);
     let count = 0;
     const collRef = collection(db, "Company");
-    const collData = await getDocs(collRef);
+    const q = query(collRef, orderBy("companyName", "asc"))
+    const collData = await getDocs(q);
     const allCompany: Company[] = [];
 
     collData.forEach((i) => {
