@@ -38,7 +38,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../services/config-db";
-import { ProjectDetail, MA } from "../../@types/Type";
+import { ProjectDetail, MA, CompanyDetail } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlineHistory, AiOutlineReload, AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
@@ -143,19 +143,32 @@ export default function DetailPage() {
         timestamp: moment().format("YYYY-MM-DD HH:mm:ss")
       },
       projectName: data.projectName
-    }).then(() => {
-      toast({
-        title: "อัพเดทสำเร็จ",
-        status: "success",
-        duration: 3000,
-        position: "top",
+    }).then(async () => {
+      const companyRef = doc(db, "Company", CompanyCtx.companyId)
+      const companyDoc = await getDoc(companyRef)
+      const companyDetail = companyDoc.data() as CompanyDetail
+      const updateProjectCompany = companyDetail.projects?.map(i => {
+        if (i.id === CompanyCtx.projectId) {
+          return { ...i, projectName: data.projectName }
+        } else {
+          return i
+        }
       })
-    }).catch(() => {
-      toast({
-        title: "อัพเดทผิดพลาด",
-        status: "error",
-        duration: 3000,
-        position: "top",
+      // console.log(updateProjectCompany);
+      await updateDoc(companyRef, { projects: updateProjectCompany }).then(() => {
+        toast({
+          title: "อัพเดทสำเร็จ",
+          status: "success",
+          duration: 3000,
+          position: "top",
+        })
+      }).catch(() => {
+        toast({
+          title: "อัพเดทผิดพลาด",
+          status: "error",
+          duration: 3000,
+          position: "top",
+        })
       })
     })
     setIsOpenEdit(false)
