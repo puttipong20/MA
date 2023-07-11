@@ -381,7 +381,7 @@ export default function DetailPage() {
                   className={classes.table}
                 >
                   <Table w="100%">
-                    <Thead position="sticky" top={0} zIndex="sticky">
+                    <Thead position="sticky" top={0} zIndex="1">
                       <Tr bg={"#4C7BF4"}>
                         <Th
                           fontFamily={"inherit"}
