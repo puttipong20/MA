@@ -206,7 +206,7 @@ export default function DetailPage() {
                   position="absolute"
                   fontSize={"xl"}
                   bg="none"
-                  right="-1.25rem" top="-0.5rem"
+                  right="-2.25rem" top="-0.75rem"
                   color="GrayText"
                   _hover={{ color: "black" }}
                   _active={{}}

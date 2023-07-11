@@ -81,6 +81,7 @@ const AddProject: React.FC<Props> = (props) => {
       createdAt: currentDateTime,
       createdBy: { username: Auth.username, uid: Auth.uid },
       projectName: data.projectName,
+      status: "enable",
       // MAlogs: [latestMA]
     };
     // console.log(detail);
