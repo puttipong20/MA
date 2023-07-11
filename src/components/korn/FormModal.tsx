@@ -87,7 +87,7 @@ const FormAddCompany = () => {
           createAt: formattedDate,
           createBy: Auth.uid,
         });
-        console.log("Document written with ID: ", docRef.id);
+        // console.log("Document written with ID: ", docRef.id);
       });
       toast({
         title: "เพิ่มข้อมูลบริษัทสำเร็จ",

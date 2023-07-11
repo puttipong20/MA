@@ -47,7 +47,7 @@ const DeleteProject: React.FC<Props> = (props) => {
                 return i
             }
         })
-        console.log(filterProject);
+        // console.log(filterProject);
         const updateCompany: CompanyDetail = {
             ...companyDetail,
             projects: filterProject
@@ -63,7 +63,7 @@ const DeleteProject: React.FC<Props> = (props) => {
             position: "top",
         })
         onClose();
-        console.log(props)
+        // console.log(props)
         isDeleting(false);
     }
 
