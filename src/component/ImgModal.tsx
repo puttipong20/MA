@@ -34,7 +34,7 @@ const ImgModal: React.FC<Props> = (props) => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Image src={props.src} mx="auto" />
+            <Image src={props.src} mx="auto" w="100%" />
           </ModalBody>
         </ModalContent>
       </Modal>
