@@ -67,6 +67,7 @@ export default function DetailPage() {
   const projectRef = doc(db, "Project", projectID);
   const MAref = collection(projectRef, "MAlogs");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [hoverToEdit, setHoverToEdit] = useState(false);
   const toast = useToast();
 
   const { control, handleSubmit, reset } = useForm()
@@ -161,6 +162,13 @@ export default function DetailPage() {
     setIsUpdating(false);
   }
 
+  const hoverEnter = () => {
+    setHoverToEdit(true)
+  }
+  const hoverLeave = () => {
+    setHoverToEdit(false)
+  }
+
   if (isFetching) {
     return (
       <Box
@@ -192,7 +200,7 @@ export default function DetailPage() {
                 <BiArrowBack />
               </Button>
             </Box>
-            <Card p={"1rem"} w="max-content" maxW="100%" position="relative" border={"1px solid rgb(0,0,0,0.05)"}>
+            <Card p={"1rem"} w="max-content" maxW="100%" position="relative" border={"1px solid rgb(0,0,0,0.05)"} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}>
               {!isOpenEdit ?
                 <Button
                   position="absolute"
@@ -202,6 +210,7 @@ export default function DetailPage() {
                   color="GrayText"
                   _hover={{ color: "black" }}
                   _active={{}}
+                  display={hoverToEdit ? "block" : "none"}
                   onClick={() => { setIsOpenEdit(true) }}
                 >
                   <Tooltip label={"click to edit"} placement="top">
