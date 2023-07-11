@@ -337,6 +337,9 @@ export default function DetailPage() {
                   <Text>
                     {projectDetail?.latestUpdate ? convertTime(projectDetail?.latestUpdate.timestamp) : convertTime(projectDetail!.createdAt)}
                   </Text>
+                  <Text>
+                    Created By : {projectDetail?.createdBy.username}
+                  </Text>
                 </Box>
               </Box>
             </Card>
