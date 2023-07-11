@@ -19,7 +19,7 @@ export type ReportDetail = {
   name: string;
   phone: string;
   title: string;
-  company: string;
+  companyName: string;
   ref?: string;
   uid: string;
   reportBy: { uid: string; username: string };
