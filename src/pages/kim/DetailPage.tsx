@@ -75,6 +75,10 @@ export default function DetailPage() {
   const CompanyCtx = useContext(CompanyContext);
   const MACtx = useContext(MAcontext);
 
+  const convertTime = (date: string): string => {
+    return moment(date).format("DD/MM/YYYY HH:mm:ss")
+  }
+
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
     // console.clear();
@@ -322,7 +326,7 @@ export default function DetailPage() {
                     Latest update : {projectDetail?.latestUpdate ? projectDetail?.latestUpdate.username : projectDetail?.createdBy.username}
                   </Text>
                   <Text>
-                    {projectDetail?.latestUpdate ? projectDetail?.latestUpdate.timestamp : projectDetail?.createdAt}
+                    {projectDetail?.latestUpdate ? convertTime(projectDetail?.latestUpdate.timestamp) : convertTime(projectDetail?.createdAt)}
                   </Text>
                 </Box>
               </Box>
