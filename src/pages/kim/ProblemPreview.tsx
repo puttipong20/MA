@@ -363,10 +363,10 @@ export default function ProblemPreview() {
                               wait.includes(r.docs.RepStatus)
                                 ? "yellow"
                                 : r.docs.RepStatus === done
-                                  ? "green"
-                                  : r.docs.RepStatus === process
-                                    ? "orange"
-                                    : "red"
+                                ? "green"
+                                : r.docs.RepStatus === process
+                                ? "orange"
+                                : "red"
                             }
                           >
                             <TagLabel w="100%" textAlign={"center"}>

@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  Flex,
   Grid,
   HStack,
   Heading,
@@ -14,6 +15,8 @@ import { useEffect, useState } from "react";
 import { db } from "../services/config-db";
 import { useParams } from "react-router-dom";
 import ImgModal from "./ImgModal";
+import EditProblem from "./EditProblem";
+import moment from "moment";
 
 type Fvalue = {
   problem: string;
@@ -24,9 +27,10 @@ type Fvalue = {
   date: string;
   name: string;
   no: string;
-  company: string;
+  companyName: string;
   RepImg: [];
   ref: string;
+  latestUpdate: { timestamp: string, uid: string, username: string };
 };
 
 function ProblemRequest() {
@@ -46,10 +50,10 @@ function ProblemRequest() {
     });
 
     return date;
-  }
+  };
 
   async function fetchData() {
-    setIsLoading(true)
+    setIsLoading(true);
     onSnapshot(doc(db, "Report", params["problemID"] as string), (doc) => {
       const data: Fvalue = {
         problem: doc.data()?.title,
@@ -60,12 +64,13 @@ function ProblemRequest() {
         date: convertTime(doc.data()?.createAt),
         name: doc.data()?.name,
         no: doc.data()?.no,
-        company: doc.data()?.company,
+        companyName: doc.data()?.companyName,
         RepImg: doc.data()?.RepImg,
         ref: doc.data()?.ref,
+        latestUpdate: doc.data()?.latestUpdate,
       };
       setFValue(data);
-      setIsLoading(false)
+      setIsLoading(false);
       // console.log(data);
     });
   }
@@ -108,20 +113,18 @@ function ProblemRequest() {
             >
               ปัญหาการใช้งานระบบ
             </Heading>
-            <Box>
+            <Box mt="1rem">
               <Stack mb="5" spacing={4}>
-                <Box
-                  border="1px solid #E2E8F0"
-                  p="4"
-                  borderRadius={"10px"}
-                  mt="1rem"
-                >
+                <Flex justify="flex-end">
+                  <EditProblem data={fValue} id={params["problemID"]} />
+                </Flex>
+                <Box border="1px solid #E2E8F0" p="4" borderRadius={"10px"}>
                   <VStack align="left">
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
                         Project :
                       </Text>
-                      <Text w="70%">{fValue?.company}</Text>
+                      <Text w="70%">{fValue?.companyName}</Text>
                     </HStack>
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
@@ -145,19 +148,25 @@ function ProblemRequest() {
                       <Text w="30%" fontWeight="bold">
                         เบอร์ติดต่อ :
                       </Text>
-                      <Text w="70%">{fValue?.phone === "" ? "-" : fValue?.phone}</Text>
+                      <Text w="70%">
+                        {fValue?.phone === "" ? "-" : fValue?.phone}
+                      </Text>
                     </HStack>
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
                         E-mail :
                       </Text>
-                      <Text w="70%">{fValue?.email === "" ? "-" : fValue?.email}</Text>
+                      <Text w="70%">
+                        {fValue?.email === "" ? "-" : fValue?.email}
+                      </Text>
                     </HStack>
                     <HStack alignItems="flex-start">
                       <Text w="30%" fontWeight="bold">
                         Line :
                       </Text>
-                      <Text w="70%">{fValue?.lineID === "" ? "-" : fValue?.lineID}</Text>
+                      <Text w="70%">
+                        {fValue?.lineID === "" ? "-" : fValue?.lineID}
+                      </Text>
                     </HStack>
                     <br />
                     <HStack alignItems="flex-start">
@@ -171,6 +180,18 @@ function ProblemRequest() {
                         รายละเอียด :
                       </Text>
                       <Text w="70%">{fValue?.details}</Text>
+                    </HStack>
+                    <HStack alignItems="flex-start" color="#8F9BBA">
+                      <Text w="30%">ผู้แก้ไข :</Text>
+                      <Text w="70%">{fValue?.latestUpdate.username}</Text>
+                    </HStack>
+                    <HStack alignItems="flex-start" color="#8F9BBA">
+                      <Text w="30%">แก้ไขเมื่อ :</Text>
+                      <Text w="70%">
+                        {moment(fValue?.latestUpdate.timestamp).format(
+                          "DD/MM/YYYY HH:mm:ss"
+                        )}
+                      </Text>
                     </HStack>
                   </VStack>
                 </Box>

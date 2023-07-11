@@ -36,6 +36,7 @@ type FormValues = {
   ticketsName: string;
   otherProblem: string;
   image: [];
+  createBy: string;
 };
 
 const AddReport = () => {
@@ -87,18 +88,20 @@ const AddReport = () => {
       createAt: data.ticketsDate,
       name: data.ticketsName,
       RepImg: allImgUpload,
-      company: Company.companyName,
+      companyName: Company.companyName,
       // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
       companyId: Company.companyId,
       projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ""),
       projectID: Company.projectId,
-      uid: Auth.uid,
+      createBy: Auth.uid,
     };
     // console.log(dataToAdd);
     try {
       await axios
         .post(
-          "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2",
+          // "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2", // *** prod ***
+          "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", // dev
+          // "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2",
           dataToAdd
         )
         .then(() => {

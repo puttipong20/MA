@@ -139,7 +139,6 @@ function DevDetailComp() {
       setValue("issue", reportHistory.solution?.issue)
       setValue("solution", reportHistory.solution?.solution)
       setValue("accepter", reportHistory.solution?.accepter)
-
     }
     setIsLoading(false);
   };

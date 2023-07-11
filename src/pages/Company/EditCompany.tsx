@@ -100,7 +100,15 @@ const FormEditCompany = ({ data, id }: any) => {
 
   return (
     <>
-      <Box onClick={() => { console.log(data); onOpen() }} w="100%" h="100%" display="flex">
+      <Box
+        onClick={() => {
+          console.log(data);
+          onOpen();
+        }}
+        w="100%"
+        h="100%"
+        display="flex"
+      >
         <Flex
           color="green"
           fontSize="16px"

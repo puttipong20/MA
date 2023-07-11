@@ -36,9 +36,7 @@ import DeleteCompany from "./DeleteCompany";
 import ViewCompany from "./ViewCompany";
 import { search } from "ss-search";
 import classes from "../../pages/kim/ProblemPreview.module.css";
-
 import { CompanyContext } from "../../context/CompanyContext";
-
 import { useQuery } from "react-query";
 import { Company, CompanyDetail } from "../../@types/Type";
 import { AiOutlineReload } from "react-icons/ai";
