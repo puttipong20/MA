@@ -30,7 +30,7 @@ type Fvalue = {
   companyName: string;
   RepImg: [];
   ref: string;
-  latestUpdate: { timestamp: string, uid: string, username: string };
+  latestUpdate: { timestamp: string; uid: string; username: string };
 };
 
 function ProblemRequest() {
@@ -181,17 +181,26 @@ function ProblemRequest() {
                       </Text>
                       <Text w="70%">{fValue?.details}</Text>
                     </HStack>
+
                     <HStack alignItems="flex-start" color="#8F9BBA">
                       <Text w="30%">ผู้แก้ไข :</Text>
-                      <Text w="70%">{fValue?.latestUpdate.username}</Text>
+                      {!fValue?.latestUpdate ? (
+                        <Text>-</Text>
+                      ) : (
+                        <Text w="70%">{fValue?.latestUpdate.username}</Text>
+                      )}
                     </HStack>
                     <HStack alignItems="flex-start" color="#8F9BBA">
                       <Text w="30%">แก้ไขเมื่อ :</Text>
-                      <Text w="70%">
-                        {moment(fValue?.latestUpdate.timestamp).format(
-                          "DD/MM/YYYY HH:mm:ss"
-                        )}
-                      </Text>
+                      {!fValue?.latestUpdate ? (
+                        <Text>-</Text>
+                      ) : (
+                        <Text w="70%">
+                          {moment(fValue?.latestUpdate.timestamp).format(
+                            "DD/MM/YYYY HH:mm:ss"
+                          )}
+                        </Text>
+                      )}
                     </HStack>
                   </VStack>
                 </Box>
