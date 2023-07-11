@@ -25,6 +25,7 @@ import { MdUpload } from "react-icons/md";
 
 import { AuthContext } from "../../context/AuthContext";
 import { CompanyContext } from "../../context/CompanyContext";
+import { ReportDetail } from "../../@types/Type";
 
 type FormValues = {
   ticketsProblems: string;
@@ -79,7 +80,7 @@ const AddReport = () => {
     // const fetchDoc = await getDoc(docRef)
     // const companyDetail = fetchDoc.data() as CompanyDetail
 
-    const dataToAdd = {
+    const dataToAdd: ReportDetail = {
       title: data.ticketsProblems,
       detail: data.ticketsDetails,
       phone: data.ticketsPhone,
@@ -88,12 +89,15 @@ const AddReport = () => {
       createAt: data.ticketsDate,
       name: data.ticketsName,
       RepImg: allImgUpload,
-      companyName: Company.companyName,
+      company: Company.companyName,
       // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-      companyId: Company.companyId,
+      // companyId: Company.companyId,
       projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ""),
       projectID: Company.projectId,
-      createBy: Auth.uid,
+      uid: Auth.uid,
+      reportBy: { uid: Auth.uid, username: Auth.username },
+      RepStatus: "รอรับเรื่อง",
+
     };
     // console.log(dataToAdd);
     try {

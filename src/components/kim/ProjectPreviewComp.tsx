@@ -83,21 +83,24 @@ export default function ProjectPreviewComp() {
     await Promise.all(
       projects.docs.map(async (p) => {
         const projectID = p.id;
-        const project: Project = {
-          projectId: projectID,
-          detail: p.data() as ProjectDetail,
-        };
-        // setCompanyName(project.detail.companyName);
-        const MAref = collection(doc(db, "Project", projectID), "MAlogs");
-        const MAlogs = await getDocs(MAref);
-        const logs: MA[] = [];
-        MAlogs.forEach((m) => logs.push(m.data() as MA));
-        const merge: { project: Project; ma: MA[] } = {
-          project: project,
-          ma: logs,
-        };
-        // console.log(merge);
-        allProjects.push(merge);
+        if ((p.data() as ProjectDetail).status === "enable") {
+
+          const project: Project = {
+            projectId: projectID,
+            detail: p.data() as ProjectDetail,
+          };
+          // setCompanyName(project.detail.companyName);
+          const MAref = collection(doc(db, "Project", projectID), "MAlogs");
+          const MAlogs = await getDocs(MAref);
+          const logs: MA[] = [];
+          MAlogs.forEach((m) => logs.push(m.data() as MA));
+          const merge: { project: Project; ma: MA[] } = {
+            project: project,
+            ma: logs,
+          };
+          // console.log(merge);
+          allProjects.push(merge);
+        }
       })
     );
 
@@ -354,9 +357,10 @@ export default function ProjectPreviewComp() {
                         ? (color = "blue")
                         : (color = "red");
                   }
+                  const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
-                    <Tr key={index} _hover={{ bg: "gray.100" }}>
-                      <Td textAlign={"center"}>
+                    <Tr key={index} _hover={{ bg: "gray.100" }} cursor={"pointer"}>
+                      <Td textAlign={"center"} onClick={() => {navigate(navigateLink);}}>
                         {i.project.detail.projectName}
                       </Td>
 
@@ -366,27 +370,35 @@ export default function ProjectPreviewComp() {
                         </Td>
                       ) : (
                         <>
-                          <Td textAlign={"center"}>
+                          <Td textAlign={"center"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               moment(lastestMA.startMA).format("DD/MM/YYYY")}
                           </Td>
-                          <Td textAlign={"center"}>
+                          <Td textAlign={"center"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               moment(lastestMA.endMA).format("DD/MM/YYYY")}
                           </Td>
-                          <Td textAlign={"right"}>
+                          <Td textAlign={"right"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             {lastestMA &&
                               Number(lastestMA.cost).toLocaleString("th-TH", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })}
                           </Td>
-                          <Td textAlign={"center"} fontSize={"1rem"}>
+                          <Td textAlign={"center"} fontSize={"1rem"} onClick={() => {
+                            navigate(navigateLink);
+                          }}>
                             <Badge colorScheme={color}>{display}</Badge>
                           </Td>
                         </>
                       )}
-                      <Td textAlign={"center"}>
+                      <Td textAlign={"center"} onClick={() => {navigate(navigateLink);}}>
                         {moment(i.project.detail.createdAt).format(
                           "DD/MM/YYYY HH:mm:ss"
                         )}
@@ -398,13 +410,7 @@ export default function ProjectPreviewComp() {
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
                           onClick={() => {
-                            // Company.setProject(
-                            //   i.project.projectId,
-                            //   i.project.detail.projectName
-                            // );
-                            navigate(
-                              `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`
-                            );
+                            navigate(navigateLink);
                           }}
                         >
                           ดูรายการปัญหา
@@ -454,7 +460,7 @@ export default function ProjectPreviewComp() {
                               >
                                 <CgDetailsMore />
                               </Text>
-                              ดูข้อมูล Project
+                              ดูข้อมูลสัญญา MA
                             </MenuItem>
                             <MenuItem
                               h="50px"

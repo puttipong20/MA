@@ -147,7 +147,7 @@ export default function ProblemPreview() {
               </VStack>
             </HStack>
           </Center>
-          <HStack justify={"space-between"}>
+          <Flex justify={["flex-end","space-between"]} flexDir={["column", "row"]}>
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius={"16px"}>
                 <InputLeftAddon
@@ -200,7 +200,7 @@ export default function ProblemPreview() {
                 />
               </Box>
             </Flex>
-            <Box>
+            <Box mt={["0.25rem","0"]}>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
@@ -218,7 +218,7 @@ export default function ProblemPreview() {
                 แจ้งปัญหาการใช้งานระบบ
               </Button>
             </Box>
-          </HStack>
+          </Flex>
         </Box>
         <Box>
           <Box
@@ -234,7 +234,7 @@ export default function ProblemPreview() {
             className={classes.table}
           >
             <Table w="100%">
-              <Thead position="sticky" top={0} zIndex="sticky">
+              <Thead position="sticky" top={0} zIndex="0">
                 <Tr background={"#4c7bf4"}>
                   <Th
                     fontWeight={"normal"}

@@ -20,10 +20,11 @@ export type ReportDetail = {
   phone: string;
   title: string;
   company: string;
-  ref: string;
+  ref?: string;
   uid: string;
-
-  solution: Solution | undefined;
+  reportBy: { uid: string; username: string };
+  latestUpdate?: { uid: string; username: string; timestamp: string };
+  solution?: Solution | undefined;
 };
 
 export type Report = {
@@ -57,12 +58,13 @@ export type MA = {
 
 export type ProjectDetail = {
   // MAlogs: MA[];
-
+  status: "enable" | "disable";
   projectName: string;
   companyID: string;
   companyName: string;
   createdAt: string;
   createdBy: { username: string; uid: string };
+  latestUpdate?: { username: string; uid: string; timestamp: string };
 };
 
 export type Project = {
@@ -80,6 +82,7 @@ export type CompanyDetail = {
   userPhone: string;
   userTax: string;
   userPerson: "normal" | "corp";
+  modifyBy?: { username: string; uid: string; timestamp: string };
 };
 
 export type Company = {

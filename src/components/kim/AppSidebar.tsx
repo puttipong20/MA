@@ -23,7 +23,7 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../../services/config-db";
 
 import { search } from "ss-search";
@@ -65,7 +65,8 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(true);
     let count = 0;
     const collRef = collection(db, "Company");
-    const collData = await getDocs(collRef);
+    const q = query(collRef, orderBy("companyName", "asc"))
+    const collData = await getDocs(q);
     const allCompany: Company[] = [];
 
     collData.forEach((i) => {
@@ -162,7 +163,7 @@ const Sidebar: React.FC<Props> = (props) => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-        // border="1px solid black"
+      // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
@@ -196,19 +197,21 @@ const Sidebar: React.FC<Props> = (props) => {
                 <AccordionItem
                   key={index}
                   userSelect={"none"}
-                  border="none"
+                  borderTop="1px solid rgb(0,0,0,0.1)"
+                  borderBottom="1px solid rgb(0,0,0,0.1)"
                   transition="all 0.3s"
                   _hover={{ bg: color }}
                   borderRadius={"10px"}
                   bg={focusCompany ? color : ""}
                   my="5px"
-                  // borderLeft={focusCompany ? "3px solid white" : "none"}
+                // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
                   <AccordionButton>
                     <Flex justify={"space-between"}>
                       <Text
                         fontWeight={focusCompany ? "bold" : "normal"}
                         textAlign={"left"}
+                        onClick={() => { navigate(`/company/${i.companyId}`) }}
                       >
                         {i.detail.companyName}
                       </Text>
@@ -218,7 +221,7 @@ const Sidebar: React.FC<Props> = (props) => {
                   <AccordionPanel>
                     <VStack fontSize={"0.9rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                      i.detail.projects.length !== 0 ? (
+                        i.detail.projects.length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;
@@ -232,6 +235,7 @@ const Sidebar: React.FC<Props> = (props) => {
                               pl="1rem"
                               bg={focusProject ? color : "none"}
                               _hover={{ fontWeight: "bold", bg: color }}
+                              position="relative"
                               onClick={() => {
                                 // console.log(i.detail.companyName)
                                 // console.log(j.projectName)
@@ -240,6 +244,7 @@ const Sidebar: React.FC<Props> = (props) => {
                                 );
                               }}
                             >
+                              <Text as="span" position="absolute" left="0.5rem">-</Text>
                               {j.projectName}
                             </Text>
                           );
@@ -253,16 +258,6 @@ const Sidebar: React.FC<Props> = (props) => {
                         companyId={i.companyId}
                         companyName={i.detail.companyName}
                       />
-                      <Button
-                        colorScheme="linkedin"
-                        fontWeight={"normal"}
-                        fontSize={"0.9rem"}
-                        onClick={() => {
-                          navigate(`/company/${i.companyId}`);
-                        }}
-                      >
-                        ข้อมูลลูกค้า/บริษัท
-                      </Button>
                     </VStack>
                   </AccordionPanel>
                 </AccordionItem>

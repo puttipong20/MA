@@ -82,6 +82,7 @@ function DevDetailComp() {
       ...detailHistory,
       solution: newSolution,
       RepStatus: currentStatus,
+      latestUpdate: { uid: AuthCtx.uid, username: AuthCtx.username }
     };
 
     await updateDoc(doc(db, "Report", params["problemID"] as string), newDetail);
@@ -163,8 +164,8 @@ function DevDetailComp() {
     if ((repState === "เสร็จสิ้น" || repState === "ยกเลิก") && watch("issue") === "กำลังตรวจสอบ") {
       setValue("issue", "");
     }
-    if (repState==="กำลังดำเนินการ"){
-      setValue("issue","กำลังตรวจสอบ")
+    if (repState === "กำลังดำเนินการ") {
+      setValue("issue", "กำลังตรวจสอบ")
     }
   }, [repState])
 
@@ -339,6 +340,11 @@ function DevDetailComp() {
                   </Box>
                 </Box>
               }
+              <Box>
+                <Text textAlign={"right"} color="GrayText">
+                  Latest Update : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : detailHistory?.reportBy.username}
+                </Text>
+              </Box>
               <Flex w="100%" justifyContent={"center"} gap={"3rem"} mt="2rem">
                 <Button
                   w="100px"
@@ -364,6 +370,7 @@ function DevDetailComp() {
             </form>
           </Box>
         </Box>
+
       </Container>
     );
   }
