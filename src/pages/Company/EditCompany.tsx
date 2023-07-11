@@ -102,7 +102,7 @@ const FormEditCompany = ({ data, id }: any) => {
     <>
       <Box
         onClick={() => {
-          console.log(data);
+          // console.log(data);
           onOpen();
         }}
         w="100%"

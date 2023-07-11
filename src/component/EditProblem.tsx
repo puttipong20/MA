@@ -78,7 +78,7 @@ const EditProblem = ({ data, id }: any) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    console.log(id);
+    // console.log(id);
     if (id) {
       const DocRef = doc(db, "Report", id);
       await updateDoc(DocRef, {
@@ -100,7 +100,7 @@ const EditProblem = ({ data, id }: any) => {
           });
           reset();
           onClose();
-          console.log(data);
+          // console.log(data);
         })
         .catch((e) => {
           console.error(e);
