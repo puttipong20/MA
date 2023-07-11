@@ -342,7 +342,7 @@ function DevDetailComp() {
               }
               <Box>
                 <Text textAlign={"right"} color="GrayText">
-                  Latest Update : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : detailHistory?.reportBy.username}
+                  Latest Update : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : " - "}
                 </Text>
               </Box>
               <Flex w="100%" justifyContent={"center"} gap={"3rem"} mt="2rem">
