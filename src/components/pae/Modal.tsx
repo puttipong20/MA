@@ -90,8 +90,6 @@ const ResetModal: FC = () => {
               <Flex justifyContent={"end"}>
                 <Button
                   my={3}
-                  type="submit"
-                  onClick={() => console.log("first")}
                 >
                   Submit
                 </Button>

@@ -112,27 +112,27 @@ export default function ProblemPreview() {
           <Center w="100%" mb="1rem">
             <HStack
               w="100%"
-              justifyContent="space-between"
-              alignItems="flex-end"
+              justifyContent="flex-start"
+              alignItems="center"
+              pt="1rem"
             >
+              <Button
+                bg="#4C7BF4"
+                color="#fff"
+                size="sm"
+                w="40px"
+                _hover={{ opacity: 0.8 }}
+                onClick={() => {
+                  navigate(backPath);
+                }}
+              >
+                <BiArrowBack />
+              </Button>
               <VStack
-                pt="1rem"
                 justifyContent="flex-start"
                 alignItems="flex-star"
                 spacing="2px"
               >
-                <Button
-                  bg="#4C7BF4"
-                  color="#fff"
-                  size="sm"
-                  w="40px"
-                  _hover={{ opacity: 0.8 }}
-                  onClick={() => {
-                    navigate(backPath);
-                  }}
-                >
-                  <BiArrowBack />
-                </Button>
                 <Text
                   fontWeight="600"
                   lineHeight="25.2px"
@@ -147,7 +147,7 @@ export default function ProblemPreview() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={["flex-end","space-between"]} flexDir={["column", "row"]}>
+          <Flex justify={["flex-end", "space-between"]} flexDir={["column","column","row"]}>
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius={"16px"}>
                 <InputLeftAddon
@@ -200,7 +200,7 @@ export default function ProblemPreview() {
                 />
               </Box>
             </Flex>
-            <Box mt={["0.25rem","0"]}>
+            <Box mt={["0.25rem","0.25rem","0"]}>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
@@ -363,10 +363,10 @@ export default function ProblemPreview() {
                               wait.includes(r.docs.RepStatus)
                                 ? "yellow"
                                 : r.docs.RepStatus === done
-                                ? "green"
-                                : r.docs.RepStatus === process
-                                ? "orange"
-                                : "red"
+                                  ? "green"
+                                  : r.docs.RepStatus === process
+                                    ? "orange"
+                                    : "red"
                             }
                           >
                             <TagLabel w="100%" textAlign={"center"}>

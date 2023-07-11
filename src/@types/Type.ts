@@ -22,7 +22,8 @@ export type ReportDetail = {
   companyName: string;
   ref?: string;
   uid: string;
-  reportBy: { uid: string; username: string };
+  createBy: { uid: string; username: string };
+  latestReportUpdate?: { uid: string; username: string; timestamp: string };
   latestUpdate?: { uid: string; username: string; timestamp: string };
   solution?: Solution | undefined;
 };
@@ -77,7 +78,9 @@ export type CompanyDetail = {
   companyName: string;
   createdBy: { username: string; uid: string };
   createdAt: string;
-  projects?: { projectName: string; id: string }[] | [];
+  projects?:
+    | { projectName: string; id: string; status: "enable" | "disable" }[]
+    | [];
   userName: string;
   userPhone: string;
   userTax: string;

@@ -107,6 +107,7 @@ const AddProject: React.FC<Props> = (props) => {
     const project = {
       id: newProjectRef.id,
       projectName: data.projectName,
+      status: "enable"
     };
     let updateProject = [];
     if (companyDetail.projects) {

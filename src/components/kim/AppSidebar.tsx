@@ -221,34 +221,37 @@ const Sidebar: React.FC<Props> = (props) => {
                   <AccordionPanel>
                     <VStack fontSize={"0.9rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                        i.detail.projects.length !== 0 ? (
+                        i.detail.projects.filter(i => i.status === "enable").length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;
-                          return (
-                            <Text
-                              key={index}
-                              fontWeight={focusProject ? "bold" : "normal"}
-                              cursor={"pointer"}
-                              transition={"all 0.1s"}
-                              borderRadius={"5px"}
-                              pl="1rem"
-                              bg={focusProject ? color : "none"}
-                              _hover={{ fontWeight: "bold", bg: color }}
-                              position="relative"
-                              onClick={() => {
-                                // console.log(i.detail.companyName)
-                                // console.log(j.projectName)
-                                navigate(
-                                  `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
-                                );
-                              }}
-                            >
-                              <Text as="span" position="absolute" left="0.5rem">-</Text>
-                              {j.projectName}
-                            </Text>
-                          );
+                          if (j.status === "enable") {
+                            return (
+                              <Text
+                                key={index}
+                                fontWeight={focusProject ? "bold" : "normal"}
+                                cursor={"pointer"}
+                                transition={"all 0.1s"}
+                                borderRadius={"5px"}
+                                pl="1rem"
+                                bg={focusProject ? color : "none"}
+                                _hover={{ fontWeight: "bold", bg: color }}
+                                position="relative"
+                                onClick={() => {
+                                  // console.log(i.detail.companyName)
+                                  // console.log(j.projectName)
+                                  navigate(
+                                    `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
+                                  );
+                                }}
+                              >
+                                <Text as="span" position="absolute" left="0.5rem">-</Text>
+                                {j.projectName}
+                              </Text>
+                            );
+                          }
                         })
+
                       ) : (
                         <Text fontWeight={"normal"} textAlign={"center"}>
                           ยังไม่มีข้อมูล Project ของบริษัทนี้

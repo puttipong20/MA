@@ -39,7 +39,15 @@ const DeleteProject: React.FC<Props> = (props) => {
 
         const company = await getDoc(companyRef)
         const companyDetail = company.data() as CompanyDetail;
-        const filterProject = companyDetail.projects?.filter(i => i.id !== props.projectId)
+        // const filterProject = companyDetail.projects?.filter(i => i.id !== props.projectId)
+        const filterProject: { projectName: string; id: string; status: "enable" | "disable" }[] | undefined = companyDetail.projects?.map(i => {
+            if (i.id === props.projectId) {
+                return { ...i, status: "disable" }
+            } else {
+                return i
+            }
+        })
+        // console.log(filterProject);
         const updateCompany: CompanyDetail = {
             ...companyDetail,
             projects: filterProject
@@ -47,7 +55,6 @@ const DeleteProject: React.FC<Props> = (props) => {
         // console.log(updateCompany)
         await updateDoc(companyRef, updateCompany)
         await updateDoc(projectRef, { status: "disable", latestUpdate: { timestamp: moment().format("YYYY-MM-DD HH:mm:ss"), uid: AuthCtx.uid, username: AuthCtx.username } });
-        isDeleting(false);
         toast({
             title: 'ลบโปรเจคต์เสร็จสิ้น',
             status: 'error',
@@ -57,6 +64,7 @@ const DeleteProject: React.FC<Props> = (props) => {
         })
         onClose();
         // console.log(props)
+        isDeleting(false);
     }
 
     return (
