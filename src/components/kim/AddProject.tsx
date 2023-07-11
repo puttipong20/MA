@@ -60,7 +60,7 @@ const AddProject: React.FC<Props> = (props) => {
     } else {
       status = "advance";
     }
-    const lastestMA: MA = {
+    const latestMA: MA = {
       startMA: data.startMA,
       endMA: data.endMA,
       cost: data.cost,
@@ -81,7 +81,7 @@ const AddProject: React.FC<Props> = (props) => {
       createdAt: currentDateTime,
       createdBy: { username: Auth.username, uid: Auth.uid },
       projectName: data.projectName,
-      // MAlogs: [lastestMA]
+      // MAlogs: [latestMA]
     };
     // console.log(detail);
     const companyRef = doc(db, "Company", props.companyId);
@@ -91,7 +91,18 @@ const AddProject: React.FC<Props> = (props) => {
     const newProjectRef = await addDoc(projectRef, detail);
     // console.log(newProjectRef.id, "has been added!")
     const MAref = collection(doc(db, "Project", newProjectRef.id), "MAlogs");
-    await addDoc(MAref, lastestMA);
+    await addDoc(MAref, latestMA).then(() => {
+      reset();
+      onClose();
+      toast({
+        title: "เพิ่มโปรเจคสำเร็จ.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      setIsAdding(false);
+    });
     const project = {
       id: newProjectRef.id,
       projectName: data.projectName,
@@ -104,17 +115,6 @@ const AddProject: React.FC<Props> = (props) => {
       updateProject = [project];
     }
     await updateDoc(companyRef, { projects: updateProject });
-
-    reset();
-    onClose();
-    toast({
-      title: "เพิ่มโปรเจคสำเร็จ.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-      position: "top",
-    });
-    setIsAdding(false);
   };
 
   useEffect(() => {
