@@ -58,7 +58,7 @@ export type MA = {
 
 export type ProjectDetail = {
   // MAlogs: MA[];
-
+  status: "enable" | "disable";
   projectName: string;
   companyID: string;
   companyName: string;

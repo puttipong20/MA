@@ -83,21 +83,24 @@ export default function ProjectPreviewComp() {
     await Promise.all(
       projects.docs.map(async (p) => {
         const projectID = p.id;
-        const project: Project = {
-          projectId: projectID,
-          detail: p.data() as ProjectDetail,
-        };
-        // setCompanyName(project.detail.companyName);
-        const MAref = collection(doc(db, "Project", projectID), "MAlogs");
-        const MAlogs = await getDocs(MAref);
-        const logs: MA[] = [];
-        MAlogs.forEach((m) => logs.push(m.data() as MA));
-        const merge: { project: Project; ma: MA[] } = {
-          project: project,
-          ma: logs,
-        };
-        // console.log(merge);
-        allProjects.push(merge);
+        if ((p.data() as ProjectDetail).status === "enable") {
+
+          const project: Project = {
+            projectId: projectID,
+            detail: p.data() as ProjectDetail,
+          };
+          // setCompanyName(project.detail.companyName);
+          const MAref = collection(doc(db, "Project", projectID), "MAlogs");
+          const MAlogs = await getDocs(MAref);
+          const logs: MA[] = [];
+          MAlogs.forEach((m) => logs.push(m.data() as MA));
+          const merge: { project: Project; ma: MA[] } = {
+            project: project,
+            ma: logs,
+          };
+          // console.log(merge);
+          allProjects.push(merge);
+        }
       })
     );
 

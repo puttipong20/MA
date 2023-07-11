@@ -234,7 +234,7 @@ export default function ProblemPreview() {
             className={classes.table}
           >
             <Table w="100%">
-              <Thead position="sticky" top={0} zIndex="sticky">
+              <Thead position="sticky" top={0} zIndex="0">
                 <Tr background={"#4c7bf4"}>
                   <Th
                     fontWeight={"normal"}

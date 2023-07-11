@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { RiDeleteBin7Line } from 'react-icons/ri'
 import { useState } from "react";
-import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { CompanyDetail } from '../../@types/Type';
 
@@ -43,7 +43,7 @@ const DeleteProject: React.FC<Props> = (props) => {
         }
         // console.log(updateCompany)
         await updateDoc(companyRef, updateCompany)
-        await deleteDoc(projectRef)
+        await updateDoc(projectRef, { status: "disable" });
         isDeleting(false);
         toast({
             title: 'ลบโปรเจคต์เสร็จสิ้น',
