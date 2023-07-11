@@ -326,7 +326,7 @@ export default function DetailPage() {
                     Latest update : {projectDetail?.latestUpdate ? projectDetail?.latestUpdate.username : projectDetail?.createdBy.username}
                   </Text>
                   <Text>
-                    {projectDetail?.latestUpdate ? convertTime(projectDetail?.latestUpdate.timestamp) : convertTime(projectDetail?.createdAt)}
+                    {projectDetail?.latestUpdate ? convertTime(projectDetail?.latestUpdate.timestamp) : convertTime(projectDetail!.createdAt)}
                   </Text>
                 </Box>
               </Box>

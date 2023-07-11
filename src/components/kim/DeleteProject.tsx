@@ -13,10 +13,12 @@ import {
     useToast,
 } from '@chakra-ui/react'
 import { RiDeleteBin7Line } from 'react-icons/ri'
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import { CompanyDetail } from '../../@types/Type';
+import moment from 'moment';
+import { AuthContext } from '../../context/AuthContext';
 
 interface Props {
     companyId: string,
@@ -27,6 +29,7 @@ const DeleteProject: React.FC<Props> = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [deleting, isDeleting] = useState(false);
     const toast = useToast();
+    const AuthCtx = useContext(AuthContext)
 
     const deleteProcess = async () => {
         // console.clear();
@@ -43,7 +46,7 @@ const DeleteProject: React.FC<Props> = (props) => {
         }
         // console.log(updateCompany)
         await updateDoc(companyRef, updateCompany)
-        await updateDoc(projectRef, { status: "disable" });
+        await updateDoc(projectRef, { status: "disable", latestUpdate: { timestamp: moment().format("YYYY-MM-DD HH:mm:ss"), uid: AuthCtx.uid, username: AuthCtx.username } });
         isDeleting(false);
         toast({
             title: 'ลบโปรเจคต์เสร็จสิ้น',
@@ -68,10 +71,7 @@ const DeleteProject: React.FC<Props> = (props) => {
                     <ModalHeader>ยืนยันการลบ Project ?</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Text>
-                            การกระทำต่อไปนี้ไม่สามารถย้อนกลับได้ หากลบ Project แล้วข้อมูลจะหายไปอย่างถาวร
-                            ไม่สามารถกู้คืนใหม่ได้ ต้องเพิ่มข้อมูล Project ใหม่เมื่อต้องการใช้งาน ยืนยันการลบหรือไม่?
-                        </Text>
+                        <Text>ยืนยันการลบหรือไม่?</Text>
                     </ModalBody>
                     <ModalFooter>
                         <Button mr="5" colorScheme='gray' onClick={onClose}>ยกเลิก</Button>
