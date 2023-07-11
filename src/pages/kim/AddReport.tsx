@@ -89,7 +89,7 @@ const AddReport = () => {
       createAt: data.ticketsDate,
       name: data.ticketsName,
       RepImg: allImgUpload,
-      company: Company.companyName,
+      companyName: Company.companyName,
       // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
       // companyId: Company.companyId,
       projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ""),
