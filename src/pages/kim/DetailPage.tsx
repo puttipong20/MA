@@ -184,22 +184,22 @@ export default function DetailPage() {
   } else {
     return (
       <div className="container">
-        <form onSubmit={handleSubmit(submitUpdate)}>
-          <Container maxW="100%" pb="10">
-            <Box mt="3" pb="1rem">
-              <Button
-                bg="#4C7BF4"
-                color="#fff"
-                size="sm"
-                w="40px"
-                _hover={{ opacity: 0.8 }}
-                onClick={() => {
-                  navigate(backPath);
-                }}
-              >
-                <BiArrowBack />
-              </Button>
-            </Box>
+        <Container maxW="100%" pb="10">
+          <Box mt="3" pb="1rem">
+            <Button
+              bg="#4C7BF4"
+              color="#fff"
+              size="sm"
+              w="40px"
+              _hover={{ opacity: 0.8 }}
+              onClick={() => {
+                navigate(backPath);
+              }}
+            >
+              <BiArrowBack />
+            </Button>
+          </Box>
+          <form onSubmit={handleSubmit(submitUpdate)}>
             <Card p={"1rem"} w="max-content" maxW="100%" position="relative" border={"1px solid rgb(0,0,0,0.05)"} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}>
               {!isOpenEdit ?
                 <Button
@@ -238,8 +238,6 @@ export default function DetailPage() {
                 </Box>
               }
               <Box>
-
-
                 <HStack>
                   <Text w="7.5rem" fontWeight={"bold"}>
                     บริษัท
@@ -343,221 +341,222 @@ export default function DetailPage() {
                 </Box>
               </Box>
             </Card>
-            <Divider my="1rem" />
-            <Box>
-              <Flex justify={"space-between"} align={"center"}>
-                <Text fontWeight={"bold"} w="fit-content">
-                  ประวัติการทำสัญญา{" "}
-                  <Button
-                    size="sm"
-                    bg="#4C7BF4"
-                    color="#eee"
-                    _hover={{ opacity: 0.8 }}
-                    _active={{ opacity: 0.9 }}
-                    onClick={fetchingProjectDetail}
-                  >
-                    <AiOutlineReload />
-                  </Button>
-                </Text>
-                <Box>
-                  <Renewal
-                    MAlog={logs}
-                    projectId={projectID}
-                    callBack={fetchingProjectDetail}
-                  />
-                </Box>
-              </Flex>
-              <Box>
-                <Box
-                  mt="5"
-                  borderRadius="20px"
-                  border="1px"
-                  borderColor="#f4f4f4"
-                  w="100%"
-                  h="100%"
-                  maxH={"36vh"}
-                  overflowY={"auto"}
-                  boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
-                  className={classes.table}
-                >
-                  <Table w="100%">
-                    <Thead position="sticky" top={0} zIndex="1">
-                      <Tr bg={"#4C7BF4"}>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          ลำดับที่
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          วันที่สร้าง
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          วันที่เริ่มต้นสัญญาMA
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          วันที่สิ้นสุดสัญญาMA
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          สถานะ
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"right"}
-                        >
-                          ค่าบริการ
-                        </Th>
-                        <Th
-                          fontFamily={"inherit"}
-                          color="#fff"
-                          textAlign={"center"}
-                        >
-                          การจัดการ
-                        </Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {logs
-                        .sort((a, b) => {
-                          const endA = new Date(a.ma.endMA) as any;
-                          const endB = new Date(b.ma.endMA) as any;
-                          return endB - endA;
-                        })
-                        .filter((ma) => ma.ma.status !== "deleted")
-                        .map((MA, index) => {
-                          return (
-                            <Tr key={index} _hover={{ bg: "gray.100" }}>
-                              <Td textAlign={"center"}>{index + 1}</Td>
-                              <Td textAlign={"center"}>
-                                {moment(MA.ma.createdAt).format(
-                                  "DD/MM/YYYY HH:mm:ss"
-                                )}
-                              </Td>
-                              <Td textAlign={"center"}>
-                                {dateFormat(MA.ma.startMA)}
-                              </Td>
-                              <Td textAlign={"center"}>
-                                {dateFormat(MA.ma.endMA)}
-                              </Td>
-                              <Td textAlign={"center"}>
-                                <MAstatusTag status={MA.ma.status} />
-                              </Td>
+          </form>
 
-                              <Td textAlign={"right"}>
-                                {convertNumber(MA.ma.cost)}
-                              </Td>
-                              <Td textAlign={"center"}>
-                                <Menu>
-                                  <MenuButton
-                                    as={IconButton}
-                                    colorScheme="white"
-                                    bg="none"
-                                    _hover={{ bg: "white" }}
-                                    icon={
-                                      <BiDotsHorizontalRounded
-                                        size="25px"
-                                        color="#4C7BF4"
-                                      />
-                                    }
-                                  />
-                                  <MenuList
-                                    backgroundColor="white"
-                                    pos="sticky"
-                                    top="0"
-                                    bg="white"
-                                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-                                    zIndex="sticky"
-                                  >
-                                    <MenuItem backgroundColor="whiter">
-                                      <Box
+          <Divider my="1rem" />
+          <Box>
+            <Flex justify={"space-between"} align={"center"}>
+              <Text fontWeight={"bold"} w="fit-content">
+                ประวัติการทำสัญญา{" "}
+                <Button
+                  size="sm"
+                  bg="#4C7BF4"
+                  color="#eee"
+                  _hover={{ opacity: 0.8 }}
+                  _active={{ opacity: 0.9 }}
+                  onClick={fetchingProjectDetail}
+                >
+                  <AiOutlineReload />
+                </Button>
+              </Text>
+              <Box>
+                <Renewal
+                  MAlog={logs}
+                  projectId={projectID}
+                  callBack={fetchingProjectDetail}
+                />
+              </Box>
+            </Flex>
+            <Box>
+              <Box
+                mt="5"
+                borderRadius="20px"
+                border="1px"
+                borderColor="#f4f4f4"
+                w="100%"
+                h="100%"
+                maxH={"36vh"}
+                overflowY={"auto"}
+                boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
+                className={classes.table}
+              >
+                <Table w="100%">
+                  <Thead position="sticky" top={0} zIndex="1">
+                    <Tr bg={"#4C7BF4"}>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        ลำดับที่
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        วันที่สร้าง
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        วันที่เริ่มต้นสัญญาMA
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        วันที่สิ้นสุดสัญญาMA
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        สถานะ
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"right"}
+                      >
+                        ค่าบริการ
+                      </Th>
+                      <Th
+                        fontFamily={"inherit"}
+                        color="#fff"
+                        textAlign={"center"}
+                      >
+                        การจัดการ
+                      </Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {logs
+                      .sort((a, b) => {
+                        const endA = new Date(a.ma.endMA) as any;
+                        const endB = new Date(b.ma.endMA) as any;
+                        return endB - endA;
+                      })
+                      .filter((ma) => ma.ma.status !== "deleted")
+                      .map((MA, index) => {
+                        return (
+                          <Tr key={index} _hover={{ bg: "gray.100" }}>
+                            <Td textAlign={"center"}>{index + 1}</Td>
+                            <Td textAlign={"center"}>
+                              {moment(MA.ma.createdAt).format(
+                                "DD/MM/YYYY HH:mm:ss"
+                              )}
+                            </Td>
+                            <Td textAlign={"center"}>
+                              {dateFormat(MA.ma.startMA)}
+                            </Td>
+                            <Td textAlign={"center"}>
+                              {dateFormat(MA.ma.endMA)}
+                            </Td>
+                            <Td textAlign={"center"}>
+                              <MAstatusTag status={MA.ma.status} />
+                            </Td>
+
+                            <Td textAlign={"right"}>
+                              {convertNumber(MA.ma.cost)}
+                            </Td>
+                            <Td textAlign={"center"}>
+                              <Menu>
+                                <MenuButton
+                                  as={IconButton}
+                                  colorScheme="white"
+                                  bg="none"
+                                  _hover={{ bg: "white" }}
+                                  icon={
+                                    <BiDotsHorizontalRounded
+                                      size="25px"
+                                      color="#4C7BF4"
+                                    />
+                                  }
+                                />
+                                <MenuList
+                                  backgroundColor="white"
+                                  pos="sticky"
+                                  top="0"
+                                  bg="white"
+                                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                                  zIndex="sticky"
+                                >
+                                  <MenuItem backgroundColor="whiter">
+                                    <Box
+                                      w="100%"
+                                      p={"0.5rem"}
+                                      onClick={() => {
+                                        MACtx.setMA(MA.ma);
+                                        navigate(
+                                          `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/detail/ContractRecord`
+                                        );
+                                      }}
+                                    >
+                                      <Text
+                                        color="blue"
                                         w="100%"
-                                        p={"0.5rem"}
-                                        onClick={() => {
-                                          MACtx.setMA(MA.ma);
-                                          navigate(
-                                            `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/detail/ContractRecord`
-                                          );
-                                        }}
+                                        display="flex"
+                                        alignItems={"center"}
                                       >
                                         <Text
-                                          color="blue"
-                                          w="100%"
-                                          display="flex"
-                                          alignItems={"center"}
+                                          as="span"
+                                          w="20%"
+                                          display={"flex"}
+                                          justifyContent={"center"}
                                         >
-                                          <Text
-                                            as="span"
-                                            w="20%"
-                                            display={"flex"}
-                                            justifyContent={"center"}
-                                          >
-                                            <AiOutlineHistory />
-                                          </Text>
-                                          ดูประวัติการแก้ไข
+                                          <AiOutlineHistory />
                                         </Text>
-                                      </Box>
-                                    </MenuItem>
+                                        ดูประวัติการแก้ไข
+                                      </Text>
+                                    </Box>
+                                  </MenuItem>
 
-                                    {MA.ma.status != "cancel" && (
-                                      <MenuItem backgroundColor="whiter">
-                                        <UpdateContract
-                                          maID={MA.id}
-                                          projectID={projectID}
-                                          reload={fetchingProjectDetail}
-                                          status="cancel"
-                                        />
-                                      </MenuItem>
-                                    )}
-
+                                  {MA.ma.status != "cancel" && (
                                     <MenuItem backgroundColor="whiter">
                                       <UpdateContract
                                         maID={MA.id}
                                         projectID={projectID}
                                         reload={fetchingProjectDetail}
-                                        status="deleted"
+                                        status="cancel"
                                       />
                                     </MenuItem>
+                                  )}
 
-                                    <MenuItem backgroundColor="whiter">
-                                      <EditContract
-                                        data={MA.ma}
-                                        maId={MA.id}
-                                        projectId={projectID}
-                                        callBack={fetchingProjectDetail}
-                                      />
-                                    </MenuItem>
-                                  </MenuList>
-                                </Menu>
-                              </Td>
-                            </Tr>
-                          );
-                        })}
-                    </Tbody>
-                  </Table>
-                </Box>
+                                  <MenuItem backgroundColor="whiter">
+                                    <UpdateContract
+                                      maID={MA.id}
+                                      projectID={projectID}
+                                      reload={fetchingProjectDetail}
+                                      status="deleted"
+                                    />
+                                  </MenuItem>
+
+                                  <MenuItem backgroundColor="whiter">
+                                    <EditContract
+                                      data={MA.ma}
+                                      maId={MA.id}
+                                      projectId={projectID}
+                                      callBack={fetchingProjectDetail}
+                                    />
+                                  </MenuItem>
+                                </MenuList>
+                              </Menu>
+                            </Td>
+                          </Tr>
+                        );
+                      })}
+                  </Tbody>
+                </Table>
               </Box>
             </Box>
-          </Container>
-        </form>
-      </div>
+          </Box>
+        </Container>
+      </div >
     );
   }
 }

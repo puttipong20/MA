@@ -77,7 +77,9 @@ export type CompanyDetail = {
   companyName: string;
   createdBy: { username: string; uid: string };
   createdAt: string;
-  projects?: { projectName: string; id: string }[] | [];
+  projects?:
+    | { projectName: string; id: string; status: "enable" | "disable" }[]
+    | [];
   userName: string;
   userPhone: string;
   userTax: string;

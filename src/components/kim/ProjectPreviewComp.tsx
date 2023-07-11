@@ -141,27 +141,27 @@ export default function ProjectPreviewComp() {
           <Center w="100%" mb="1rem">
             <HStack
               w="100%"
-              justifyContent="space-between"
-              alignItems="flex-end"
+              justifyContent="flex-start"
+              alignItems="center"
+              pt="1rem"
             >
+              <Button
+                bg="#4C7BF4"
+                color="#fff"
+                size="sm"
+                w="40px"
+                _hover={{ opacity: 0.8 }}
+                onClick={() => {
+                  navigate(backPath);
+                }}
+              >
+                <BiArrowBack />
+              </Button>
               <VStack
-                pt="1rem"
                 justifyContent="flex-start"
                 alignItems="flex-star"
                 spacing="2px"
               >
-                <Button
-                  bg="#4C7BF4"
-                  color="#fff"
-                  size="sm"
-                  w="40px"
-                  _hover={{ opacity: 0.8 }}
-                  onClick={() => {
-                    navigate(backPath);
-                  }}
-                >
-                  <BiArrowBack />
-                </Button>
                 <Text
                   fontWeight="600"
                   lineHeight="25.2px"
@@ -360,7 +360,7 @@ export default function ProjectPreviewComp() {
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
                     <Tr key={index} _hover={{ bg: "gray.100" }} cursor={"pointer"}>
-                      <Td textAlign={"center"} onClick={() => {navigate(navigateLink);}}>
+                      <Td textAlign={"center"} onClick={() => { navigate(navigateLink); }}>
                         {i.project.detail.projectName}
                       </Td>
 
@@ -398,7 +398,7 @@ export default function ProjectPreviewComp() {
                           </Td>
                         </>
                       )}
-                      <Td textAlign={"center"} onClick={() => {navigate(navigateLink);}}>
+                      <Td textAlign={"center"} onClick={() => { navigate(navigateLink); }}>
                         {moment(i.project.detail.createdAt).format(
                           "DD/MM/YYYY HH:mm:ss"
                         )}
