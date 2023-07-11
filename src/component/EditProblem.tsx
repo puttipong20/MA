@@ -83,7 +83,7 @@ const EditProblem = ({ data, id }: any) => {
       const DocRef = doc(db, "Report", id);
       await updateDoc(DocRef, {
         ...data,
-        latestUpdate: {
+        latestReportUpdate: {
           timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
           uid: AuthCtx.uid,
           username: AuthCtx.username,

@@ -30,7 +30,7 @@ type Fvalue = {
   companyName: string;
   RepImg: [];
   ref: string;
-  latestUpdate: { timestamp: string; uid: string; username: string };
+  latestReportUpdate: { timestamp: string; uid: string; username: string };
 };
 
 function ProblemRequest() {
@@ -67,7 +67,7 @@ function ProblemRequest() {
         companyName: doc.data()?.companyName,
         RepImg: doc.data()?.RepImg,
         ref: doc.data()?.ref,
-        latestUpdate: doc.data()?.latestUpdate,
+        latestReportUpdate: doc.data()?.latestReportUpdate,
       };
       setFValue(data);
       setIsLoading(false);
@@ -184,19 +184,19 @@ function ProblemRequest() {
 
                     <HStack alignItems="flex-start" color="#8F9BBA">
                       <Text w="30%">ผู้แก้ไข :</Text>
-                      {!fValue?.latestUpdate ? (
+                      {!fValue?.latestReportUpdate ? (
                         <Text>-</Text>
                       ) : (
-                        <Text w="70%">{fValue?.latestUpdate.username}</Text>
+                        <Text w="70%">{fValue?.latestReportUpdate.username}</Text>
                       )}
                     </HStack>
                     <HStack alignItems="flex-start" color="#8F9BBA">
                       <Text w="30%">แก้ไขเมื่อ :</Text>
-                      {!fValue?.latestUpdate ? (
+                      {!fValue?.latestReportUpdate ? (
                         <Text>-</Text>
                       ) : (
                         <Text w="70%">
-                          {moment(fValue?.latestUpdate.timestamp).format(
+                          {moment(fValue?.latestReportUpdate.timestamp).format(
                             "DD/MM/YYYY HH:mm:ss"
                           )}
                         </Text>
