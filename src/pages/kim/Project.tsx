@@ -18,7 +18,9 @@ const Project: React.FC<Props> = (props) => {
         className={classes.sidebar}
         px="10px"
         w="18%"
-        display={[isTrigger ? "block" : "none", !isTrigger ? "none" : "block"]}
+        // display={[isTrigger ? "block" : "none", !isTrigger ? "none" : "block"]}
+        // display={{isTrigger ? "block" : "none", !isTrigger ? "none" : "block"}}
+        display={{ base: `${isTrigger ? "block" : "none"}`, lg: `${!isTrigger ? "none" : "block"}` }}
         minW={["fit-content", "15%"]}
         mr="15px"
         boxShadow={"5px 5px 5px rgba(0,0,0,0.1)"}

@@ -244,7 +244,7 @@ const Sidebar: React.FC<Props> = (props) => {
                                 );
                               }}
                             >
-                              <Text as="span" position="absolute" left="-0.1rem">-</Text>
+                              <Text as="span" position="absolute" left="0.5rem">-</Text>
                               {j.projectName}
                             </Text>
                           );
