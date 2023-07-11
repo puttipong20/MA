@@ -95,7 +95,7 @@ const AddReport = () => {
       projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ""),
       projectID: Company.projectId,
       uid: Auth.uid,
-      reportBy: { uid: Auth.uid, username: Auth.username },
+      createBy: { uid: Auth.uid, username: Auth.username },
       RepStatus: "รอรับเรื่อง",
 
     };
