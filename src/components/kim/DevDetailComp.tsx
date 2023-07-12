@@ -79,7 +79,6 @@ function DevDetailComp() {
       newSolution["dateDone"] = "";
     }
     const newDetail = {
-      ...detailHistory,
       solution: newSolution,
       RepStatus: currentStatus,
       latestUpdate: { uid: AuthCtx.uid, username: AuthCtx.username }
