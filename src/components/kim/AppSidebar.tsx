@@ -189,7 +189,7 @@ const Sidebar: React.FC<Props> = (props) => {
         </Flex>
       ) : (
         <Box>
-          <Accordion allowToggle defaultIndex={[openIndex]}>
+          <Accordion defaultIndex={[openIndex]}>
             {filterCompany.map((i, index) => {
               // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
               const focusCompany = params["company"] === i.companyId;
@@ -206,12 +206,11 @@ const Sidebar: React.FC<Props> = (props) => {
                   my="5px"
                 // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
-                  <AccordionButton>
+                  <AccordionButton onClick={() => { navigate(`/company/${i.companyId}`) }}>
                     <Flex justify={"space-between"}>
                       <Text
                         fontWeight={focusCompany ? "bold" : "normal"}
                         textAlign={"left"}
-                        onClick={() => { navigate(`/company/${i.companyId}`) }}
                       >
                         {i.detail.companyName}
                       </Text>
