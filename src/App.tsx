@@ -1,13 +1,7 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-// import FormAddReport from "./pages/FormAddReport";
-// import DetailForDev from "./pages/DetailForDev";
-// import Preview from "./pages/Preview";
-// import DetailForUser from "./pages/DetailForUser";
 import Login from "./pages/pae/Login";
-// import Register from "./pages/pae/Register";
 
-import Home from "./pages/Home";
 import Project from "./pages/kim/Project";
 
 import { useContext, useEffect, useState } from "react";
@@ -60,8 +54,6 @@ function App() {
     return (
       <Box w="100%" maxH="100vh" position={"relative"}>
         <Routes>
-          <Route path="/home" element={<Home />} />
-          {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />
 
           <Route
