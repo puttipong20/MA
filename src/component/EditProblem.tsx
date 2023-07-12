@@ -321,7 +321,7 @@ const EditProblem = ({ data, id }: any) => {
                         );
                       })}
                       <Box>
-                        <label htmlFor="imageInput">
+                        <label htmlFor="editImageInput">
                           <VStack
                             textAlign={"center"}
                             border="1px dashed gray"
@@ -352,7 +352,7 @@ const EditProblem = ({ data, id }: any) => {
                         <Input
                           type="file"
                           display="none"
-                          id="imageInput"
+                          id="editImageInput"
                           accept="image/png, image/jpeg"
                           onChange={uploadFile}
                           multiple
