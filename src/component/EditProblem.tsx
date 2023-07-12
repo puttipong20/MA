@@ -36,7 +36,7 @@ type PValue = {
   phone: string;
   line: string;
   email: string;
-  createAt: string;
+  editAt: string;
   name: string;
   RepImg: [];
 };
@@ -74,7 +74,7 @@ const EditProblem = ({ data, id }: any) => {
       setValue("line", data?.lineID);
       setValue("email", data?.email);
       setValue("name", data?.name);
-      setValue("RepImg", data?.RepImg);
+      // setValue("RepImg", data?.RepImg);
     }
   }, [data]);
 
@@ -177,7 +177,7 @@ const EditProblem = ({ data, id }: any) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
-                  name="createAt"
+                  name="editAt"
                   control={control}
                   defaultValue={editDateAt}
                   rules={{ required: true }}
