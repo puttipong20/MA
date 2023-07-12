@@ -88,7 +88,7 @@ const EditProblem = ({ data, id }: any) => {
           uid: AuthCtx.uid,
           username: AuthCtx.username,
         },
-        RepImg:imageUpload
+        RepImg: imageUpload,
       })
         .then(() => {
           toast({
@@ -154,7 +154,7 @@ const EditProblem = ({ data, id }: any) => {
         w="max-content"
         h="100%"
         bg="yellow.200"
-        _hover={{opacity:0.8}}
+        _hover={{ opacity: 0.8 }}
       >
         <Flex
           color="green"
@@ -337,7 +337,11 @@ const EditProblem = ({ data, id }: any) => {
                             <Flex color="#4c7bf4" fontSize={"2rem"}>
                               <MdUpload />
                             </Flex>
-                            <Text color="#4c7bf4" fontWeight="bold" fontSize={"0.9rem"}>
+                            <Text
+                              color="#4c7bf4"
+                              fontWeight="bold"
+                              fontSize={"0.9rem"}
+                            >
                               คลิกเพื่ออัพโหลดไฟล์
                             </Text>
                             <Text color="#8F9BBA" fontSize={"0.6rem"}>
