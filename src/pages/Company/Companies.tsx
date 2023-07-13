@@ -298,7 +298,7 @@ function PreCompany() {
                                 <ViewCompany data={com.detail} />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <EditCompany id={com.companyId} data={com.detail} />
+                                <EditCompany id={com.companyId} data={com.detail} callBack={refetch}/>
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <DeleteCompany
