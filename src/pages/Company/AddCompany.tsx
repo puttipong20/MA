@@ -37,7 +37,7 @@ type ComValue = {
 };
 
 const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
-  const Auth = useContext(AuthContext);
+
   const {
     handleSubmit,
     reset,
@@ -48,9 +48,9 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const AuthCtx = useContext(AuthContext)
 
   const createDate = moment().format("DD-MM-YYYY HH:mm:ss");
-  const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -58,8 +58,10 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
     await addDoc(docRef, {
       ...data,
       createdAt: createDate,
-      companyUpdate: updatedDate,
-      createBy: Auth.uid,
+      createBy: {
+        uid: AuthCtx.uid,
+        username: AuthCtx.username,
+      }
     })
       .then(() => {
         toast({

@@ -295,7 +295,7 @@ function PreCompany() {
                               zIndex="sticky"
                             >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <ViewCompany id={com.companyId} data={com.detail} />
+                                <ViewCompany data={com.detail} />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <EditCompany id={com.companyId} data={com.detail} />

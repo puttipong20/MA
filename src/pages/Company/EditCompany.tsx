@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, updateDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { db } from "../../services/config-db";
 import {
@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import { RiEditLine } from "react-icons/ri";
+import { AuthContext } from "../../context/AuthContext";
 
 type ComValue = {
   companyName: string;
@@ -48,6 +49,7 @@ const FormEditCompany = ({ data, id }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const AuthCtx = useContext(AuthContext);
 
   const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
 
@@ -71,6 +73,10 @@ const FormEditCompany = ({ data, id }: any) => {
       await updateDoc(DocRef, {
         ...data,
         companyUpdate: updatedDate,
+        updateBy: {
+          uid: AuthCtx.uid,
+          username: AuthCtx.username,
+        }
       })
         .then(() => {
           toast({

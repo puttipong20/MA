@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../../services/config-db";
 import {
   Text,
   VStack,
@@ -28,31 +26,17 @@ type Cvalue = {
   userPerson: string;
   createdAt: string;
   companyUpdate: string;
+  createBy: { uid: string; username: string };
+  updateBy: { uid: string; username: string };
 };
 
-const ViewCompany = ({id}:any) => {
+const ViewCompany = ({ data }: any) => {
   const [cValue, setCValue] = useState<Cvalue>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  async function fetchData() {
-    onSnapshot(doc(db, "Company", id), (doc) => {
-      const data: Cvalue = {
-        companyName: doc.data()?.companyName,
-        companyAddress: doc.data()?.companyAddress,
-        userName: doc.data()?.userName,
-        userPhone: doc.data()?.userPhone,
-        userTax: doc.data()?.userTax,
-        userPerson: doc.data()?.userPerson,
-        createdAt: doc.data()?.createdAt,
-        companyUpdate: doc.data()?.companyUpdate,
-      };
-      setCValue(data);
-    });
-  }
   useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // console.log(data)
+    setCValue(data)
+  },[data])
 
   return (
     <>
@@ -119,13 +103,31 @@ const ViewCompany = ({id}:any) => {
                     <Text w="50%" fontWeight="bold">
                       สร้างเมื่อ :
                     </Text>
-                    <Text w="50%">{cValue?.createdAt}</Text>
+                    <Text w="50%">
+                      <Text as="span">{cValue?.createdAt}</Text>
+                      <br />
+                      <Text as="span" fontSize="14px" color="gray.400">
+                        {cValue?.createBy.username}
+                      </Text>
+                    </Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       อัพเดทเมื่อ :
                     </Text>
-                    <Text w="50%">{cValue?.companyUpdate}</Text>
+                    {!cValue?.updateBy ? (
+                      <Text fontSize="14px" color="gray.400">
+                        ยังไม่มีการอัพเดท
+                      </Text>
+                    ) : (
+                      <Text w="50%">
+                        <Text as="span">{cValue?.companyUpdate} </Text>
+                        <br />
+                        <Text as="span" fontSize="14px" color="gray.400">
+                          {cValue?.updateBy.username}
+                        </Text>
+                      </Text>
+                    )}
                   </HStack>
                 </VStack>
               </Stack>
