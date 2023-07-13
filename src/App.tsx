@@ -1,26 +1,20 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-// import FormAddReport from "./pages/FormAddReport";
-// import DetailForDev from "./pages/DetailForDev";
-// import Preview from "./pages/Preview";
-// import DetailForUser from "./pages/DetailForUser";
-import Login from "./pages/pae/Login";
-// import Register from "./pages/pae/Register";
+import Login from "./pages/Login/Login";
 
-import Home from "./pages/Home";
-import Project from "./pages/kim/Project";
+import Layout from "./Layout/Layout";
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
-import AuthCheck from "./components/AuthCheck";
-import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
-import ProblemPreview from "./pages/kim/ProblemPreview";
-import AddReport from "./pages/kim/AddReport";
-import DetailPage from "./pages/kim/DetailPage";
-import DetailForDev from "./pages/kim/DetailForDev";
-import PageCompany from "./pages/Company/PageCompany";
-import ContractPreview from "./components/Contracts/ContractPreview";
-import ContractUpdate from "./components/ContractUpdate";
+import AuthCheck from "../src/Common/AuthCheck";
+import ProjectPreviewComp from "./pages/Projects/ProjectPreview";
+import ProblemPreview from "./pages/Report/ReportPreview";
+import AddReport from "./components/Report/AddReport";
+import DetailPage from "./pages/Projects/ProjectDetail";
+import DetailForDev from "./pages/DetailForDev/DetailForDev";
+import PageCompany from "./pages/Company/Companies";
+import ContractPreview from "./pages/Contract/ContractPreview";
+import ContractUpdate from "./Common/ContractUpdate";
 
 function App() {
   const navigate = useNavigate();
@@ -55,53 +49,51 @@ function App() {
         <Text>Authen Checking . . .</Text>
         <Spinner />
       </Box>
-    )
+    );
   } else {
     return (
       <Box w="100%" maxH="100vh" position={"relative"}>
         <Routes>
-          <Route path="/home" element={<Home />} />
-          {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />
 
           <Route
             path="/"
             element={
-              <Project>
+              <Layout>
                 <PageCompany />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company"
             element={
-              <Project>
+              <Layout>
                 <ProjectPreviewComp />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/detail"
             element={
-              <Project>
+              <Layout>
                 <DetailPage />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/detail/ContractRecord"
             element={
-              <Project>
+              <Layout>
                 <ContractPreview />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/problemReport"
             element={
-              <Project>
+              <Layout>
                 <ProblemPreview />
-              </Project>
+              </Layout>
             }
           />
           <Route

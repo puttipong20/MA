@@ -34,7 +34,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { Report, ReportDetail } from "../../@types/Type";
 
-import classes from "./ProblemPreview.module.css";
+import classes from "./ReportPreview.module.css";
 
 import moment from "moment";
 

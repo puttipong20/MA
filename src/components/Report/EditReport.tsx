@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Button,
@@ -22,11 +24,11 @@ import {
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { db } from "../services/config-db";
+import { db } from "../../services/config-db";
 import moment from "moment";
 import { MdUpload } from "react-icons/md";
-import ImageComp from "../components/kim/ImageComp";
-import { AuthContext } from "../context/AuthContext";
+import ImageComp from "../asset/ImageComp";
+import { AuthContext } from "../../context/AuthContext";
 
 type PValue = {
   title: string;
@@ -34,7 +36,7 @@ type PValue = {
   phone: string;
   line: string;
   email: string;
-  createAt: string;
+  editAt: string;
   name: string;
   RepImg: [];
 };
@@ -72,7 +74,7 @@ const EditProblem = ({ data, id }: any) => {
       setValue("line", data?.lineID);
       setValue("email", data?.email);
       setValue("name", data?.name);
-      setValue("RepImg", data?.RepImg);
+      // setValue("RepImg", data?.RepImg);
     }
   }, [data]);
 
@@ -88,7 +90,7 @@ const EditProblem = ({ data, id }: any) => {
           uid: AuthCtx.uid,
           username: AuthCtx.username,
         },
-        RepImg:imageUpload
+        RepImg: imageUpload,
       })
         .then(() => {
           toast({
@@ -154,7 +156,7 @@ const EditProblem = ({ data, id }: any) => {
         w="max-content"
         h="100%"
         bg="yellow.200"
-        _hover={{opacity:0.8}}
+        _hover={{ opacity: 0.8 }}
       >
         <Flex
           color="green"
@@ -175,7 +177,7 @@ const EditProblem = ({ data, id }: any) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
-                  name="createAt"
+                  name="editAt"
                   control={control}
                   defaultValue={editDateAt}
                   rules={{ required: true }}
@@ -321,7 +323,7 @@ const EditProblem = ({ data, id }: any) => {
                         );
                       })}
                       <Box>
-                        <label htmlFor="imageInput">
+                        <label htmlFor="editImageInput">
                           <VStack
                             textAlign={"center"}
                             border="1px dashed gray"
@@ -337,7 +339,11 @@ const EditProblem = ({ data, id }: any) => {
                             <Flex color="#4c7bf4" fontSize={"2rem"}>
                               <MdUpload />
                             </Flex>
-                            <Text color="#4c7bf4" fontWeight="bold" fontSize={"0.9rem"}>
+                            <Text
+                              color="#4c7bf4"
+                              fontWeight="bold"
+                              fontSize={"0.9rem"}
+                            >
                               คลิกเพื่ออัพโหลดไฟล์
                             </Text>
                             <Text color="#8F9BBA" fontSize={"0.6rem"}>
@@ -348,7 +354,7 @@ const EditProblem = ({ data, id }: any) => {
                         <Input
                           type="file"
                           display="none"
-                          id="imageInput"
+                          id="editImageInput"
                           accept="image/png, image/jpeg"
                           onChange={uploadFile}
                           multiple

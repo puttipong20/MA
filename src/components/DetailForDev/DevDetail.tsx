@@ -22,8 +22,8 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 import { useForm, Controller } from "react-hook-form";
-import UploadFileComp from "./UploadFileComp";
-import ImageComp from "./ImageComp";
+import UploadFileComp from "../asset/UploadFileComp";
+import ImageComp from "../asset/ImageComp";
 
 import { db } from "../../services/config-db";
 import { doc, getDoc, updateDoc, } from "firebase/firestore";
@@ -31,7 +31,7 @@ import { doc, getDoc, updateDoc, } from "firebase/firestore";
 import { ReportDetail } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
 
-function DevDetailComp() {
+function DevDetail() {
   const params = useParams();
   const navigate = useNavigate();
   const backPath = `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/problemReport`;
@@ -79,7 +79,6 @@ function DevDetailComp() {
       newSolution["dateDone"] = "";
     }
     const newDetail = {
-      ...detailHistory,
       solution: newSolution,
       RepStatus: currentStatus,
       latestUpdate: { uid: AuthCtx.uid, username: AuthCtx.username }
@@ -376,4 +375,4 @@ function DevDetailComp() {
   }
 }
 
-export default DevDetailComp;
+export default DevDetail;

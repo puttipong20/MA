@@ -15,7 +15,7 @@ import { MAcontext } from "../../context/MAContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import moment from "moment";
-import classes from "../../pages/kim/ProblemPreview.module.css";
+import classes from "../../pages/Report/ReportPreview.module.css";
 
 const ContractPreview = () => {
   const navigate = useNavigate();
@@ -108,7 +108,8 @@ const ContractPreview = () => {
                             แก้ไขเมื่อ
                           </Text>
                           <Text>
-                            : {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
+                            :{" "}
+                            {moment(u.timeStamp).format("DD/MM/YYYY HH:mm:ss")}
                           </Text>
                         </HStack>
                         <HStack alignItems={"start"}>

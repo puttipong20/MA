@@ -16,7 +16,7 @@ import { FC, useContext, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../services/config-db";
-import ResetModal from "../../components/pae/Modal";
+import ResetModal from "./ResetPass";
 import { AuthContext } from "../../context/AuthContext";
 
 const Login: FC = () => {
