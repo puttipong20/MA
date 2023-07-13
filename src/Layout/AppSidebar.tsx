@@ -23,12 +23,18 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { auth, db } from "../services/config-db";
 
 import { search } from "ss-search";
 import { Company, CompanyDetail } from "../@types/Type";
-import AddProject from "../Components/Projects/AddProject";
+import AddProject from "../components/Projects/AddProject";
 
 import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -65,7 +71,7 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(true);
     let count = 0;
     const collRef = collection(db, "Company");
-    const q = query(collRef, orderBy("companyName", "asc"))
+    const q = query(collRef, orderBy("companyName", "asc"));
     const collData = await getDocs(q);
     const allCompany: Company[] = [];
 
@@ -163,7 +169,7 @@ const Sidebar: React.FC<Props> = (props) => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-      // border="1px solid black"
+        // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
@@ -204,9 +210,13 @@ const Sidebar: React.FC<Props> = (props) => {
                   borderRadius={"10px"}
                   bg={focusCompany ? color : ""}
                   my="5px"
-                // borderLeft={focusCompany ? "3px solid white" : "none"}
+                  // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
-                  <AccordionButton onClick={() => { navigate(`/company/${i.companyId}`) }}>
+                  <AccordionButton
+                    onClick={() => {
+                      navigate(`/company/${i.companyId}`);
+                    }}
+                  >
                     <Flex justify={"space-between"}>
                       <Text
                         fontWeight={focusCompany ? "bold" : "normal"}
@@ -220,7 +230,8 @@ const Sidebar: React.FC<Props> = (props) => {
                   <AccordionPanel>
                     <VStack fontSize={"0.9rem"} align={"left"} pl="5%">
                       {i.detail.projects !== undefined &&
-                        i.detail.projects.filter(i => i.status === "enable").length !== 0 ? (
+                      i.detail.projects.filter((i) => i.status === "enable")
+                        .length !== 0 ? (
                         i.detail.projects?.map((j, index) => {
                           // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
                           const focusProject = params["projectID"] === j.id;
@@ -244,13 +255,18 @@ const Sidebar: React.FC<Props> = (props) => {
                                   );
                                 }}
                               >
-                                <Text as="span" position="absolute" left="0.5rem">-</Text>
+                                <Text
+                                  as="span"
+                                  position="absolute"
+                                  left="0.5rem"
+                                >
+                                  -
+                                </Text>
                                 {j.projectName}
                               </Text>
                             );
                           }
                         })
-
                       ) : (
                         <Text fontWeight={"normal"} textAlign={"center"}>
                           ยังไม่มีข้อมูล Project ของบริษัทนี้

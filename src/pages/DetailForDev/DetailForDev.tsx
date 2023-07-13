@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Divider, Heading } from "@chakra-ui/react";
-import DevDetail from "../../Components/DetailForDev/DevDetail";
-import ReportDetail from "../../Components/DetailForDev/ReportDetail";
+import DevDetail from "../../components/DetailForDev/DevDetail";
+import ReportDetail from "../../components/DetailForDev/ReportDetail";
 
 function DetailForDev() {
   return (

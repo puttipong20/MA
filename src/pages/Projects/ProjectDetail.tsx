@@ -40,16 +40,22 @@ import {
 import { db } from "../../services/config-db";
 import { ProjectDetail, MA, CompanyDetail } from "../../@types/Type";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { AiOutlineHistory, AiOutlineReload, AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import {
+  AiOutlineHistory,
+  AiOutlineReload,
+  AiOutlineEdit,
+  AiOutlineClose,
+  AiOutlineCheck,
+} from "react-icons/ai";
 
 import moment from "moment";
-import Renewal from "../../Components/Contracts/Renewal";
-import MAstatusTag from "../../Components/Contracts/MAstatusTag";
-import EditContract from "../../Components/Contracts/EditContract";
-import UpdateContract from "../../Components/Contracts/UpdateContract";
+import Renewal from "../../components/Contracts/Renewal";
+import MAstatusTag from "../../components/Contracts/MAstatusTag";
+import EditContract from "../../components/Contracts/EditContract";
+import UpdateContract from "../../components/Contracts/UpdateContract";
 import { MAcontext } from "../../context/MAContext";
 import { CompanyContext } from "../../context/CompanyContext";
-import classes from "../../Pages/Report/ReportPreview.module.css";
+import classes from "../../pages/Report/ReportPreview.module.css";
 import { Controller, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -70,15 +76,15 @@ export default function DetailPage() {
   const [hoverToEdit, setHoverToEdit] = useState(false);
   const toast = useToast();
 
-  const { control, handleSubmit, reset } = useForm()
+  const { control, handleSubmit, reset } = useForm();
 
-  const AuthCtx = useContext(AuthContext)
+  const AuthCtx = useContext(AuthContext);
   const CompanyCtx = useContext(CompanyContext);
   const MACtx = useContext(MAcontext);
 
   const convertTime = (date: string): string => {
-    return moment(date).format("DD/MM/YYYY HH:mm:ss")
-  }
+    return moment(date).format("DD/MM/YYYY HH:mm:ss");
+  };
 
   const fetchingProjectDetail = async () => {
     setIsfetching(true);
@@ -91,14 +97,21 @@ export default function DetailPage() {
       MAlogs.push({ id: ma.id, ma: ma.data() as MA });
     });
     const sorted_MAlogs = MAlogs.sort((a, b) => {
-      const dateA = new Date(a.ma.endMA) as any
-      const dateB = new Date(b.ma.endMA) as any
-      return dateA - dateB
-    })
+      const dateA = new Date(a.ma.endMA) as any;
+      const dateB = new Date(b.ma.endMA) as any;
+      return dateA - dateB;
+    });
     setLogs(sorted_MAlogs);
 
     const active = sorted_MAlogs.filter((i) => i.ma.status === "active")[0];
-    const lastest = sorted_MAlogs.filter((i) => i.ma.status === "active" || i.ma.status === "advance" || i.ma.status === "expire").at(-1);
+    const lastest = sorted_MAlogs
+      .filter(
+        (i) =>
+          i.ma.status === "active" ||
+          i.ma.status === "advance" ||
+          i.ma.status === "expire"
+      )
+      .at(-1);
     // console.log(lastest)
     if (active) {
       // console.log("active")
@@ -107,9 +120,8 @@ export default function DetailPage() {
       if (lastest) {
         // console.log("lastest")
         setActiveMA(lastest.ma);
-      }
-      else {
-        setActiveMA(undefined)
+      } else {
+        setActiveMA(undefined);
       }
     }
     setProjectDetail(project.data() as ProjectDetail);
@@ -140,47 +152,49 @@ export default function DetailPage() {
       latestUpdate: {
         username: AuthCtx.username,
         uid: AuthCtx.uid,
-        timestamp: moment().format("YYYY-MM-DD HH:mm:ss")
+        timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
       },
-      projectName: data.projectName
+      projectName: data.projectName,
     }).then(async () => {
-      const companyRef = doc(db, "Company", CompanyCtx.companyId)
-      const companyDoc = await getDoc(companyRef)
-      const companyDetail = companyDoc.data() as CompanyDetail
-      const updateProjectCompany = companyDetail.projects?.map(i => {
+      const companyRef = doc(db, "Company", CompanyCtx.companyId);
+      const companyDoc = await getDoc(companyRef);
+      const companyDetail = companyDoc.data() as CompanyDetail;
+      const updateProjectCompany = companyDetail.projects?.map((i) => {
         if (i.id === CompanyCtx.projectId) {
-          return { ...i, projectName: data.projectName }
+          return { ...i, projectName: data.projectName };
         } else {
-          return i
+          return i;
         }
-      })
+      });
       // console.log(updateProjectCompany);
-      await updateDoc(companyRef, { projects: updateProjectCompany }).then(() => {
-        toast({
-          title: "อัพเดทสำเร็จ",
-          status: "success",
-          duration: 3000,
-          position: "top",
+      await updateDoc(companyRef, { projects: updateProjectCompany })
+        .then(() => {
+          toast({
+            title: "อัพเดทสำเร็จ",
+            status: "success",
+            duration: 3000,
+            position: "top",
+          });
         })
-      }).catch(() => {
-        toast({
-          title: "อัพเดทผิดพลาด",
-          status: "error",
-          duration: 3000,
-          position: "top",
-        })
-      })
-    })
-    setIsOpenEdit(false)
+        .catch(() => {
+          toast({
+            title: "อัพเดทผิดพลาด",
+            status: "error",
+            duration: 3000,
+            position: "top",
+          });
+        });
+    });
+    setIsOpenEdit(false);
     setIsUpdating(false);
-  }
+  };
 
   const hoverEnter = () => {
-    setHoverToEdit(true)
-  }
+    setHoverToEdit(true);
+  };
   const hoverLeave = () => {
-    setHoverToEdit(false)
-  }
+    setHoverToEdit(false);
+  };
 
   if (isFetching) {
     return (
@@ -213,18 +227,29 @@ export default function DetailPage() {
             </Button>
           </Box>
           <form onSubmit={handleSubmit(submitUpdate)}>
-            <Card p={"1rem"} w="max-content" maxW="100%" position="relative" border={"1px solid rgb(0,0,0,0.05)"} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}>
-              {!isOpenEdit ?
+            <Card
+              p={"1rem"}
+              w="max-content"
+              maxW="100%"
+              position="relative"
+              border={"1px solid rgb(0,0,0,0.05)"}
+              onMouseEnter={hoverEnter}
+              onMouseLeave={hoverLeave}
+            >
+              {!isOpenEdit ? (
                 <Button
                   position="absolute"
                   fontSize={"xl"}
                   bg="none"
-                  right="-2.25rem" top="-0.75rem"
+                  right="-2.25rem"
+                  top="-0.75rem"
                   color="GrayText"
                   _hover={{ color: "black" }}
                   _active={{}}
                   display={hoverToEdit ? "block" : "none"}
-                  onClick={() => { setIsOpenEdit(true) }}
+                  onClick={() => {
+                    setIsOpenEdit(true);
+                  }}
                 >
                   <Tooltip label={"click to edit"} placement="top">
                     <span>
@@ -232,12 +257,15 @@ export default function DetailPage() {
                     </span>
                   </Tooltip>
                 </Button>
-                :
+              ) : (
                 <Box position="absolute" top="-1.25rem" right="0rem">
                   <Button
                     colorScheme="red"
                     mr="0.25rem"
-                    onClick={() => { reset(); setIsOpenEdit(false) }}
+                    onClick={() => {
+                      reset();
+                      setIsOpenEdit(false);
+                    }}
                   >
                     <AiOutlineClose />
                   </Button>
@@ -249,7 +277,7 @@ export default function DetailPage() {
                     <AiOutlineCheck />
                   </Button>
                 </Box>
-              }
+              )}
               <Box>
                 <HStack>
                   <Text w="7.5rem" fontWeight={"bold"}>
@@ -268,29 +296,36 @@ export default function DetailPage() {
                   >
                     ชื่อโปรเจค
                   </Text>
-                  {!isOpenEdit ?
+                  {!isOpenEdit ? (
                     <Text as="span" fontWeight={"normal"}>
                       : {projectDetail?.projectName}
                     </Text>
-                    :
+                  ) : (
                     <Controller
                       name="projectName"
                       control={control}
                       defaultValue={projectDetail?.projectName}
                       render={({ field }) => (
-                        <FormControl isRequired as="span" w="fit-content" display="flex" alignItems={"center"}>
+                        <FormControl
+                          isRequired
+                          as="span"
+                          w="fit-content"
+                          display="flex"
+                          alignItems={"center"}
+                        >
                           : <Input type="text" {...field} />
                         </FormControl>
                       )}
                     />
-                  }
+                  )}
                 </HStack>
                 <HStack>
                   <Text fontWeight={"bold"} w="7.5rem">
                     ถูกสร้างเมื่อ
                   </Text>
                   <Text as="span" fontWeight={"normal"}>
-                    : {projectDetail &&
+                    :{" "}
+                    {projectDetail &&
                       moment(projectDetail.createdAt).format(
                         "DD/MM/YYYY HH:mm:ss"
                       )}
@@ -341,16 +376,24 @@ export default function DetailPage() {
                     </HStack>
                   </>
                 )}
-                <Box w="100%" textAlign={"right"} color="GrayText" fontSize={"0.75rem"}>
+                <Box
+                  w="100%"
+                  textAlign={"right"}
+                  color="GrayText"
+                  fontSize={"0.75rem"}
+                >
                   <Text>
-                    Latest update : {projectDetail?.latestUpdate ? projectDetail?.latestUpdate.username : projectDetail?.createdBy.username}
+                    Latest update :{" "}
+                    {projectDetail?.latestUpdate
+                      ? projectDetail?.latestUpdate.username
+                      : projectDetail?.createdBy.username}
                   </Text>
                   <Text>
-                    {projectDetail?.latestUpdate ? convertTime(projectDetail?.latestUpdate.timestamp) : convertTime(projectDetail!.createdAt)}
+                    {projectDetail?.latestUpdate
+                      ? convertTime(projectDetail?.latestUpdate.timestamp)
+                      : convertTime(projectDetail!.createdAt)}
                   </Text>
-                  <Text>
-                    Created By : {projectDetail?.createdBy.username}
-                  </Text>
+                  <Text>Created By : {projectDetail?.createdBy.username}</Text>
                 </Box>
               </Box>
             </Card>
@@ -569,7 +612,7 @@ export default function DetailPage() {
             </Box>
           </Box>
         </Container>
-      </div >
+      </div>
     );
   }
 }

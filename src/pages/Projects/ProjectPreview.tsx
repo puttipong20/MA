@@ -46,8 +46,8 @@ import { db } from "../../services/config-db";
 import { MA, Project, ProjectDetail } from "../../@types/Type";
 
 import { search } from "ss-search";
-import DeleteProject from "../../Components/Projects/DeleteProject";
-import AddProject from "../../Components/Projects/AddProject";
+import DeleteProject from "../../components/Projects/DeleteProject";
+import AddProject from "../../components/Projects/AddProject";
 
 import classes from "./ProjectPreview.module.css";
 // import EditProject from './EditProject';
@@ -60,8 +60,12 @@ import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
-  const [projects, setProjects] = useState<{ project: Project; ma: MA[] }[]>([]);
-  const [filterProject, setFilterProjects] = useState<{ project: Project; ma: MA[] }[]>([]);
+  const [projects, setProjects] = useState<{ project: Project; ma: MA[] }[]>(
+    []
+  );
+  const [filterProject, setFilterProjects] = useState<
+    { project: Project; ma: MA[] }[]
+  >([]);
   const [companyName, setCompanyName] = useState("");
   const params = useParams();
   const navigate = useNavigate();
@@ -84,7 +88,6 @@ export default function ProjectPreviewComp() {
       projects.docs.map(async (p) => {
         const projectID = p.id;
         if ((p.data() as ProjectDetail).status === "enable") {
-
           const project: Project = {
             projectId: projectID,
             detail: p.data() as ProjectDetail,
@@ -127,7 +130,7 @@ export default function ProjectPreviewComp() {
   useEffect(() => {
     const projectCollection = collection(db, "Project");
     const q = query(projectCollection);
-    setCompanyName(Company.companyName)
+    setCompanyName(Company.companyName);
     onSnapshot(q, () => {
       fetchingData();
     });
@@ -212,9 +215,12 @@ export default function ProjectPreviewComp() {
               >
                 <AiOutlineReload />
               </Button>
-              {!isFetching &&
-                <AddProject companyName={companyName} companyId={params["company"] as string} />
-              }
+              {!isFetching && (
+                <AddProject
+                  companyName={companyName}
+                  companyId={params["company"] as string}
+                />
+              )}
             </Flex>
           </Flex>
         </Box>
@@ -333,7 +339,10 @@ export default function ProjectPreviewComp() {
                   <Tr w="100%">
                     <Td colSpan={8}>
                       <Box as="div" w="15%" m="auto">
-                        <AddProject companyName={companyName} companyId={params["company"] as string} />
+                        <AddProject
+                          companyName={companyName}
+                          companyId={params["company"] as string}
+                        />
                       </Box>
                     </Td>
                   </Tr>
@@ -341,7 +350,8 @@ export default function ProjectPreviewComp() {
               ) : (
                 filterProject.map((i, index) => {
                   const lastestMA = i.ma.filter(
-                    (j) => j.status === "active")[0];
+                    (j) => j.status === "active"
+                  )[0];
                   let display = "";
                   let color = "";
                   if (lastestMA) {
@@ -349,13 +359,13 @@ export default function ProjectPreviewComp() {
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                        ? (display = "ล่วงหน้า")
-                        : (display = "หมดอายุ");
+                      ? (display = "ล่วงหน้า")
+                      : (display = "หมดอายุ");
                     state === "active"
                       ? (color = "green")
                       : state === "advance"
-                        ? (color = "blue")
-                        : (color = "red");
+                      ? (color = "blue")
+                      : (color = "red");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (

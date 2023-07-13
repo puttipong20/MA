@@ -1,19 +1,19 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Login from "./Pages/Login/Login";
+import Login from "./pages/Login/Login";
 
 import Layout from "./Layout/Layout";
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
 import AuthCheck from "../src/Common/AuthCheck";
-import ProjectPreviewComp from "./Pages/Projects/ProjectPreview";
-import ProblemPreview from "./Pages/Report/ReportPreview";
-import AddReport from "./Components/Report/AddReport";
-import DetailPage from "./Pages/Projects/ProjectDetail";
-import DetailForDev from "./Pages/DetailForDev/DetailForDev";
-import PageCompany from "./Pages/Company/Companies";
-import ContractPreview from "./Pages/Contract/ContractPreview";
+import ProjectPreviewComp from "./pages/Projects/ProjectPreview";
+import ProblemPreview from "./pages/Report/ReportPreview";
+import AddReport from "./components/Report/AddReport";
+import DetailPage from "./pages/Projects/ProjectDetail";
+import DetailForDev from "./pages/DetailForDev/DetailForDev";
+import PageCompany from "./pages/Company/Companies";
+import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
         <Text>Authen Checking . . .</Text>
         <Spinner />
       </Box>
-    )
+    );
   } else {
     return (
       <Box w="100%" maxH="100vh" position={"relative"}>
