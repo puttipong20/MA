@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../services/config-db";
+import { db } from "../../services/config-db";
 import { useParams } from "react-router-dom";
-import ImgModal from "./ImgModal";
-import EditProblem from "./EditProblem";
+import ImgModal from "../asset/ImgModal";
+import EditProblem from "../Report/EditReport";
 import moment from "moment";
 
 type Fvalue = {
@@ -33,7 +33,7 @@ type Fvalue = {
   latestReportUpdate: { timestamp: string; uid: string; username: string };
 };
 
-function ProblemRequest() {
+function ReportDetail() {
   const [fValue, setFValue] = useState<Fvalue>();
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -221,4 +221,4 @@ function ProblemRequest() {
   }
 }
 
-export default ProblemRequest;
+export default ReportDetail;

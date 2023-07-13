@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import AppSidebar from "../../components/kim/AppSidebar";
-import classes from "./Project.module.css";
+import AppSidebar from "./AppSidebar";
+import classes from "./Layout.module.css";
 import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
@@ -8,7 +8,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const Project: React.FC<Props> = (props) => {
+const Layout: React.FC<Props> = (props) => {
   const [isTrigger, setIsTrigger] = useState<boolean>(false);
   return (
     <Flex h="100vh" position={"relative"}>
@@ -57,4 +57,4 @@ const Project: React.FC<Props> = (props) => {
   );
 };
 
-export default Project;
+export default Layout;

@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Divider, Heading } from "@chakra-ui/react";
-import DevDetailComp from "../../components/kim/DevDetailComp";
-// import DetailForUser from "./DetailForUser";
-import ProblemRequest from "../../component/ProblemRequest";
-// import DevEditDetailComp from "../Components/DevEditDetailComp";
+import DevDetail from "../../Components/DetailForDev/DevDetail";
+import ReportDetail from "../../Components/DetailForDev/ReportDetail";
 
 function DetailForDev() {
   return (
@@ -17,13 +15,13 @@ function DetailForDev() {
 
       <Box>
         <Box>
-          <ProblemRequest />
+          <ReportDetail />
         </Box>
 
         <Divider my="20px" />
 
         <Box>
-          <DevDetailComp />
+          <DevDetail />
         </Box>
       </Box>
     </Box>

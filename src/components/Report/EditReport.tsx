@@ -24,11 +24,11 @@ import {
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { db } from "../services/config-db";
+import { db } from "../../services/config-db";
 import moment from "moment";
 import { MdUpload } from "react-icons/md";
-import ImageComp from "../components/kim/ImageComp";
-import { AuthContext } from "../context/AuthContext";
+import ImageComp from "../asset/ImageComp";
+import { AuthContext } from "../../context/AuthContext";
 
 type PValue = {
   title: string;

@@ -1,20 +1,20 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Login from "./pages/pae/Login";
+import Login from "./Pages/Login/Login";
 
-import Project from "./pages/kim/Project";
+import Layout from "./Layout/Layout";
 
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
-import AuthCheck from "./components/AuthCheck";
-import ProjectPreviewComp from "./components/kim/ProjectPreviewComp";
-import ProblemPreview from "./pages/kim/ProblemPreview";
-import AddReport from "./pages/kim/AddReport";
-import DetailPage from "./pages/kim/DetailPage";
-import DetailForDev from "./pages/kim/DetailForDev";
-import PageCompany from "./pages/Company/PageCompany";
-import ContractPreview from "./components/Contracts/ContractPreview";
-import ContractUpdate from "./components/ContractUpdate";
+import AuthCheck from "../src/Common/AuthCheck";
+import ProjectPreviewComp from "./Pages/Projects/ProjectPreview";
+import ProblemPreview from "./Pages/Report/ReportPreview";
+import AddReport from "./Components/Report/AddReport";
+import DetailPage from "./Pages/Projects/ProjectDetail";
+import DetailForDev from "./Pages/DetailForDev/DetailForDev";
+import PageCompany from "./Pages/Company/Companies";
+import ContractPreview from "./Pages/Contract/ContractPreview";
+import ContractUpdate from "./Common/ContractUpdate";
 
 function App() {
   const navigate = useNavigate();
@@ -59,41 +59,41 @@ function App() {
           <Route
             path="/"
             element={
-              <Project>
+              <Layout>
                 <PageCompany />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company"
             element={
-              <Project>
+              <Layout>
                 <ProjectPreviewComp />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/detail"
             element={
-              <Project>
+              <Layout>
                 <DetailPage />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/detail/ContractRecord"
             element={
-              <Project>
+              <Layout>
                 <ContractPreview />
-              </Project>
+              </Layout>
             }
           />
           <Route
             path="/company/:company/:projectID/:projectName/problemReport"
             element={
-              <Project>
+              <Layout>
                 <ProblemPreview />
-              </Project>
+              </Layout>
             }
           />
           <Route

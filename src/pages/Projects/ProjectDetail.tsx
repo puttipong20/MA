@@ -43,13 +43,13 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlineHistory, AiOutlineReload, AiOutlineEdit, AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 
 import moment from "moment";
-import Renewal from "../../components/kim/Renewal";
-import MAstatusTag from "../../components/kim/MAstatusTag";
-import EditContract from "../../components/Contracts/EditContract";
-import UpdateContract from "../../components/kim/UpdateContract";
+import Renewal from "../../Components/Contracts/Renewal";
+import MAstatusTag from "../../Components/Contracts/MAstatusTag";
+import EditContract from "../../Components/Contracts/EditContract";
+import UpdateContract from "../../Components/Contracts/UpdateContract";
 import { MAcontext } from "../../context/MAContext";
 import { CompanyContext } from "../../context/CompanyContext";
-import classes from "../../pages/kim/ProblemPreview.module.css";
+import classes from "../../Pages/Report/ReportPreview.module.css";
 import { Controller, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
 

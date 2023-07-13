@@ -24,17 +24,17 @@ import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
-import { auth, db } from "../../services/config-db";
+import { auth, db } from "../services/config-db";
 
 import { search } from "ss-search";
-import { Company, CompanyDetail } from "../../@types/Type";
-import AddProject from "./AddProject";
+import { Company, CompanyDetail } from "../@types/Type";
+import AddProject from "../Components/Projects/AddProject";
 
-import { CompanyContext } from "../../context/CompanyContext";
+import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
 import { LuLogOut } from "react-icons/lu";
 import { signOut } from "firebase/auth";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 // import { FaLightbulb } from "react-icons/fa";
 
 interface Props {

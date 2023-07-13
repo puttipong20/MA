@@ -27,15 +27,15 @@ import {
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import FormAddCompany from "../../components/FormCompany/FormCompany";
+import FormAddCompany from "./AddCompany";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import EditCompany from "./EditCompany";
 import DeleteCompany from "./DeleteCompany";
-import ViewCompany from "./ViewCompany";
+import ViewCompany from "./ViewDetail";
 import { search } from "ss-search";
-import classes from "../../pages/kim/ProblemPreview.module.css";
+import classes from "../Report/ReportPreview.module.css";
 import { CompanyContext } from "../../context/CompanyContext";
 import { useQuery } from "react-query";
 import { Company, CompanyDetail } from "../../@types/Type";

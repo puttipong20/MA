@@ -46,7 +46,8 @@ import { db } from "../../services/config-db";
 import { MA, Project, ProjectDetail } from "../../@types/Type";
 
 import { search } from "ss-search";
-import DeleteProject from "./DeleteProject";
+import DeleteProject from "../../Components/Projects/DeleteProject";
+import AddProject from "../../Components/Projects/AddProject";
 
 import classes from "./ProjectPreview.module.css";
 // import EditProject from './EditProject';
@@ -56,7 +57,6 @@ import moment from "moment";
 
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
-import AddProject from "./AddProject";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
