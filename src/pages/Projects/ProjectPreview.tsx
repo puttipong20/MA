@@ -359,13 +359,13 @@ export default function ProjectPreviewComp() {
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                      ? (display = "ล่วงหน้า")
-                      : (display = "หมดอายุ");
+                        ? (display = "ล่วงหน้า")
+                        : (display = "หมดอายุ");
                     state === "active"
                       ? (color = "green")
                       : state === "advance"
-                      ? (color = "blue")
-                      : (color = "red");
+                        ? (color = "blue")
+                        : (color = "red");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
@@ -498,7 +498,7 @@ export default function ProjectPreviewComp() {
                               >
                                 <CgDetailsMore />
                               </Text>
-                              ดูข้อมูลสัญญา MA
+                              ดูข้อมูล Project {<br />}และ สัญญา MA
                             </MenuItem>
                             <MenuItem
                               h="50px"
