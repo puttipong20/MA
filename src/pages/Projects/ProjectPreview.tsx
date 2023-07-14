@@ -384,7 +384,7 @@ export default function ProjectPreviewComp() {
                       </Td>
 
                       {!lastestMA ? (
-                        <Td colSpan={4} textAlign={"center"}>
+                        <Td colSpan={4} textAlign={"center"} onClick={() => { navigate(navigateLink); }}>
                           ไม่มีสัญญาที่กำลังใช้งาน
                         </Td>
                       ) : (
