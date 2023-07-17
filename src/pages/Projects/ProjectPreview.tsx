@@ -149,6 +149,7 @@ export default function ProjectPreviewComp() {
               pt="1rem"
             >
               <Button
+                borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
                 size="sm"
@@ -206,21 +207,19 @@ export default function ProjectPreviewComp() {
             </Flex>
             <Flex>
               <Button
+                borderRadius="16px"
                 _hover={{ opacity: 0.8 }}
                 bg="#4C7BF4"
                 color="#eee"
-                isLoading={isFetching}
                 onClick={fetchingData}
                 mr="1rem"
               >
                 <AiOutlineReload />
               </Button>
-              {!isFetching && (
-                <AddProject
-                  companyName={companyName}
-                  companyId={params["company"] as string}
-                />
-              )}
+              <AddProject
+                companyName={companyName}
+                companyId={params["company"] as string}
+              />
             </Flex>
           </Flex>
         </Box>
@@ -354,18 +353,24 @@ export default function ProjectPreviewComp() {
                   )[0];
                   let display = "";
                   let color = "";
+                  let bg = "";
                   if (lastestMA) {
                     const state = lastestMA.status;
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                        ? (display = "ล่วงหน้า")
-                        : (display = "หมดอายุ");
+                      ? (display = "ล่วงหน้า")
+                      : (display = "หมดอายุ");
                     state === "active"
-                      ? (color = "green")
+                      ? (color = "white")
                       : state === "advance"
-                        ? (color = "blue")
-                        : (color = "red");
+                      ? (color = "white")
+                      : (color = "white");
+                    state === "active"
+                      ? (bg = "green")
+                      : state === "advance"
+                      ? (bg = "blue")
+                      : (bg = "red");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
@@ -384,7 +389,13 @@ export default function ProjectPreviewComp() {
                       </Td>
 
                       {!lastestMA ? (
-                        <Td colSpan={4} textAlign={"center"} onClick={() => { navigate(navigateLink); }}>
+                        <Td
+                          colSpan={4}
+                          textAlign={"center"}
+                          onClick={() => {
+                            navigate(navigateLink);
+                          }}
+                        >
                           ไม่มีสัญญาที่กำลังใช้งาน
                         </Td>
                       ) : (
@@ -408,7 +419,7 @@ export default function ProjectPreviewComp() {
                               moment(lastestMA.endMA).format("DD/MM/YYYY")}
                           </Td>
                           <Td
-                            textAlign={"right"}
+                            textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
                             }}
@@ -421,12 +432,19 @@ export default function ProjectPreviewComp() {
                           </Td>
                           <Td
                             textAlign={"center"}
-                            fontSize={"1rem"}
                             onClick={() => {
                               navigate(navigateLink);
                             }}
                           >
-                            <Badge colorScheme={color}>{display}</Badge>
+                            <Badge
+                              borderRadius="16px"
+                              p="1.5"
+                              w="6rem"
+                              color={color}
+                              bg={bg}
+                            >
+                              {display}
+                            </Badge>
                           </Td>
                         </>
                       )}
@@ -448,7 +466,7 @@ export default function ProjectPreviewComp() {
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
                           w="150px"
-                          borderRadius="15px"
+                          borderRadius="16px"
                           onClick={() => {
                             navigate(navigateLink);
                           }}

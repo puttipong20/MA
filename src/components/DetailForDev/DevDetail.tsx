@@ -340,12 +340,13 @@ function DevDetail() {
                 </Box>
               }
               <Box>
-                <Text textAlign={"right"} color="GrayText">
+                <Text textAlign="right" color="gray.400" fontSize="14px">
                   Latest Update : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : " - "}
                 </Text>
               </Box>
-              <Flex w="100%" justifyContent={"center"} gap={"3rem"} mt="2rem">
+              <Flex w="100%" justifyContent="center" mt="2rem">
                 <Button
+                  mr="68px"
                   w="100px"
                   borderRadius="16px"
                   onClick={() => {
