@@ -208,19 +208,21 @@ export default function ProjectPreviewComp() {
             </Flex>
             <Flex>
               <Button
-                borderRadius="16px"
                 _hover={{ opacity: 0.8 }}
                 bg="#4C7BF4"
                 color="#eee"
+                isLoading={isFetching}
                 onClick={fetchingData}
                 mr="1rem"
               >
                 <AiOutlineReload />
               </Button>
-              <AddProject
-                companyName={companyName}
-                companyId={params["company"] as string}
-              />
+              {!isFetching && (
+                <AddProject
+                  companyName={companyName}
+                  companyId={params["company"] as string}
+                />
+              )}
             </Flex>
           </Flex>
         </Box>
