@@ -15,6 +15,7 @@ import DetailForDev from "./pages/DetailForDev/DetailForDev";
 import PageCompany from "./pages/Company/Companies";
 import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
+import QuickSearch from "./components/asset/QuickSearch";
 
 function App() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function App() {
     if (Auth.uid === "") {
       await AuthCheck(Auth, navigate);
       setIsLoading(false);
-    } 
+    }
     // else {
     //   await ContractUpdate();
     // }
@@ -112,6 +113,10 @@ function App() {
             element={<DetailForDev />}
           />
         </Routes>
+
+        <Box position="absolute" bottom="0.75rem" right="1rem">
+          <QuickSearch />
+        </Box>
       </Box>
     );
   }

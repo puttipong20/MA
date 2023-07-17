@@ -61,11 +61,13 @@ const Sidebar: React.FC<Props> = (props) => {
   // const { colorMode, toggleColorMode } = useColorMode();
 
   const onSearch = () => {
+    // console.clear();
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
     const value = inputRef.value;
 
-    const searchField = ["detail.companyName","detail.projects"];
+    const searchField = ["detail.companyName", "detail.projects[projectName]"];
     const result = search(companies, searchField, value) as Company[];
+    // console.log(result);
     setFilterCompany(result);
   };
 
