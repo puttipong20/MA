@@ -224,7 +224,7 @@ function ReportDetail() {
                   </HStack>
                 </Flex>
                 <Flex justify="flex-end">
-                  <HStack fontSize="14px" color="gray.400">
+                  <HStack fontSize="14px" color="gray.400" mt="-0.75rem">
                     <Text>LastUpdate :</Text>
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
