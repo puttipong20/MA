@@ -224,21 +224,21 @@ function ReportDetail() {
                   </HStack>
                 </Flex>
                 <Flex justify="flex-end">
-                  <HStack fontSize="14px" color="gray.400">
-                    <Text>Last Update :</Text>
+                  <HStack fontSize="14px" color="gray.400" mt="-0.75rem">
+                    <Text>LastUpdate :</Text>
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
                     ) : (
-                      <Text w="70%">
+                      <Text>
                         {moment(fValue?.latestReportUpdate.timestamp).format(
-                          "DD/MM/YYYY HH:mm:ss"
+                          "DD/MM/YYYY, HH:mm:ss"
                         )}
                       </Text>
                     )}
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
                     ) : (
-                      <Text w="70%">{fValue?.latestReportUpdate.username}</Text>
+                      <Text>{fValue?.latestReportUpdate.username}</Text>
                     )}
                   </HStack>
                 </Flex>
