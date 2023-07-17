@@ -37,7 +37,7 @@ type ComValue = {
   userPerson: string;
 };
 
-const FormEditCompany = ({ data, id }: any) => {
+const FormEditCompany = ({ data, id, callBack }: any) => {
   const {
     handleSubmit,
     reset,
@@ -86,6 +86,7 @@ const FormEditCompany = ({ data, id }: any) => {
             isClosable: true,
             position: "top",
           });
+          callBack();
           setIsLoading(false);
         })
         .catch((e) => {

@@ -194,6 +194,9 @@ const Renewal: React.FC<Props> = (props) => {
         leftIcon={<TiDocumentText />}
         bg="#4C7BF4"
         color="#fff"
+        fontWeight={"normal"}
+        w="150px"
+        borderRadius="15px"
         _hover={{ opacity: 0.8 }}
       >
         การต่อสัญญา

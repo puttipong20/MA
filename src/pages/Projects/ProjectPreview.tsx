@@ -338,7 +338,7 @@ export default function ProjectPreviewComp() {
                   </Tr>
                   <Tr w="100%">
                     <Td colSpan={8}>
-                      <Box as="div" w="15%" m="auto">
+                      <Box as="div" w="fit-content" m="auto">
                         <AddProject
                           companyName={companyName}
                           companyId={params["company"] as string}
@@ -359,13 +359,13 @@ export default function ProjectPreviewComp() {
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                      ? (display = "ล่วงหน้า")
-                      : (display = "หมดอายุ");
+                        ? (display = "ล่วงหน้า")
+                        : (display = "หมดอายุ");
                     state === "active"
                       ? (color = "green")
                       : state === "advance"
-                      ? (color = "blue")
-                      : (color = "red");
+                        ? (color = "blue")
+                        : (color = "red");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
@@ -384,7 +384,7 @@ export default function ProjectPreviewComp() {
                       </Td>
 
                       {!lastestMA ? (
-                        <Td colSpan={4} textAlign={"center"}>
+                        <Td colSpan={4} textAlign={"center"} onClick={() => { navigate(navigateLink); }}>
                           ไม่มีสัญญาที่กำลังใช้งาน
                         </Td>
                       ) : (
@@ -447,6 +447,8 @@ export default function ProjectPreviewComp() {
                           color="#eee"
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
+                          w="150px"
+                          borderRadius="15px"
                           onClick={() => {
                             navigate(navigateLink);
                           }}
@@ -498,7 +500,7 @@ export default function ProjectPreviewComp() {
                               >
                                 <CgDetailsMore />
                               </Text>
-                              ดูข้อมูลสัญญา MA
+                              ดูข้อมูล Project {<br />}และ สัญญา MA
                             </MenuItem>
                             <MenuItem
                               h="50px"

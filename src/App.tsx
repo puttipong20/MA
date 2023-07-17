@@ -26,11 +26,18 @@ function App() {
     if (Auth.uid === "") {
       await AuthCheck(Auth, navigate);
       setIsLoading(false);
-    } else {
-      await ContractUpdate();
-    }
+    } 
+    // else {
+    //   await ContractUpdate();
+    // }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (Auth.uid !== "") {
+      ContractUpdate();
+    }
+  }, [Auth.uid])
 
   useEffect(() => {
     initial();
