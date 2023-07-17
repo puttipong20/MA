@@ -341,7 +341,7 @@ function DevDetail() {
               }
               <Box>
                 <Text textAlign="right" color="gray.400" fontSize="14px">
-                  Latest Update : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : " - "}
+                  ดำเนินการล่าสุดโดย : {detailHistory?.latestUpdate ? detailHistory.latestUpdate.username : " - "}
                 </Text>
               </Box>
               <Flex w="100%" justifyContent="center" mt="2rem">

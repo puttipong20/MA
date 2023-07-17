@@ -183,28 +183,6 @@ function ReportDetail() {
                       </Text>
                       <Text w="70%">{fValue?.details}</Text>
                     </HStack>
-                    {/* <HStack alignItems="flex-start" color="#8F9BBA">
-                      <Text w="30%">ผู้แก้ไข :</Text>
-                      {!fValue?.latestReportUpdate ? (
-                        <Text>-</Text>
-                      ) : (
-                        <Text w="70%">
-                          {fValue?.latestReportUpdate.username}
-                        </Text>
-                      )}
-                    </HStack>
-                    <HStack alignItems="flex-start" color="#8F9BBA">
-                      <Text w="30%">แก้ไขเมื่อ :</Text>
-                      {!fValue?.latestReportUpdate ? (
-                        <Text>-</Text>
-                      ) : (
-                        <Text w="70%">
-                          {moment(fValue?.latestReportUpdate.timestamp).format(
-                            "DD/MM/YYYY HH:mm:ss"
-                          )}
-                        </Text>
-                      )}
-                    </HStack> */}
                   </VStack>
                 </Box>
                 <Box>
@@ -217,13 +195,13 @@ function ReportDetail() {
                 </Box>
                 <Flex justify="flex-end">
                   <HStack fontSize="14px" color="gray.400">
-                    <Text>CreateBy :</Text>
+                    <Text>สร้างโดย :</Text>
                     <Text>{fValue?.createBy.username}</Text>
                   </HStack>
                 </Flex>
                 <Flex justify="flex-end">
                   <HStack fontSize="14px" color="gray.400" mt="-0.75rem">
-                    <Text>UpdateBy :</Text>
+                    <Text>แก้ไขโดย :</Text>
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
                     ) : (
