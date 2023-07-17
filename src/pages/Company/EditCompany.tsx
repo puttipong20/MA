@@ -158,7 +158,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   name="companyAddress"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ที่อยู่บริษัท</FormLabel>
@@ -175,7 +174,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   name="userName"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ชื่อผู้ติดต่อ</FormLabel>
@@ -192,9 +190,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   name="userPhone"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">เบอร์โทรติดต่อ</FormLabel>
@@ -212,9 +207,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   name="userTax"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">
@@ -233,7 +225,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   name="userPerson"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => {
                     return (
                       <FormControl isInvalid={Boolean(errors[name])}>
