@@ -146,7 +146,8 @@ const AddProject: React.FC<Props> = (props) => {
   return (
     <Box>
       <Button
-        w="100%"
+        w="150px"
+        borderRadius="15px"
         bg="#4C7BF4"
         color="#eee"
         _hover={{ opacity: "0.8" }}

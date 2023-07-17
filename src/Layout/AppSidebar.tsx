@@ -305,7 +305,7 @@ const Sidebar: React.FC<Props> = (props) => {
           </Accordion>
         </Box>
       )}
-      <Divider my="5px" opacity={"1"} />
+      {/* <Divider my="5px" opacity={"1"} /> */}
       <Box
         w="100%"
         p="0.5rem"

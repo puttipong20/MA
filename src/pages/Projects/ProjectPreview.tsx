@@ -338,7 +338,7 @@ export default function ProjectPreviewComp() {
                   </Tr>
                   <Tr w="100%">
                     <Td colSpan={8}>
-                      <Box as="div" w="15%" m="auto">
+                      <Box as="div" w="fit-content" m="auto">
                         <AddProject
                           companyName={companyName}
                           companyId={params["company"] as string}
@@ -447,6 +447,8 @@ export default function ProjectPreviewComp() {
                           color="#eee"
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
+                          w="150px"
+                          borderRadius="15px"
                           onClick={() => {
                             navigate(navigateLink);
                           }}
