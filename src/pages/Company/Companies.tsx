@@ -81,7 +81,7 @@ function PreCompany() {
   const onSearch = () => {
     const value = searchRef.current?.value;
     const searchText = value + " " || "";
-    const searchField = ["companyName"];
+    const searchField = ["detail.companyName"];
     const result = search(comForm, searchField, searchText) as any[];
     setFilComForm(result);
   };
