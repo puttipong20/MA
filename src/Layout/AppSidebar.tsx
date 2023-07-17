@@ -3,7 +3,7 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  // AccordionIcon,
+  AccordionIcon,
   Box,
   Button,
   Divider,
@@ -35,7 +35,6 @@ import { auth, db } from "../services/config-db";
 
 import { search } from "ss-search";
 import { Company, CompanyDetail } from "../@types/Type";
-import AddProject from "../components/Projects/AddProject";
 
 import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -44,7 +43,6 @@ import { signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
-import { ImOffice } from "react-icons/im";
 // import { FaLightbulb } from "react-icons/fa";
 
 interface Props {
@@ -222,22 +220,24 @@ const Sidebar: React.FC<Props> = (props) => {
                     }}
                     _hover={{ bg: "#fff" }}
                   >
-                    <HStack justify={"flex-start"} alignItems={"flex-start"} color={focusCompany ? "#4c7bf4" : "black"}>
-                      <Text mt="0.25rem">
-                        <HiOutlineOfficeBuilding />
-                        {/* <ImOffice /> */}
-                      </Text>
-                      <Text
-                        fontWeight={"normal"}
-                        textAlign={"left"}
-                      >
-                        {i.detail.companyName}
-                      </Text>
-                      {/* <AccordionIcon /> */}
+                    <HStack justify={"space-between"} w="100%">
+                      <HStack justify={"flex-start"} alignItems={"flex-start"} color={focusCompany ? "#4c7bf4" : "black"}>
+                        <Text mt="0.25rem">
+                          <HiOutlineOfficeBuilding />
+                          {/* <ImOffice /> */}
+                        </Text>
+                        <Text
+                          fontWeight={"normal"}
+                          textAlign={"left"}
+                        >
+                          {i.detail.companyName}
+                        </Text>
+                      </HStack>
+                      <AccordionIcon />
                     </HStack>
                   </AccordionButton>
                   {
-                    i.detail.projects?.length != 0 &&
+                    (i.detail.projects?.length !== undefined && i.detail.projects?.length > 0) &&
                     <AccordionPanel pt="0px">
                       <VStack mt="-0.5rem" fontSize={"0.9rem"} align={"left"} pl="5%">
                         {i.detail.projects !== undefined &&
@@ -305,7 +305,7 @@ const Sidebar: React.FC<Props> = (props) => {
           </Accordion>
         </Box>
       )}
-      {/* <Divider my="5px" opacity={"1"} /> */}
+      <Divider my="5px" opacity={"1"} />
       <Box
         w="100%"
         p="0.5rem"
