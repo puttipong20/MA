@@ -365,10 +365,10 @@ export default function ProblemPreview() {
                               r.docs.RepStatus === wait
                                 ? "yellow.300"
                                 : r.docs.RepStatus === done
-                                  ? "green.600"
+                                  ? "green.500"
                                   : r.docs.RepStatus === process
                                     ? "gray.400"
-                                    : "red.300"
+                                    : "red.500"
                             }
                             color={
                               r.docs.RepStatus === wait

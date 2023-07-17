@@ -14,17 +14,17 @@ const MAstatusTag: React.FC<Props> = (props) => {
     switch (status) {
         case "active":
             color = "white";
-            bg = "green";
+            bg = "green.500";
             display = "กำลังใช้งาน";
             break;
         case "expire":
             color = "white";
-            bg = "red"
+            bg = "red.500"
             display = "หมดอายุ";
             break;
         case "advance":
             color = "white";
-            bg = "blue"
+            bg = "blue.500"
             display = "ล่วงหน้า";
             break;
         case "cancel":

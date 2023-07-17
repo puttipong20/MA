@@ -149,6 +149,7 @@ export default function ProjectPreviewComp() {
               pt="1rem"
             >
               <Button
+                mt="-2rem"
                 borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
@@ -367,10 +368,10 @@ export default function ProjectPreviewComp() {
                       ? (color = "white")
                       : (color = "white");
                     state === "active"
-                      ? (bg = "green")
+                      ? (bg = "green.500")
                       : state === "advance"
-                      ? (bg = "blue")
-                      : (bg = "red");
+                      ? (bg = "blue.500")
+                      : (bg = "red.500");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
