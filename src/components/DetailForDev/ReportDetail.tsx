@@ -183,7 +183,6 @@ function ReportDetail() {
                       </Text>
                       <Text w="70%">{fValue?.details}</Text>
                     </HStack>
-
                     {/* <HStack alignItems="flex-start" color="#8F9BBA">
                       <Text w="30%">ผู้แก้ไข :</Text>
                       {!fValue?.latestReportUpdate ? (
@@ -218,27 +217,26 @@ function ReportDetail() {
                 </Box>
                 <Flex justify="flex-end">
                   <HStack fontSize="14px" color="gray.400">
-                    <Text>CreateAt :</Text>
-                    <Text>{fValue?.date}</Text>
+                    <Text>CreateBy :</Text>
                     <Text>{fValue?.createBy.username}</Text>
                   </HStack>
                 </Flex>
                 <Flex justify="flex-end">
                   <HStack fontSize="14px" color="gray.400" mt="-0.75rem">
-                    <Text>LastUpdate :</Text>
+                    <Text>UpdateBy :</Text>
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
+                    ) : (
+                      <Text>{fValue?.latestReportUpdate.username},</Text>
+                    )}
+                    {!fValue?.latestReportUpdate ? (
+                      <Text></Text>
                     ) : (
                       <Text>
                         {moment(fValue?.latestReportUpdate.timestamp).format(
                           "DD/MM/YYYY, HH:mm:ss"
                         )}
                       </Text>
-                    )}
-                    {!fValue?.latestReportUpdate ? (
-                      <Text>-</Text>
-                    ) : (
-                      <Text>{fValue?.latestReportUpdate.username}</Text>
                     )}
                   </HStack>
                 </Flex>

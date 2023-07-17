@@ -117,6 +117,7 @@ export default function ProblemPreview() {
               pt="1rem"
             >
               <Button
+                borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
                 size="sm"
@@ -200,7 +201,7 @@ export default function ProblemPreview() {
                 />
               </Box>
             </Flex>
-            <Box mt={["0.25rem", "0.25rem", "0"]}>
+            <Box mt={["0.5rem", "0.5rem", "0"]}>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
@@ -357,6 +358,7 @@ export default function ProblemPreview() {
                         <Td textAlign={"center"}>
                           {" "}
                           <Tag
+                            borderRadius="16px"
                             w="100%"
                             h="40px"
                             bg={

@@ -178,7 +178,7 @@ const AddProject: React.FC<Props> = (props) => {
     <Box>
       <Button
         w="150px"
-        borderRadius="15px"
+        borderRadius="16px"
         bg="#4C7BF4"
         color="#eee"
         _hover={{ opacity: "0.8" }}

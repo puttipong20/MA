@@ -148,17 +148,22 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              <Button
-                onClick={clickToRefetch}
-                bg="#4C7BF4"
-                color="#fff"
-                _hover={{ opacity: 0.8 }}
-                _active={{ opacity: 0.9 }}
-              >
-                <AiOutlineReload />
-              </Button>
             </Flex>
+            <Flex>
+
+            <Button
+              borderRadius="16px"
+              onClick={clickToRefetch}
+              bg="#4C7BF4"
+              color="#fff"
+              _hover={{ opacity: 0.8 }}
+                _active={{ opacity: 0.9 }}
+                mr="1rem"
+              >
+              <AiOutlineReload />
+            </Button>
             <FormAddCompany refetch={refetch} />
+              </Flex>
           </Flex>
         </Box>
 
