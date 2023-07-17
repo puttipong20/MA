@@ -64,7 +64,7 @@ const Sidebar: React.FC<Props> = (props) => {
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
     const value = inputRef.value;
 
-    const searchField = ["detail.companyName"];
+    const searchField = ["detail.companyName","detail.projects"];
     const result = search(companies, searchField, value) as Company[];
     setFilterCompany(result);
   };
@@ -183,7 +183,7 @@ const Sidebar: React.FC<Props> = (props) => {
           </InputLeftElement>
           <Input
             fontSize={"0.8rem"}
-            placeholder={"Search Company"}
+            placeholder={"Company, Project"}
             w="100%"
             id="searchInput"
             onChange={onSearch}
