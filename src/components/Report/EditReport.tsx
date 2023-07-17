@@ -307,7 +307,7 @@ const EditProblem = ({ data, id }: any) => {
                   </Text>
                   <Box p="20px">
                     <Grid
-                      templateColumns={"repeat(3,1fr)"}
+                      templateColumns={"repeat(2,1fr)"}
                       w={imageUpload.length >= 3 ? "fit-content" : "100%"}
                       gap={"1.5rem"}
                       mx="auto"
@@ -370,9 +370,9 @@ const EditProblem = ({ data, id }: any) => {
                 </Button>
                 <Button
                   type="submit"
-                  color="gray.100"
+                  color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

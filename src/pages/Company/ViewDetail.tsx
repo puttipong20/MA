@@ -33,6 +33,7 @@ type Cvalue = {
 const ViewCompany = ({ data }: any) => {
   const [cValue, setCValue] = useState<Cvalue>();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
   useEffect(() => {
     // console.log(data)
     setCValue(data)

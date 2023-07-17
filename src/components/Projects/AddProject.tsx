@@ -245,9 +245,9 @@ const AddProject: React.FC<Props> = (props) => {
                 </Button>
                 <Button
                   type="submit"
-                  color="gray.100"
+                  color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isAdding}
                   isDisabled={duration < 1}
                 >
