@@ -33,7 +33,7 @@ export default function QuickSearch() {
                     <Box p="1rem">
                         <Text>กรอกข้อมูลเพื่อด่วนได้เลย!</Text>
                         <HStack>
-                            <Input type="text" placeholder="Ex. ABC123" bg="#fff" color="black" />
+                            <Input type="text" placeholder="Ex. ABC123, Project, Company" bg="#fff" color="black" />
                             {
                                 isSearching ?
                                     <Spinner onClick={() => { setIsSearching(false) }} /> :
@@ -42,8 +42,10 @@ export default function QuickSearch() {
                                         userSelect={"none"}
                                         color="rgb(255,255,255)"
                                         transition={"all 0.3s"}
+                                        borderRadius={"10px"}
                                         // _hover={{ color: "rgb(255,255,255)", fontWeight: "bold" }}
                                         p={"0.25rem"} onClick={() => { setIsSearching(true) }}
+                                        _hover={{bg:"rgba(255,255,255,0.5)"}}
                                     >
                                         ค้นหา
                                     </Text>
