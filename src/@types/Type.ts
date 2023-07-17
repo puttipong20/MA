@@ -64,6 +64,7 @@ export type ProjectDetail = {
   companyID: string;
   companyName: string;
   createdAt: string;
+  shortName: string;
   createdBy: { username: string; uid: string };
   latestUpdate?: { username: string; uid: string; timestamp: string };
 };
