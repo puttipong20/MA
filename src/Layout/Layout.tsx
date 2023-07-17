@@ -3,6 +3,7 @@ import AppSidebar from "./AppSidebar";
 import classes from "./Layout.module.css";
 import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import QuickSearch from "../components/asset/QuickSearch";
 
 interface Props {
   children?: React.ReactNode;
@@ -52,6 +53,9 @@ const Layout: React.FC<Props> = (props) => {
           {isTrigger ? <CloseIcon /> : <HamburgerIcon />}
         </Button>
         {props.children}
+      </Box>
+      <Box position="absolute" bottom="0.75rem" right="1rem">
+        <QuickSearch />
       </Box>
     </Flex>
   );
