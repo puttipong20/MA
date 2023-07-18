@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ChevronRightIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
@@ -6,6 +7,8 @@ import {
     Heading,
     Highlight,
     Input,
+    InputGroup,
+    InputLeftElement,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -19,12 +22,13 @@ import {
     useToast
 } from '@chakra-ui/react'
 import { Company, ProjectDetail, Report, ReportDetail } from '../../@types/Type';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { search } from 'ss-search';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../services/config-db';
 import moment from 'moment';
+import { useForm } from 'react-hook-form';
 
 interface Props {
     searchValue: string,
@@ -34,6 +38,8 @@ interface Props {
 const QuickSearchModal: React.FC<Props> = (props) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const navigate = useNavigate();
+    const { register, watch, reset } = useForm()
+
     const [detail, setDetail] = useState<Company[]>(props.data);
     const toast = useToast();
     const [searchValue, setSearchValue] = useState(props.searchValue);
@@ -48,7 +54,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     const searchReport = async () => {
         setIsSearching(true)
         const reportCol = collection(db, "Report")
-        const qReport = query(reportCol, where("ref", "==", props.searchValue.toUpperCase()))
+        const qReport = query(reportCol, where("ref", "==", searchRef.toUpperCase()))
         await getDocs(qReport).then(async (found) => {
             if (found.size !== 0) {
                 const reportDetail: ReportDetail = found.docs[0].data() as ReportDetail
@@ -82,11 +88,29 @@ const QuickSearchModal: React.FC<Props> = (props) => {
         setIsSearching(false)
     }
 
+    const searchRef = watch("searchRef") || props.searchValue || ""
+
+    const onSearch = () => {
+        if (searchRef !== "") {
+
+            const searchField = ["detail.companyName", "detail.projects[projectName]"]
+            const result = search(props.data, searchField, searchRef) as Company[]
+            setDetail(result)
+        } else {
+            setDetail([])
+        }
+    }
+
+    useEffect(() => {
+        setSearchValue(searchRef)
+        onSearch();
+    }, [searchRef])
+
     return (
         <Box>
             <Button bg="#4c7bf4" color="white" _hover={{}} onClick={onOpen}><SearchIcon /></Button>
 
-            <Modal isOpen={isOpen} onClose={() => { setReportFound(undefined); onClose() }}>
+            <Modal isOpen={isOpen} onClose={() => { setReportFound(undefined); reset(); onClose() }}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalCloseButton />
@@ -95,10 +119,18 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                     </ModalHeader>
                     <ModalBody>
                         <Box mb="1rem">
+                            <InputGroup>
+                                <InputLeftElement>
+                                    <SearchIcon />
+                                </InputLeftElement>
+                                <Input type="text" defaultValue={props.searchValue} {...register("searchRef")} />
+                            </InputGroup>
+                        </Box>
+                        <Box mb="1rem">
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>บริษัท (Company)</Heading>
-                            {
-                                props.data.map((c, index) => {
-                                    if (c.detail.companyName.toLowerCase().includes(props.searchValue.toLowerCase())) {
+                            {searchRef !== "" ?
+                                detail.map((c, index) => {
+                                    if (c.detail.companyName.toLowerCase().includes(searchValue.toLowerCase())) {
                                         return (
                                             <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
                                                 onClick={() => {
@@ -106,21 +138,23 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                                     onClose()
                                                 }}
                                             >
-                                                <Highlight query={props.searchValue} styles={{ fontWeight: "bold" }}>
+                                                <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
                                                     {c.detail.companyName}
                                                 </Highlight>
                                             </Text>
                                         )
                                     }
                                 })
+                                :
+                                <Text>กรุณากรอกคำค้นหา</Text>
                             }
                         </Box>
                         <Box mb="1rem">
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>โปรเจกต์ (Project)</Heading>
-                            {
-                                props.data.map((c) => {
+                            {searchRef !== "" ?
+                                detail.map((c) => {
                                     return c.detail.projects?.map((p, index) => {
-                                        if (p.projectName.toLowerCase().includes(props.searchValue.toLowerCase())) {
+                                        if (p.projectName.toLowerCase().includes(searchValue.toLowerCase())) {
                                             return (
                                                 <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
                                                     onClick={() => {
@@ -129,7 +163,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                                     }
                                                     }
                                                 >
-                                                    <Highlight query={props.searchValue} styles={{ fontWeight: "bold" }}>
+                                                    <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
                                                         {`${c.detail.companyName} > ${p.projectName}`}
                                                     </Highlight>
                                                 </Text>
@@ -137,18 +171,24 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                         }
                                     })
                                 })
+                                :
+                                <Text>กรุณากรอกคำค้นหา</Text>
                             }
                         </Box>
                         <Box>
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>รายงานปัญหา (Report)</Heading>
                             <HStack>
-                                <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{props.searchValue}</Text></Text>
+                                <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
                                 <Button onClick={searchReport} isLoading={isSearching} colorScheme='blue'><SearchIcon /></Button>
                                 <Button onClick={() => { setReportFound(undefined) }} colorScheme='red'><DeleteIcon /></Button>
                             </HStack>
                             {
                                 reportFound &&
                                 <Box border="1px solid black" borderRadius={"16px"} p="1rem" mt="1rem">
+                                    <HStack>
+                                        <Text w="8rem" fontWeight={"bold"}>บริษัท</Text>
+                                        <Text>: {reportFound.docs.companyName}</Text>
+                                    </HStack>
                                     <HStack>
                                         <Text w="8rem" fontWeight={"bold"}>โปรเจกต์</Text>
                                         <Text>: {reportFound.docs.projectName}</Text>
@@ -199,9 +239,11 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                     {/* /company/:company/:projectID/:projectName/:problemID */}
                                     <Box w="fit-content" m="auto" mt="1rem">
                                         <Button
+                                            isLoading={isSearching}
                                             onClick={() => {
                                                 navigate(`/company/${companyReport}/${reportFound.docs.projectID}/${reportFound.docs.projectName}/${reportFound.id}`)
                                             }}
+                                            bg=""
                                         >กดเพื่อเข้าดูปัญหา <Text as="span" color="blue" ><ChevronRightIcon /></Text></Button>
                                     </Box>
                                 </Box>

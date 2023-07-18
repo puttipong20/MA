@@ -16,7 +16,6 @@ import {
   InputLeftElement,
   InputGroup,
   HStack,
-  Highlight,
   // IconButton,
   // useColorMode,
 } from "@chakra-ui/react";
@@ -56,7 +55,6 @@ const Sidebar: React.FC<Props> = (props) => {
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [filterCompany, setFilterCompany] = useState<Company[]>([]);
-  const [quickSearch, setQuickSearch] = useState<Company[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
@@ -73,11 +71,6 @@ const Sidebar: React.FC<Props> = (props) => {
     const result = search(companies, searchField, value) as Company[];
     // console.log(result);
     setFilterCompany(result);
-    if (value !== "") {
-      setQuickSearch(result)
-    } else {
-      setQuickSearch([])
-    }
   };
 
   const fetchingCompany = async () => {
@@ -296,47 +289,6 @@ const Sidebar: React.FC<Props> = (props) => {
           </Accordion>
         </Box>
       )}
-      <Box maxW="100%">
-        {
-          quickSearch.map((d, index) => {
-            if (d.detail.projects && d.detail.projects?.length > 0) {
-              return d.detail.projects?.map((p, index) => {
-                return (
-                  <Text
-                    key={index} m="0.25rem" border="1px solid black" cursor={"pointer"} _hover={{ color: "#4c7bf4" }}
-                    onClick={() => {
-                      navigate(`company/${d.companyId}/${p.id}`)
-                    }}
-                  >
-                    <Highlight
-                      query={searchValue}
-                      styles={{ fontWeight: "bold" }}
-                    >
-                      {`${d.detail.companyName} > ${p.projectName}`}
-                    </Highlight>
-                  </Text>
-                )
-              })
-            } else {
-              return (
-                <Text
-                  key={index} m="0.25rem" border="1px solid black" cursor={"pointer"} _hover={{ color: "#4c7bf4" }}
-                  onClick={() => {
-                    navigate(`company/${d.companyId}`)
-                  }}
-                >
-                  <Highlight
-                    query={searchValue}
-                    styles={{ fontWeight: "bold" }}
-                  >
-                    {`${d.detail.companyName}`}
-                  </Highlight>
-                </Text>
-              )
-            }
-          })
-        }
-      </Box>
       {/* <Divider my="5px" opacity={"1"} /> */}
       <Box
         w="100%"
