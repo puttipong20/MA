@@ -98,7 +98,6 @@ const AddReport = () => {
       uid: Auth.uid,
       createBy: { uid: Auth.uid, username: Auth.username },
       RepStatus: "รอรับเรื่อง",
-
     };
     // console.log(dataToAdd);
     try {
@@ -407,10 +406,16 @@ const AddReport = () => {
               </Box>
             </Stack>
             <Flex justify="center">
-              <Button mr="68px" borderRadius="16px" onClick={handleClose}>
+              <Button
+                w="6rem"
+                mr="68px"
+                borderRadius="16px"
+                onClick={handleClose}
+              >
                 ปิด
               </Button>
               <Button
+                w="6rem"
                 borderRadius="16px"
                 type="submit"
                 bg="#4c7bf4"
