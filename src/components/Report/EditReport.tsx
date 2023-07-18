@@ -365,14 +365,15 @@ const EditProblem = ({ data, id }: any) => {
                 </Box>
               </Stack>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button w="5rem" mr="68px" onClick={() => reset()}>
                   เคลียร์
                 </Button>
                 <Button
+                  w="5rem"
                   type="submit"
                   color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ opacity:"0.8" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

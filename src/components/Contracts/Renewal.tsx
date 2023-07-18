@@ -196,7 +196,7 @@ const Renewal: React.FC<Props> = (props) => {
         color="#fff"
         fontWeight={"normal"}
         w="150px"
-        borderRadius="15px"
+        borderRadius="16px"
         _hover={{ opacity: 0.8 }}
       >
         การต่อสัญญา
