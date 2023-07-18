@@ -214,6 +214,7 @@ export default function ProjectPreviewComp() {
                 isLoading={isFetching}
                 onClick={fetchingData}
                 mr="1rem"
+                borderRadius="16px"
               >
                 <AiOutlineReload />
               </Button>
