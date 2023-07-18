@@ -140,11 +140,19 @@ export default function DetailPage() {
   };
 
   useEffect(() => {
-    onSnapshot(projectRef, () => {
+    let unsub: any = null
+
+    unsub = onSnapshot(projectRef, () => {
       fetchingProjectDetail();
     });
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params]);
 
   const submitUpdate = async (data: any) => {
     setIsUpdating(true);

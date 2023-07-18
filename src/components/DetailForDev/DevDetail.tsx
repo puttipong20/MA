@@ -248,13 +248,13 @@ function DevDetail() {
                       <Controller
                         name="issue"
                         control={control}
-                        defaultValue={detailHistory?.solution?.issue === "กำลังตรวจสอบ" ? "" : detailHistory?.solution?.issue}
+
                         render={({ field }) => (
                           <FormControl mb="1rem" isRequired>
                             <FormLabel color="#2b3674" fontWeight={"bold"}>
                               ปัญหาที่พบ
                             </FormLabel>
-                            <Input {...field} type="text" placeholder="กรุณาระบุปัญหาที่พบ" />
+                            <Input {...field} type="text" placeholder="กรุณาระบุปัญหาที่พบ" defaultValue={detailHistory?.solution?.issue === "กำลังตรวจสอบ" ? "" : detailHistory?.solution?.issue} />
                           </FormControl>
                         )}
                       />

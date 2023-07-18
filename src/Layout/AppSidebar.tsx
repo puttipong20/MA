@@ -43,6 +43,7 @@ import { signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
+import QuickSearchModal from "../components/asset/QuickSearchModal";
 // import { FaLightbulb } from "react-icons/fa";
 
 interface Props {
@@ -54,6 +55,7 @@ const Sidebar: React.FC<Props> = (props) => {
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [filterCompany, setFilterCompany] = useState<Company[]>([]);
+  const [searchValue, setSearchValue] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
@@ -64,7 +66,7 @@ const Sidebar: React.FC<Props> = (props) => {
     // console.clear();
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
     const value = inputRef.value;
-
+    setSearchValue(value)
     const searchField = ["detail.companyName", "detail.projects[projectName]"];
     const result = search(companies, searchField, value) as Company[];
     // console.log(result);
@@ -145,20 +147,6 @@ const Sidebar: React.FC<Props> = (props) => {
       >
         X
       </Button>
-      {/* <Flex
-        justify="center"
-      >
-        <IconButton
-          aria-label={`Switch to ${
-            colorMode === "light" ? "dark" : "light"
-          } mode`}
-          icon={<FaLightbulb />}
-          onClick={toggleColorMode}
-          variant="ghost"
-          color={colorMode === "light" ? "gray.900" : "gray.500"}
-          _hover={{opacity:"0.8"}}
-        />
-      </Flex> */}
 
       <Heading
         cursor={"pointer"}
@@ -178,20 +166,22 @@ const Sidebar: React.FC<Props> = (props) => {
         CRAFTING LAB
       </Heading>
       <Divider my="5px" opacity={"1"} />
-      <Box my="10px">
+      <HStack my="10px">
         <InputGroup>
           <InputLeftElement>
             <SearchIcon />
           </InputLeftElement>
           <Input
             fontSize={"0.8rem"}
-            placeholder={"Company, Project"}
+            placeholder={"Company, Project, Report"}
             w="100%"
             id="searchInput"
             onChange={onSearch}
           />
         </InputGroup>
-      </Box>
+        <QuickSearchModal searchValue={searchValue} data={companies} />
+        {/* <Button bg="#4c7bf4" color="white" _hover={{}}><SearchIcon /></Button> */}
+      </HStack>
       {/* <Divider my="5px" opacity={"1"} /> */}
       {isFetching ? (
         <Flex w="100%" justify={"center"} align={"center"}>
@@ -289,15 +279,7 @@ const Sidebar: React.FC<Props> = (props) => {
                           })
                         ) : (
                           <></>
-                          // <Text fontWeight={"normal"} textAlign={"center"}>
-                          //   ยังไม่มีข้อมูล Project ของบริษัทนี้
-                          // </Text>
                         )}
-                        {/* <AddProject
-                        companyId={i.companyId}
-                        companyName={i.detail.companyName}
-                      /> */}
-                        {/* <Text pl="0rem" color="#4c7bf4" cursor={"pointer"}>+ เพิ่ม Project</Text> */}
                       </VStack>
                     </AccordionPanel>
                   }
