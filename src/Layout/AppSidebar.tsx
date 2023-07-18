@@ -173,7 +173,7 @@ const Sidebar: React.FC<Props> = (props) => {
           </InputLeftElement>
           <Input
             fontSize={"0.8rem"}
-            placeholder={"Company, Project"}
+            placeholder={"Company, Project, Report"}
             w="100%"
             id="searchInput"
             onChange={onSearch}
