@@ -3,6 +3,7 @@ import { ChevronRightIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
+    Divider,
     HStack,
     Heading,
     Highlight,
@@ -126,6 +127,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                 <Input type="text" defaultValue={props.searchValue} {...register("searchRef")} />
                             </InputGroup>
                         </Box>
+
                         <Box mb="1rem">
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>บริษัท (Company)</Heading>
                             {searchRef !== "" ?
@@ -149,6 +151,9 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                 <Text>กรุณากรอกคำค้นหา</Text>
                             }
                         </Box>
+
+                        <Divider my="0.5rem" />
+
                         <Box mb="1rem">
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>โปรเจกต์ (Project)</Heading>
                             {searchRef !== "" ?
@@ -175,11 +180,14 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                 <Text>กรุณากรอกคำค้นหา</Text>
                             }
                         </Box>
+                        <Divider my="0.5rem" />
                         <Box>
                             <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>รายงานปัญหา (Report)</Heading>
-                            <HStack>
-                                <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
-                                <Button onClick={searchReport} isLoading={isSearching} colorScheme='blue'><SearchIcon /></Button>
+                            <HStack justifyContent={"space-between"} w="100%" alignItems={"center"}>
+                                <Box display="flex" alignItems={"center"}>
+                                    <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
+                                    <Button onClick={searchReport} isLoading={isSearching} bg="#4c7bf4" color="white" _hover={{}} ml="0.25rem"><SearchIcon /></Button>
+                                </Box>
                                 <Button onClick={() => { setReportFound(undefined) }} colorScheme='red'><DeleteIcon /></Button>
                             </HStack>
                             {
