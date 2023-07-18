@@ -117,6 +117,7 @@ export default function ProblemPreview() {
               pt="1rem"
             >
               <Button
+                mt="-1.5rem"
                 borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
@@ -148,7 +149,10 @@ export default function ProblemPreview() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={["flex-end", "space-between"]} flexDir={["column", "column", "row"]}>
+          <Flex
+            justify={["flex-end", "space-between"]}
+            flexDir={["column", "column", "row"]}
+          >
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius={"16px"}>
                 <InputLeftAddon
@@ -365,15 +369,13 @@ export default function ProblemPreview() {
                               r.docs.RepStatus === wait
                                 ? "yellow.300"
                                 : r.docs.RepStatus === done
-                                  ? "green.500"
-                                  : r.docs.RepStatus === process
-                                    ? "gray.400"
-                                    : "red.500"
+                                ? "green.500"
+                                : r.docs.RepStatus === process
+                                ? "gray.400"
+                                : "red.500"
                             }
                             color={
-                              r.docs.RepStatus === wait
-                                ? "black"
-                                : "white"
+                              r.docs.RepStatus === wait ? "black" : "white"
                             }
                           >
                             <TagLabel w="100%" textAlign={"center"}>

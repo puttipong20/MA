@@ -149,7 +149,7 @@ export default function ProjectPreviewComp() {
               pt="1rem"
             >
               <Button
-                mt="-2rem"
+                mt="-1.5rem"
                 borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
