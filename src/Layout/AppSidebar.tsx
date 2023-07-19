@@ -144,6 +144,7 @@ const Sidebar: React.FC<Props> = (props) => {
         onClick={props.setTriggle}
         bg="none"
         color="red"
+        borderRadius="16px"
       >
         X
       </Button>
@@ -172,6 +173,7 @@ const Sidebar: React.FC<Props> = (props) => {
             <SearchIcon />
           </InputLeftElement>
           <Input
+            borderRadius="16px"
             fontSize={"0.8rem"}
             placeholder={"Company, Project, Report"}
             w="100%"

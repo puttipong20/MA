@@ -33,11 +33,11 @@ type Cvalue = {
 const ViewCompany = ({ data }: any) => {
   const [cValue, setCValue] = useState<Cvalue>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   useEffect(() => {
     // console.log(data)
-    setCValue(data)
-  },[data])
+    setCValue(data);
+  }, [data]);
 
   return (
     <>
@@ -100,7 +100,31 @@ const ViewCompany = ({ data }: any) => {
                     <Text w="50%">{cValue?.userPerson}</Text>
                   </HStack>
                   <br />
-                  <HStack alignItems="flex-start">
+                  <Flex justify="flex-end">
+                    <HStack fontSize="14px" color="gray.400">
+                      <Text mt="-1.25rem">สร้างเมื่อ :</Text>
+                      <Text>
+                        <Text>{cValue?.createdAt}</Text>
+                        <Text>{cValue?.createBy.username}</Text>
+                      </Text>
+                    </HStack>
+                  </Flex>
+                  <Flex justify="flex-end">
+                    <HStack fontSize="14px" color="gray.400">
+                      <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
+                      {!cValue?.updateBy ? (
+                        <Text fontSize="14px" color="gray.400">
+                          ยังไม่มีการอัพเดท
+                        </Text>
+                      ) : (
+                        <Text>
+                          <Text>{cValue?.companyUpdate} </Text>
+                          <Text>{cValue?.updateBy.username}</Text>
+                        </Text>
+                      )}
+                    </HStack>
+                  </Flex>
+                  {/* <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       สร้างเมื่อ :
                     </Text>
@@ -111,8 +135,8 @@ const ViewCompany = ({ data }: any) => {
                         {cValue?.createBy.username}
                       </Text>
                     </Text>
-                  </HStack>
-                  <HStack alignItems="flex-start">
+                  </HStack> */}
+                  {/* <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       อัพเดทเมื่อ :
                     </Text>
@@ -129,7 +153,7 @@ const ViewCompany = ({ data }: any) => {
                         </Text>
                       </Text>
                     )}
-                  </HStack>
+                  </HStack> */}
                 </VStack>
               </Stack>
             </form>
