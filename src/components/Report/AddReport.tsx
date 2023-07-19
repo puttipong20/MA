@@ -375,6 +375,7 @@ const AddReport = () => {
                         cursor={"pointer"}
                         userSelect={"none"}
                         bg="#FAFCFE"
+                        _hover={{opacity:"0.8"}}
                       >
                         <Flex color="#4c7bf4" fontSize={"3rem"}>
                           <MdUpload />

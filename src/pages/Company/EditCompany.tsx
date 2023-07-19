@@ -251,7 +251,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

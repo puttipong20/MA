@@ -67,45 +67,55 @@ const UpdateContract: React.FC<Props> = (props) => {
     };
 
     return (
-        <Box w="100%" p={"0.5rem"} userSelect={"none"}>
-            <Text
-                color={props.status === "cancel" ? "red" : "orange"}
-                w="100%"
-                display="flex"
-                alignItems={"center"}
-                onClick={onOpen}
-            >
-                <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
-                    {props.status === "cancel" ? <ImCancelCircle /> : <AiOutlineDelete />}
-                </Text>
-                {action}สัญญา
-            </Text>
+      <Box w="100%" p={"0.5rem"} userSelect={"none"}>
+        <Text
+          color={props.status === "cancel" ? "red" : "orange"}
+          w="100%"
+          display="flex"
+          alignItems={"center"}
+          onClick={onOpen}
+        >
+          <Text as="span" w="20%" display={"flex"} justifyContent={"center"}>
+            {props.status === "cancel" ? (
+              <ImCancelCircle />
+            ) : (
+              <AiOutlineDelete />
+            )}
+          </Text>
+          {action}สัญญา
+        </Text>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{action}สัญญา</ModalHeader>
-                    {/* <ModalCloseButton /> */}
-                    <ModalBody>
-                        <Box>
-                            <Text>ต้องการ{action}สัญญาหรือไม่</Text>
-                        </Box>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Flex gap={"20px"}>
-                            <Button onClick={onClose}>ปิด</Button>
-                            <Button
-                                onClick={updateContract}
-                                colorScheme="red"
-                                isLoading={isLoading}
-                            >
-                                {action}สัญญา
-                            </Button>
-                        </Flex>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-        </Box>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{action}สัญญา</ModalHeader>
+            {/* <ModalCloseButton /> */}
+            <ModalBody>
+              <Box>
+                <Text>ต้องการ{action}สัญญาหรือไม่</Text>
+              </Box>
+            </ModalBody>
+            <ModalFooter>
+              <Flex gap={"20px"}>
+                <Button fontSize="14px" w="5rem" onClick={onClose}>
+                  ปิด
+                </Button>
+                <Button
+                  fontSize="14px"
+                  w="6rem"
+                  color="#fff"
+                  bg="red.500"
+                  _hover={{ opacity: "0.8" }}
+                  onClick={updateContract}
+                  isLoading={isLoading}
+                >
+                  {action}สัญญา
+                </Button>
+              </Flex>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     );
 };
 

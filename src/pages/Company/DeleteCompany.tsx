@@ -67,23 +67,25 @@ function DeleteCompany({ item, fetchData }: any) {
               ลบข้อมูล
             </AlertDialogHeader>
 
-            <AlertDialogBody>คุณต้องการลบข้อมูลบริษัท ใช่หรือไม่</AlertDialogBody>
+            <AlertDialogBody>
+              คุณต้องการลบข้อมูลบริษัท ใช่หรือไม่
+            </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button
-                fontFamily={"Prompt"}
-                fontSize={"14px"}
-                fontWeight={"600"}
+                w="5rem"
+                fontSize="14px"
                 ref={cancelRef}
                 onClick={onClose}
               >
                 ยกเลิก
               </Button>
               <Button
-                fontFamily={"Prompt"}
-                fontSize={"14px"}
-                fontWeight={"600"}
-                colorScheme="red"
+                w="5rem"
+                fontSize="14px"
+                bg="red.500"
+                color="#fff"
+                _hover={{ opacity: "0.8" }}
                 onClick={() => {
                   handleRemove(item.companyId);
                 }}
