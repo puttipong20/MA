@@ -119,15 +119,13 @@ const ViewCompany = ({ data }: any) => {
                           </Text>
                         </HStack>
                       ) : (
-                        <Flex>
-                          <HStack>
-                            <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
-                            <Box>
-                              <Text>{cValue?.companyUpdate} </Text>
-                              <Text>{cValue?.updateBy.username}</Text>
-                            </Box>
-                          </HStack>
-                        </Flex>
+                        <HStack>
+                          <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
+                          <Box>
+                            <Text>{cValue?.companyUpdate} </Text>
+                            <Text>{cValue?.updateBy.username}</Text>
+                          </Box>
+                        </HStack>
                       )}
                     </HStack>
                   </Flex>
