@@ -117,7 +117,13 @@ const QuickSearchModal: React.FC<Props> = (props) => {
 
   return (
     <Box>
-      <Button bg="#4c7bf4" color="white" _hover={{}} onClick={onOpen}>
+      <Button
+        bg="#4c7bf4"
+        color="white"
+        _hover={{ opacity: "0.8" }}
+        borderRadius="16px"
+        onClick={onOpen}
+      >
         <SearchIcon />
       </Button>
 
