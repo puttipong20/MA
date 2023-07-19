@@ -206,8 +206,17 @@ const AddProject: React.FC<Props> = (props) => {
                   </FormControl>
                 )}
               />
+              <Controller
+                name="firebaseID"
+                control={control}
+                render={({ field }) => (
+                  <FormControl mb="0.5rem" isRequired>
+                    <Text fontWeight={"bold"}>Firebase ID</Text>
+                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID"/>
+                  </FormControl>
+                )}
+              />
               <HStack>
-
                 <Controller
                   name="projectName"
                   control={control}

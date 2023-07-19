@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChevronRightIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
+import { ChevronRightIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -51,6 +51,9 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     const [reportFound, setReportFound] = useState<Report>()
     const [companyReport, setCompanyReport] = useState("")
 
+    const [companyElement, setCompanyElement] = useState<(JSX.Element | undefined)[]>([])
+    const [projectElement, setProjectElement] = useState<((JSX.Element | undefined)[] | undefined)[]>([])
+
     const wait = "รอรับเรื่อง";
     const process = "กำลังดำเนินการ";
     const done = "เสร็จสิ้น";
@@ -87,7 +90,6 @@ const QuickSearchModal: React.FC<Props> = (props) => {
 
     const onSearch = () => {
         if (searchRef !== "") {
-
             const searchField = ["detail.companyName", "detail.projects[projectName]"]
             const result = search(props.data, searchField, searchRef) as Company[]
             setDetail(result)
@@ -100,6 +102,56 @@ const QuickSearchModal: React.FC<Props> = (props) => {
         setSearchValue(searchRef)
         onSearch();
     }, [searchRef])
+
+    const findCompany = () => {
+        const companyFound = detail.map((c, index) => {
+            if (c.detail.companyName.toLowerCase().includes(searchValue.toLowerCase())) {
+                return (
+                    <Text key={index} _hover={{ pl: "0.5rem", color: "#4c7bf4" }} transition={"all 0.1s"} cursor={"pointer"} my="0.25rem"
+                        onClick={() => {
+                            navigate(`/company/${c.companyId}`);
+                            onClose()
+                        }}
+                    >
+                        <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
+                            {c.detail.companyName}
+                        </Highlight>
+                    </Text>
+                )
+            }
+        })
+        // console.log("companyFound = ", companyFound.length, companyFound)
+        setCompanyElement(companyFound.filter(i => i !== undefined))
+    }
+
+    const findProject = () => {
+        const projectFound = detail.map((c) => {
+            return c.detail.projects?.map((p, index) => {
+                if (p.projectName.toLowerCase().includes(searchValue.toLowerCase())) {
+                    return (
+                        <Text key={index} _hover={{ pl: "0.5rem", color: "#4c7bf4" }} transition={"all 0.1s"} cursor={"pointer"}
+                            onClick={() => {
+                                navigate(`/company/${c.companyId}/${p.id}/${p.projectName}/detail`);
+                                onClose()
+                            }
+                            }
+                        >
+                            <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
+                                {`${c.detail.companyName} > ${p.projectName}`}
+                            </Highlight>
+                        </Text>
+                    )
+                }
+            })
+        })
+        // console.log("projectFound = ", projectFound.length, projectFound)
+        setProjectElement(projectFound.filter(i => i !== undefined))
+    }
+
+    useEffect(() => {
+        findCompany()
+        findProject()
+    }, [searchValue])
 
     return (
         <Box>
@@ -118,34 +170,23 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                 <InputLeftElement>
                                     <SearchIcon />
                                 </InputLeftElement>
-                                <Input type="text" defaultValue={props.searchValue} {...register("searchRef")} />
+                                <Input type="text" defaultValue={props.searchValue} {...register("searchRef")} placeholder={"กรอกคำค้นหา"} />
                             </InputGroup>
                         </Box>
 
                         <Card mb="1rem">
-                            <CardHeader>
+                            <CardHeader p="0.5rem">
                                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>บริษัท (Company)</Heading>
                             </CardHeader>
                             <CardBody>
-                                {searchRef !== "" ?
-                                    detail.map((c, index) => {
-                                        if (c.detail.companyName.toLowerCase().includes(searchValue.toLowerCase())) {
-                                            return (
-                                                <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
-                                                    onClick={() => {
-                                                        navigate(`/company/${c.companyId}`);
-                                                        onClose()
-                                                    }}
-                                                >
-                                                    <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
-                                                        {c.detail.companyName}
-                                                    </Highlight>
-                                                </Text>
-                                            )
-                                        }
-                                    })
-                                    :
-                                    <Text>กรุณากรอกคำค้นหา</Text>
+                                {
+                                    companyElement.length > 0 ?
+                                        companyElement
+                                        :
+                                        searchValue === "" ?
+                                            <Text>กรุณากรอกคำค้นหา</Text>
+                                            :
+                                            <Text>ไม่พบเจอ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
                                 }
                             </CardBody>
 
@@ -154,32 +195,15 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                         <Divider my="0.5rem" />
 
                         <Card mb="1rem">
-                            <CardHeader>
+                            <CardHeader p="0.5rem">
                                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>โปรเจกต์ (Project)</Heading>
                             </CardHeader>
                             <CardBody>
-                                {searchRef !== "" ?
-                                    detail.map((c) => {
-                                        return c.detail.projects?.map((p, index) => {
-                                            if (p.projectName.toLowerCase().includes(searchValue.toLowerCase())) {
-                                                return (
-                                                    <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
-                                                        onClick={() => {
-                                                            navigate(`/company/${c.companyId}/${p.id}/${p.projectName}/detail`);
-                                                            onClose()
-                                                        }
-                                                        }
-                                                    >
-                                                        <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
-                                                            {`${c.detail.companyName} > ${p.projectName}`}
-                                                        </Highlight>
-                                                    </Text>
-                                                )
-                                            }
-                                        })
-                                    })
-                                    :
-                                    <Text>กรุณากรอกคำค้นหา</Text>
+                                {
+                                    projectElement.length > 0 ?
+                                        projectElement
+                                        :
+                                        searchValue === "" ? <Text>กรุณากรอกคำค้นหา</Text> : <Text>ไม่พบเจอ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
                                 }
                             </CardBody>
 
@@ -188,7 +212,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                         <Divider my="0.5rem" />
 
                         <Card>
-                            <CardHeader>
+                            <CardHeader p="0.5rem">
                                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                                     รายงานปัญหา (Report)
                                     <Button onClick={searchReport} isLoading={isSearching} bg="#4c7bf4" color="white" _hover={{}} ml="0.25rem">
@@ -197,7 +221,6 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                                 </Heading>
                             </CardHeader>
                             <CardBody>
-
                                 <HStack justifyContent={"space-between"} w="100%" alignItems={"center"}>
                                     <Box display="flex" alignItems={"center"}>
                                         <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
