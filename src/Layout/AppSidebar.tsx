@@ -46,6 +46,8 @@ import { BsDot } from "react-icons/bs";
 import QuickSearchModal from "../components/asset/QuickSearchModal";
 // import { FaLightbulb } from "react-icons/fa";
 
+import classes from "./Layout.module.css";
+
 interface Props {
   setTriggle: () => void;
 }
@@ -165,7 +167,9 @@ const Sidebar: React.FC<Props> = (props) => {
       >
         CRAFTING LAB
       </Heading>
+
       <Divider my="5px" opacity={"1"} />
+
       <HStack my="10px">
         <InputGroup>
           <InputLeftElement>
@@ -184,11 +188,11 @@ const Sidebar: React.FC<Props> = (props) => {
       </HStack>
       {/* <Divider my="5px" opacity={"1"} /> */}
       {isFetching ? (
-        <Flex w="100%" justify={"center"} align={"center"}>
+        <Flex w="100%" justify={"center"} align={"center"} border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
           <Spinner />
         </Flex>
       ) : (
-        <Box>
+        <Box border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
           <Accordion allowToggle defaultIndex={[openIndex]}>
             {filterCompany.map((i, index) => {
               // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
