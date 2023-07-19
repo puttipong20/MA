@@ -3,6 +3,9 @@ import { ChevronRightIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
+    Card,
+    CardBody,
+    CardHeader,
     Divider,
     HStack,
     Heading,
@@ -73,7 +76,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                     description: "กรุณาตรวจสอบรหัสอ้างอิงอีกครั้ง",
                     position: "top",
                     isClosable: true,
-                    duration: 3000,
+                    duration: 5000,
                 })
             }
         })
@@ -119,136 +122,157 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                             </InputGroup>
                         </Box>
 
-                        <Box mb="1rem">
-                            <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>บริษัท (Company)</Heading>
-                            {searchRef !== "" ?
-                                detail.map((c, index) => {
-                                    if (c.detail.companyName.toLowerCase().includes(searchValue.toLowerCase())) {
-                                        return (
-                                            <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
-                                                onClick={() => {
-                                                    navigate(`/company/${c.companyId}`);
-                                                    onClose()
-                                                }}
-                                            >
-                                                <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
-                                                    {c.detail.companyName}
-                                                </Highlight>
-                                            </Text>
-                                        )
-                                    }
-                                })
-                                :
-                                <Text>กรุณากรอกคำค้นหา</Text>
-                            }
-                        </Box>
-
-                        <Divider my="0.5rem" />
-
-                        <Box mb="1rem">
-                            <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>โปรเจกต์ (Project)</Heading>
-                            {searchRef !== "" ?
-                                detail.map((c) => {
-                                    return c.detail.projects?.map((p, index) => {
-                                        if (p.projectName.toLowerCase().includes(searchValue.toLowerCase())) {
+                        <Card mb="1rem">
+                            <CardHeader>
+                                <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>บริษัท (Company)</Heading>
+                            </CardHeader>
+                            <CardBody>
+                                {searchRef !== "" ?
+                                    detail.map((c, index) => {
+                                        if (c.detail.companyName.toLowerCase().includes(searchValue.toLowerCase())) {
                                             return (
                                                 <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
                                                     onClick={() => {
-                                                        navigate(`/company/${c.companyId}/${p.id}/${p.projectName}/detail`);
+                                                        navigate(`/company/${c.companyId}`);
                                                         onClose()
-                                                    }
-                                                    }
+                                                    }}
                                                 >
                                                     <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
-                                                        {`${c.detail.companyName} > ${p.projectName}`}
+                                                        {c.detail.companyName}
                                                     </Highlight>
                                                 </Text>
                                             )
                                         }
                                     })
-                                })
-                                :
-                                <Text>กรุณากรอกคำค้นหา</Text>
-                            }
-                        </Box>
-                        <Divider my="0.5rem" />
-                        <Box>
-                            <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>รายงานปัญหา (Report)</Heading>
-                            <HStack justifyContent={"space-between"} w="100%" alignItems={"center"}>
-                                <Box display="flex" alignItems={"center"}>
-                                    <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
-                                    <Button onClick={searchReport} isLoading={isSearching} bg="#4c7bf4" color="white" _hover={{}} ml="0.25rem"><SearchIcon /></Button>
-                                </Box>
-                                <Button onClick={() => { setReportFound(undefined) }} colorScheme='red'><DeleteIcon /></Button>
-                            </HStack>
-                            {
-                                reportFound &&
-                                <Box border="1px solid black" borderRadius={"16px"} p="1rem" mt="1rem">
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>บริษัท</Text>
-                                        <Text>: {reportFound.docs.companyName}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>โปรเจกต์</Text>
-                                        <Text>: {reportFound.docs.projectName}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>รหัสอ้างอิง</Text>
-                                        <Text>: {reportFound.docs.ref}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>ปัญหาที่พบ</Text>
-                                        <Text>: {reportFound.docs.title}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>ผู้แจ้งปัญหา</Text>
-                                        <Text>: {reportFound.docs.name}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>วันที่</Text>
-                                        <Text>: {moment(reportFound.docs.createAt).format("DD/MM/YYYY HH:mm:ss")}</Text>
-                                    </HStack>
-                                    <HStack>
-                                        <Text w="8rem" fontWeight={"bold"}>สภานะ</Text>
-                                        <Text display="flex" alignItems={"center"}>:
-                                            <Tag
-                                                w="100%"
-                                                ml="0.25rem"
-                                                bg={
-                                                    reportFound.docs.RepStatus === wait
-                                                        ? "yellow.300"
-                                                        : reportFound.docs.RepStatus === done
-                                                            ? "green.600"
-                                                            : reportFound.docs.RepStatus === process
-                                                                ? "gray.400"
-                                                                : "red.300"
-                                                }
-                                                color={
-                                                    reportFound.docs.RepStatus === wait
-                                                        ? "black"
-                                                        : "white"
-                                                }
-                                            >
-                                                <TagLabel w="100%" textAlign={"center"}>
-                                                    {reportFound.docs.RepStatus}
-                                                </TagLabel>
-                                            </Tag>
-                                        </Text>
-                                    </HStack>
-                                    {/* /company/:company/:projectID/:projectName/:problemID */}
-                                    <Box w="fit-content" m="auto" mt="1rem">
-                                        <Button
-                                            isLoading={isSearching}
-                                            onClick={() => {
-                                                navigate(`/company/${companyReport}/${reportFound.docs.projectID}/${reportFound.docs.projectName}/${reportFound.id}`)
-                                            }}
-                                            bg=""
-                                        >กดเพื่อเข้าดูปัญหา <Text as="span" color="blue" ><ChevronRightIcon /></Text></Button>
-                                    </Box>
-                                </Box>
+                                    :
+                                    <Text>กรุณากรอกคำค้นหา</Text>
+                                }
+                            </CardBody>
 
-                            }
-                        </Box>
+                        </Card>
+
+                        <Divider my="0.5rem" />
+
+                        <Card mb="1rem">
+                            <CardHeader>
+                                <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>โปรเจกต์ (Project)</Heading>
+                            </CardHeader>
+                            <CardBody>
+                                {searchRef !== "" ?
+                                    detail.map((c) => {
+                                        return c.detail.projects?.map((p, index) => {
+                                            if (p.projectName.toLowerCase().includes(searchValue.toLowerCase())) {
+                                                return (
+                                                    <Text key={index} _hover={{ pl: "0.5rem" }} transition={"all 0.1s"} cursor={"pointer"}
+                                                        onClick={() => {
+                                                            navigate(`/company/${c.companyId}/${p.id}/${p.projectName}/detail`);
+                                                            onClose()
+                                                        }
+                                                        }
+                                                    >
+                                                        <Highlight query={searchRef} styles={{ fontWeight: "bold" }}>
+                                                            {`${c.detail.companyName} > ${p.projectName}`}
+                                                        </Highlight>
+                                                    </Text>
+                                                )
+                                            }
+                                        })
+                                    })
+                                    :
+                                    <Text>กรุณากรอกคำค้นหา</Text>
+                                }
+                            </CardBody>
+
+                        </Card>
+
+                        <Divider my="0.5rem" />
+
+                        <Card>
+                            <CardHeader>
+                                <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
+                                    รายงานปัญหา (Report)
+                                    <Button onClick={searchReport} isLoading={isSearching} bg="#4c7bf4" color="white" _hover={{}} ml="0.25rem">
+                                        <SearchIcon />
+                                    </Button>
+                                </Heading>
+                            </CardHeader>
+                            <CardBody>
+
+                                <HStack justifyContent={"space-between"} w="100%" alignItems={"center"}>
+                                    <Box display="flex" alignItems={"center"}>
+                                        <Text>ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text></Text>
+                                    </Box>
+                                    {/* <Button onClick={() => { setReportFound(undefined) }} colorScheme='red'><DeleteIcon /></Button> */}
+                                </HStack>
+                                {
+                                    reportFound &&
+                                    <Box border="1px solid black" borderRadius={"16px"} p="1rem" mt="1rem">
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>บริษัท</Text>
+                                            <Text>: {reportFound.docs.companyName}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>โปรเจกต์</Text>
+                                            <Text>: {reportFound.docs.projectName}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>รหัสอ้างอิง</Text>
+                                            <Text>: {reportFound.docs.ref}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>ปัญหาที่พบ</Text>
+                                            <Text>: {reportFound.docs.title}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>ผู้แจ้งปัญหา</Text>
+                                            <Text>: {reportFound.docs.name}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>วันที่</Text>
+                                            <Text>: {moment(reportFound.docs.createAt).format("DD/MM/YYYY HH:mm:ss")}</Text>
+                                        </HStack>
+                                        <HStack>
+                                            <Text w="8rem" fontWeight={"bold"}>สภานะ</Text>
+                                            <Text display="flex" alignItems={"center"}>:
+                                                <Tag
+                                                    w="100%"
+                                                    ml="0.25rem"
+                                                    bg={
+                                                        reportFound.docs.RepStatus === wait
+                                                            ? "yellow.300"
+                                                            : reportFound.docs.RepStatus === done
+                                                                ? "green.600"
+                                                                : reportFound.docs.RepStatus === process
+                                                                    ? "gray.400"
+                                                                    : "red.300"
+                                                    }
+                                                    color={
+                                                        reportFound.docs.RepStatus === wait
+                                                            ? "black"
+                                                            : "white"
+                                                    }
+                                                >
+                                                    <TagLabel w="100%" textAlign={"center"}>
+                                                        {reportFound.docs.RepStatus}
+                                                    </TagLabel>
+                                                </Tag>
+                                            </Text>
+                                        </HStack>
+                                        {/* /company/:company/:projectID/:projectName/:problemID */}
+                                        <Box w="fit-content" m="auto" mt="1rem">
+                                            <Button
+                                                isLoading={isSearching}
+                                                onClick={() => {
+                                                    navigate(`/company/${companyReport}/${reportFound.docs.projectID}/${reportFound.docs.projectName}/${reportFound.id}`)
+                                                }}
+                                                bg=""
+                                            >กดเพื่อเข้าดูปัญหา <Text as="span" color="blue" ><ChevronRightIcon /></Text></Button>
+                                        </Box>
+                                    </Box>
+
+                                }
+                            </CardBody>
+                        </Card>
                     </ModalBody>
                 </ModalContent>
             </Modal>
