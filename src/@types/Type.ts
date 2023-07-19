@@ -65,6 +65,7 @@ export type ProjectDetail = {
   companyName: string;
   createdAt: string;
   shortName: string;
+  firebaseId: string;
   createdBy: { username: string; uid: string };
   latestUpdate?: { username: string; uid: string; timestamp: string };
 };
