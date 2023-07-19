@@ -64,16 +64,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                 await getDoc(projectDoc).then((d) => {
                     const projectData: ProjectDetail = d.data() as ProjectDetail;
                     setCompanyReport(projectData.companyID);
-                }).then(() => {
-                    toast({
-                        title: "พบรายงานปัญหา",
-                        status: "success",
-                        position: "top",
-                        isClosable: true,
-                        duration: 3000,
-                    })
                 })
-
             } else {
                 setReportFound(undefined)
                 toast({
