@@ -87,6 +87,7 @@ const AddProject: React.FC<Props> = (props) => {
       projectName: data.projectName,
       status: "enable",
       shortName: data.shortName,
+      firebaseId: data.firebaseID
       // MAlogs: [latestMA]
     };
     const snExists = await checkShortName(data.shortName)
@@ -209,10 +210,11 @@ const AddProject: React.FC<Props> = (props) => {
               <Controller
                 name="firebaseID"
                 control={control}
+                defaultValue={""}
                 render={({ field }) => (
                   <FormControl mb="0.5rem" isRequired>
                     <Text fontWeight={"bold"}>Firebase ID</Text>
-                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID"/>
+                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID" />
                   </FormControl>
                 )}
               />
