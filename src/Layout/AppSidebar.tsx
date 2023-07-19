@@ -145,6 +145,7 @@ const Sidebar: React.FC<Props> = (props) => {
         bg="none"
         color="red"
         borderRadius="16px"
+        size="md"
       >
         X
       </Button>
