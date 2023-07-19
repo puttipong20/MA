@@ -99,28 +99,35 @@ const ViewCompany = ({ data }: any) => {
                     </Text>
                     <Text w="50%">{cValue?.userPerson}</Text>
                   </HStack>
-                  <br />
+                  {/* <br /> */}
                   <Flex justify="flex-end">
                     <HStack fontSize="14px" color="gray.400">
                       <Text mt="-1.25rem">สร้างเมื่อ :</Text>
-                      <Text>
+                      <Box>
                         <Text>{cValue?.createdAt}</Text>
                         <Text>{cValue?.createBy.username}</Text>
-                      </Text>
+                      </Box>
                     </HStack>
                   </Flex>
                   <Flex justify="flex-end">
                     <HStack fontSize="14px" color="gray.400">
-                      <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
                       {!cValue?.updateBy ? (
-                        <Text fontSize="14px" color="gray.400">
-                          ยังไม่มีการอัพเดท
-                        </Text>
+                        <HStack>
+                          <Text>อัพเดทเมื่อ :</Text>
+                          <Text fontSize="14px" color="gray.400">
+                            ยังไม่มีการอัพเดท
+                          </Text>
+                        </HStack>
                       ) : (
-                        <Text>
-                          <Text>{cValue?.companyUpdate} </Text>
-                          <Text>{cValue?.updateBy.username}</Text>
-                        </Text>
+                        <Flex>
+                          <HStack>
+                            <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
+                            <Box>
+                              <Text>{cValue?.companyUpdate} </Text>
+                              <Text>{cValue?.updateBy.username}</Text>
+                            </Box>
+                          </HStack>
+                        </Flex>
                       )}
                     </HStack>
                   </Flex>

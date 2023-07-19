@@ -50,7 +50,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
   const toast = useToast();
   const AuthCtx = useContext(AuthContext)
 
-  const createDate = moment().format("DD-MM-YYYY HH:mm:ss");
+  const createDate = moment().format("DD/MM/YYYY, HH:mm:ss");
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
