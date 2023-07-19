@@ -48,6 +48,7 @@ const Layout: React.FC<Props> = (props) => {
           onClick={() => setIsTrigger(!isTrigger)}
           size="sm"
           ml="1rem"
+          borderRadius="16px"
         >
           {isTrigger ? <CloseIcon /> : <HamburgerIcon />}
         </Button>

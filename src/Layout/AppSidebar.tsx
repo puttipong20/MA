@@ -16,11 +16,7 @@ import {
   InputLeftElement,
   InputGroup,
   HStack,
-  // IconButton,
-  // useColorMode,
 } from "@chakra-ui/react";
-// import { AiOutlinePlusCircle } from "react-icons/ai";
-// import { CgDetailsMore } from "react-icons/cg";
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -31,19 +27,20 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { auth, db } from "../services/config-db";
+import { db } from "../services/config-db";
 
 import { search } from "ss-search";
 import { Company, CompanyDetail } from "../@types/Type";
 
 import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
-import { LuLogOut } from "react-icons/lu";
-import { signOut } from "firebase/auth";
-import { AuthContext } from "../context/AuthContext";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
+import QuickSearchModal from "../components/asset/QuickSearchModal";
 // import { FaLightbulb } from "react-icons/fa";
+
+import classes from "./Layout.module.css";
+import LogoutButton from "../pages/Login/Logout";
 
 interface Props {
   setTriggle: () => void;
@@ -54,17 +51,17 @@ const Sidebar: React.FC<Props> = (props) => {
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [filterCompany, setFilterCompany] = useState<Company[]>([]);
+  const [searchValue, setSearchValue] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
-  const Auth = useContext(AuthContext);
   // const { colorMode, toggleColorMode } = useColorMode();
 
   const onSearch = () => {
     // console.clear();
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
     const value = inputRef.value;
-
+    setSearchValue(value)
     const searchField = ["detail.companyName", "detail.projects[projectName]"];
     const result = search(companies, searchField, value) as Company[];
     // console.log(result);
@@ -97,11 +94,6 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(false);
   };
 
-  const logout = () => {
-    signOut(auth);
-    Auth.clearUser();
-  };
-
   useEffect(() => {
     const collRef = collection(db, "Company");
     const q = query(collRef);
@@ -129,9 +121,6 @@ const Sidebar: React.FC<Props> = (props) => {
     // console.log(Company)
   });
 
-  const code = 0;
-  const color = `rgba(${code},${code},${code},0.1)`;
-
   return (
     <Box position="relative" h="fit-content" maxH="100%">
       <Button
@@ -145,20 +134,6 @@ const Sidebar: React.FC<Props> = (props) => {
       >
         X
       </Button>
-      {/* <Flex
-        justify="center"
-      >
-        <IconButton
-          aria-label={`Switch to ${
-            colorMode === "light" ? "dark" : "light"
-          } mode`}
-          icon={<FaLightbulb />}
-          onClick={toggleColorMode}
-          variant="ghost"
-          color={colorMode === "light" ? "gray.900" : "gray.500"}
-          _hover={{opacity:"0.8"}}
-        />
-      </Flex> */}
 
       <Heading
         cursor={"pointer"}
@@ -177,28 +152,32 @@ const Sidebar: React.FC<Props> = (props) => {
       >
         CRAFTING LAB
       </Heading>
+
       <Divider my="5px" opacity={"1"} />
-      <Box my="10px">
+
+      <HStack my="10px">
         <InputGroup>
           <InputLeftElement>
             <SearchIcon />
           </InputLeftElement>
           <Input
             fontSize={"0.8rem"}
-            placeholder={"Company, Project"}
+            placeholder={"Company, Project, Report"}
             w="100%"
             id="searchInput"
             onChange={onSearch}
           />
         </InputGroup>
-      </Box>
+        <QuickSearchModal searchValue={searchValue} data={companies} />
+        {/* <Button bg="#4c7bf4" color="white" _hover={{}}><SearchIcon /></Button> */}
+      </HStack>
       {/* <Divider my="5px" opacity={"1"} /> */}
       {isFetching ? (
-        <Flex w="100%" justify={"center"} align={"center"}>
+        <Flex w="100%" justify={"center"} align={"center"} border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
           <Spinner />
         </Flex>
       ) : (
-        <Box>
+        <Box border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
           <Accordion allowToggle defaultIndex={[openIndex]}>
             {filterCompany.map((i, index) => {
               // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
@@ -289,15 +268,7 @@ const Sidebar: React.FC<Props> = (props) => {
                           })
                         ) : (
                           <></>
-                          // <Text fontWeight={"normal"} textAlign={"center"}>
-                          //   ยังไม่มีข้อมูล Project ของบริษัทนี้
-                          // </Text>
                         )}
-                        {/* <AddProject
-                        companyId={i.companyId}
-                        companyName={i.detail.companyName}
-                      /> */}
-                        {/* <Text pl="0rem" color="#4c7bf4" cursor={"pointer"}>+ เพิ่ม Project</Text> */}
                       </VStack>
                     </AccordionPanel>
                   }
@@ -308,21 +279,7 @@ const Sidebar: React.FC<Props> = (props) => {
         </Box>
       )}
       {/* <Divider my="5px" opacity={"1"} /> */}
-      <Box
-        w="100%"
-        p="0.5rem"
-        userSelect={"none"}
-        cursor={"pointer"}
-        transition={"all 0.3s"}
-        borderRadius={"10px"}
-        _hover={{ bg: color }}
-        onClick={logout}
-      >
-        <Text display="flex" alignItems={"center"} gap={"1rem"}>
-          <LuLogOut />
-          Logout
-        </Text>
-      </Box>
+      <LogoutButton />
     </Box>
   );
 };

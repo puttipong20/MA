@@ -99,7 +99,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
           color="gray.100"
           bg="#4C7BF4"
           w="150px"
-          borderRadius="15px"
+          borderRadius="16px"
           _hover={{ opacity: 0.8 }}
         >
           เพิ่มข้อมูลบริษัท

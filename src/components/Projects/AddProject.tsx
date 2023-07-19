@@ -178,7 +178,7 @@ const AddProject: React.FC<Props> = (props) => {
     <Box>
       <Button
         w="150px"
-        borderRadius="15px"
+        borderRadius="16px"
         bg="#4C7BF4"
         color="#eee"
         _hover={{ opacity: "0.8" }}
@@ -206,8 +206,17 @@ const AddProject: React.FC<Props> = (props) => {
                   </FormControl>
                 )}
               />
+              <Controller
+                name="firebaseID"
+                control={control}
+                render={({ field }) => (
+                  <FormControl mb="0.5rem" isRequired>
+                    <Text fontWeight={"bold"}>Firebase ID</Text>
+                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID"/>
+                  </FormControl>
+                )}
+              />
               <HStack>
-
                 <Controller
                   name="projectName"
                   control={control}

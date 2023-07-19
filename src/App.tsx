@@ -15,11 +15,13 @@ import DetailForDev from "./pages/DetailForDev/DetailForDev";
 import PageCompany from "./pages/Company/Companies";
 import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
-import QuickSearch from "./components/asset/QuickSearch";
+import FetchCompany from "./Common/SetCompanyContext";
+import { DataContext } from "./context/DataContext";
 
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
+  const DataCtx = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const initial = async () => {
@@ -42,6 +44,7 @@ function App() {
 
   useEffect(() => {
     initial();
+    FetchCompany(DataCtx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,15 +111,13 @@ function App() {
             path="/company/:company/:projectID/:projectName/addReport"
             element={<AddReport />}
           />
+
+          {/* Report Detail */}
           <Route
             path="/company/:company/:projectID/:projectName/:problemID"
             element={<DetailForDev />}
           />
         </Routes>
-
-        <Box position="absolute" bottom="0.75rem" right="1rem">
-          <QuickSearch />
-        </Box>
       </Box>
     );
   }

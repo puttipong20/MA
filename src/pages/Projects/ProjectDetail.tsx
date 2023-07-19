@@ -140,11 +140,19 @@ export default function DetailPage() {
   };
 
   useEffect(() => {
-    onSnapshot(projectRef, () => {
+    let unsub: any = null
+
+    unsub = onSnapshot(projectRef, () => {
       fetchingProjectDetail();
     });
+
+    return () => {
+      if (unsub) {
+        unsub();
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params]);
 
   const submitUpdate = async (data: any) => {
     setIsUpdating(true);
@@ -214,6 +222,7 @@ export default function DetailPage() {
         <Container maxW="100%" pb="10">
           <Box mt="3" pb="1rem">
             <Button
+              borderRadius="16px"
               bg="#4C7BF4"
               color="#fff"
               size="sm"
@@ -362,7 +371,7 @@ export default function DetailPage() {
                       <Text fontWeight={"bold"} w="7.5rem">
                         สถานะ
                       </Text>
-                      <Text as="span" fontWeight={"normal"}>
+                      <Text as="span" fontWeight={"normal"} borderRadius="16px">
                         : {activeMA && <MAstatusTag status={activeMA.status} />}
                       </Text>
                     </HStack>
@@ -404,24 +413,24 @@ export default function DetailPage() {
             <Flex justify={"space-between"} align={"center"}>
               <Text fontWeight={"bold"} w="fit-content">
                 ประวัติการทำสัญญา{" "}
+              </Text>
+              <Flex>
                 <Button
-                  size="sm"
+                  mr="1rem"
+                  borderRadius="16px"
                   bg="#4C7BF4"
                   color="#eee"
                   _hover={{ opacity: 0.8 }}
-                  _active={{ opacity: 0.9 }}
                   onClick={fetchingProjectDetail}
                 >
                   <AiOutlineReload />
                 </Button>
-              </Text>
-              <Box>
                 <Renewal
                   MAlog={logs}
                   projectId={projectID}
                   callBack={fetchingProjectDetail}
                 />
-              </Box>
+              </Flex>
             </Flex>
             <Box>
               <Box
@@ -431,7 +440,7 @@ export default function DetailPage() {
                 borderColor="#f4f4f4"
                 w="100%"
                 h="100%"
-                maxH={"36vh"}
+                maxH={"35vh"}
                 overflowY={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}

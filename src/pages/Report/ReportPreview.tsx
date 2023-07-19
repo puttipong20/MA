@@ -117,6 +117,8 @@ export default function ProblemPreview() {
               pt="1rem"
             >
               <Button
+                mt="-1.5rem"
+                borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
                 size="sm"
@@ -147,7 +149,10 @@ export default function ProblemPreview() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={["flex-end", "space-between"]} flexDir={["column", "column", "row"]}>
+          <Flex
+            justify={["flex-end", "space-between"]}
+            flexDir={["column", "column", "row"]}
+          >
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius={"16px"}>
                 <InputLeftAddon
@@ -200,7 +205,7 @@ export default function ProblemPreview() {
                 />
               </Box>
             </Flex>
-            <Box mt={["0.25rem", "0.25rem", "0"]}>
+            <Box mt={["0.5rem", "0.5rem", "0"]}>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
@@ -357,21 +362,20 @@ export default function ProblemPreview() {
                         <Td textAlign={"center"}>
                           {" "}
                           <Tag
+                            borderRadius="16px"
                             w="100%"
                             h="40px"
                             bg={
                               r.docs.RepStatus === wait
                                 ? "yellow.300"
                                 : r.docs.RepStatus === done
-                                  ? "green.600"
-                                  : r.docs.RepStatus === process
-                                    ? "gray.400"
-                                    : "red.300"
+                                ? "green.500"
+                                : r.docs.RepStatus === process
+                                ? "gray.400"
+                                : "red.500"
                             }
                             color={
-                              r.docs.RepStatus === wait
-                                ? "black"
-                                : "white"
+                              r.docs.RepStatus === wait ? "black" : "white"
                             }
                           >
                             <TagLabel w="100%" textAlign={"center"}>
