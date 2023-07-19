@@ -92,6 +92,7 @@ export default function ProjectPreviewComp() {
             projectId: projectID,
             detail: p.data() as ProjectDetail,
           };
+          Company.setFirebaseId((p.data() as ProjectDetail).firebaseId)
           // setCompanyName(project.detail.companyName);
           const MAref = collection(doc(db, "Project", projectID), "MAlogs");
           const MAlogs = await getDocs(MAref);
@@ -363,18 +364,18 @@ export default function ProjectPreviewComp() {
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                      ? (display = "ล่วงหน้า")
-                      : (display = "หมดอายุ");
+                        ? (display = "ล่วงหน้า")
+                        : (display = "หมดอายุ");
                     state === "active"
                       ? (color = "white")
                       : state === "advance"
-                      ? (color = "white")
-                      : (color = "white");
+                        ? (color = "white")
+                        : (color = "white");
                     state === "active"
                       ? (bg = "green.500")
                       : state === "advance"
-                      ? (bg = "blue.500")
-                      : (bg = "red.500");
+                        ? (bg = "blue.500")
+                        : (bg = "red.500");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (

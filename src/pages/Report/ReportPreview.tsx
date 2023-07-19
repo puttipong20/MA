@@ -62,7 +62,7 @@ export default function ProblemPreview() {
     setIsFetching(true);
     // console.clear();
     const collRef = collection(db, "Report");
-    const q = query(collRef, where("projectID", "==", params["projectID"]));
+    const q = query(collRef, where("firebaseId", "==", Company.firebaseId));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
     fetchReport.forEach((r) => {
@@ -70,6 +70,7 @@ export default function ProblemPreview() {
         id: r.id,
         docs: r.data() as ReportDetail,
       };
+      Company.setFirebaseId((r.data() as ReportDetail).firebaseId)
       allReport.push(report);
     });
     const sorted_reports = allReport.sort((a, b) => {
@@ -369,10 +370,10 @@ export default function ProblemPreview() {
                               r.docs.RepStatus === wait
                                 ? "yellow.300"
                                 : r.docs.RepStatus === done
-                                ? "green.500"
-                                : r.docs.RepStatus === process
-                                ? "gray.400"
-                                : "red.500"
+                                  ? "green.500"
+                                  : r.docs.RepStatus === process
+                                    ? "gray.400"
+                                    : "red.500"
                             }
                             color={
                               r.docs.RepStatus === wait ? "black" : "white"

@@ -7,10 +7,12 @@ export const CompanyContext = createContext({
     companyName: "",
     projectId: "",
     projectName: "",
+    firebaseId: "",
     reportId: "",
     setCompany: (_id: string, _name: string): void => { },
     setProject: (_id: string, _name: string): void => { },
-    setReport: (_id: string): void => { }
+    setReport: (_id: string): void => { },
+    setFirebaseId: (_id: string): void => { }
 })
 
 interface Props {
@@ -23,6 +25,7 @@ const CompanyContextProvider: React.FC<Props> = (props) => {
     const [projectId, setProjectId] = useState<string>("")
     const [projectName, setProjectName] = useState<string>("")
     const [reportId, setReportId] = useState<string>("")
+    const [firebaseId, setFirebaseId] = useState<string>("");
 
     const setCompany = (id: string, name: string) => {
         setCompanyId(id)
@@ -35,7 +38,7 @@ const CompanyContextProvider: React.FC<Props> = (props) => {
 
     const setReport = (id: string) => { setReportId(id) }
 
-
+    const setNewFirebaseId = (id: string) => { setFirebaseId(id) }
 
     const context = {
         companyId: companyId,
@@ -43,9 +46,11 @@ const CompanyContextProvider: React.FC<Props> = (props) => {
         projectId: projectId,
         projectName: projectName,
         reportId: reportId,
+        firebaseId: firebaseId,
         setCompany: setCompany,
         setProject: setProject,
-        setReport: setReport
+        setReport: setReport,
+        setFirebaseId: setNewFirebaseId,
     }
 
     return (
