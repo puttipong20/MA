@@ -16,11 +16,7 @@ import {
   InputLeftElement,
   InputGroup,
   HStack,
-  // IconButton,
-  // useColorMode,
 } from "@chakra-ui/react";
-// import { AiOutlinePlusCircle } from "react-icons/ai";
-// import { CgDetailsMore } from "react-icons/cg";
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -31,22 +27,20 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { auth, db } from "../services/config-db";
+import { db } from "../services/config-db";
 
 import { search } from "ss-search";
 import { Company, CompanyDetail } from "../@types/Type";
 
 import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
-import { LuLogOut } from "react-icons/lu";
-import { signOut } from "firebase/auth";
-import { AuthContext } from "../context/AuthContext";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
 import QuickSearchModal from "../components/asset/QuickSearchModal";
 // import { FaLightbulb } from "react-icons/fa";
 
 import classes from "./Layout.module.css";
+import LogoutButton from "../pages/Login/Logout";
 
 interface Props {
   setTriggle: () => void;
@@ -61,7 +55,6 @@ const Sidebar: React.FC<Props> = (props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
-  const Auth = useContext(AuthContext);
   // const { colorMode, toggleColorMode } = useColorMode();
 
   const onSearch = () => {
@@ -101,11 +94,6 @@ const Sidebar: React.FC<Props> = (props) => {
     setIsFetching(false);
   };
 
-  const logout = () => {
-    signOut(auth);
-    Auth.clearUser();
-  };
-
   useEffect(() => {
     const collRef = collection(db, "Company");
     const q = query(collRef);
@@ -132,9 +120,6 @@ const Sidebar: React.FC<Props> = (props) => {
     });
     // console.log(Company)
   });
-
-  const code = 0;
-  const color = `rgba(${code},${code},${code},0.1)`;
 
   return (
     <Box position="relative" h="fit-content" maxH="100%">
@@ -294,21 +279,7 @@ const Sidebar: React.FC<Props> = (props) => {
         </Box>
       )}
       {/* <Divider my="5px" opacity={"1"} /> */}
-      <Box
-        w="100%"
-        p="0.5rem"
-        userSelect={"none"}
-        cursor={"pointer"}
-        transition={"all 0.3s"}
-        borderRadius={"10px"}
-        _hover={{ bg: color }}
-        onClick={logout}
-      >
-        <Text display="flex" alignItems={"center"} gap={"1rem"}>
-          <LuLogOut />
-          Logout
-        </Text>
-      </Box>
+      <LogoutButton />
     </Box>
   );
 };
