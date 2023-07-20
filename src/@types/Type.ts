@@ -11,7 +11,7 @@ export type ReportDetail = {
   RepImg: string[];
   RepStatus: string;
   projectName: string;
-  projectID: string;
+  projectId: string;
   createAt: string;
   detail: string;
   email: string;
@@ -22,6 +22,7 @@ export type ReportDetail = {
   companyName: string;
   ref?: string;
   uid: string;
+  firebaseId: string;
   createBy: { uid: string; username: string };
   latestReportUpdate?: { uid: string; username: string; timestamp: string };
   latestUpdate?: { uid: string; username: string; timestamp: string };

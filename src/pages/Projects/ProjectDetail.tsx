@@ -140,7 +140,7 @@ export default function DetailPage() {
   };
 
   useEffect(() => {
-    let unsub: any = null
+    let unsub: any = null;
 
     unsub = onSnapshot(projectRef, () => {
       fetchingProjectDetail();
@@ -150,7 +150,7 @@ export default function DetailPage() {
       if (unsub) {
         unsub();
       }
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
@@ -387,12 +387,13 @@ export default function DetailPage() {
                 )}
                 <Box
                   w="100%"
-                  textAlign={"right"}
+                  textAlign="right"
                   color="GrayText"
-                  fontSize={"0.75rem"}
+                  fontSize="12px"
                 >
+                  <Text>สร้างโดย : {projectDetail?.createdBy.username}</Text>
                   <Text>
-                    Latest update :{" "}
+                    ดำเนินการล่าสุดโดย :{" "}
                     {projectDetail?.latestUpdate
                       ? projectDetail?.latestUpdate.username
                       : projectDetail?.createdBy.username}
@@ -402,7 +403,6 @@ export default function DetailPage() {
                       ? convertTime(projectDetail?.latestUpdate.timestamp)
                       : convertTime(projectDetail!.createdAt)}
                   </Text>
-                  <Text>Created By : {projectDetail?.createdBy.username}</Text>
                 </Box>
               </Box>
             </Card>

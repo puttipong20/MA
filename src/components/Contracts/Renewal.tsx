@@ -260,10 +260,11 @@ const Renewal: React.FC<Props> = (props) => {
                   )}
                 />
                 <Flex justify={"center"} mt="5">
-                  <Button mr="68px" colorScheme="gray" onClick={onClose}>
+                  <Button mr="68px" w="5rem" colorScheme="gray" onClick={onClose}>
                     ยกเลิก
                   </Button>
                   <Button
+                    w="5rem"
                     bg="#4C7BF4"
                     color="#fff"
                     _hover={{ opacity: "0.8" }}

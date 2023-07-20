@@ -102,11 +102,15 @@ const DeleteProject: React.FC<Props> = (props) => {
             <Text>ยืนยันการลบหรือไม่?</Text>
           </ModalBody>
           <ModalFooter>
-            <Button mr="5" colorScheme="gray" onClick={onClose}>
+            <Button w="5rem" fontSize="14px" mr="5" onClick={onClose}>
               ยกเลิก
             </Button>
             <Button
-              colorScheme="red"
+              w="5rem"
+              fontSize="14px"
+              bg="red.500"
+              color="#fff"
+              _hover={{ opacity: "0.8" }}
               onClick={deleteProcess}
               isLoading={deleting}
             >

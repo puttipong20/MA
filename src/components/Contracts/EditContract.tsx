@@ -331,14 +331,15 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                 {expireError && <Text>วันที่ไม่ถูกต้อง : วันที่สิ้นสุดสัญญาต้องน้อยกว่าวันที่ปัจจุบัน</Text>}
               </Box>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => clear()}>
+                <Button mr="68px" w="5rem" onClick={() => clear()}>
                   เคลียร์
                 </Button>
                 <Button
+                  w="5rem"
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                   isDisabled={activeError || advanceError || expireError}
                 >

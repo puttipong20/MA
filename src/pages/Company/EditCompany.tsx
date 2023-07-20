@@ -51,7 +51,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
   const toast = useToast();
   const AuthCtx = useContext(AuthContext);
 
-  const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
+  const updatedDate = moment().format("DD/MM/YYYY, HH:mm:ss");
 
   useEffect(() => {
     if (data) {
@@ -67,7 +67,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    window.location.reload();
     if (id) {
       const DocRef = doc(db, "Company", id);
       await updateDoc(DocRef, {
@@ -102,7 +101,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
     }
     reset();
     onClose();
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
@@ -252,7 +251,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก
