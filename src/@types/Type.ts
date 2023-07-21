@@ -10,7 +10,6 @@ export type Solution = {
 export type ReportDetail = {
   RepImg: string[];
   RepStatus: string;
-  projectName: string;
   projectId: string;
   createAt: string;
   detail: string;
@@ -19,7 +18,6 @@ export type ReportDetail = {
   name: string;
   phone: string;
   title: string;
-  companyName: string;
   ref?: string;
   uid: string;
   firebaseId: string;
