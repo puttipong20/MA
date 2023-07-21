@@ -75,7 +75,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
       if (found.size !== 0) {
         const reportDetail: ReportDetail = found.docs[0].data() as ReportDetail;
         setReportFound({ id: found.docs[0].id, docs: reportDetail });
-        const projectDoc = doc(db, "Project", reportDetail.projectID);
+        const projectDoc = doc(db, "Project", reportDetail.projectId);
         await getDoc(projectDoc).then((d) => {
           const projectData: ProjectDetail = d.data() as ProjectDetail;
           setCompanyReport(projectData.companyID);
@@ -109,6 +109,15 @@ const QuickSearchModal: React.FC<Props> = (props) => {
       setDetail([]);
     }
   };
+
+  const findCompany = () => {
+
+  }
+
+  const findProject = () => {
+
+  }
+
 
   useEffect(() => {
     setSearchValue(searchRef);
@@ -237,7 +246,16 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             <Divider my="0.5rem" />
             <Box>
               <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
-                รายงานปัญหา (Report)
+                รายงานปัญหา (Report)                  <Button
+                  onClick={searchReport}
+                  isLoading={isSearching}
+                  bg="#4c7bf4"
+                  color="white"
+                  _hover={{}}
+                  ml="0.25rem"
+                >
+                  <SearchIcon />
+                </Button>
               </Heading>
               <HStack
                 justifyContent={"space-between"}
@@ -248,16 +266,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   <Text>
                     ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text>
                   </Text>
-                  <Button
-                    onClick={searchReport}
-                    isLoading={isSearching}
-                    bg="#4c7bf4"
-                    color="white"
-                    _hover={{}}
-                    ml="0.25rem"
-                  >
-                    <SearchIcon />
-                  </Button>
+
                 </Box>
                 <Button
                   onClick={() => {
@@ -329,10 +338,10 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                           reportFound.docs.RepStatus === wait
                             ? "yellow.300"
                             : reportFound.docs.RepStatus === done
-                            ? "green.600"
-                            : reportFound.docs.RepStatus === process
-                            ? "gray.400"
-                            : "red.300"
+                              ? "green.600"
+                              : reportFound.docs.RepStatus === process
+                                ? "gray.400"
+                                : "red.300"
                         }
                         color={
                           reportFound.docs.RepStatus === wait
