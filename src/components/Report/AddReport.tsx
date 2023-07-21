@@ -90,8 +90,6 @@ const AddReport = () => {
       name: data.ticketsName,
       RepImg: allImgUpload,
       firebaseId: Company.firebaseId,
-      companyName: Company.companyName,
-      projectName: Company.projectName,
       projectId: Company.projectId,
       uid: Auth.uid,
       createBy: { uid: Auth.uid, username: Auth.username },

@@ -235,8 +235,8 @@ const EditProblem = ({ data, id }: any) => {
                   control={control}
                   defaultValue=""
                   rules={{ required: true }}
-                  render={({ field: { name, value, onChange, onBlur } }) => (
-                    <FormControl isInvalid={Boolean(errors[name])} isReadOnly>
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <FormControl isReadOnly>
                       <FormLabel color="#1B2559">ชื่อผู้แจ้งปัญหา</FormLabel>
                       <Input
                         value={value}
