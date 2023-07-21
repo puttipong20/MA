@@ -285,35 +285,39 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               </CardBody>
             </Card>
             <Divider my="0.5rem" />
-            <Box>
-              <HStack justify={"space-between"}>
-                <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
-                  รายงานปัญหา (Report)
-                </Heading>
-                <Button
-                  onClick={searchReport}
-                  isLoading={isSearching}
-                  bg="#4c7bf4"
-                  color="white"
-                  _hover={{}}
-                  ml="0.25rem"
-                  borderRadius={"16px"}
-                >
-                  <SearchIcon />
-                </Button>
-              </HStack>
-              <HStack
-                justifyContent={"space-between"}
-                w="100%"
-                alignItems={"center"}
-              >
-                <Box display="flex" alignItems={"center"}>
-                  <Text>
-                    ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text>
-                  </Text>
+            <Card>
+              <CardHeader pb="0.25rem">
+                <HStack justify={"space-between"}>
+                  <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
+                    รายงานปัญหา (Report)
+                  </Heading>
+                  <Button
+                    onClick={searchReport}
+                    isLoading={isSearching}
+                    bg="#4c7bf4"
+                    color="white"
+                    _hover={{}}
+                    ml="0.25rem"
+                    borderRadius={"16px"}
+                  >
+                    <SearchIcon />
+                  </Button>
+                </HStack>
+              </CardHeader>
+              <CardBody>
 
-                </Box>
-                {/* <Button
+                <HStack
+                  justifyContent={"space-between"}
+                  w="100%"
+                  alignItems={"center"}
+                >
+                  <Box display="flex" alignItems={"center"}>
+                    <Text>
+                      ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text>
+                    </Text>
+
+                  </Box>
+                  {/* <Button
                   onClick={() => {
                     setReportFound(undefined);
                   }}
@@ -321,107 +325,108 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                 >
                   <DeleteIcon />
                 </Button> */}
-              </HStack>
-              {reportFound && (
-                <Card
-                border="1px solid rgb(0,0,0,0.2)"
-                  boxShadow={"lg"}
-                  mt="1rem"
-                >
-                  <CardBody>
+                </HStack>
+                {reportFound && (
+                  <Card
+                    border="1px solid rgb(0,0,0,0.2)"
+                    boxShadow={"lg"}
+                    mt="1rem"
+                  >
+                    <CardBody>
 
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        บริษัท
-                      </Text>
-                      <Text>: {reportFound.docs.companyName}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        โปรเจกต์
-                      </Text>
-                      <Text>: {reportFound.docs.projectName}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        รหัสอ้างอิง
-                      </Text>
-                      <Text>: {reportFound.docs.ref}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        ปัญหาที่พบ
-                      </Text>
-                      <Text>: {reportFound.docs.title}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        ผู้แจ้งปัญหา
-                      </Text>
-                      <Text>: {reportFound.docs.name}</Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        วันที่
-                      </Text>
-                      <Text>
-                        :{" "}
-                        {moment(reportFound.docs.createAt).format(
-                          "DD/MM/YYYY HH:mm:ss"
-                        )}
-                      </Text>
-                    </HStack>
-                    <HStack>
-                      <Text w="8rem" fontWeight={"bold"}>
-                        สภานะ
-                      </Text>
-                      <Text display="flex" alignItems={"center"}>
-                        :
-                        <Tag
-                          w="100%"
-                          ml="0.25rem"
-                          bg={
-                            reportFound.docs.RepStatus === wait
-                              ? "yellow.300"
-                              : reportFound.docs.RepStatus === done
-                                ? "green.600"
-                                : reportFound.docs.RepStatus === process
-                                  ? "gray.400"
-                                  : "red.300"
-                          }
-                          color={
-                            reportFound.docs.RepStatus === wait
-                              ? "black"
-                              : "white"
-                          }
-                        >
-                          <TagLabel w="100%" textAlign={"center"}>
-                            {reportFound.docs.RepStatus}
-                          </TagLabel>
-                        </Tag>
-                      </Text>
-                    </HStack>
-                    {/* /company/:company/:projectID/:projectName/:problemID */}
-                    <Box w="fit-content" m="auto" mt="1rem">
-                      <Button
-                        isLoading={isSearching}
-                        onClick={() => {
-                          navigate(
-                            `/company/${companyReport}/${reportFound.docs.projectId}/${reportFound.docs.projectName}/${reportFound.id}`
-                          );
-                        }}
-                        bg=""
-                      >
-                        กดเพื่อเข้าดูปัญหา{" "}
-                        <Text as="span" color="blue">
-                          <ChevronRightIcon />
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          บริษัท
                         </Text>
-                      </Button>
-                    </Box>
-                  </CardBody>
-                </Card>
-              )}
-            </Box>
+                        <Text>: {reportFound.docs.companyName}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          โปรเจกต์
+                        </Text>
+                        <Text>: {reportFound.docs.projectName}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          รหัสอ้างอิง
+                        </Text>
+                        <Text>: {reportFound.docs.ref}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          ปัญหาที่พบ
+                        </Text>
+                        <Text>: {reportFound.docs.title}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          ผู้แจ้งปัญหา
+                        </Text>
+                        <Text>: {reportFound.docs.name}</Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          วันที่
+                        </Text>
+                        <Text>
+                          :{" "}
+                          {moment(reportFound.docs.createAt).format(
+                            "DD/MM/YYYY HH:mm:ss"
+                          )}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Text w="8rem" fontWeight={"bold"}>
+                          สภานะ
+                        </Text>
+                        <Text display="flex" alignItems={"center"}>
+                          :
+                          <Tag
+                            w="100%"
+                            ml="0.25rem"
+                            bg={
+                              reportFound.docs.RepStatus === wait
+                                ? "yellow.300"
+                                : reportFound.docs.RepStatus === done
+                                  ? "green.600"
+                                  : reportFound.docs.RepStatus === process
+                                    ? "gray.400"
+                                    : "red.300"
+                            }
+                            color={
+                              reportFound.docs.RepStatus === wait
+                                ? "black"
+                                : "white"
+                            }
+                          >
+                            <TagLabel w="100%" textAlign={"center"}>
+                              {reportFound.docs.RepStatus}
+                            </TagLabel>
+                          </Tag>
+                        </Text>
+                      </HStack>
+                      {/* /company/:company/:projectID/:projectName/:problemID */}
+                      <Box w="fit-content" m="auto" mt="1rem">
+                        <Button
+                          isLoading={isSearching}
+                          onClick={() => {
+                            navigate(
+                              `/company/${companyReport}/${reportFound.docs.projectId}/${reportFound.docs.projectName}/${reportFound.id}`
+                            );
+                          }}
+                          bg=""
+                        >
+                          กดเพื่อเข้าดูปัญหา{" "}
+                          <Text as="span" color="blue">
+                            <ChevronRightIcon />
+                          </Text>
+                        </Button>
+                      </Box>
+                    </CardBody>
+                  </Card>
+                )}
+              </CardBody>
+            </Card>
           </ModalBody>
         </ModalContent>
       </Modal>
