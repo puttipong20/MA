@@ -180,7 +180,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
           }
         });
       })
-      setProjectFound(found.filter(i => i != undefined) as unknown as JSX.Element[])
+      setProjectFound(found.flat().filter(Boolean) as unknown as JSX.Element[])
     }
   }
 
@@ -195,8 +195,14 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   useEffect(() => {
     console.clear()
     console.log(`companyFound length : ${companyFound.length}`)
+    if (companyFound.length > 0) {
+      companyFound.forEach(i => console.log(i))
+    }
     console.log(`projectFound length : ${projectFound.length}`)
-  }, [companyFound])
+    if (projectFound.length > 0) {
+      projectFound.forEach(i => console.log(i))
+    }
+  }, [companyFound, projectFound])
 
   return (
     <Box>
@@ -247,7 +253,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   ?
                   companyFound : searchValue === ""
                     ? <Text>กรุณากรอกคำค้นหา</Text>
-                    : <Text>ไม่พบ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
+                    : <Text>ไม่พบบริษัท <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
               }
             </Box>
 
@@ -262,7 +268,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   ?
                   projectFound : searchValue === ""
                     ? <Text>กรุณากรอกคำค้นหา</Text>
-                    : <Text>ไม่พบ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
+                    : <Text>ไม่พบโปรเจกต์ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
               }
             </Box>
             <Divider my="0.5rem" />
