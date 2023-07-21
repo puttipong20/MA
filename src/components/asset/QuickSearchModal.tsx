@@ -36,8 +36,6 @@ import { useNavigate } from "react-router-dom";
 import { search } from "ss-search";
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
   query,
   where,
