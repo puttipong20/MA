@@ -10,17 +10,24 @@ const db = admin.firestore();
 exports.addReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
     const token = process.env.VITE_LINE_TOKEN;
-    const { projectName, projectID, companyName, title, detail } = req.body;
+    const {firebaseId, title, detail } = req.body;
     let shortName = "";
+    let projectName = "";
+    let companyName = ""
     await db
       .collection("Project")
-      .doc(projectID)
-      // .doc("nodAJO19k0Cucjens7oS")
+      .where('firebaseId','==',firebaseId)
       .get()
       .then((snapshot) => {
-        shortName = snapshot.data().shortName;
+        const docs = snapshot.docs
+        let query = {}
+        docs.map((item) => {
+          query = item.data()
+        })
+        shortName = query.shortName
+        projectName = query.projectName
+        companyName = query.companyName
       });
-
     const incrementRef = db.collection("autoIncrement").doc(shortName);
     try {
       db.runTransaction(async (transaction) => {
@@ -52,6 +59,8 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
           .add({
             ...req.body,
             ref: ref,
+            projectName: projectName,
+            companyName: companyName,
             RepStatus: "รอรับเรื่อง",
           })
           .then((response) => {
@@ -82,11 +91,11 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
 });
 exports.updateReport = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
-    const { reportID } = req.body;
+    const { reportId } = req.body;
     try {
       await db
         .collection("Report")
-        .doc(reportID)
+        .doc(reportId)
         .update({
           ...req.body,
         });
@@ -100,32 +109,21 @@ exports.getReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
     const { firebaseID } = req.body;
     try {
-      await db
-        .collection("Project")
-        .where("firebaseId", "==", firebaseID)
+      const allReport = [];
+      db.collection("Report")
+        .where("firebaseId","==",firebaseID)
         .get()
         .then((data) => {
           const docs = data.docs;
-          let docsId = "";
-          docs.map((data) => {
-            docsId = data.id;
+          docs.map((doc) => {
+            console.log(doc.data());
+            const query = {
+              ...doc.data(),
+              docId: doc.id
+            };
+            allReport.push(query);
           });
-          console.log(docsId)
-          const allReport = [];
-          db.collection("Report")
-            .where("projectID","==",docsId)
-            .get()
-            .then((data) => {
-              const docs = data.docs;
-              docs.map((doc) => {
-                console.log(doc.data());
-                const query = {
-                  ...doc.data(),
-                };
-                allReport.push(query);
-              });
-              res.send(allReport);
-            });
+          res.send(allReport);
         });
 
     } catch (e) {
