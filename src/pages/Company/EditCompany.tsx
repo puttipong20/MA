@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { doc, updateDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { db } from "../../services/config-db";
 import {
@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import { RiEditLine } from "react-icons/ri";
+import { AuthContext } from "../../context/AuthContext";
 
 type ComValue = {
   companyName: string;
@@ -36,7 +37,7 @@ type ComValue = {
   userPerson: string;
 };
 
-const FormEditCompany = ({ data, id }: any) => {
+const FormEditCompany = ({ data, id, callBack }: any) => {
   const {
     handleSubmit,
     reset,
@@ -48,8 +49,9 @@ const FormEditCompany = ({ data, id }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const AuthCtx = useContext(AuthContext);
 
-  const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
+  const updatedDate = moment().format("DD/MM/YYYY, HH:mm:ss");
 
   useEffect(() => {
     if (data) {
@@ -65,12 +67,15 @@ const FormEditCompany = ({ data, id }: any) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-
     if (id) {
       const DocRef = doc(db, "Company", id);
       await updateDoc(DocRef, {
         ...data,
         companyUpdate: updatedDate,
+        updateBy: {
+          uid: AuthCtx.uid,
+          username: AuthCtx.username,
+        }
       })
         .then(() => {
           toast({
@@ -80,6 +85,7 @@ const FormEditCompany = ({ data, id }: any) => {
             isClosable: true,
             position: "top",
           });
+          callBack();
           setIsLoading(false);
         })
         .catch((e) => {
@@ -95,7 +101,7 @@ const FormEditCompany = ({ data, id }: any) => {
     }
     reset();
     onClose();
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
@@ -151,7 +157,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   name="companyAddress"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ที่อยู่บริษัท</FormLabel>
@@ -168,7 +173,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   name="userName"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ชื่อผู้ติดต่อ</FormLabel>
@@ -185,9 +189,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   name="userPhone"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">เบอร์โทรติดต่อ</FormLabel>
@@ -205,9 +206,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   name="userTax"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">
@@ -226,7 +224,6 @@ const FormEditCompany = ({ data, id }: any) => {
                   name="userPerson"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => {
                     return (
                       <FormControl isInvalid={Boolean(errors[name])}>
@@ -254,7 +251,7 @@ const FormEditCompany = ({ data, id }: any) => {
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

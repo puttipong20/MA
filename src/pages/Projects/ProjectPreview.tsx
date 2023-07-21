@@ -92,6 +92,7 @@ export default function ProjectPreviewComp() {
             projectId: projectID,
             detail: p.data() as ProjectDetail,
           };
+          Company.setFirebaseId((p.data() as ProjectDetail).firebaseId)
           // setCompanyName(project.detail.companyName);
           const MAref = collection(doc(db, "Project", projectID), "MAlogs");
           const MAlogs = await getDocs(MAref);
@@ -149,6 +150,8 @@ export default function ProjectPreviewComp() {
               pt="1rem"
             >
               <Button
+                mt="-1.5rem"
+                borderRadius="16px"
                 bg="#4C7BF4"
                 color="#fff"
                 size="sm"
@@ -212,6 +215,7 @@ export default function ProjectPreviewComp() {
                 isLoading={isFetching}
                 onClick={fetchingData}
                 mr="1rem"
+                borderRadius="16px"
               >
                 <AiOutlineReload />
               </Button>
@@ -338,7 +342,7 @@ export default function ProjectPreviewComp() {
                   </Tr>
                   <Tr w="100%">
                     <Td colSpan={8}>
-                      <Box as="div" w="15%" m="auto">
+                      <Box as="div" w="fit-content" m="auto">
                         <AddProject
                           companyName={companyName}
                           companyId={params["company"] as string}
@@ -354,18 +358,24 @@ export default function ProjectPreviewComp() {
                   )[0];
                   let display = "";
                   let color = "";
+                  let bg = "";
                   if (lastestMA) {
                     const state = lastestMA.status;
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                      ? (display = "ล่วงหน้า")
-                      : (display = "หมดอายุ");
+                        ? (display = "ล่วงหน้า")
+                        : (display = "หมดอายุ");
                     state === "active"
-                      ? (color = "green")
+                      ? (color = "white")
                       : state === "advance"
-                      ? (color = "blue")
-                      : (color = "red");
+                        ? (color = "white")
+                        : (color = "white");
+                    state === "active"
+                      ? (bg = "green.500")
+                      : state === "advance"
+                        ? (bg = "blue.500")
+                        : (bg = "red.500");
                   }
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
@@ -384,7 +394,13 @@ export default function ProjectPreviewComp() {
                       </Td>
 
                       {!lastestMA ? (
-                        <Td colSpan={4} textAlign={"center"}>
+                        <Td
+                          colSpan={4}
+                          textAlign={"center"}
+                          onClick={() => {
+                            navigate(navigateLink);
+                          }}
+                        >
                           ไม่มีสัญญาที่กำลังใช้งาน
                         </Td>
                       ) : (
@@ -408,7 +424,7 @@ export default function ProjectPreviewComp() {
                               moment(lastestMA.endMA).format("DD/MM/YYYY")}
                           </Td>
                           <Td
-                            textAlign={"right"}
+                            textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
                             }}
@@ -421,12 +437,19 @@ export default function ProjectPreviewComp() {
                           </Td>
                           <Td
                             textAlign={"center"}
-                            fontSize={"1rem"}
                             onClick={() => {
                               navigate(navigateLink);
                             }}
                           >
-                            <Badge colorScheme={color}>{display}</Badge>
+                            <Badge
+                              borderRadius="16px"
+                              p="1.5"
+                              w="6rem"
+                              color={color}
+                              bg={bg}
+                            >
+                              {display}
+                            </Badge>
                           </Td>
                         </>
                       )}
@@ -447,6 +470,8 @@ export default function ProjectPreviewComp() {
                           color="#eee"
                           _hover={{ opacity: "0.8" }}
                           fontWeight={"normal"}
+                          w="150px"
+                          borderRadius="16px"
                           onClick={() => {
                             navigate(navigateLink);
                           }}
@@ -498,7 +523,7 @@ export default function ProjectPreviewComp() {
                               >
                                 <CgDetailsMore />
                               </Text>
-                              ดูข้อมูลสัญญา MA
+                              ดูข้อมูล Project {<br />}และ สัญญา MA
                             </MenuItem>
                             <MenuItem
                               h="50px"

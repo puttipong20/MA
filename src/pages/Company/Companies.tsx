@@ -49,30 +49,39 @@ function PreCompany() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   const fetchCompany = async () => {
-    const CompanyRef = collection(db, "Company")
-    const q = query(CompanyRef, orderBy("createdAt", "desc"))
-    const Companies = await getDocs(q)
-    return Companies
-  }
+    const CompanyRef = collection(db, "Company");
+    const q = query(CompanyRef, orderBy("createdAt", "desc"));
+    const Companies = await getDocs(q);
+    return Companies;
+  };
 
-  const { data, isLoading, isFetching, refetch } = useQuery({ queryKey: ["company"], queryFn: fetchCompany, refetchOnWindowFocus: false })
+  const { data, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ["company"],
+    queryFn: fetchCompany,
+    refetchOnWindowFocus: false,
+  });
 
   const clickToRefetch = () => {
     refetch();
-  }
+  };
 
   useEffect(() => {
     const companies: Company[] = [];
-    data?.forEach(d => companies.push({ companyId: d.id, detail: { ...d.data() as CompanyDetail } }))
+    data?.forEach((d) =>
+      companies.push({
+        companyId: d.id,
+        detail: { ...(d.data() as CompanyDetail) },
+      })
+    );
     // console.log(companies);
-    setComForm(companies)
-    setFilComForm(companies)
-  }, [data])
+    setComForm(companies);
+    setFilComForm(companies);
+  }, [data]);
 
   const onSearch = () => {
     const value = searchRef.current?.value;
     const searchText = value + " " || "";
-    const searchField = ["companyName"];
+    const searchField = ["detail.companyName"];
     const result = search(comForm, searchField, searchText) as any[];
     setFilComForm(result);
   };
@@ -112,7 +121,7 @@ function PreCompany() {
                 >
                   ข้อมูลลูกค้า
                 </Text>
-                <Text fontSize="16px" fontFamily="Prompt" >
+                <Text fontSize="16px" fontFamily="Prompt">
                   บริการหลังการขายของลูกค้าทั้งหมด
                 </Text>
               </VStack>
@@ -139,9 +148,22 @@ function PreCompany() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              <Button onClick={clickToRefetch} bg="#4C7BF4" color="#fff" _hover={{ opacity: 0.8 }} _active={{ opacity: 0.9 }}><AiOutlineReload /></Button>
             </Flex>
+            <Flex>
+
+            <Button
+              borderRadius="16px"
+              onClick={clickToRefetch}
+              bg="#4C7BF4"
+              color="#fff"
+              _hover={{ opacity: 0.8 }}
+                _active={{ opacity: 0.9 }}
+                mr="1rem"
+              >
+              <AiOutlineReload />
+            </Button>
             <FormAddCompany refetch={refetch} />
+              </Flex>
           </Flex>
         </Box>
 
@@ -219,7 +241,7 @@ function PreCompany() {
                 </Tr>
               </Thead>
               <Tbody>
-                {(isLoading || isFetching) ? (
+                {isLoading || isFetching ? (
                   <Tr>
                     <Td colSpan={7} textAlign={"center"}>
                       Loading . . .
@@ -295,10 +317,14 @@ function PreCompany() {
                               zIndex="sticky"
                             >
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <ViewCompany id={com.companyId} data={com.detail} />
+                                <ViewCompany data={com.detail} />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
-                                <EditCompany id={com.companyId} data={com.detail} />
+                                <EditCompany
+                                  id={com.companyId}
+                                  data={com.detail}
+                                  callBack={refetch}
+                                />
                               </MenuItem>
                               <MenuItem h="50px" p={0} backgroundColor="whiter">
                                 <DeleteCompany

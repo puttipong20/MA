@@ -236,7 +236,7 @@ const EditProblem = ({ data, id }: any) => {
                   defaultValue=""
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
-                    <FormControl isInvalid={Boolean(errors[name])}>
+                    <FormControl isInvalid={Boolean(errors[name])} isReadOnly>
                       <FormLabel color="#1B2559">ชื่อผู้แจ้งปัญหา</FormLabel>
                       <Input
                         value={value}
@@ -307,7 +307,7 @@ const EditProblem = ({ data, id }: any) => {
                   </Text>
                   <Box p="20px">
                     <Grid
-                      templateColumns={"repeat(3,1fr)"}
+                      templateColumns={"repeat(2,1fr)"}
                       w={imageUpload.length >= 3 ? "fit-content" : "100%"}
                       gap={"1.5rem"}
                       mx="auto"
@@ -365,14 +365,15 @@ const EditProblem = ({ data, id }: any) => {
                 </Box>
               </Stack>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button w="5rem" mr="68px" onClick={() => reset()}>
                   เคลียร์
                 </Button>
                 <Button
+                  w="5rem"
                   type="submit"
-                  color="gray.100"
+                  color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

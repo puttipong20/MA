@@ -14,17 +14,21 @@ import {
   useToast,
   useDisclosure,
   ModalHeader,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
 import { useForm, Controller } from "react-hook-form";
 
-import { collection, addDoc, updateDoc, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, getDoc, doc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { CompanyDetail, MA, ProjectDetail } from "../../@types/Type";
 
 import { AuthContext } from "../../context/AuthContext";
 import { CompanyContext } from "../../context/CompanyContext";
+import { QuestionIcon } from "@chakra-ui/icons";
+
+import classes from "./AddProject.module.css";
 
 interface Props {
   companyId: string;
@@ -82,42 +86,70 @@ const AddProject: React.FC<Props> = (props) => {
       createdBy: { username: Auth.username, uid: Auth.uid },
       projectName: data.projectName,
       status: "enable",
+      shortName: data.shortName,
+      firebaseId: data.firebaseID
       // MAlogs: [latestMA]
     };
+    const snExists = await checkShortName(data.shortName)
     // console.log(detail);
-    const companyRef = doc(db, "Company", props.companyId);
-    const company = await getDoc(companyRef);
-    const companyDetail = company.data() as CompanyDetail;
-    const projectRef = collection(db, "Project");
-    const newProjectRef = await addDoc(projectRef, detail);
-    // console.log(newProjectRef.id, "has been added!")
-    const MAref = collection(doc(db, "Project", newProjectRef.id), "MAlogs");
-    await addDoc(MAref, latestMA).then(() => {
-      reset();
-      onClose();
+    if (!snExists) {
+
+      const companyRef = doc(db, "Company", props.companyId);
+      const company = await getDoc(companyRef);
+      const companyDetail = company.data() as CompanyDetail;
+      const projectRef = collection(db, "Project");
+      const newProjectRef = await addDoc(projectRef, detail);
+      // console.log(newProjectRef.id, "has been added!")
+      const MAref = collection(doc(db, "Project", newProjectRef.id), "MAlogs");
+      await addDoc(MAref, latestMA).then(() => {
+        reset();
+        onClose();
+        toast({
+          title: "เพิ่มโปรเจคสำเร็จ.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      });
+      const project = {
+        id: newProjectRef.id,
+        projectName: data.projectName,
+        status: "enable"
+      };
+      let updateProject = [];
+      if (companyDetail.projects) {
+        const allProject = companyDetail.projects;
+        updateProject = [...allProject, project];
+      } else {
+        updateProject = [project];
+      }
+      await updateDoc(companyRef, { projects: updateProject });
+    } else {
       toast({
-        title: "เพิ่มโปรเจคสำเร็จ.",
-        status: "success",
+        title: "ชื่อย่อโปรเจคต์มีอยู่แล้ว",
+        description: "กรุณาเปลี่ยนชื่อย่อใหม่",
+        status: "error",
         duration: 3000,
         isClosable: true,
         position: "top",
       });
-      setIsAdding(false);
-    });
-    const project = {
-      id: newProjectRef.id,
-      projectName: data.projectName,
-      status: "enable"
-    };
-    let updateProject = [];
-    if (companyDetail.projects) {
-      const allProject = companyDetail.projects;
-      updateProject = [...allProject, project];
-    } else {
-      updateProject = [project];
     }
-    await updateDoc(companyRef, { projects: updateProject });
+
+    setIsAdding(false);
   };
+
+  const checkShortName = async (name: string) => {
+    const projectRef = collection(db, "Project");
+    const q = query(projectRef, where("shortName", "==", name));
+    let isExists = true;
+    await getDocs(q).then((p) => {
+      if (p.size === 0) {
+        isExists = false
+      }
+    })
+    return isExists
+  }
 
   useEffect(() => {
     if (props.companyName !== "") {
@@ -146,7 +178,8 @@ const AddProject: React.FC<Props> = (props) => {
   return (
     <Box>
       <Button
-        w="100%"
+        w="150px"
+        borderRadius="16px"
         bg="#4C7BF4"
         color="#eee"
         _hover={{ opacity: "0.8" }}
@@ -175,16 +208,44 @@ const AddProject: React.FC<Props> = (props) => {
                 )}
               />
               <Controller
-                name="projectName"
+                name="firebaseID"
                 control={control}
                 defaultValue={""}
                 render={({ field }) => (
                   <FormControl mb="0.5rem" isRequired>
-                    <Text fontWeight={"bold"}>ชื่อโปรเจค</Text>
-                    <Input type="text" {...field} placeholder="project name" />
+                    <Text fontWeight={"bold"}>Firebase ID</Text>
+                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID" />
                   </FormControl>
                 )}
               />
+              <HStack>
+                <Controller
+                  name="projectName"
+                  control={control}
+                  defaultValue={""}
+                  render={({ field }) => (
+                    <FormControl mb="0.5rem" isRequired>
+                      <Text fontWeight={"bold"}>ชื่อโปรเจค</Text>
+                      <Input
+                        className={classes.input} type="text" {...field} placeholder="project name" />
+                    </FormControl>
+                  )}
+                />
+                <Controller
+                  name="shortName"
+                  control={control}
+                  defaultValue={""}
+                  rules={{ required: { value: true, message: "กรุณาระบุชื่อย่อ" }, minLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" }, maxLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" } }}
+                  render={({ field }) => (
+                    <FormControl mb="0.5rem" isRequired>
+                      <Text fontWeight={"bold"}>ชื่อย่อ <Tooltip label="ชื่อย่อต้องมี 3 ตัวอักษรและเป็นตัวพิมพ์ใหญ่ภาษาอังกฤษ" placement="top" display="flex" alignItems={"center"} border={"1px"}><QuestionIcon /></Tooltip></Text>
+                      <Input
+                        className={classes.input} type="text" {...field} placeholder="ABC" minHeight={3} maxLength={3} pattern="[A-Z]{3}" />
+                    </FormControl>
+                  )}
+                />
+              </HStack>
+
               <HStack>
                 <Controller
                   name="startMA"
@@ -193,7 +254,8 @@ const AddProject: React.FC<Props> = (props) => {
                   render={({ field }) => (
                     <FormControl mb="0.5rem" isRequired>
                       <Text fontWeight={"bold"}>start MA</Text>
-                      <Input type="date" {...field} />
+                      <Input
+                        className={classes.input} type="date" {...field} />
                     </FormControl>
                   )}
                 />
@@ -204,7 +266,8 @@ const AddProject: React.FC<Props> = (props) => {
                   render={({ field }) => (
                     <FormControl mb="0.5rem" isRequired>
                       <Text fontWeight={"bold"}>end MA</Text>
-                      <Input type="date" {...field} />
+                      <Input
+                        className={classes.input} type="date" {...field} />
                     </FormControl>
                   )}
                 />
@@ -225,6 +288,7 @@ const AddProject: React.FC<Props> = (props) => {
                   <FormControl isRequired>
                     <Text fontWeight={"bold"}>ค่าบริการ</Text>
                     <Input
+                      className={classes.input}
                       type="number"
                       min={0}
                       {...field}
@@ -245,9 +309,9 @@ const AddProject: React.FC<Props> = (props) => {
                 </Button>
                 <Button
                   type="submit"
-                  color="gray.100"
+                  color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isAdding}
                   isDisabled={duration < 1}
                 >

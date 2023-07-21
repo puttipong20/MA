@@ -7,127 +7,170 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-exports.addReport_v2 = functions
-  .https.onRequest((req, res) => {
-    cors()(req, res, async () => {
-      const token = process.env.VITE_LINE_NOTIFY
-      const { company, title, detail, projectName} = req.body;
+exports.addReport_v2 = functions.https.onRequest((req, res) => {
+  cors()(req, res, async () => {
+    const token = process.env.VITE_LINE_TOKEN;
+    const {firebaseId, title, detail } = req.body;
+    let shortName = "";
+    let projectName = "";
+    let companyName = ""
+    await db
+      .collection("Project")
+      .where('firebaseId','==',firebaseId)
+      .get()
+      .then((snapshot) => {
+        const docs = snapshot.docs
+        let query = {}
+        docs.map((item) => {
+          query = item.data()
+        })
+        shortName = query.shortName
+        projectName = query.projectName
+        companyName = query.companyName
+      });
+    const incrementRef = db.collection("autoIncrement").doc(shortName);
+    try {
+      db.runTransaction(async (transaction) => {
+        const doc = await transaction.get(incrementRef);
+        if (!doc.exists) {
+          transaction.set(incrementRef, {
+            number: 1,
+          });
+          return {
+            number: 1,
+          };
+        } else {
+          const prevNumber = parseInt(doc.data().number);
+          const number = prevNumber + 1;
 
-      const incrementRef = db.collection("autoIncrement").doc(projectName);
-      try {
-        db.runTransaction(async (transaction) => {
-          const doc = await transaction.get(incrementRef);
-          if (!doc.exists) {
-            transaction.set(incrementRef, {
-              number: 1,
-            });
-            return {
-              number: 1,
-            };
-          } else {
-            const prevNumber = parseInt(doc.data().number);
-            const number = prevNumber + 1;
-
-            transaction.set(incrementRef, {
-              number: number,
-            });
-            return {
-              number: number,
-            };
-          }
-        }).then(async (resp) => {
-          const { number } = resp;
-          await db
-            .collection("Report")
-            .add({
-              ...req.body,
-              ref: `000${number}`,
-              RepStatus: "รอรับเรื่อง",
-            })
-            .then((response) => {
-              res.send(`Add report with id : ${response.id}`);
-            });
-          request({
-            method: "POST",
-            uri: "https://notify-api.line.me/api/notify",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              Authorization:
-                `Bearer ${token}`,
-            },
-            form: {
-              message: `
-บริษัท : ${company}
+          transaction.set(incrementRef, {
+            number: number,
+          });
+          return {
+            number: number,
+          };
+        }
+      }).then(async (resp) => {
+        const { number } = resp;
+        const padNumber = String(number).padStart(5, "0");
+        const ref = shortName + "-" + padNumber;
+        await db
+          .collection("Report")
+          .add({
+            ...req.body,
+            ref: ref,
+            projectName: projectName,
+            companyName: companyName,
+            RepStatus: "รอรับเรื่อง",
+          })
+          .then((response) => {
+            res.send(`Add report with id : ${response.id}`);
+          });
+        request({
+          method: "POST",
+          uri: "https://notify-api.line.me/api/notify",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`,
+          },
+          form: {
+            message: `
+บริษัท : ${companyName}
 โปรเจค : ${projectName}
-เลขอ้างอิง : 000${number}
-ปัญหา : ${title}
+เลขอ้างอิง : ${ref}
+ชื่อเรื่อง : ${title}
 รายละเอียด : ${detail}
-                `,
-            },
-          });
+                        `,
+          },
         });
-      } catch (e) {
-        res.send(
-          `${e} and value need : ( company,title,detail )`
-        );
-      }
-    });
+      });
+    } catch (e) {
+      res.send(`API need : ( companyName, title, detail ) ${e}`);
+    }
   });
-
-exports.getReport_v2 = functions
-  .https.onRequest((req, res) => {
-    cors()(req, res, async () => {
+});
+exports.updateReport = functions.https.onRequest((req, res) => {
+  cors()(req, res, async () => {
+    const { reportId } = req.body;
+    try {
+      await db
+        .collection("Report")
+        .doc(reportId)
+        .update({
+          ...req.body,
+        });
+      res.send(true);
+    } catch (e) {
+      res.send(e);
+    }
+  });
+});
+exports.getReport_v2 = functions.https.onRequest((req, res) => {
+  cors()(req, res, async () => {
+    const { firebaseID } = req.body;
+    try {
       const allReport = [];
-      try {
-        await db
-          .collection("Report")
-          .get()
-          .then((data) => {
-            const docs = data.docs;
-            docs.map((doc) => {
-              const query = {
-                id: doc.id,
-                docs: doc.data(),
-              };
-              allReport.push(query);
-            });
-            return allReport;
+      db.collection("Report")
+        .where("firebaseId","==",firebaseID)
+        .get()
+        .then((data) => {
+          const docs = data.docs;
+          docs.map((doc) => {
+            console.log(doc.data());
+            const query = {
+              ...doc.data(),
+              docId: doc.id
+            };
+            allReport.push(query);
           });
-        res.send(allReport);
-      } catch (e) {
-        res.send(e);
-      }
-    });
+          res.send(allReport);
+        });
+
+    } catch (e) {
+      res.send(`api require {firebaseID: "(firebaseId)"}${e}`);
+    }
   });
-exports.getReportByid_v2 = functions
-  .https.onRequest((req, res) => {
-    cors()(req, res, async () => {
-      const { RepId } = req.body;
-      try {
-        await db
-          .collection("Report")
-          .doc(RepId)
-          .get()
-          .then((data) => {
-            res.send(data.data());
+});
+
+exports.getReportByid_v2 = functions.https.onRequest((req, res) => {
+  cors()(req, res, async () => {
+    const { projectID } = req.body;
+    try {
+      const allDoc = [];
+      await db
+        .collection("Report")
+        .where("projectID", "==", projectID)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            const data = { ...doc.data(), docID: doc.id };
+            allDoc.push(data);
           });
-      } catch (e) {
-        res.send(e, "need : ( RepId )");
-      }
-    });
+          res.send(allDoc);
+        });
+    } catch (e) {
+      res.send(e, "need : ( projectID )");
+    }
   });
-
-exports.deleteReport_v2 = functions
-  .region("asia-southeast1")
-  .https.onRequest((req, res) => {
-    cors()(req, res, async () => {
-      const { RepId } = req.body;
-      try {
-        await db.collection("Report").doc(RepId).delete();
-        res.send(`Deleted ID : ${RepId}`);
-      } catch (e) {
-        res.send(`${e} and value need : ( RepId )`);
-      }
-    });
+});
+exports.getProjectByCompanyID = functions.https.onRequest((req, res) => {
+  cors()(req, res, async () => {
+    const { companyID } = req.body;
+    const allProject = [];
+    try {
+      await db
+        .collection("Project")
+        .where("companyID", "==", companyID)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            const data = { ...doc.data(), ProjectID: doc.id };
+            allProject.push(data);
+          });
+          res.send(allProject);
+        });
+    } catch (e) {
+      res.send(e);
+    }
   });
-
+});

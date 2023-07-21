@@ -31,6 +31,7 @@ type Fvalue = {
   RepImg: [];
   ref: string;
   latestReportUpdate: { timestamp: string; uid: string; username: string };
+  createBy: { uid: string; username: string };
 };
 
 function ReportDetail() {
@@ -68,6 +69,7 @@ function ReportDetail() {
         RepImg: doc.data()?.RepImg,
         ref: doc.data()?.ref,
         latestReportUpdate: doc.data()?.latestReportUpdate,
+        createBy:doc.data()?.createBy,
       };
       setFValue(data);
       setIsLoading(false);
@@ -181,27 +183,6 @@ function ReportDetail() {
                       </Text>
                       <Text w="70%">{fValue?.details}</Text>
                     </HStack>
-
-                    <HStack alignItems="flex-start" color="#8F9BBA">
-                      <Text w="30%">ผู้แก้ไข :</Text>
-                      {!fValue?.latestReportUpdate ? (
-                        <Text>-</Text>
-                      ) : (
-                        <Text w="70%">{fValue?.latestReportUpdate.username}</Text>
-                      )}
-                    </HStack>
-                    <HStack alignItems="flex-start" color="#8F9BBA">
-                      <Text w="30%">แก้ไขเมื่อ :</Text>
-                      {!fValue?.latestReportUpdate ? (
-                        <Text>-</Text>
-                      ) : (
-                        <Text w="70%">
-                          {moment(fValue?.latestReportUpdate.timestamp).format(
-                            "DD/MM/YYYY HH:mm:ss"
-                          )}
-                        </Text>
-                      )}
-                    </HStack>
                   </VStack>
                 </Box>
                 <Box>
@@ -212,6 +193,31 @@ function ReportDetail() {
                     })}
                   </Grid>
                 </Box>
+                <Flex justify="flex-end">
+                  <HStack fontSize="14px" color="gray.400">
+                    <Text>สร้างโดย :</Text>
+                    <Text>{fValue?.createBy.username}</Text>
+                  </HStack>
+                </Flex>
+                <Flex justify="flex-end">
+                  <HStack fontSize="14px" color="gray.400" mt="-0.75rem">
+                    <Text>แก้ไขโดย :</Text>
+                    {!fValue?.latestReportUpdate ? (
+                      <Text>-</Text>
+                    ) : (
+                      <Text>{fValue?.latestReportUpdate.username},</Text>
+                    )}
+                    {!fValue?.latestReportUpdate ? (
+                      <Text></Text>
+                    ) : (
+                      <Text>
+                        {moment(fValue?.latestReportUpdate.timestamp).format(
+                          "DD/MM/YYYY, HH:mm:ss"
+                        )}
+                      </Text>
+                    )}
+                  </HStack>
+                </Flex>
               </Stack>
             </Box>
           </Container>

@@ -89,15 +89,13 @@ const AddReport = () => {
       createAt: data.ticketsDate,
       name: data.ticketsName,
       RepImg: allImgUpload,
+      firebaseId: Company.firebaseId,
       companyName: Company.companyName,
-      // company: params["projectName"]?.replace(/[^a-zA-Z0-9]/g, ''),
-      // companyId: Company.companyId,
-      projectName: Company.projectName.replace(/[^ก-๙เแโใไa-zA-Z0-9]/g, ""),
-      projectID: Company.projectId,
+      projectName: Company.projectName,
+      projectId: Company.projectId,
       uid: Auth.uid,
       createBy: { uid: Auth.uid, username: Auth.username },
       RepStatus: "รอรับเรื่อง",
-
     };
     // console.log(dataToAdd);
     try {
@@ -377,6 +375,7 @@ const AddReport = () => {
                         cursor={"pointer"}
                         userSelect={"none"}
                         bg="#FAFCFE"
+                        _hover={{opacity:"0.8"}}
                       >
                         <Flex color="#4c7bf4" fontSize={"3rem"}>
                           <MdUpload />
@@ -406,10 +405,16 @@ const AddReport = () => {
               </Box>
             </Stack>
             <Flex justify="center">
-              <Button mr="68px" borderRadius="16px" onClick={handleClose}>
+              <Button
+                w="6rem"
+                mr="68px"
+                borderRadius="16px"
+                onClick={handleClose}
+              >
                 ปิด
               </Button>
               <Button
+                w="6rem"
                 borderRadius="16px"
                 type="submit"
                 bg="#4c7bf4"

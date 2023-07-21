@@ -45,7 +45,9 @@ const Renewal: React.FC<Props> = (props) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [duration, setDuration] = useState(0);
   const toast = useToast();
-  const logs = props.MAlog.filter(ma => ma.ma.status === "active" || ma.ma.status === "advance");
+  const logs = props.MAlog.filter(
+    (ma) => ma.ma.status === "active" || ma.ma.status === "advance"
+  );
   const currentDate = moment().format("YYYY-MM-DD");
   const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
   const Auth = useContext(AuthContext);
@@ -66,7 +68,8 @@ const Renewal: React.FC<Props> = (props) => {
   };
 
   const startMA = watch("renewStart") || moment().format("YYYY-MM-DD");
-  const endMA = watch("renewEnd") || moment().add(1, "year").format("YYYY-MM-DD");
+  const endMA =
+    watch("renewEnd") || moment().add(1, "year").format("YYYY-MM-DD");
 
   const durationData = (startDate: string, endDate: string) => {
     const a = new Date(startDate) as any;
@@ -93,15 +96,20 @@ const Renewal: React.FC<Props> = (props) => {
     // );
     const overlapResult: boolean[] = [];
     logs.forEach((ma) => {
-      const ol = checkTimeOverlap(renewStart, renewEnd, ma.ma.startMA, ma.ma.endMA);
+      const ol = checkTimeOverlap(
+        renewStart,
+        renewEnd,
+        ma.ma.startMA,
+        ma.ma.endMA
+      );
       // if (ol) {
       //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "overlap")
       // } else {
       //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "not overlap")
       // }
       overlapResult.push(ol);
-    })
-    const overlap = !overlapResult.every((x) => x === false)
+    });
+    const overlap = !overlapResult.every((x) => x === false);
     // overlap ? console.log("has some overlap") : console.log("don't have any overlap");
     // console.log(overlap)
     // console.log(logs)
@@ -186,15 +194,18 @@ const Renewal: React.FC<Props> = (props) => {
         leftIcon={<TiDocumentText />}
         bg="#4C7BF4"
         color="#fff"
+        fontWeight={"normal"}
+        w="150px"
+        borderRadius="16px"
         _hover={{ opacity: 0.8 }}
       >
         การต่อสัญญา
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>ต่อสัญญา</ModalHeader>
+        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
           <ModalCloseButton />
+          <ModalHeader textAlign="center">ต่อสัญญา</ModalHeader>
           <ModalBody>
             <Box>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -248,12 +259,15 @@ const Renewal: React.FC<Props> = (props) => {
                     </FormControl>
                   )}
                 />
-                <Flex justify={"flex-end"} gap="20px" mt="10px">
-                  <Button colorScheme="gray" onClick={onClose}>
+                <Flex justify={"center"} mt="5">
+                  <Button mr="68px" w="5rem" colorScheme="gray" onClick={onClose}>
                     ยกเลิก
                   </Button>
                   <Button
-                    colorScheme="green"
+                    w="5rem"
+                    bg="#4C7BF4"
+                    color="#fff"
+                    _hover={{ opacity: "0.8" }}
                     type="submit"
                     isLoading={isUpdate}
                     isDisabled={duration < 1}

@@ -37,7 +37,7 @@ type ComValue = {
 };
 
 const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
-  const Auth = useContext(AuthContext);
+
   const {
     handleSubmit,
     reset,
@@ -48,9 +48,9 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const AuthCtx = useContext(AuthContext)
 
-  const createDate = moment().format("DD-MM-YYYY HH:mm:ss");
-  const updatedDate = moment().format("DD-MM-YYYY HH:mm:ss");
+  const createDate = moment().format("DD/MM/YYYY, HH:mm:ss");
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -58,8 +58,10 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
     await addDoc(docRef, {
       ...data,
       createdAt: createDate,
-      companyUpdate: updatedDate,
-      createBy: Auth.uid,
+      createBy: {
+        uid: AuthCtx.uid,
+        username: AuthCtx.username,
+      }
     })
       .then(() => {
         toast({
@@ -96,6 +98,8 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
           fontWeight={"normal"}
           color="gray.100"
           bg="#4C7BF4"
+          w="150px"
+          borderRadius="16px"
           _hover={{ opacity: 0.8 }}
         >
           เพิ่มข้อมูลบริษัท
@@ -130,7 +134,6 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   name="companyAddress"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ที่อยู่บริษัท</FormLabel>
@@ -147,7 +150,6 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   name="userName"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ชื่อผู้ติดต่อ</FormLabel>
@@ -164,9 +166,6 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   name="userPhone"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เบอร์โทรติดต่อ</FormLabel>
@@ -184,9 +183,6 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   name="userTax"
                   control={control}
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เลขประจำตัวผู้เสียภาษี</FormLabel>
@@ -203,7 +199,6 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   name="userPerson"
                   control={control}
                   defaultValue=""
-                  rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => {
                     return (
                       <FormControl isInvalid={Boolean(errors[name])}>
@@ -229,9 +224,9 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                 </Button>
                 <Button
                   type="submit"
-                  color="gray.100"
+                  color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ color: "white", bg: "#4C7BF4" }}
+                  _hover={{ opacity:"0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

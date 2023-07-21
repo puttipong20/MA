@@ -15,10 +15,13 @@ import DetailForDev from "./pages/DetailForDev/DetailForDev";
 import PageCompany from "./pages/Company/Companies";
 import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
+import FetchCompany from "./Common/SetCompanyContext";
+import { DataContext } from "./context/DataContext";
 
 function App() {
   const navigate = useNavigate();
   const Auth = useContext(AuthContext);
+  const DataCtx = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const initial = async () => {
@@ -26,14 +29,22 @@ function App() {
     if (Auth.uid === "") {
       await AuthCheck(Auth, navigate);
       setIsLoading(false);
-    } else {
-      await ContractUpdate();
     }
+    // else {
+    //   await ContractUpdate();
+    // }
     setIsLoading(false);
   };
 
   useEffect(() => {
+    if (Auth.uid !== "") {
+      ContractUpdate();
+    }
+  }, [Auth.uid])
+
+  useEffect(() => {
     initial();
+    FetchCompany(DataCtx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,6 +111,8 @@ function App() {
             path="/company/:company/:projectID/:projectName/addReport"
             element={<AddReport />}
           />
+
+          {/* Report Detail */}
           <Route
             path="/company/:company/:projectID/:projectName/:problemID"
             element={<DetailForDev />}
