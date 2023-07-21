@@ -57,6 +57,8 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   const toast = useToast();
   const [searchValue, setSearchValue] = useState(props.searchValue);
   const [isSearching, setIsSearching] = useState(false);
+  const [companyFound, setCompanyFound] = useState<JSX.Element[]>([])
+  const [projectFound, setProjectFound] = useState<JSX.Element[]>([])
   const [reportFound, setReportFound] = useState<Report>();
   const [companyReport, setCompanyReport] = useState("");
 
@@ -111,15 +113,75 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   };
 
   const findCompany = () => {
-
+    const found = detail.map((c, index) => {
+      if (
+        c.detail.companyName
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+      ) {
+        return (
+          <Text
+            key={index}
+            _hover={{ pl: "0.5rem" }}
+            transition={"all 0.1s"}
+            cursor={"pointer"}
+            onClick={() => {
+              navigate(`/company/${c.companyId}`);
+              onClose();
+            }}
+          >
+            <Highlight
+              query={searchRef}
+              styles={{ fontWeight: "bold" }}
+            >
+              {c.detail.companyName}
+            </Highlight>
+          </Text>
+        );
+      }
+    })
+    setCompanyFound(found as JSX.Element[])
   }
 
   const findProject = () => {
-
+    const found = detail.map((c) => {
+      return c.detail.projects?.map((p, index) => {
+        if (
+          p.projectName
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
+        ) {
+          return (
+            <Text
+              key={index}
+              _hover={{ pl: "0.5rem" }}
+              transition={"all 0.1s"}
+              cursor={"pointer"}
+              onClick={() => {
+                navigate(
+                  `/company/${c.companyId}/${p.id}/${p.projectName}/detail`
+                );
+                onClose();
+              }}
+            >
+              <Highlight
+                query={searchRef}
+                styles={{ fontWeight: "bold" }}
+              >
+                {`${c.detail.companyName} > ${p.projectName}`}
+              </Highlight>
+            </Text>
+          );
+        }
+      });
+    })
+    setProjectFound(found as unknown as JSX.Element[])
   }
 
 
   useEffect(() => {
+    findCompany();
+    findProject();
     setSearchValue(searchRef);
     onSearch();
   }, [searchRef]);
@@ -199,6 +261,9 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               ) : (
                 <Text>กรุณากรอกคำค้นหา</Text>
               )}
+              {
+                companyFound
+              }
             </Box>
 
             <Divider my="0.5rem" />
@@ -361,7 +426,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                       isLoading={isSearching}
                       onClick={() => {
                         navigate(
-                          `/company/${companyReport}/${reportFound.docs.projectID}/${reportFound.docs.projectName}/${reportFound.id}`
+                          `/company/${companyReport}/${reportFound.docs.projectId}/${reportFound.docs.projectName}/${reportFound.id}`
                         );
                       }}
                       bg=""
