@@ -30,9 +30,9 @@ import { BsSearch } from "react-icons/bs";
 import { search } from "ss-search";
 import { Controller, useForm } from "react-hook-form";
 
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
-import { Report, ReportDetail } from "../../@types/Type";
+import { ProjectDetail, Report, ReportDetail } from "../../@types/Type";
 
 import classes from "./ReportPreview.module.css";
 
@@ -58,9 +58,20 @@ export default function ProblemPreview() {
   const done = "เสร็จสิ้น";
   // const cancel = "ยกเลิก"
 
+  const getFireBaseId = async () => {
+    const projectRef = doc(db, "Project", params["projectID"] as string)
+    const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail
+    const firebaseId = projectDetail.firebaseId
+    Company.setFirebaseId(firebaseId)
+  }
+
   const fetchingReport = async () => {
     setIsFetching(true);
     // console.clear();
+    // console.log(Company.firebaseId)
+    if (Company.firebaseId === "") {
+      await getFireBaseId();
+    }
     const collRef = collection(db, "Report");
     const q = query(collRef, where("firebaseId", "==", Company.firebaseId));
     const fetchReport = await getDocs(q);
@@ -87,7 +98,7 @@ export default function ProblemPreview() {
   useEffect(() => {
     fetchingReport();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params["projectID"]]);
+  }, [params["projectID"], Company.firebaseId]);
 
   const onSearch = () => {
     // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
