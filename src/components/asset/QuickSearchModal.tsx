@@ -113,43 +113,13 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   };
 
   const findCompany = () => {
-    const found = detail.map((c, index) => {
-      if (
-        c.detail.companyName
-          .toLowerCase()
-          .includes(searchValue.toLowerCase())
-      ) {
-        return (
-          <Text
-            key={index}
-            _hover={{ pl: "0.5rem" }}
-            transition={"all 0.1s"}
-            cursor={"pointer"}
-            onClick={() => {
-              navigate(`/company/${c.companyId}`);
-              onClose();
-            }}
-          >
-            <Highlight
-              query={searchRef}
-              styles={{ fontWeight: "bold" }}
-            >
-              {c.detail.companyName}
-            </Highlight>
-          </Text>
-        );
-      }
-    })
-    setCompanyFound(found as JSX.Element[])
-  }
-
-  const findProject = () => {
-    const found = detail.map((c) => {
-      return c.detail.projects?.map((p, index) => {
+    if (searchRef === "") { setCompanyFound([]) }
+    else {
+      const found = detail.map((c, index) => {
         if (
-          p.projectName
+          c.detail.companyName
             .toLowerCase()
-            .includes(searchValue.toLowerCase())
+            .includes(searchRef.toLowerCase())
         ) {
           return (
             <Text
@@ -158,9 +128,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               transition={"all 0.1s"}
               cursor={"pointer"}
               onClick={() => {
-                navigate(
-                  `/company/${c.companyId}/${p.id}/${p.projectName}/detail`
-                );
+                navigate(`/company/${c.companyId}`);
                 onClose();
               }}
             >
@@ -168,23 +136,67 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                 query={searchRef}
                 styles={{ fontWeight: "bold" }}
               >
-                {`${c.detail.companyName} > ${p.projectName}`}
+                {c.detail.companyName}
               </Highlight>
             </Text>
           );
         }
-      });
-    })
-    setProjectFound(found as unknown as JSX.Element[])
+      })
+      setCompanyFound(found.filter(i => i != undefined) as JSX.Element[])
+    }
+  }
+
+  const findProject = () => {
+    if (searchRef === "") { setProjectFound([]) }
+    else {
+      const found = detail.map((c) => {
+        return c.detail.projects?.map((p, index) => {
+          if (
+            p.projectName
+              .toLowerCase()
+              .includes(searchRef.toLowerCase())
+          ) {
+            return (
+              <Text
+                key={index}
+                _hover={{ pl: "0.5rem" }}
+                transition={"all 0.1s"}
+                cursor={"pointer"}
+                onClick={() => {
+                  navigate(
+                    `/company/${c.companyId}/${p.id}/${p.projectName}/detail`
+                  );
+                  onClose();
+                }}
+              >
+                <Highlight
+                  query={searchRef}
+                  styles={{ fontWeight: "bold" }}
+                >
+                  {`${c.detail.companyName} > ${p.projectName}`}
+                </Highlight>
+              </Text>
+            );
+          }
+        });
+      })
+      setProjectFound(found.filter(i => i != undefined) as unknown as JSX.Element[])
+    }
   }
 
 
   useEffect(() => {
-    findCompany();
-    findProject();
     setSearchValue(searchRef);
     onSearch();
+    findCompany();
+    findProject();
   }, [searchRef]);
+
+  useEffect(() => {
+    console.clear()
+    console.log(`companyFound length : ${companyFound.length}`)
+    console.log(`projectFound length : ${projectFound.length}`)
+  }, [companyFound])
 
   return (
     <Box>
@@ -230,39 +242,12 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                 บริษัท (Company)
               </Heading>
-              {searchRef !== "" ? (
-                detail.map((c, index) => {
-                  if (
-                    c.detail.companyName
-                      .toLowerCase()
-                      .includes(searchValue.toLowerCase())
-                  ) {
-                    return (
-                      <Text
-                        key={index}
-                        _hover={{ pl: "0.5rem" }}
-                        transition={"all 0.1s"}
-                        cursor={"pointer"}
-                        onClick={() => {
-                          navigate(`/company/${c.companyId}`);
-                          onClose();
-                        }}
-                      >
-                        <Highlight
-                          query={searchRef}
-                          styles={{ fontWeight: "bold" }}
-                        >
-                          {c.detail.companyName}
-                        </Highlight>
-                      </Text>
-                    );
-                  }
-                })
-              ) : (
-                <Text>กรุณากรอกคำค้นหา</Text>
-              )}
               {
-                companyFound
+                companyFound.length > 0
+                  ?
+                  companyFound : searchValue === ""
+                    ? <Text>กรุณากรอกคำค้นหา</Text>
+                    : <Text>ไม่พบ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
               }
             </Box>
 
@@ -272,46 +257,19 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                 โปรเจกต์ (Project)
               </Heading>
-              {searchRef !== "" ? (
-                detail.map((c) => {
-                  return c.detail.projects?.map((p, index) => {
-                    if (
-                      p.projectName
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase())
-                    ) {
-                      return (
-                        <Text
-                          key={index}
-                          _hover={{ pl: "0.5rem" }}
-                          transition={"all 0.1s"}
-                          cursor={"pointer"}
-                          onClick={() => {
-                            navigate(
-                              `/company/${c.companyId}/${p.id}/${p.projectName}/detail`
-                            );
-                            onClose();
-                          }}
-                        >
-                          <Highlight
-                            query={searchRef}
-                            styles={{ fontWeight: "bold" }}
-                          >
-                            {`${c.detail.companyName} > ${p.projectName}`}
-                          </Highlight>
-                        </Text>
-                      );
-                    }
-                  });
-                })
-              ) : (
-                <Text>กรุณากรอกคำค้นหา</Text>
-              )}
+              {
+                projectFound.length > 0
+                  ?
+                  projectFound : searchValue === ""
+                    ? <Text>กรุณากรอกคำค้นหา</Text>
+                    : <Text>ไม่พบ <Text as="span" fontWeight={"bold"}>"{searchValue}"</Text></Text>
+              }
             </Box>
             <Divider my="0.5rem" />
             <Box>
               <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
-                รายงานปัญหา (Report)                  <Button
+                รายงานปัญหา (Report)
+                <Button
                   onClick={searchReport}
                   isLoading={isSearching}
                   bg="#4c7bf4"
