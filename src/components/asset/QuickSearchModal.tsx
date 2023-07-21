@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChevronRightIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -180,7 +180,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
           }
         });
       })
-      setProjectFound(found.flat().filter(Boolean) as unknown as JSX.Element[])
+      setProjectFound(found.flat().filter(Boolean) as JSX.Element[])
     }
   }
 
@@ -192,17 +192,17 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     findProject();
   }, [searchRef]);
 
-  useEffect(() => {
-    console.clear()
-    console.log(`companyFound length : ${companyFound.length}`)
-    if (companyFound.length > 0) {
-      companyFound.forEach(i => console.log(i))
-    }
-    console.log(`projectFound length : ${projectFound.length}`)
-    if (projectFound.length > 0) {
-      projectFound.forEach(i => console.log(i))
-    }
-  }, [companyFound, projectFound])
+  // useEffect(() => {
+  //   console.clear()
+  //   console.log(`companyFound length : ${companyFound.length}`)
+  //   if (companyFound.length > 0) {
+  //     companyFound.forEach(i => console.log(i))
+  //   }
+  //   console.log(`projectFound length : ${projectFound.length}`)
+  //   if (projectFound.length > 0) {
+  //     projectFound.forEach(i => console.log(i))
+  //   }
+  // }, [companyFound, projectFound])
 
   return (
     <Box>
@@ -239,6 +239,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                 <Input
                   type="text"
                   defaultValue={props.searchValue}
+                  placeholder="กรอกคำค้นหา"
                   {...register("searchRef")}
                 />
               </InputGroup>
@@ -273,8 +274,10 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             </Box>
             <Divider my="0.5rem" />
             <Box>
-              <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
-                รายงานปัญหา (Report)
+              <HStack justify={"space-between"}>
+                <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
+                  รายงานปัญหา (Report)
+                </Heading>
                 <Button
                   onClick={searchReport}
                   isLoading={isSearching}
@@ -282,10 +285,11 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   color="white"
                   _hover={{}}
                   ml="0.25rem"
+                  borderRadius={"16px"}
                 >
                   <SearchIcon />
                 </Button>
-              </Heading>
+              </HStack>
               <HStack
                 justifyContent={"space-between"}
                 w="100%"
@@ -297,14 +301,14 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   </Text>
 
                 </Box>
-                <Button
+                {/* <Button
                   onClick={() => {
                     setReportFound(undefined);
                   }}
                   colorScheme="red"
                 >
                   <DeleteIcon />
-                </Button>
+                </Button> */}
               </HStack>
               {reportFound && (
                 <Box
