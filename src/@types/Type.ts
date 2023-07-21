@@ -10,10 +10,8 @@ export type Solution = {
 export type ReportDetail = {
   RepImg: string[];
   RepStatus: string;
-  projectName: string;
   projectId: string;
   createAt: string;
-  companyName: string;
   detail: string;
   email: string;
   line: string;
