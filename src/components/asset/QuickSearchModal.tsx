@@ -80,11 +80,10 @@ const QuickSearchModal: React.FC<Props> = (props) => {
       if (found.size !== 0) {
         const reportDetail: ReportDetail = found.docs[0].data() as ReportDetail;
         setReportFound({ id: found.docs[0].id, docs: reportDetail });
-        const projectDoc = doc(db, "Project", reportDetail.projectId);
-        await getDoc(projectDoc).then((d) => {
-          const projectData: ProjectDetail = d.data() as ProjectDetail;
-          setCompanyReport(projectData.companyID);
-        });
+        const projectCol = collection(db, "Project")
+        const qProject = query(projectCol, where("firebaseId", "==", reportDetail.firebaseId))
+        const projectFound = (await getDocs(qProject)).docs[0].data() as ProjectDetail
+        setCompanyReport(projectFound.firebaseId);
       } else {
         setReportFound(undefined);
         toast({
