@@ -238,7 +238,7 @@ function DevDetail() {
                         render={({ field }) => (
                           <FormControl mb="1rem" isReadOnly>
                             <FormLabel color="#2b3674" fontWeight={"bold"}>
-                              ปัญหาที่พบ
+                              สาเหตุ
                             </FormLabel>
                             <Input {...field} type="text" />
                           </FormControl>
@@ -252,9 +252,9 @@ function DevDetail() {
                         render={({ field }) => (
                           <FormControl mb="1rem" isRequired>
                             <FormLabel color="#2b3674" fontWeight={"bold"}>
-                              ปัญหาที่พบ
+                              สาเหตุ
                             </FormLabel>
-                            <Input {...field} type="text" placeholder="กรุณาระบุปัญหาที่พบ" defaultValue={detailHistory?.solution?.issue === "กำลังตรวจสอบ" ? "" : detailHistory?.solution?.issue} />
+                            <Input {...field} type="text" placeholder="กรุณาระบุสาเหตุของปัญหา" defaultValue={detailHistory?.solution?.issue === "กำลังตรวจสอบ" ? "" : detailHistory?.solution?.issue} />
                           </FormControl>
                         )}
                       />
