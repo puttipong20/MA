@@ -29,12 +29,12 @@ const ImgModal: React.FC<Props> = (props) => {
       cursor={"pointer"}
     >
       <Image src={props.src} />
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="3xl">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent >
           <ModalCloseButton />
-          <ModalBody>
-            <Image src={props.src} mx="auto" w="100%" />
+          <ModalBody >
+            <Image src={props.src} mx="auto" maxH="80vh" maxW="100%" />
           </ModalBody>
         </ModalContent>
       </Modal>
