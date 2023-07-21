@@ -301,7 +301,27 @@ export default function ProblemPreview() {
                     textAlign="center"
                     fontFamily={"inherit"}
                   >
-                    ข้อมูลการติดต่อ
+                    เบอร์โทรติดต่อ
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="12.5rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    ไลน์
+                  </Th>
+                  <Th
+                    fontWeight={"normal"}
+                    fontSize="16px"
+                    minW="12.5rem"
+                    color="#fff"
+                    textAlign="center"
+                    fontFamily={"inherit"}
+                  >
+                    อีเมลล์
                   </Th>
                   <Th
                     fontWeight={"normal"}
@@ -361,11 +381,13 @@ export default function ProblemPreview() {
                         </Td>
                         <Td textAlign={"center"}>{r.docs.title}</Td>
                         <Td textAlign={"center"}>{r.docs.name}</Td>
-                        <Td>
+                        <Td textAlign={"center"}>
                           {r.docs.phone === "" ? "-" : r.docs.phone}
-                          <br />
+                        </Td>
+                        <Td textAlign={"center"}>
                           {r.docs.line === "" ? "-" : r.docs.line}
-                          <br />
+                        </Td>
+                        <Td textAlign={"center"}>
                           {r.docs.email === "" ? "-" : r.docs.email}
                         </Td>
                         <Td textAlign={"center"}>
