@@ -134,7 +134,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             >
               <Highlight
                 query={searchRef}
-                styles={{ fontWeight: "bold" }}
+                styles={{ fontWeight: "bold", color: "blue" }}
               >
                 {c.detail.companyName}
               </Highlight>
@@ -171,7 +171,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               >
                 <Highlight
                   query={searchRef}
-                  styles={{ fontWeight: "bold" }}
+                  styles={{ fontWeight: "bold", color: "blue" }}
                 >
                   {`${c.detail.companyName} > ${p.projectName}`}
                 </Highlight>
