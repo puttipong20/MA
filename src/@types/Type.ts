@@ -8,6 +8,8 @@ export type Solution = {
 };
 
 export type ReportDetail = {
+  companyName: string;
+  projectName: string;
   RepImg: string[];
   RepStatus: string;
   projectId: string;
