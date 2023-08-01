@@ -252,8 +252,8 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               </InputGroup>
             </Box>
 
-            <Card mb="1rem" boxShadow={"lg"}>
-              <CardHeader pb="0.25rem">
+            <Card mb="1rem" boxShadow={"lg"} border="1px solid rgb(0,0,0,0.1)" >
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                   บริษัท (Company)
                 </Heading>
@@ -272,8 +272,8 @@ const QuickSearchModal: React.FC<Props> = (props) => {
 
             <Divider my="0.5rem" />
 
-            <Card mb="1rem" boxShadow={"lg"}>
-              <CardHeader pb="0.25rem">
+            <Card mb="1rem" boxShadow={"lg"} border="1px solid rgb(0,0,0,0.1)">
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                   โปรเจกต์ (Project)
                 </Heading>
@@ -289,13 +289,12 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               </CardBody>
             </Card>
             <Divider my="0.5rem" />
-            <Card>
-              <CardHeader pb="0.25rem">
+            <Card border="1px solid rgb(0,0,0,0.1)">
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <HStack justify={"space-between"}>
                   <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                     รายงานปัญหา (Report)
                   </Heading>
-
                 </HStack>
               </CardHeader>
               <CardBody>
@@ -305,18 +304,18 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   w="100%"
                   alignItems={"center"}
                 >
-                  <Box display="flex" alignItems={"left"} flexDir={"column"}>
+                  <Box display="flex" alignItems={"left"} flexDir={"column"} w="100%">
                     <Text>
                       ค้นหาปัญหาจากรหัส
                     </Text>
-                    <InputGroup display={"flex"} justifyContent={"space-between"}>
-                      <Input {...register("reportRef")} />
+                    <InputGroup display={"flex"} justifyContent={"space-between"} w="100%">
+                      <Input {...register("reportRef")} border="1px solid rgb(0,0,0,0.25)" />
                       <Button
                         onClick={searchReport}
                         isLoading={isSearching}
-                        bg="#4c7bf4"
-                        color="white"
-                        _hover={{}}
+                        bg={""}
+                        color="black"
+                        // _hover={{}}
                         ml="0.25rem"
                         borderRadius={"16px"}
                       >
