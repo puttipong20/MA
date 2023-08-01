@@ -151,19 +151,19 @@ function PreCompany() {
             </Flex>
             <Flex>
 
-            <Button
-              borderRadius="16px"
-              onClick={clickToRefetch}
-              bg="#4C7BF4"
-              color="#fff"
-              _hover={{ opacity: 0.8 }}
+              <Button
+                borderRadius="16px"
+                onClick={clickToRefetch}
+                bg="#4C7BF4"
+                color="#fff"
+                _hover={{ opacity: 0.8 }}
                 _active={{ opacity: 0.9 }}
                 mr="1rem"
               >
-              <AiOutlineReload />
-            </Button>
-            <FormAddCompany refetch={refetch} />
-              </Flex>
+                <AiOutlineReload />
+              </Button>
+              <FormAddCompany refetch={refetch} />
+            </Flex>
           </Flex>
         </Box>
 
@@ -284,7 +284,7 @@ function PreCompany() {
                           }}
                           textAlign="left"
                         >
-                          {com.detail.userName}
+                          {com.detail.userName || "-"}
                         </Td>
                         <Td
                           onClick={() => {
@@ -292,7 +292,7 @@ function PreCompany() {
                           }}
                           textAlign="left"
                         >
-                          {com.detail.userPhone}
+                          {com.detail.userPhone || "-"}
                         </Td>
                         <Td textAlign="center">
                           <Menu>

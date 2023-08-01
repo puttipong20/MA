@@ -27,11 +27,12 @@ import {
 } from "@chakra-ui/react";
 import {
   Company,
+  Project,
   ProjectDetail,
   Report,
   ReportDetail,
 } from "../../@types/Type";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { search } from "ss-search";
 import {
@@ -40,6 +41,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { CompanyContext } from "../../context/CompanyContext";
 import { db } from "../../services/config-db";
 import moment from "moment";
 import { useForm } from "react-hook-form";
@@ -54,6 +56,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   const navigate = useNavigate();
   const { register, watch, reset } = useForm();
 
+  const CompanyCtx = useContext(CompanyContext)
   const [detail, setDetail] = useState<Company[]>(props.data);
   const toast = useToast();
   const [searchValue, setSearchValue] = useState(props.searchValue);
@@ -61,18 +64,18 @@ const QuickSearchModal: React.FC<Props> = (props) => {
   const [companyFound, setCompanyFound] = useState<JSX.Element[]>([])
   const [projectFound, setProjectFound] = useState<JSX.Element[]>([])
   const [reportFound, setReportFound] = useState<Report>();
-  const [companyReport, setCompanyReport] = useState("");
 
   const wait = "รอรับเรื่อง";
   const process = "กำลังดำเนินการ";
   const done = "เสร็จสิ้น";
 
+  const reportRef: string = watch("reportRef") || ""
   const searchReport = async () => {
     setIsSearching(true);
     const reportCol = collection(db, "Report");
     const qReport = query(
       reportCol,
-      where("ref", "==", searchRef.toUpperCase())
+      where("ref", "==", reportRef.toUpperCase().trim())
     );
     await getDocs(qReport).then(async (found) => {
       if (found.size !== 0) {
@@ -80,8 +83,12 @@ const QuickSearchModal: React.FC<Props> = (props) => {
         setReportFound({ id: found.docs[0].id, docs: reportDetail });
         const projectCol = collection(db, "Project")
         const qProject = query(projectCol, where("firebaseId", "==", reportDetail.firebaseId))
-        const projectFound = (await getDocs(qProject)).docs[0].data() as ProjectDetail
-        setCompanyReport(projectFound.firebaseId);
+        const projectFound = (await getDocs(qProject)).docs[0]
+        const projectDetail: Project = { projectId: projectFound.id, detail: projectFound.data() as ProjectDetail }
+
+        CompanyCtx.setFirebaseId(projectDetail.detail.firebaseId)
+        CompanyCtx.setCompany(projectDetail.detail.companyID, projectDetail.detail.companyName)
+        CompanyCtx.setProject(projectDetail.projectId, projectDetail.detail.projectName)
       } else {
         setReportFound(undefined);
         toast({
@@ -97,7 +104,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     setIsSearching(false);
   };
 
-  const searchRef = watch("searchRef") || props.searchValue || "";
+  const searchRef: string = watch("searchRef") || props.searchValue || "";
 
   const onSearch = () => {
     if (searchRef !== "") {
@@ -155,6 +162,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             p.projectName
               .toLowerCase()
               .includes(searchRef.toLowerCase())
+            && p.status === "enable"
           ) {
             return (
               <Text
@@ -245,8 +253,8 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               </InputGroup>
             </Box>
 
-            <Card mb="1rem" boxShadow={"lg"}>
-              <CardHeader pb="0.25rem">
+            <Card mb="1rem" boxShadow={"lg"} border="1px solid rgb(0,0,0,0.1)" >
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                   บริษัท (Company)
                 </Heading>
@@ -265,8 +273,8 @@ const QuickSearchModal: React.FC<Props> = (props) => {
 
             <Divider my="0.5rem" />
 
-            <Card mb="1rem" boxShadow={"lg"}>
-              <CardHeader pb="0.25rem">
+            <Card mb="1rem" boxShadow={"lg"} border="1px solid rgb(0,0,0,0.1)">
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                   โปรเจกต์ (Project)
                 </Heading>
@@ -282,23 +290,12 @@ const QuickSearchModal: React.FC<Props> = (props) => {
               </CardBody>
             </Card>
             <Divider my="0.5rem" />
-            <Card>
-              <CardHeader pb="0.25rem">
+            <Card border="1px solid rgb(0,0,0,0.1)">
+              <CardHeader pb="0.25rem" bg="#4c7bf4" color="white" borderTopRadius={"5px"}>
                 <HStack justify={"space-between"}>
                   <Heading fontFamily={"inherit"} fontSize={"1.25rem"}>
                     รายงานปัญหา (Report)
                   </Heading>
-                  <Button
-                    onClick={searchReport}
-                    isLoading={isSearching}
-                    bg="#4c7bf4"
-                    color="white"
-                    _hover={{}}
-                    ml="0.25rem"
-                    borderRadius={"16px"}
-                  >
-                    <SearchIcon />
-                  </Button>
                 </HStack>
               </CardHeader>
               <CardBody>
@@ -308,11 +305,24 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                   w="100%"
                   alignItems={"center"}
                 >
-                  <Box display="flex" alignItems={"center"}>
+                  <Box display="flex" alignItems={"left"} flexDir={"column"} w="100%">
                     <Text>
-                      ค้นหาปัญหาจากรหัส : <Text as="span">{searchRef}</Text>
+                      ค้นหาปัญหาจากรหัส
                     </Text>
-
+                    <InputGroup display={"flex"} justifyContent={"space-between"} w="100%">
+                      <Input {...register("reportRef")} border="1px solid rgb(0,0,0,0.25)" />
+                      <Button
+                        onClick={searchReport}
+                        isLoading={isSearching}
+                        bg={""}
+                        color="black"
+                        // _hover={{}}
+                        ml="0.25rem"
+                        borderRadius={"16px"}
+                      >
+                        <SearchIcon />
+                      </Button>
+                    </InputGroup>
                   </Box>
                   {/* <Button
                   onClick={() => {
@@ -374,7 +384,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                       </HStack>
                       <HStack>
                         <Text w="8rem" fontWeight={"bold"}>
-                          สภานะ
+                          สถานะ
                         </Text>
                         <Text display="flex" alignItems={"center"}>
                           :
@@ -408,7 +418,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
                           isLoading={isSearching}
                           onClick={() => {
                             navigate(
-                              `/company/${companyReport}/${reportFound.docs.projectId}/${reportFound.docs.projectName}/${reportFound.id}`
+                              `/company/${CompanyCtx.companyId}/${CompanyCtx.projectId}/${reportFound.docs.projectName}/${reportFound.id}`
                             );
                           }}
                           bg=""

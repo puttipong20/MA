@@ -24,6 +24,7 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
+import { AiOutlineReload } from "react-icons/ai";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { BsSearch } from "react-icons/bs";
@@ -218,6 +219,18 @@ export default function ProblemPreview() {
               </Box>
             </Flex>
             <Box mt={["0.5rem", "0.5rem", "0"]}>
+              <Button
+                bg={"#4c7bf4"}
+                color="#fff"
+                fontWeight={"normal"}
+                _hover={{ opacity: 0.8 }}
+                mr="1rem"
+                isLoading={isFetching}
+                onClick={fetchingReport}
+                borderRadius="16px"
+              >
+                <AiOutlineReload />
+              </Button>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
