@@ -162,6 +162,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             p.projectName
               .toLowerCase()
               .includes(searchRef.toLowerCase())
+            && p.status === "enable"
           ) {
             return (
               <Text

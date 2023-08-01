@@ -73,60 +73,54 @@ const ViewCompany = ({ data }: any) => {
                     <Text w="50%" fontWeight="bold">
                       ที่อยู่บริษัท :
                     </Text>
-                    <Text w="50%">{cValue?.companyAddress}</Text>
+                    <Text w="50%">{cValue?.companyAddress || "-"}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       ชื่อผู้ติดต่อ :
                     </Text>
-                    <Text w="50%">{cValue?.userName}</Text>
+                    <Text w="50%">{cValue?.userName || "-"}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       เบอร์โทรติดต่อ :
                     </Text>
-                    <Text w="50%">{cValue?.userPhone}</Text>
+                    <Text w="50%">{cValue?.userPhone || "-"}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       เลขประจำตัวผู้เสียภาษี :
                     </Text>
-                    <Text w="50%">{cValue?.userTax}</Text>
+                    <Text w="50%">{cValue?.userTax || "-"}</Text>
                   </HStack>
                   <HStack alignItems="flex-start">
                     <Text w="50%" fontWeight="bold">
                       ประเภทบุคคล :
                     </Text>
-                    <Text w="50%">{cValue?.userPerson}</Text>
+                    <Text w="50%">{cValue?.userPerson || "-"}</Text>
                   </HStack>
                   {/* <br /> */}
-                  <Flex justify="flex-end">
-                    <HStack fontSize="14px" color="gray.400">
-                      <Text mt="-1.25rem">สร้างเมื่อ :</Text>
-                      <Box>
-                        <Text>{cValue?.createdAt}</Text>
-                        <Text>{cValue?.createBy.username}</Text>
+                  <Flex flexDir={"column"} alignItems={"flex-end"} w="100%">
+                    <HStack fontSize="14px" color="gray.400" alignItems={"flex-start"}>
+                      <Text w="5rem">สร้างเมื่อ</Text>
+                      <Box w="10rem">
+                        <Text>: {cValue?.createdAt}</Text>
+                        <Text pl="0.5rem">{cValue?.createBy.username}</Text>
                       </Box>
                     </HStack>
-                  </Flex>
-                  <Flex justify="flex-end">
-                    <HStack fontSize="14px" color="gray.400">
-                      {!cValue?.updateBy ? (
-                        <HStack>
-                          <Text>อัพเดทเมื่อ :</Text>
+                    <HStack fontSize="14px" color="gray.400" alignItems={"flex-start"}>
+                      <Text w="5rem">อัพเดทเมื่อ</Text><Box w="10rem">
+                        {!cValue?.updateBy ? (
                           <Text fontSize="14px" color="gray.400">
-                            ยังไม่มีการอัพเดท
+                            : ยังไม่มีการอัพเดท
                           </Text>
-                        </HStack>
-                      ) : (
-                        <HStack>
-                          <Text mt="-1.25rem">อัพเดทเมื่อ :</Text>
-                          <Box>
-                            <Text>{cValue?.companyUpdate} </Text>
-                            <Text>{cValue?.updateBy.username}</Text>
-                          </Box>
-                        </HStack>
-                      )}
+                        ) : (
+                          <>
+                            <Text>: {cValue?.companyUpdate} </Text>
+                            <Text pl="0.5rem">{cValue?.updateBy.username}</Text>
+                          </>
+                        )}
+                      </Box>
                     </HStack>
                   </Flex>
                   {/* <HStack alignItems="flex-start">
