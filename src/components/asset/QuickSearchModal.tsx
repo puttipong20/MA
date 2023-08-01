@@ -104,10 +104,6 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     setIsSearching(false);
   };
 
-  useEffect(() => {
-    console.log(props.data)
-  }, [])
-
   const searchRef: string = watch("searchRef") || props.searchValue || "";
 
   const onSearch = () => {
