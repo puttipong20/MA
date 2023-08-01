@@ -104,6 +104,10 @@ const QuickSearchModal: React.FC<Props> = (props) => {
     setIsSearching(false);
   };
 
+  useEffect(() => {
+    console.log(props.data)
+  }, [])
+
   const searchRef: string = watch("searchRef") || props.searchValue || "";
 
   const onSearch = () => {
@@ -162,6 +166,7 @@ const QuickSearchModal: React.FC<Props> = (props) => {
             p.projectName
               .toLowerCase()
               .includes(searchRef.toLowerCase())
+            && p.status === "enable"
           ) {
             return (
               <Text
