@@ -205,12 +205,8 @@ function ReportDetail() {
                     {!fValue?.latestReportUpdate ? (
                       <Text>-</Text>
                     ) : (
-                      <Text>{fValue?.latestReportUpdate.username},</Text>
-                    )}
-                    {!fValue?.latestReportUpdate ? (
-                      <Text></Text>
-                    ) : (
                       <Text>
+                        {fValue?.latestReportUpdate.username},{" "}
                         {moment(fValue?.latestReportUpdate.timestamp).format(
                           "DD/MM/YYYY, HH:mm:ss"
                         )}
