@@ -63,18 +63,16 @@ export default function ProblemPreview() {
     const projectRef = doc(db, "Project", params["projectID"] as string)
     const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail
     const firebaseId = projectDetail.firebaseId
-    Company.setFirebaseId(firebaseId)
+    // Company.setFirebaseId(firebaseId)
+    return firebaseId
   }
 
   const fetchingReport = async () => {
     setIsFetching(true);
-    // console.clear();
-    // console.log(Company.firebaseId)
-    if (Company.firebaseId === "") {
-      await getFireBaseId();
-    }
+    const firebaseId = await getFireBaseId();
+
     const collRef = collection(db, "Report");
-    const q = query(collRef, where("firebaseId", "==", Company.firebaseId));
+    const q = query(collRef, where("firebaseId", "==", firebaseId));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
     fetchReport.forEach((r) => {
@@ -99,7 +97,7 @@ export default function ProblemPreview() {
   useEffect(() => {
     fetchingReport();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params["projectID"], Company.firebaseId]);
+  }, [params["projectID"]]);
 
   const onSearch = () => {
     // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
