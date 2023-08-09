@@ -154,7 +154,7 @@ const Sidebar: React.FC<Props> = (props) => {
       </Heading>
 
       <Divider my="5px" opacity={"1"} />
-
+      <SearchReport />
       <HStack my="10px">
         <InputGroup>
           <InputLeftElement>
@@ -169,7 +169,6 @@ const Sidebar: React.FC<Props> = (props) => {
             onChange={onSearch}
           />
         </InputGroup>
-        <SearchReport />
       </HStack>
       {isFetching ? (
         <Flex

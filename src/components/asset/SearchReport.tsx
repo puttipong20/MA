@@ -79,10 +79,14 @@ const SearchReport: React.FC = () => {
         bg="#4c7bf4"
         color="white"
         _hover={{ opacity: "0.8" }}
+        w="100%"
+        justifyContent={"left"}
         borderRadius="16px"
         onClick={onOpen}
+        gap={"0.5rem"}
       >
         <SearchIcon />
+        <Text as="span">ค้นหาปัญหา</Text>
       </Button>
 
       <Modal
