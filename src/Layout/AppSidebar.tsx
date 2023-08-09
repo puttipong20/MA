@@ -83,6 +83,10 @@ const Sidebar: React.FC<Props> = (props) => {
         // console.log("open index on", count);
         setOpenIndex(count);
       }
+      const projects = company.detail.projects?.filter(
+        (p) => p.status === "enable"
+      );
+      company.detail.projects = projects;
       allCompany.push(company);
       count += 1;
     });
@@ -185,7 +189,8 @@ const Sidebar: React.FC<Props> = (props) => {
       ) : (
         <Box
           border=""
-          h={["70vh", "78vh"]}
+          // h={["70vh", "78vh"]}
+          flex="auto"
           overflowY={"auto"}
           className={classes.sidebar}
         >
@@ -296,7 +301,6 @@ const Sidebar: React.FC<Props> = (props) => {
           </Accordion>
         </Box>
       )}
-      {/* <Divider my="5px" opacity={"1"} /> */}
       <LogoutButton />
     </Box>
   );
