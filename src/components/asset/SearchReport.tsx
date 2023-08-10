@@ -147,6 +147,7 @@ const SearchReport: React.FC = () => {
                     fontSize={"1rem"}
                     color="#fff"
                     textAlign={"center"}
+                    w="7rem"
                   >
                     โปรเจกต์
                   </Th>
@@ -156,6 +157,7 @@ const SearchReport: React.FC = () => {
                     fontSize={"1rem"}
                     color="#fff"
                     textAlign={"center"}
+                    w="9rem"
                   >
                     รหัสอ้างอิง
                   </Th>

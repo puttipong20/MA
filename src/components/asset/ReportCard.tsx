@@ -34,6 +34,10 @@ const ReportCard: React.FC<Props> = (props) => {
       reportCol,
       where("ref", "==", ref.toUpperCase().trim())
     );
+    let cmpId;
+    let cmpName;
+    let prjId;
+    let prjName;
     await getDocs(qReport).then(async (found) => {
       if (found.size !== 0) {
         const reportDetail: ReportDetail = found.docs[0].data() as ReportDetail;
@@ -47,24 +51,17 @@ const ReportCard: React.FC<Props> = (props) => {
           projectId: projectFound.id,
           detail: projectFound.data() as ProjectDetail,
         };
-
+        cmpId = projectDetail.detail.companyID;
+        cmpName = projectDetail.detail.companyName;
+        prjId = projectDetail.projectId;
+        prjName = projectDetail.detail.projectName;
         CompanyCtx.setFirebaseId(projectDetail.detail.firebaseId);
-        CompanyCtx.setCompany(
-          projectDetail.detail.companyID,
-          projectDetail.detail.companyName
-        );
-        CompanyCtx.setProject(
-          projectDetail.projectId,
-          projectDetail.detail.projectName
-        );
+        CompanyCtx.setCompany(cmpId, cmpName);
+        CompanyCtx.setProject(prjId, prjName);
       }
     });
-    navigate(
-      `/company/${CompanyCtx.companyId}/${CompanyCtx.projectId}/${props.report.docs.projectName}/${props.report.id}`
-    );
-    // console.log(
-    //   `/company/${CompanyCtx.companyId}/${CompanyCtx.projectId}/${props.report.docs.projectName}/${props.report.id}`
-    // );
+    // console.log(`/company/${cmpId}/${prjId}/${prjName}/${props.report.id}`);
+    navigate(`/company/${cmpId}/${prjId}/${prjName}/${props.report.id}`);
 
     setIsNav(false);
   };
