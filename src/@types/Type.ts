@@ -22,6 +22,7 @@ export type ReportDetail = {
   title: string;
   ref?: string;
   uid: string;
+  isArchive: boolean;
   firebaseId: string;
   createBy: { uid: string; username: string };
   latestReportUpdate?: { uid: string; username: string; timestamp: string };

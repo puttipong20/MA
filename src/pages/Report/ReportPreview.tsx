@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef, useContext } from "react";
 import {
@@ -11,6 +12,15 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
   Spinner,
   Table,
@@ -23,30 +33,146 @@ import {
   Thead,
   Tr,
   VStack,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { AiOutlineReload } from "react-icons/ai";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { BsSearch } from "react-icons/bs";
+import { BsArchiveFill, BsSearch } from "react-icons/bs";
 import { search } from "ss-search";
 import { Controller, useForm } from "react-hook-form";
 
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { ProjectDetail, Report, ReportDetail } from "../../@types/Type";
-
 import classes from "./ReportPreview.module.css";
-
 import moment from "moment";
-
 import { CompanyContext } from "../../context/CompanyContext";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
+import axios from "axios";
+
+interface ActionProps {
+  reportId: string;
+  isArchive: boolean;
+  refetch: () => void;
+}
+
+const ActionMenu: React.FC<ActionProps> = (props) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isArchive = props.isArchive;
+  const done = props.refetch;
+  const toast = useToast();
+
+  const toArchive = async (set: boolean) => {
+    setIsUpdating(true);
+    await axios
+      .post(
+        "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport",
+        {
+          reportId: props.reportId,
+          isArchive: set,
+        }
+      )
+      .then(() => {
+        toast({
+          title: "อัพเดทสำเร็จ",
+          status: "success",
+          duration: 3000,
+          position: "top",
+          isClosable: true,
+        });
+        done();
+      });
+    setIsUpdating(false);
+    onClose();
+  };
+
+  return (
+    <>
+      <Menu>
+        <MenuButton as={Button} bg="">
+          <BiDotsHorizontalRounded />
+        </MenuButton>
+        <MenuList p="0">
+          {isArchive ? (
+            <MenuItem _hover={{ bg: "#ddd" }} onClick={onOpen}>
+              ยกเลิกจัดเก็บ
+            </MenuItem>
+          ) : (
+            <MenuItem _hover={{ bg: "#ddd" }} onClick={onOpen}>
+              จัดเก็บ
+            </MenuItem>
+          )}
+        </MenuList>
+      </Menu>
+      {isArchive ? (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>ยกเลิกการจัดเก็บรายงาน ?</ModalHeader>
+            <ModalFooter>
+              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+                ปิด
+              </Button>
+              <Button
+                w="5rem"
+                bg="#4c7bf4"
+                onClick={() => {
+                  toArchive(false);
+                }}
+                isLoading={isUpdating}
+                color="#fff"
+              >
+                ยืนยัน
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      ) : (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>ยืนยันการจัดเก็บรายงาน ?</ModalHeader>
+            <ModalFooter>
+              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+                ปิด
+              </Button>
+              <Button
+                w="5rem"
+                bg="#4c7bf4"
+                onClick={() => {
+                  toArchive(true);
+                }}
+                isLoading={isUpdating}
+                color="#fff"
+              >
+                ยืนยัน
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+    </>
+  );
+};
 
 export default function ProblemPreview() {
   const { control, watch } = useForm();
   const [isFetching, setIsFetching] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
-  const [filterReports, setFilterReports] = useState<Report[]>([]);
+  const [archiveReports, setArchiveReport] = useState<Report[]>([]);
+  const [showReport, setShowReport] = useState<Report[]>([]);
+
+  const [seeArchive, setSeeArchive] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const params = useParams();
   const navigate = useNavigate();
@@ -60,12 +186,12 @@ export default function ProblemPreview() {
   // const cancel = "ยกเลิก"
 
   const getFireBaseId = async () => {
-    const projectRef = doc(db, "Project", params["projectID"] as string)
-    const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail
-    const firebaseId = projectDetail.firebaseId
+    const projectRef = doc(db, "Project", params["projectID"] as string);
+    const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail;
+    const firebaseId = projectDetail.firebaseId;
     // Company.setFirebaseId(firebaseId)
-    return firebaseId
-  }
+    return firebaseId;
+  };
 
   const fetchingReport = async () => {
     setIsFetching(true);
@@ -80,19 +206,35 @@ export default function ProblemPreview() {
         id: r.id,
         docs: r.data() as ReportDetail,
       };
-      Company.setFirebaseId((r.data() as ReportDetail).firebaseId)
+      Company.setFirebaseId((r.data() as ReportDetail).firebaseId);
       allReport.push(report);
     });
     const sorted_reports = allReport.sort((a, b) => {
-      const dateA = new Date(a.docs.createAt) as any
-      const dateB = new Date(b.docs.createAt) as any
+      const dateA = new Date(a.docs.createAt) as any;
+      const dateB = new Date(b.docs.createAt) as any;
 
       return dateB - dateA;
-    })
-    setReports(sorted_reports);
-    setFilterReports(sorted_reports);
+    });
+
+    const archive: Report[] = [];
+    const normal: Report[] = [];
+    sorted_reports.forEach((r) => {
+      if (r.docs.isArchive) {
+        archive.push(r);
+      } else {
+        normal.push(r);
+      }
+    });
+    setReports(normal);
+    setArchiveReport(archive);
+    setShowReport(seeArchive ? archive : normal);
     setIsFetching(false);
   };
+
+  useEffect(() => {
+    setShowReport(seeArchive ? archiveReports : reports);
+  }, [seeArchive]);
+
   const projectName = params["projectName"];
   useEffect(() => {
     fetchingReport();
@@ -103,12 +245,21 @@ export default function ProblemPreview() {
     // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
     const value = searchRef.current?.value;
     const searchText = value + " " + statusFilter || "";
-    const searchField = ["docs.title", "docs.ref", "docs.RepStatus", "docs.name"];
+    const searchField = [
+      "docs.title",
+      "docs.ref",
+      "docs.RepStatus",
+      "docs.name",
+    ];
     // console.clear();
     // console.log(searchText)
-    const result = search(reports, searchField, searchText) as Report[];
+    const result = search(
+      seeArchive ? archiveReports : reports,
+      searchField,
+      searchText
+    ) as Report[];
     // console.log(result)
-    setFilterReports(result);
+    setShowReport(result);
   };
 
   useEffect(() => {
@@ -155,7 +306,7 @@ export default function ProblemPreview() {
                   รายงานปัญหา / {projectName}
                 </Text>
                 <Text fontSize="16px" fontFamily="Prompt">
-                  {projectName}
+                  {projectName} {seeArchive ? "(รายการที่จัดเก็บ)" : ""}
                 </Text>
               </VStack>
             </HStack>
@@ -185,15 +336,6 @@ export default function ProblemPreview() {
                   onChange={onSearch}
                 />
               </InputGroup>
-              {/* <Button
-              background={"#4C7BF4"}
-              color="white"
-              borderRadius="16px"
-              onClick={onSearch}
-              _hover={{ opacity: 0.8 }}
-            >
-              ค้นหา
-            </Button> */}
               <Box>
                 <Controller
                   name="statusFilter"
@@ -217,6 +359,21 @@ export default function ProblemPreview() {
               </Box>
             </Flex>
             <Box mt={["0.5rem", "0.5rem", "0"]}>
+              <Button
+                bg={seeArchive ? "#4c7bf4" : "#fff"}
+                color={seeArchive ? "#fff" : "#4c7bf4"}
+                fontWeight={"normal"}
+                _hover={{ opacity: 0.8 }}
+                mr="1rem"
+                border="1px solid #4c7bf4"
+                borderRadius="16px"
+                isLoading={isFetching}
+                onClick={() => {
+                  setSeeArchive(!seeArchive);
+                }}
+              >
+                <BsArchiveFill />
+              </Button>
               <Button
                 bg={"#4c7bf4"}
                 color="#fff"
@@ -354,6 +511,7 @@ export default function ProblemPreview() {
                   >
                     การดำเนินการ
                   </Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -364,14 +522,18 @@ export default function ProblemPreview() {
                       <Spinner />
                     </Td>
                   </Tr>
-                ) : filterReports.length === 0 ? (
+                ) : showReport.length === 0 ? (
                   <Tr>
                     <Td colSpan={7} textAlign={"center"}>
-                      ยังไม่มีข้อมูลการรายงาน
+                      ยังไม่มีข้อมูลการรายงาน{seeArchive ? "ที่จัดเก็บ" : ""}
                     </Td>
                   </Tr>
                 ) : (
-                  filterReports.map((r, index) => {
+                  showReport.map((r, index) => {
+                    const goToReport = () =>
+                      navigate(
+                        `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`
+                      );
                     return (
                       <Tr
                         key={index}
@@ -379,32 +541,35 @@ export default function ProblemPreview() {
                         cursor={"pointer"}
                         onClick={() => {
                           Company.setReport(r.id);
-                          navigate(
-                            `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/${r.id}`
-                          );
                         }}
                       >
-                        <Td textAlign={"center"}>{r.docs.ref}</Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
+                          {r.docs.ref}
+                        </Td>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {moment(r.docs.createAt).format(
                             "DD/MM/YYYY HH:mm:ss"
                           )}
                         </Td>
-                        <Td textAlign={"center"}>{r.docs.title}</Td>
-                        <Td textAlign={"center"}>{r.docs.name}</Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
+                          {r.docs.title}
+                        </Td>
+                        <Td textAlign={"center"} onClick={goToReport}>
+                          {r.docs.name}
+                        </Td>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {r.docs.phone === "" ? "-" : r.docs.phone}
                         </Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {r.docs.line === "" ? "-" : r.docs.line}
                         </Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {r.docs.email === "" ? "-" : r.docs.email}
                         </Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {r.docs.solution?.accepter || "-"}
                         </Td>
-                        <Td textAlign={"center"}>
+                        <Td textAlign={"center"} onClick={goToReport}>
                           {" "}
                           <Tag
                             borderRadius="16px"
@@ -414,10 +579,10 @@ export default function ProblemPreview() {
                               r.docs.RepStatus === wait
                                 ? "yellow.300"
                                 : r.docs.RepStatus === done
-                                  ? "green.500"
-                                  : r.docs.RepStatus === process
-                                    ? "gray.400"
-                                    : "red.500"
+                                ? "green.500"
+                                : r.docs.RepStatus === process
+                                ? "gray.400"
+                                : "red.500"
                             }
                             color={
                               r.docs.RepStatus === wait ? "black" : "white"
@@ -427,6 +592,13 @@ export default function ProblemPreview() {
                               {r.docs.RepStatus}
                             </TagLabel>
                           </Tag>
+                        </Td>
+                        <Td>
+                          <ActionMenu
+                            reportId={r.id}
+                            refetch={fetchingReport}
+                            isArchive={r.docs.isArchive}
+                          />
                         </Td>
                       </Tr>
                     );
