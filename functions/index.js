@@ -9,7 +9,7 @@ const db = admin.firestore();
 
 exports.addReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
-    const token = process.env.VITE_LINE_TOKEN;
+    const token = process.env.VITE_LINE_NOTIFY;
     const { firebaseId, title, detail } = req.body;
     let shortName = "";
     let projectName = "";
