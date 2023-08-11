@@ -49,7 +49,7 @@
       }
     },
     {
-      "site": "craft-ma-dev",
+      "site": "craftinglab-ma-dev",
       "source": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "frameworksBackend": {
