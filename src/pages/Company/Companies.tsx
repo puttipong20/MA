@@ -110,7 +110,7 @@ function PreCompany() {
               <VStack
                 pt="1rem"
                 justifyContent="flex-start"
-                alignItems="flex-star"
+                alignItems="flex-start"
                 spacing="2px"
               >
                 <Text

@@ -216,7 +216,14 @@ const AddReport = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel color="#1B2559">ปัญหาที่พบ</FormLabel>
+                      <FormLabel>
+                        <Flex>
+                          <Text>ปัญหาที่พบ</Text>
+                          <Text ml="1" color="red">
+                            *
+                          </Text>
+                        </Flex>
+                      </FormLabel>
                       <Input
                         placeholder="ระบุปัญหาที่พบ"
                         value={value}
@@ -236,7 +243,14 @@ const AddReport = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel color="#1B2559">รายละเอียด</FormLabel>
+                      <FormLabel color="#1B2559">
+                        <Flex>
+                          <Text>รายละเอียด</Text>
+                          <Text ml="1" color="red">
+                            *
+                          </Text>
+                        </Flex>
+                      </FormLabel>
                       <Textarea
                         value={value}
                         onChange={onChange}
@@ -256,7 +270,14 @@ const AddReport = () => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel color="#1B2559">ชื่อผู้แจ้งปัญหา</FormLabel>
+                      <FormLabel color="#1B2559">
+                        <Flex>
+                          <Text>ชื่อผู้แจ้งปัญหา</Text>
+                          <Text ml="1" color="red">
+                            *
+                          </Text>
+                        </Flex>
+                      </FormLabel>
                       <Input
                         value={value}
                         onChange={onChange}
@@ -373,7 +394,7 @@ const AddReport = () => {
                         cursor={"pointer"}
                         userSelect={"none"}
                         bg="#FAFCFE"
-                        _hover={{opacity:"0.8"}}
+                        _hover={{ opacity: "0.8" }}
                       >
                         <Flex color="#4c7bf4" fontSize={"3rem"}>
                           <MdUpload />
