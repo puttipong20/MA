@@ -159,7 +159,10 @@ function PreCompany() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={"space-between"}>
+          <Flex
+            justify={"space-between"}
+            flexDir={["column", "row", "row", "row", "row", "row"]}
+          >
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius="16px">
                 <InputLeftAddon
@@ -170,6 +173,7 @@ function PreCompany() {
                   <BsSearch />
                 </InputLeftAddon>
                 <Input
+                  w="100%"
                   type="text"
                   background="#F4F7FE"
                   border="none"
@@ -181,7 +185,7 @@ function PreCompany() {
                 />
               </InputGroup>
             </Flex>
-            <Flex>
+            <Flex mt={{base:"0.5rem",md:"0",lg:"0"}} justify="flex-end">
               <Button
                 borderRadius="16px"
                 onClick={clickToRefetch}
@@ -286,7 +290,7 @@ function PreCompany() {
                     </Td>
                   </Tr>
                 ) : (
-                      currentItems.map((com, index) => {
+                  currentItems.map((com, index) => {
                     const itemIndex = startIndex + index + 1;
                     return (
                       <Tr

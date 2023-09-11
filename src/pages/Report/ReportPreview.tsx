@@ -58,7 +58,7 @@ import moment from "moment";
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
 import axios from "axios";
-import {FaAngleLeft, FaAngleRight} from "react-icons/fa"
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 interface ActionProps {
   reportId: string;
@@ -344,9 +344,13 @@ export default function ProblemPreview() {
         </Center>
         <Flex
           justify={["flex-end", "space-between"]}
-          flexDir={["column", "column", "row", "row", "row", "row"]}
+          flexDir={["column", "column", "column", "row", "row", "row"]}
         >
-          <Flex justifyContent="flex-start" gap="20px">
+          <Flex
+            justifyContent="flex-start"
+            gap="20px"
+            flexDir={["column", "row", "row", "row", "row", "row"]}
+          >
             <InputGroup w="auto" borderRadius={"16px"}>
               <InputLeftAddon
                 background="#F4F7FE"
@@ -389,14 +393,14 @@ export default function ProblemPreview() {
               />
             </Box>
           </Flex>
-          <Box mt={["0.5rem", "0.5rem", "0"]}>
+          <Flex mt={["0.5rem", "0.5rem", "0.5rem", "0", "0", "0"]}>
             <Button
               bg={seeArchive ? "#4c7bf4" : "#fff"}
               color={seeArchive ? "#fff" : "#4c7bf4"}
               fontWeight={"normal"}
               _hover={{ opacity: 0.8 }}
               ml={{ base: "0rem", md: "1rem", lg: "0" }}
-              mr="1rem"
+              mr="0.5rem"
               border="1px solid #4c7bf4"
               borderRadius="16px"
               isLoading={isFetching}
@@ -411,7 +415,7 @@ export default function ProblemPreview() {
               color="#fff"
               fontWeight={"normal"}
               _hover={{ opacity: 0.8 }}
-              mr="1rem"
+              mr="0.5rem"
               isLoading={isFetching}
               onClick={fetchingReport}
               borderRadius="16px"
@@ -431,12 +435,11 @@ export default function ProblemPreview() {
               }}
               _active={{ opacity: "1" }}
               borderRadius={"16px"}
-              mt={{ base: "2", md: "2", lg: "0" }}
               ml={{ base: "0", md: "1rem", lg: "0" }}
             >
               แจ้งปัญหาการใช้งานระบบ
             </Button>
-          </Box>
+          </Flex>
         </Flex>
       </Box>
       <Box

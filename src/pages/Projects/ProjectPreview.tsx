@@ -217,7 +217,10 @@ export default function ProjectPreviewComp() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={"space-between"}>
+          <Flex
+            justify={"space-between"}
+            flexDir={["column", "row", "row", "row", "row", "row"]}
+          >
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius="16px">
                 <InputLeftAddon
@@ -228,6 +231,7 @@ export default function ProjectPreviewComp() {
                   <BsSearch />
                 </InputLeftAddon>
                 <Input
+                  w="100%"
                   type="text"
                   background="#F4F7FE"
                   border="none"
@@ -239,7 +243,7 @@ export default function ProjectPreviewComp() {
                 />
               </InputGroup>
             </Flex>
-            <Flex>
+            <Flex mt={{base:"0.5rem",md:"0",lg:"0"}} justify="flex-end">
               <Button
                 _hover={{ opacity: 0.8 }}
                 bg="#4C7BF4"
