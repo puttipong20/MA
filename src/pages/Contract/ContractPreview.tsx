@@ -65,9 +65,10 @@ const ContractPreview = () => {
             </Center>
             <Divider my="1rem" />
             <Box
+              border="1px"
               w="100%"
               overflowY={"auto"}
-              h="70vh"
+              h="64vh"
               p="1rem"
               className={classes.table}
             >

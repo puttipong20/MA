@@ -40,6 +40,7 @@ import { CompanyContext } from "../../context/CompanyContext";
 import { useQuery } from "react-query";
 import { Company, CompanyDetail } from "../../@types/Type";
 import { AiOutlineReload } from "react-icons/ai";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 function PreCompany() {
   const [comForm, setComForm] = useState<Company[]>([]);
@@ -97,6 +98,37 @@ function PreCompany() {
     navigate(`/company/${id}`);
   };
 
+  // สร้าง State สำหรับ Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // จำนวนรายการต่อหน้า
+  const totalPages = Math.ceil(filComForm.length / itemsPerPage);
+
+  // อัพเดตข้อมูลในหน้าปัจจุบัน
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filComForm.slice(startIndex, endIndex);
+
+  const startPage = Math.max(currentPage - 1, 1);
+  const endPage = Math.min(currentPage + 1, totalPages);
+
+  // สร้างปุ่ม Pagination
+  const pages = [];
+  if (startPage > 1) {
+    pages.push(1);
+    if (startPage > 2) {
+      pages.push("...");
+    }
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pages.push("...");
+    }
+    pages.push(totalPages);
+  }
+
   return (
     <div className="container">
       <Container maxW="100%" pb="10">
@@ -150,7 +182,6 @@ function PreCompany() {
               </InputGroup>
             </Flex>
             <Flex>
-
               <Button
                 borderRadius="16px"
                 onClick={clickToRefetch}
@@ -175,7 +206,7 @@ function PreCompany() {
             borderColor="#f4f4f4"
             w="100%"
             h="100%"
-            maxH="67vh"
+            // maxH="67vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
@@ -255,7 +286,8 @@ function PreCompany() {
                     </Td>
                   </Tr>
                 ) : (
-                  filComForm.map((com, index) => {
+                      currentItems.map((com, index) => {
+                    const itemIndex = startIndex + index + 1;
                     return (
                       <Tr
                         key={index}
@@ -268,7 +300,7 @@ function PreCompany() {
                           }}
                           textAlign="center"
                         >
-                          {index + 1}
+                          {itemIndex}
                         </Td>
                         <Td
                           onClick={() => {
@@ -343,6 +375,56 @@ function PreCompany() {
               </Tbody>
             </Table>
           </Box>
+          <Flex>
+            <Button
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 1}
+              mt="2"
+              mr="1"
+              bg="none"
+              borderRadius="50%"
+              size="sm"
+            >
+              {currentPage > 1 ? <FaAngleLeft /> : null}
+            </Button>
+            {pages.map((page: any, index) => (
+              <Button
+                key={index}
+                onClick={() => setCurrentPage(page)}
+                disabled={page === currentPage || page === "..."}
+                mt="2"
+                mr="1"
+                borderRadius="50%"
+                bg={page === currentPage ? "blue" : "#4C7BF4"}
+                color="#fff"
+                _hover={{ opacity: 0.8 }}
+                size="sm"
+              >
+                {page}
+              </Button>
+            ))}
+            <Button
+              onClick={() => {
+                if (currentPage < totalPages) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === totalPages}
+              mt="2"
+              bg="none"
+              borderRadius="50%"
+              size="sm"
+            >
+              {currentPage < totalPages ? <FaAngleRight /> : null}
+            </Button>
+            <Text ml="1" mt="1rem" color="gray.500" fontSize="12px">
+              Page {currentPage} to {totalPages}
+            </Text>
+          </Flex>
         </Box>
       </Container>
     </div>

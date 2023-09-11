@@ -1,9 +1,11 @@
 .sidebar {
+    overflow-y: scroll;
     scrollbar-gutter: stable;
 }
 
 .sidebar::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
     /* position: fixed; */
 }
 
