@@ -57,11 +57,6 @@ const CompanyContextProvider: React.FC<Props> = (props) => {
     setFirebaseId: setNewFirebaseId,
   };
 
-  useEffect(() => {
-    console.clear();
-    console.log(context);
-  }, [context]);
-
   return (
     <CompanyContext.Provider value={context}>
       {props.children}
