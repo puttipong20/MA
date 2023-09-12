@@ -413,6 +413,7 @@ export default function ProjectPreviewComp() {
                       ? (bg = "blue.500")
                       : (bg = "red.500");
                   }
+
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
                     <Tr
@@ -423,6 +424,7 @@ export default function ProjectPreviewComp() {
                       <Td
                         textAlign={"center"}
                         onClick={() => {
+                          Company.setFirebaseId(i.project.detail.firebaseId);
                           navigate(navigateLink);
                         }}
                       >
@@ -435,6 +437,7 @@ export default function ProjectPreviewComp() {
                           textAlign={"center"}
                           onClick={() => {
                             navigate(navigateLink);
+                            Company.setFirebaseId(i.project.detail.firebaseId);
                           }}
                         >
                           ไม่มีสัญญาที่กำลังใช้งาน
@@ -445,6 +448,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             {lastestMA &&
@@ -463,6 +469,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             {lastestMA &&
@@ -475,6 +484,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             <Badge
@@ -493,6 +505,7 @@ export default function ProjectPreviewComp() {
                         textAlign={"center"}
                         onClick={() => {
                           navigate(navigateLink);
+                          Company.setFirebaseId(i.project.detail.firebaseId);
                         }}
                       >
                         {moment(i.project.detail.createdAt).format(
@@ -510,6 +523,7 @@ export default function ProjectPreviewComp() {
                           borderRadius="16px"
                           onClick={() => {
                             navigate(navigateLink);
+                            Company.setFirebaseId(i.project.detail.firebaseId);
                           }}
                         >
                           ดูรายการปัญหา
