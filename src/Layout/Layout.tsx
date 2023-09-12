@@ -40,7 +40,7 @@ const Layout: React.FC<Props> = (props) => {
           }}
         />
       </Box>
-      <Box w="calc(100% - 0%)" p="1rem" maxH="100%" overflow={"hidden"}>
+      <Box w="calc(100% - 0%)" p="1rem" maxH="100%" className={classes.sidebar}>
         <Button
           bg="#4C7BF4"
           color="white"

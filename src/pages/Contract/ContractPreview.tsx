@@ -67,7 +67,7 @@ const ContractPreview = () => {
             <Box
               w="100%"
               overflowY={"auto"}
-              h="70vh"
+              h="64vh"
               p="1rem"
               className={classes.table}
             >
