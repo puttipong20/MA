@@ -65,7 +65,6 @@ const ContractPreview = () => {
             </Center>
             <Divider my="1rem" />
             <Box
-              border="1px"
               w="100%"
               overflowY={"auto"}
               h="64vh"
