@@ -116,7 +116,6 @@ exports.getReport_v2 = functions.https.onRequest((req, res) => {
         .then((data) => {
           const docs = data.docs;
           docs.map((doc) => {
-            console.log(doc.data());
             const query = {
               ...doc.data(),
               docId: doc.id,
