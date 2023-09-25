@@ -13,7 +13,7 @@ const config = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
 };
-
+//
 initializeApp(config);
 
 const functions = getFunctions();
