@@ -74,7 +74,6 @@ function PreCompany() {
         detail: { ...(d.data() as CompanyDetail) },
       })
     );
-    // console.log(companies);
     setComForm(companies);
     setFilComForm(companies);
   }, [data]);

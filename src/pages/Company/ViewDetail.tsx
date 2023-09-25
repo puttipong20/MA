@@ -35,7 +35,6 @@ const ViewCompany = ({ data }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    // console.log(data)
     setCValue(data);
   }, [data]);
 

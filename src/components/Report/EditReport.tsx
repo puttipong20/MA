@@ -44,7 +44,6 @@ type PValue = {
 const EditProblem = ({ data, id }: any) => {
   const [imageUpload, setImageUpload] = useState<string[]>([]);
   useEffect(() => {
-    // console.log(data);
     if (data !== undefined && data.RepImg !== undefined) {
       setImageUpload(data.RepImg);
     }
@@ -80,7 +79,6 @@ const EditProblem = ({ data, id }: any) => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    // console.log(id);
     if (id) {
       const DocRef = doc(db, "Report", id);
       await updateDoc(DocRef, {
@@ -102,7 +100,6 @@ const EditProblem = ({ data, id }: any) => {
           });
           reset();
           onClose();
-          // console.log(data);
         })
         .catch((e) => {
           console.error(e);

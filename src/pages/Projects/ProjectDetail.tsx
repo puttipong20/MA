@@ -113,13 +113,10 @@ export default function DetailPage() {
           i.ma.status === "expire"
       )
       .at(-1);
-    // console.log(lastest)
     if (active) {
-      // console.log("active")
       setActiveMA(active.ma);
     } else {
       if (lastest) {
-        // console.log("lastest")
         setActiveMA(lastest.ma);
       } else {
         setActiveMA(undefined);
@@ -175,7 +172,6 @@ export default function DetailPage() {
           return i;
         }
       });
-      // console.log(updateProjectCompany);
       await updateDoc(companyRef, { projects: updateProjectCompany })
         .then(() => {
           toast({

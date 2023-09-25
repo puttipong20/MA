@@ -66,7 +66,6 @@ const AddReport = () => {
 
   useEffect(() => {
     // console.clear();
-    // console.log(Company);
     if (Company.companyId === "") {
       navigate(goBackPath);
     }
@@ -95,17 +94,15 @@ const AddReport = () => {
       createBy: { uid: Auth.uid, username: Auth.username },
       RepStatus: "รอรับเรื่อง",
     };
-    // console.log(dataToAdd);
     try {
       await axios
         .post(
           // "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2", // *** prod ***
-          "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", // dev
-          // "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2",
+          "https://us-central1-craftinglab-dev.cloudfunctions.net/addReport_v2", // dev
+          // "http://127.0.0.1:5001/craftinglab-dev/us-central1/addReport_v2",
           dataToAdd
         )
         .then(() => {
-          // console.log(props)
           navigate(goBackPath);
           toast({
             title: "Submit Successfully",
@@ -116,9 +113,7 @@ const AddReport = () => {
             isClosable: true,
           });
         })
-        .catch((e) => console.log(e));
     } catch (e) {
-      console.log(e);
       toast({
         title: "Error",
         description: "There's something wrong, please try again later",
@@ -164,7 +159,6 @@ const AddReport = () => {
   };
 
   useEffect(() => {
-    // console.log(problem);
   }, [problem]);
 
   return (

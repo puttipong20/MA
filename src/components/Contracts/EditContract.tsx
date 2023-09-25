@@ -76,10 +76,8 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     const end2 = new Date(e2);
 
     if (start1 <= end2 && end1 >= start2) {
-      // console.log(true)
       return true;
     } else {
-      // console.log(false)
       return false;
     }
   };
@@ -87,13 +85,11 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     // console.clear();
-    // console.log(data);
     let skip = false;
     const projectRef = doc(db, "Project", projectId);
     const MAref = collection(projectRef, "MAlogs");
     const MADetail = (await getDoc(doc(MAref, maId))).data() as MA;
     if (data.startMA !== MADetail.startMA || data.endMA !== MADetail.endMA || data.status !== MADetail.status) {
-      // console.log("date updated")
       let filtered: { id: string, ma: MA }[] = [];
       if (cache === null) {
         const MAlogs: { id: string, ma: MA }[] = [];
@@ -103,19 +99,15 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
       } else {
         filtered = cache.filter((ma) => ma.id !== maId && (ma.ma.status === "active" || ma.ma.status === "advance"))
       }
-      // console.log(filtered);
       const overlapResult: boolean[] = [];
       filtered.forEach((ma) => {
         const ol = checkTimeOverlap(data.startMA, data.endMA, ma.ma.startMA, ma.ma.endMA);
         // if (ol) {
-        //   console.log("input = ", data.startMA, data.endMA, "| compare = ", ma.ma.startMA, ma.ma.endMA, "overlap")
         // } else {
-        //   console.log("input = ", data.startMA, data.endMA, "| compare = ", ma.ma.startMA, ma.ma.endMA, "not overlap")
         // }
         overlapResult.push(ol);
       })
       const overlap = !overlapResult.every((x) => x === false)
-      // overlap ? console.log("has some overlap") : console.log("don't have any overlap");
       if (overlap) {
         skip = true
         toast({
@@ -139,8 +131,6 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
         updatedBy: { username: Auth.username, uid: Auth.uid },
       };
       const merge = [...oldUpdateLog, newUpdateLog];
-      // console.log(data, merge)
-      // console.log(Auth)
       await updateDoc(doc(MAref, maId), {
         startMA: data.startMA,
         endMA: data.endMA,
@@ -186,22 +176,18 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
   const end = watch("endMA") || "";
   
   useEffect(() => {
-    // console.log("change")
     const currentDate = moment().format("YYYY-MM-DD")
     if (status === "active") {
-      // console.log("สัญญา : กำลังใช้งาน", !((start <= currentDate) && (currentDate <= end)))
       setActiveError(!((start <= currentDate) && (currentDate <= end)))
       setAdvanceError(false);
       setExpireError(false);
     }
     if (status === "advance") {
-      // console.log("สัญญา : ล่วงหน้า", (start > currentDate))
       setAdvanceError(!(start > currentDate))
       setActiveError(false)
       setExpireError(false)
     }
     if (status === "expire") {
-      // console.log("สัญญา : หมดอายุ", (currentDate > end))
       setExpireError(!(currentDate > end))
       setActiveError(false)
       setAdvanceError(false)

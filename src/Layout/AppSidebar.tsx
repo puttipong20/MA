@@ -62,7 +62,6 @@ const Sidebar: React.FC<Props> = (props) => {
     const value = inputRef.value;
     const searchField = ["detail.companyName", "detail.projects[projectName]"];
     const result = search(companies, searchField, value) as Company[];
-    // console.log(result);
     setFilterCompany(result);
   };
 
@@ -80,7 +79,6 @@ const Sidebar: React.FC<Props> = (props) => {
         detail: i.data() as CompanyDetail,
       };
       if (company.companyId === params["company"]) {
-        // console.log("open index on", count);
         setOpenIndex(count);
       }
       const projects = company.detail.projects?.filter(
@@ -90,7 +88,6 @@ const Sidebar: React.FC<Props> = (props) => {
       allCompany.push(company);
       count += 1;
     });
-    // console.log(allCompany);
     setCompanies(allCompany);
     setFilterCompany(allCompany);
     setIsFetching(false);
@@ -120,7 +117,6 @@ const Sidebar: React.FC<Props> = (props) => {
         });
       }
     });
-    // console.log(Company)
   });
 
   return (
@@ -267,8 +263,6 @@ const Sidebar: React.FC<Props> = (props) => {
                                     // _hover={{ fontWeight: "bold", bg: color }}
                                     position="relative"
                                     onClick={() => {
-                                      // console.log(i.detail.companyName)
-                                      // console.log(j.projectName)
                                       navigate(
                                         `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
                                       );

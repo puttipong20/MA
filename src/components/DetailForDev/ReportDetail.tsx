@@ -73,7 +73,6 @@ function ReportDetail() {
       };
       setFValue(data);
       setIsLoading(false);
-      // console.log(data);
     });
   }
 

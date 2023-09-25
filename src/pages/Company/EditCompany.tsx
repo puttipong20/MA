@@ -108,7 +108,6 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
     <>
       <Box
         onClick={() => {
-          // console.log(data);
           onOpen();
         }}
         w="100%"

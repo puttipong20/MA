@@ -31,7 +31,6 @@ const FetchCompany = async (DataCtx: any) => {
         Companies.push(company);
     })
     DataCtx.setData(Companies)
-    // console.log(Companies)
 }
 
 export default FetchCompany;

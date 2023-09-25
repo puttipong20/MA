@@ -94,9 +94,7 @@ export default function ProblemPreview() {
     const searchText = value + " " + statusFilter || "";
     const searchField = ["docs.title", "docs.ref", "docs.RepStatus", "docs.name"];
     // console.clear();
-    // console.log(searchText)
     const result = search(reports, searchField, searchText) as Report[];
-    // console.log(result)
     setFilterReports(result);
   };
 
@@ -207,7 +205,6 @@ export default function ProblemPreview() {
                 fontWeight={"normal"}
                 _hover={{ opacity: 0.8 }}
                 onClick={() => {
-                  // console.log(props)
                   navigate(
                     `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
                   );

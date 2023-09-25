@@ -26,7 +26,6 @@ const ReportCard: React.FC<Props> = (props) => {
   const done = "เสร็จสิ้น";
 
   const navToReportPage = async () => {
-    // console.log(props.report.docs.ref);
     const ref = props.report.docs.ref!;
     setIsNav(true);
     const reportCol = collection(db, "Report");
@@ -60,7 +59,6 @@ const ReportCard: React.FC<Props> = (props) => {
         CompanyCtx.setProject(prjId, prjName);
       }
     });
-    // console.log(`/company/${cmpId}/${prjId}/${prjName}/${props.report.id}`);
     navigate(`/company/${cmpId}/${prjId}/${prjName}/${props.report.id}`);
 
     setIsNav(false);

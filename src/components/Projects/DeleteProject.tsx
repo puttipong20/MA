@@ -49,12 +49,10 @@ const DeleteProject: React.FC<Props> = (props) => {
         return i;
       }
     });
-    // console.log(filterProject);
     const updateCompany: CompanyDetail = {
       ...companyDetail,
       projects: filterProject,
     };
-    // console.log(updateCompany)
     await updateDoc(companyRef, updateCompany);
     await updateDoc(projectRef, {
       status: "disable",
@@ -72,7 +70,6 @@ const DeleteProject: React.FC<Props> = (props) => {
       position: "top",
     });
     onClose();
-    // console.log(props)
     isDeleting(false);
   };
 

@@ -40,7 +40,6 @@ const Login: FC = () => {
         const user = currentUser.user;
         if (user !== null) {
           const uid = user.uid;
-          // console.log(user)
           Auth.setNewUser(uid, user.displayName ? user.displayName : user.email as string)
           toast({
             title: "Loggin is success.",
@@ -49,7 +48,6 @@ const Login: FC = () => {
             isClosable: true,
             position: "top",
           });
-          // console.log(Auth)
           navigate("/")
           setIsLoading(false)
         }

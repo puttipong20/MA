@@ -50,7 +50,6 @@ const UpdateContract: React.FC<Props> = (props) => {
             updatedBy: { username: Auth.username, uid: Auth.uid },
         };
         const updatedLog = [...oldUpdateLog, newUpdateLog];
-        // console.log(updatedLog)
         await updateDoc(MAdoc, { updateLogs: updatedLog, status: props.status }).then(
             () => {
                 toast({

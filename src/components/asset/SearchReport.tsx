@@ -51,7 +51,6 @@ const SearchReport: React.FC = () => {
   };
 
   useEffect(() => {
-    // console.log("fetch");
     getAllReport();
   }, []);
 

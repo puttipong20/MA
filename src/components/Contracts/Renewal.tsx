@@ -59,10 +59,8 @@ const Renewal: React.FC<Props> = (props) => {
     const end2 = new Date(e2);
 
     if (start1 <= end2 && end1 >= start2) {
-      // console.log(true)
       return true;
     } else {
-      // console.log(false)
       return false;
     }
   };
@@ -103,16 +101,11 @@ const Renewal: React.FC<Props> = (props) => {
         ma.ma.endMA
       );
       // if (ol) {
-      //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "overlap")
       // } else {
-      //   console.log("input = ", renewStart, renewEnd, "| compare = ", ma.ma.startMA, ma.ma.endMA, "not overlap")
       // }
       overlapResult.push(ol);
     });
     const overlap = !overlapResult.every((x) => x === false);
-    // overlap ? console.log("has some overlap") : console.log("don't have any overlap");
-    // console.log(overlap)
-    // console.log(logs)
     if (!overlap) {
       if (currentDate < renewStart) {
         status = "advance";
@@ -140,9 +133,6 @@ const Renewal: React.FC<Props> = (props) => {
         ],
       };
       // logs?.push(newContract)
-      // console.log(newContract);
-      // console.log(props.MAlog)
-      // console.log(logs)
       const MAref = collection(doc(db, "Project", props.projectId), "MAlogs");
       await addDoc(MAref, newContract)
         .then(() => {

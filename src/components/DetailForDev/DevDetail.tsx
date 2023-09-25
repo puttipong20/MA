@@ -134,7 +134,6 @@ function DevDetail() {
         ...(history.data() as ReportDetail),
       };
       setDetailHistory(reportHistory);
-      // console.log(reportHistory)
       setValue("RepStatus", reportHistory.RepStatus)
       setValue("issue", reportHistory.solution?.issue)
       setValue("solution", reportHistory.solution?.solution)
@@ -149,17 +148,14 @@ function DevDetail() {
   }, []);
 
   useEffect(() => {
-    // console.log(detailHistory)
     const img = detailHistory?.solution?.solutionImg;
 
     if (img) {
       setImageUpload(img);
     }
-    // console.log(detailHistory?.solution?.accepter)
   }, [detailHistory]);
 
   useEffect(() => {
-    // console.log(AuthCtx)
     if ((repState === "เสร็จสิ้น" || repState === "ยกเลิก") && watch("issue") === "กำลังตรวจสอบ") {
       setValue("issue", "");
     }

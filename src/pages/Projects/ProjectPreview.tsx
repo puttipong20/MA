@@ -103,7 +103,6 @@ export default function ProjectPreviewComp() {
             project: project,
             ma: logs,
           };
-          // console.log(merge);
           allProjects.push(merge);
         }
       })
@@ -111,7 +110,6 @@ export default function ProjectPreviewComp() {
 
     setProjects(allProjects);
     setFilterProjects(allProjects);
-    // console.log(allProjects);
     setIsFetching(false);
   };
 

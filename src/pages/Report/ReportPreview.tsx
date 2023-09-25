@@ -77,7 +77,8 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
     setIsUpdating(true);
     await axios
       .post(
-        "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport",
+        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //dev
+        "http://127.0.0.1:5001/craftinglab-dev/us-central1/addReport_v2", //test
         {
           reportId: props.reportId,
           isArchive: set,
@@ -253,13 +254,11 @@ export default function ProblemPreview() {
       "docs.name",
     ];
     // console.clear();
-    // console.log(searchText)
     const result = search(
       seeArchive ? archiveReports : reports,
       searchField,
       searchText
     ) as Report[];
-    // console.log(result)
     setShowReport(result);
   };
 
@@ -428,7 +427,6 @@ export default function ProblemPreview() {
               fontWeight={"normal"}
               _hover={{ opacity: 0.8 }}
               onClick={() => {
-                // console.log(props)
                 navigate(
                   `/company/${params["company"]}/${params["projectID"]}/${params["projectName"]}/addReport`
                 );
