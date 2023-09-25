@@ -249,7 +249,11 @@ const Renewal: React.FC<Props> = (props) => {
                   defaultValue={""}
                   render={({ field }) => (
                     <FormControl isRequired>
-                      <Text>ค่าบริการ</Text>
+                      <Flex>
+                        <Text>ค่าบริการ</Text>
+                        <Text color="red">*</Text>
+                      </Flex>
+
                       <Input
                         type="number"
                         min="0"
@@ -260,7 +264,12 @@ const Renewal: React.FC<Props> = (props) => {
                   )}
                 />
                 <Flex justify={"center"} mt="5">
-                  <Button mr="68px" w="5rem" colorScheme="gray" onClick={onClose}>
+                  <Button
+                    mr="68px"
+                    w="5rem"
+                    colorScheme="gray"
+                    onClick={onClose}
+                  >
                     ยกเลิก
                   </Button>
                   <Button

@@ -9,27 +9,27 @@ const db = admin.firestore();
 
 exports.addReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
-    const token = process.env.VITE_LINE_TOKEN;
-    const {firebaseId, title, detail } = req.body;
+    const token = process.env.VITE_LINE_NOTIFY;
+    const { firebaseId, title, detail } = req.body;
     let shortName = "";
     let projectName = "";
-    let companyName = ""
-    await db
-      .collection("Project")
-      .where('firebaseId','==',firebaseId)
-      .get()
-      .then((snapshot) => {
-        const docs = snapshot.docs
-        let query = {}
-        docs.map((item) => {
-          query = item.data()
-        })
-        shortName = query.shortName
-        projectName = query.projectName
-        companyName = query.companyName
-      });
-    const incrementRef = db.collection("autoIncrement").doc(shortName);
+    let companyName = "";
     try {
+      await db
+        .collection("Project")
+        .where("firebaseId", "==", firebaseId)
+        .get()
+        .then((snapshot) => {
+          const docs = snapshot.docs;
+          let query = {};
+          docs.map((item) => {
+            query = item.data();
+          });
+          shortName = query.shortName;
+          projectName = query.projectName;
+          companyName = query.companyName;
+        });
+      const incrementRef = db.collection("autoIncrement").doc(shortName);
       db.runTransaction(async (transaction) => {
         const doc = await transaction.get(incrementRef);
         if (!doc.exists) {
@@ -63,8 +63,8 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
             companyName: companyName,
             RepStatus: "รอรับเรื่อง",
           })
-          .then((response) => {
-            res.send(`Add report with id : ${response.id}`);
+          .then(() => {
+            res.send(true);
           });
         request({
           method: "POST",
@@ -85,7 +85,7 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
         });
       });
     } catch (e) {
-      res.send(`API need : ( companyName, title, detail ) ${e}`);
+      res.send(`API need : ( companyName, title, detail ) OR. ${e}`);
     }
   });
 });
@@ -111,7 +111,7 @@ exports.getReport_v2 = functions.https.onRequest((req, res) => {
     try {
       const allReport = [];
       db.collection("Report")
-        .where("firebaseId","==",firebaseID)
+        .where("firebaseId", "==", firebaseID)
         .get()
         .then((data) => {
           const docs = data.docs;
@@ -119,13 +119,12 @@ exports.getReport_v2 = functions.https.onRequest((req, res) => {
             console.log(doc.data());
             const query = {
               ...doc.data(),
-              docId: doc.id
+              docId: doc.id,
             };
             allReport.push(query);
           });
           res.send(allReport);
         });
-
     } catch (e) {
       res.send(`api require {firebaseID: "(firebaseId)"}${e}`);
     }

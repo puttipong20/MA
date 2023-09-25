@@ -15,6 +15,8 @@ import {
   useDisclosure,
   ModalHeader,
   Tooltip,
+  FormErrorMessage,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
@@ -37,7 +39,7 @@ interface Props {
 
 const AddProject: React.FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, control, watch, setValue, reset } = useForm();
+  const { handleSubmit, control, watch, setValue, reset, formState: { errors } } = useForm();
   const [duration, setDuration] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const toast = useToast();
@@ -202,7 +204,7 @@ const AddProject: React.FC<Props> = (props) => {
                 defaultValue=""
                 render={({ field }) => (
                   <FormControl mb="0.5rem">
-                    <Text fontWeight={"bold"}>บริษัท/ลูกค้า</Text>
+                    <FormLabel fontWeight={"bold"}>บริษัท/ลูกค้า</FormLabel>
                     <Input type="text" {...field} readOnly />
                   </FormControl>
                 )}
@@ -211,10 +213,14 @@ const AddProject: React.FC<Props> = (props) => {
                 name="firebaseID"
                 control={control}
                 defaultValue={""}
+                rules={{ required: { value: true, message: "กรุณากรอก firebase ID" } }}
                 render={({ field }) => (
-                  <FormControl mb="0.5rem" isRequired>
-                    <Text fontWeight={"bold"}>Firebase ID</Text>
+                  <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["firebaseID"])}>
+                    <FormLabel fontWeight={"bold"}>Firebase ID</FormLabel>
                     <Input className={classes.input} type="text" {...field} placeholder="firebase ID" />
+                    <FormErrorMessage>
+                      {errors["firebaseID"] && (errors["firebaseID"].message as string)}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               />
@@ -223,11 +229,15 @@ const AddProject: React.FC<Props> = (props) => {
                   name="projectName"
                   control={control}
                   defaultValue={""}
+                  rules={{ required: { value: true, message: "กรุณากรอกชื่อโปรเจค" } }}
                   render={({ field }) => (
-                    <FormControl mb="0.5rem" isRequired>
-                      <Text fontWeight={"bold"}>ชื่อโปรเจค</Text>
+                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["projectName"])}>
+                      <FormLabel fontWeight={"bold"}>ชื่อโปรเจค</FormLabel>
                       <Input
                         className={classes.input} type="text" {...field} placeholder="project name" />
+                      <FormErrorMessage>
+                        {errors["projectName"] && (errors["projectName"].message as string)}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />
@@ -237,10 +247,13 @@ const AddProject: React.FC<Props> = (props) => {
                   defaultValue={""}
                   rules={{ required: { value: true, message: "กรุณาระบุชื่อย่อ" }, minLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" }, maxLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" } }}
                   render={({ field }) => (
-                    <FormControl mb="0.5rem" isRequired>
-                      <Text fontWeight={"bold"}>ชื่อย่อ <Tooltip label="ชื่อย่อต้องมี 3 ตัวอักษรและเป็นตัวพิมพ์ใหญ่ภาษาอังกฤษ" placement="top" display="flex" alignItems={"center"} border={"1px"}><QuestionIcon /></Tooltip></Text>
+                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["shortName"])}>
+                      <FormLabel fontWeight={"bold"}>ชื่อย่อ <Tooltip label="ชื่อย่อต้องมี 3 ตัวอักษรและเป็นตัวพิมพ์ใหญ่ภาษาอังกฤษเท่านั้น" placement="top" display="flex" alignItems={"center"} border={"1px"}><QuestionIcon /></Tooltip></FormLabel>
                       <Input
                         className={classes.input} type="text" {...field} placeholder="ABC" minHeight={3} maxLength={3} pattern="[A-Z]{3}" />
+                      <FormErrorMessage>
+                        {errors["shortName"] && (errors["shortName"].message as string)}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />
@@ -251,11 +264,15 @@ const AddProject: React.FC<Props> = (props) => {
                   name="startMA"
                   control={control}
                   defaultValue={moment().format("YYYY-MM-DD")}
+                  rules={{ required: { value: true, message: "กรุณาระบุวันเริ่มสัญญา" } }}
                   render={({ field }) => (
-                    <FormControl mb="0.5rem" isRequired>
-                      <Text fontWeight={"bold"}>start MA</Text>
+                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["startMA"])}>
+                      <FormLabel fontWeight={"bold"}>start MA</FormLabel>
                       <Input
                         className={classes.input} type="date" {...field} />
+                      <FormErrorMessage>
+                        {errors["startMA"] && (errors["startMA"].message as string)}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />
@@ -263,11 +280,15 @@ const AddProject: React.FC<Props> = (props) => {
                   name="endMA"
                   control={control}
                   defaultValue={moment().add(1, "year").format("YYYY-MM-DD")}
+                  rules={{ required: { value: true, message: "กรุณาระบุวันสิ้นสุดสัญญา" } }}
                   render={({ field }) => (
-                    <FormControl mb="0.5rem" isRequired>
-                      <Text fontWeight={"bold"}>end MA</Text>
+                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["endMA"])}>
+                      <FormLabel fontWeight={"bold"}>end MA</FormLabel>
                       <Input
                         className={classes.input} type="date" {...field} />
+                      <FormErrorMessage>
+                        {errors["endMA"] && (errors["endMA"].message as string)}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 />
@@ -284,9 +305,10 @@ const AddProject: React.FC<Props> = (props) => {
                 name="cost"
                 control={control}
                 defaultValue={""}
+                rules={{ required: { value: true, message: "กรุณากรอกค่าบริการ" }, min: { value: 0, message: "ค่าบริการต้องมากกว่า 0" } }}
                 render={({ field }) => (
-                  <FormControl isRequired>
-                    <Text fontWeight={"bold"}>ค่าบริการ</Text>
+                  <FormControl isRequired isInvalid={Boolean(errors["cost"])}>
+                    <FormLabel fontWeight={"bold"}>ค่าบริการ</FormLabel>
                     <Input
                       className={classes.input}
                       type="number"
@@ -294,6 +316,9 @@ const AddProject: React.FC<Props> = (props) => {
                       {...field}
                       placeholder="0.00"
                     />
+                    <FormErrorMessage>
+                      {errors["cost"] && (errors["cost"].message as string)}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               />

@@ -22,6 +22,7 @@ import {
   Radio,
   RadioGroup,
   ModalHeader,
+  Text,
 } from "@chakra-ui/react";
 import moment from "moment";
 
@@ -37,7 +38,6 @@ type ComValue = {
 };
 
 const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
-
   const {
     handleSubmit,
     reset,
@@ -48,7 +48,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const AuthCtx = useContext(AuthContext)
+  const AuthCtx = useContext(AuthContext);
 
   const createDate = moment().format("DD/MM/YYYY, HH:mm:ss");
 
@@ -61,7 +61,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
       createBy: {
         uid: AuthCtx.uid,
         username: AuthCtx.username,
-      }
+      },
     })
       .then(() => {
         toast({
@@ -120,7 +120,12 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   rules={{ required: true }}
                   render={({ field: { name, value, onChange, onBlur } }) => (
                     <FormControl isInvalid={Boolean(errors[name])}>
-                      <FormLabel>ชื่อบริษัท</FormLabel>
+                      <FormLabel>
+                        <Flex>
+                          <Text>ชื่อบริษัท</Text>
+                          <Text color="red">*</Text>
+                        </Flex>
+                      </FormLabel>
                       <Input
                         value={value}
                         onChange={onChange}
@@ -226,7 +231,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   type="submit"
                   color="#fff"
                   bg="#4C7BF4"
-                  _hover={{ opacity:"0.8" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

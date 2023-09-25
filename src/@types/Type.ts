@@ -8,9 +8,10 @@ export type Solution = {
 };
 
 export type ReportDetail = {
+  companyName: string;
+  projectName: string;
   RepImg: string[];
   RepStatus: string;
-  projectName: string;
   projectId: string;
   createAt: string;
   detail: string;
@@ -19,9 +20,9 @@ export type ReportDetail = {
   name: string;
   phone: string;
   title: string;
-  companyName: string;
   ref?: string;
   uid: string;
+  isArchive: boolean;
   firebaseId: string;
   createBy: { uid: string; username: string };
   latestReportUpdate?: { uid: string; username: string; timestamp: string };

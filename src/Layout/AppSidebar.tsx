@@ -36,11 +36,11 @@ import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
-import QuickSearchModal from "../components/asset/QuickSearchModal";
 // import { FaLightbulb } from "react-icons/fa";
 
 import classes from "./Layout.module.css";
 import LogoutButton from "../pages/Login/Logout";
+import SearchReport from "../components/asset/SearchReport";
 
 interface Props {
   setTriggle: () => void;
@@ -51,7 +51,6 @@ const Sidebar: React.FC<Props> = (props) => {
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [filterCompany, setFilterCompany] = useState<Company[]>([]);
-  const [searchValue, setSearchValue] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
@@ -61,7 +60,6 @@ const Sidebar: React.FC<Props> = (props) => {
     // console.clear();
     const inputRef = document.getElementById("searchInput") as HTMLInputElement;
     const value = inputRef.value;
-    setSearchValue(value)
     const searchField = ["detail.companyName", "detail.projects[projectName]"];
     const result = search(companies, searchField, value) as Company[];
     // console.log(result);
@@ -85,6 +83,10 @@ const Sidebar: React.FC<Props> = (props) => {
         // console.log("open index on", count);
         setOpenIndex(count);
       }
+      const projects = company.detail.projects?.filter(
+        (p) => p.status === "enable"
+      );
+      company.detail.projects = projects;
       allCompany.push(company);
       count += 1;
     });
@@ -150,13 +152,13 @@ const Sidebar: React.FC<Props> = (props) => {
         transition={"all 0.3s"}
         // _hover={{ textShadow: "0px 0px 30px #fff" }}
         _hover={{ textShadow: "0px 0px 30px #000" }}
-      // border="1px solid black"
+        // border="1px solid black"
       >
         CRAFTING LAB
       </Heading>
 
       <Divider my="5px" opacity={"1"} />
-
+      <SearchReport />
       <HStack my="10px">
         <InputGroup>
           <InputLeftElement>
@@ -171,16 +173,27 @@ const Sidebar: React.FC<Props> = (props) => {
             onChange={onSearch}
           />
         </InputGroup>
-        <QuickSearchModal searchValue={searchValue} data={companies} />
-        {/* <Button bg="#4c7bf4" color="white" _hover={{}}><SearchIcon /></Button> */}
       </HStack>
-      {/* <Divider my="5px" opacity={"1"} /> */}
       {isFetching ? (
-        <Flex w="100%" justify={"center"} align={"center"} border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
+        <Flex
+          w="100%"
+          justify={"center"}
+          align={"center"}
+          border=""
+          h={["70vh", "78vh"]}
+          overflowY={"auto"}
+          className={classes.sidebar}
+        >
           <Spinner />
         </Flex>
       ) : (
-        <Box border="" h={["70vh", "78vh"]} overflowY={"auto"} className={classes.sidebar}>
+        <Box
+          border=""
+          // h={["70vh", "78vh"]}
+          flex="auto"
+          overflowY={"auto"}
+          className={classes.sidebar}
+        >
           <Accordion allowToggle defaultIndex={[openIndex]}>
             {filterCompany.map((i, index) => {
               // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
@@ -196,7 +209,7 @@ const Sidebar: React.FC<Props> = (props) => {
                   // borderRadius={"10px"}
                   // bg={focusCompany ? color : ""}
                   my="5px"
-                // borderLeft={focusCompany ? "3px solid white" : "none"}
+                  // borderLeft={focusCompany ? "3px solid white" : "none"}
                 >
                   <AccordionButton
                     onClick={() => {
@@ -205,83 +218,89 @@ const Sidebar: React.FC<Props> = (props) => {
                     _hover={{ bg: "#fff" }}
                   >
                     <HStack justify={"space-between"} w="100%">
-                      <HStack justify={"flex-start"} alignItems={"flex-start"} color={focusCompany ? "#4c7bf4" : "black"}>
+                      <HStack
+                        justify={"flex-start"}
+                        alignItems={"flex-start"}
+                        color={focusCompany ? "#4c7bf4" : "black"}
+                      >
                         <Text mt="0.25rem">
                           <HiOutlineOfficeBuilding />
                           {/* <ImOffice /> */}
                         </Text>
-                        <Text
-                          fontWeight={"normal"}
-                          textAlign={"left"}
-                        >
+                        <Text fontWeight={"normal"} textAlign={"left"}>
                           {i.detail.companyName}
                         </Text>
                       </HStack>
                       <AccordionIcon />
                     </HStack>
                   </AccordionButton>
-                  {
-                    (i.detail.projects?.length !== undefined && i.detail.projects?.length > 0) &&
-                    <AccordionPanel pt="0px">
-                      <VStack mt="-0.5rem" fontSize={"0.9rem"} align={"left"} pl="5%">
-                        {i.detail.projects !== undefined &&
+                  {i.detail.projects?.length !== undefined &&
+                    i.detail.projects?.length > 0 && (
+                      <AccordionPanel pt="0px">
+                        <VStack
+                          mt="-0.5rem"
+                          fontSize={"0.9rem"}
+                          align={"left"}
+                          pl="5%"
+                        >
+                          {i.detail.projects !== undefined &&
                           i.detail.projects.filter((i) => i.status === "enable")
                             .length !== 0 ? (
-                          i.detail.projects?.map((j, index) => {
-                            // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
-                            const focusProject = params["projectID"] === j.id;
-                            if (j.status === "enable") {
-                              return (
-                                <Box
-                                  h="20px"
-                                  key={index}
-                                  // fontWeight={focusProject ? "bold" : "normal"}
-                                  cursor={"pointer"}
-                                  transition={"all 0.1s"}
-                                  borderRadius={"5px"}
-                                  // pl="1rem"
-                                  color={focusProject ? "rgb(76, 123, 244)" : "black"}
-                                  // _hover={{ fontWeight: "bold", bg: color }}
-                                  position="relative"
-                                  onClick={() => {
-                                    // console.log(i.detail.companyName)
-                                    // console.log(j.projectName)
-                                    navigate(
-                                      `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
-                                    );
-                                  }}
-                                >
-                                  <HStack
-                                    // as="span"
-                                    // position="absolute"
-                                    // left="0.5rem"
-                                    spacing={0}
+                            i.detail.projects?.map((j, index) => {
+                              // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
+                              const focusProject = params["projectID"] === j.id;
+                              if (j.status === "enable") {
+                                return (
+                                  <Box
+                                    h="20px"
+                                    key={index}
+                                    // fontWeight={focusProject ? "bold" : "normal"}
+                                    cursor={"pointer"}
+                                    transition={"all 0.1s"}
+                                    borderRadius={"5px"}
+                                    // pl="1rem"
+                                    color={
+                                      focusProject
+                                        ? "rgb(76, 123, 244)"
+                                        : "black"
+                                    }
+                                    // _hover={{ fontWeight: "bold", bg: color }}
+                                    position="relative"
+                                    onClick={() => {
+                                      // console.log(i.detail.companyName)
+                                      // console.log(j.projectName)
+                                      navigate(
+                                        `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
+                                      );
+                                    }}
                                   >
-                                    <Text fontSize={"40px"}>
-                                      <BsDot />
-                                    </Text>
-                                    <Text ml="-0.5rem">
-                                      {j.projectName}
-                                    </Text>
-                                  </HStack>
-                                </Box>
-
-                              );
-                            }
-                          })
-                        ) : (
-                          <></>
-                        )}
-                      </VStack>
-                    </AccordionPanel>
-                  }
+                                    <HStack
+                                      // as="span"
+                                      // position="absolute"
+                                      // left="0.5rem"
+                                      spacing={0}
+                                    >
+                                      <Text fontSize={"40px"}>
+                                        <BsDot />
+                                      </Text>
+                                      <Text ml="-0.5rem">{j.projectName}</Text>
+                                    </HStack>
+                                  </Box>
+                                );
+                              }
+                            })
+                          ) : (
+                            <></>
+                          )}
+                        </VStack>
+                      </AccordionPanel>
+                    )}
                 </AccordionItem>
               );
             })}
           </Accordion>
         </Box>
       )}
-      {/* <Divider my="5px" opacity={"1"} /> */}
       <LogoutButton />
     </Box>
   );

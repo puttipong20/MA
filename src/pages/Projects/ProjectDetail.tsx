@@ -58,6 +58,7 @@ import { CompanyContext } from "../../context/CompanyContext";
 import classes from "../../pages/Report/ReportPreview.module.css";
 import { Controller, useForm } from "react-hook-form";
 import { AuthContext } from "../../context/AuthContext";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 export default function DetailPage() {
   const params = useParams();
@@ -203,6 +204,37 @@ export default function DetailPage() {
   const hoverLeave = () => {
     setHoverToEdit(false);
   };
+
+  // สร้าง State สำหรับ Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+  const totalPages = Math.ceil(logs.length / itemsPerPage);
+
+  // อัพเดตข้อมูลในหน้าปัจจุบัน
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = logs.slice(startIndex, endIndex);
+
+  const startPage = Math.max(currentPage - 1, 1);
+  const endPage = Math.min(currentPage + 1, totalPages);
+
+  // สร้างปุ่ม Pagination
+  const pages = [];
+  if (startPage > 1) {
+    pages.push(1);
+    if (startPage > 2) {
+      pages.push("...");
+    }
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pages.push("...");
+    }
+    pages.push(totalPages);
+  }
 
   if (isFetching) {
     return (
@@ -440,7 +472,7 @@ export default function DetailPage() {
                 borderColor="#f4f4f4"
                 w="100%"
                 h="100%"
-                maxH={"35vh"}
+                // maxH={"34vh"}
                 overflowY={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}
@@ -500,7 +532,7 @@ export default function DetailPage() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {logs
+                    {currentItems
                       .sort((a, b) => {
                         const endA = new Date(a.ma.endMA) as any;
                         const endB = new Date(b.ma.endMA) as any;
@@ -508,9 +540,10 @@ export default function DetailPage() {
                       })
                       .filter((ma) => ma.ma.status !== "deleted")
                       .map((MA, index) => {
+                        const itemIndex = startIndex + index + 1;
                         return (
                           <Tr key={index} _hover={{ bg: "gray.100" }}>
-                            <Td textAlign={"center"}>{index + 1}</Td>
+                            <Td textAlign={"center"}>{itemIndex}</Td>
                             <Td textAlign={"center"}>
                               {moment(MA.ma.createdAt).format(
                                 "DD/MM/YYYY HH:mm:ss"
@@ -618,6 +651,56 @@ export default function DetailPage() {
                   </Tbody>
                 </Table>
               </Box>
+              <Flex>
+                <Button
+                  onClick={() => {
+                    if (currentPage > 1) {
+                      setCurrentPage(currentPage - 1);
+                    }
+                  }}
+                  disabled={currentPage === 1}
+                  mt="2"
+                  mr="1"
+                  bg="none"
+                  borderRadius="50%"
+                  size="sm"
+                >
+                  {currentPage > 1 ? <FaAngleLeft /> : null}
+                </Button>
+                {pages.map((page: any, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => setCurrentPage(page)}
+                    disabled={page === currentPage || page === "..."}
+                    mt="2"
+                    mr="1"
+                    borderRadius="50%"
+                    bg={page === currentPage ? "blue" : "#4C7BF4"}
+                    color="#fff"
+                    _hover={{ opacity: 0.8 }}
+                    size="sm"
+                  >
+                    {page}
+                  </Button>
+                ))}
+                <Button
+                  onClick={() => {
+                    if (currentPage < totalPages) {
+                      setCurrentPage(currentPage + 1);
+                    }
+                  }}
+                  disabled={currentPage === totalPages}
+                  mt="2"
+                  bg="none"
+                  borderRadius="50%"
+                  size="sm"
+                >
+                  {currentPage < totalPages ? <FaAngleRight /> : null}
+                </Button>
+                <Text ml="1" mt="1rem" color="gray.500" fontSize="12px">
+                  Page {currentPage} to {totalPages}
+                </Text>
+              </Flex>
             </Box>
           </Box>
         </Container>

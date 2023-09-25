@@ -57,6 +57,7 @@ import moment from "moment";
 
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
@@ -92,7 +93,7 @@ export default function ProjectPreviewComp() {
             projectId: projectID,
             detail: p.data() as ProjectDetail,
           };
-          Company.setFirebaseId((p.data() as ProjectDetail).firebaseId)
+          Company.setFirebaseId((p.data() as ProjectDetail).firebaseId);
           // setCompanyName(project.detail.companyName);
           const MAref = collection(doc(db, "Project", projectID), "MAlogs");
           const MAlogs = await getDocs(MAref);
@@ -137,6 +138,37 @@ export default function ProjectPreviewComp() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params["project"], params["company"], Company.companyId]);
+
+  // สร้าง State สำหรับ Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // จำนวนรายการต่อหน้า
+  const totalPages = Math.ceil(filterProject.length / itemsPerPage);
+
+  // อัพเดตข้อมูลในหน้าปัจจุบัน
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filterProject.slice(startIndex, endIndex);
+
+  const startPage = Math.max(currentPage - 1, 1);
+  const endPage = Math.min(currentPage + 1, totalPages);
+
+  // สร้างปุ่ม Pagination
+  const pages = [];
+  if (startPage > 1) {
+    pages.push(1);
+    if (startPage > 2) {
+      pages.push("...");
+    }
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pages.push("...");
+    }
+    pages.push(totalPages);
+  }
 
   return (
     <div className="container">
@@ -185,7 +217,10 @@ export default function ProjectPreviewComp() {
               </VStack>
             </HStack>
           </Center>
-          <Flex justify={"space-between"}>
+          <Flex
+            justify={"space-between"}
+            flexDir={["column", "row", "row", "row", "row", "row"]}
+          >
             <Flex justifyContent="flex-start" gap="20px">
               <InputGroup w="auto" borderRadius="16px">
                 <InputLeftAddon
@@ -196,6 +231,7 @@ export default function ProjectPreviewComp() {
                   <BsSearch />
                 </InputLeftAddon>
                 <Input
+                  w="100%"
                   type="text"
                   background="#F4F7FE"
                   border="none"
@@ -207,7 +243,7 @@ export default function ProjectPreviewComp() {
                 />
               </InputGroup>
             </Flex>
-            <Flex>
+            <Flex mt={{base:"0.5rem",md:"0",lg:"0"}} justify="flex-end">
               <Button
                 _hover={{ opacity: 0.8 }}
                 bg="#4C7BF4"
@@ -235,7 +271,7 @@ export default function ProjectPreviewComp() {
           borderColor="#f4f4f4"
           w="100%"
           h="100%"
-          maxH="67vh"
+          // maxH="67vh"
           overflowY={"auto"}
           boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
           className={classes.table}
@@ -352,7 +388,7 @@ export default function ProjectPreviewComp() {
                   </Tr>
                 </>
               ) : (
-                filterProject.map((i, index) => {
+                currentItems.map((i, index) => {
                   const lastestMA = i.ma.filter(
                     (j) => j.status === "active"
                   )[0];
@@ -364,19 +400,20 @@ export default function ProjectPreviewComp() {
                     state === "active"
                       ? (display = "กำลังใช้งาน")
                       : state === "advance"
-                        ? (display = "ล่วงหน้า")
-                        : (display = "หมดอายุ");
+                      ? (display = "ล่วงหน้า")
+                      : (display = "หมดอายุ");
                     state === "active"
                       ? (color = "white")
                       : state === "advance"
-                        ? (color = "white")
-                        : (color = "white");
+                      ? (color = "white")
+                      : (color = "white");
                     state === "active"
                       ? (bg = "green.500")
                       : state === "advance"
-                        ? (bg = "blue.500")
-                        : (bg = "red.500");
+                      ? (bg = "blue.500")
+                      : (bg = "red.500");
                   }
+
                   const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
                   return (
                     <Tr
@@ -387,6 +424,7 @@ export default function ProjectPreviewComp() {
                       <Td
                         textAlign={"center"}
                         onClick={() => {
+                          Company.setFirebaseId(i.project.detail.firebaseId);
                           navigate(navigateLink);
                         }}
                       >
@@ -399,6 +437,7 @@ export default function ProjectPreviewComp() {
                           textAlign={"center"}
                           onClick={() => {
                             navigate(navigateLink);
+                            Company.setFirebaseId(i.project.detail.firebaseId);
                           }}
                         >
                           ไม่มีสัญญาที่กำลังใช้งาน
@@ -409,6 +448,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             {lastestMA &&
@@ -427,6 +469,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             {lastestMA &&
@@ -439,6 +484,9 @@ export default function ProjectPreviewComp() {
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
                             }}
                           >
                             <Badge
@@ -457,6 +505,7 @@ export default function ProjectPreviewComp() {
                         textAlign={"center"}
                         onClick={() => {
                           navigate(navigateLink);
+                          Company.setFirebaseId(i.project.detail.firebaseId);
                         }}
                       >
                         {moment(i.project.detail.createdAt).format(
@@ -474,6 +523,7 @@ export default function ProjectPreviewComp() {
                           borderRadius="16px"
                           onClick={() => {
                             navigate(navigateLink);
+                            Company.setFirebaseId(i.project.detail.firebaseId);
                           }}
                         >
                           ดูรายการปัญหา
@@ -546,6 +596,56 @@ export default function ProjectPreviewComp() {
             </Tbody>
           </Table>
         </Box>
+        <Flex>
+          <Button
+            onClick={() => {
+              if (currentPage > 1) {
+                setCurrentPage(currentPage - 1);
+              }
+            }}
+            disabled={currentPage === 1}
+            mt="2"
+            mr="1"
+            bg="none"
+            borderRadius="50%"
+            size="sm"
+          >
+            {currentPage > 1 ? <FaAngleLeft /> : null}
+          </Button>
+          {pages.map((page: any, index) => (
+            <Button
+              key={index}
+              onClick={() => setCurrentPage(page)}
+              disabled={page === currentPage || page === "..."}
+              mt="2"
+              mr="1"
+              borderRadius="50%"
+              bg={page === currentPage ? "blue" : "#4C7BF4"}
+              color="#fff"
+              _hover={{ opacity: 0.8 }}
+              size="sm"
+            >
+              {page}
+            </Button>
+          ))}
+          <Button
+            onClick={() => {
+              if (currentPage < totalPages) {
+                setCurrentPage(currentPage + 1);
+              }
+            }}
+            disabled={currentPage === totalPages}
+            mt="2"
+            bg="none"
+            borderRadius="50%"
+            size="sm"
+          >
+            {currentPage < totalPages ? <FaAngleRight /> : null}
+          </Button>
+          <Text ml="1" mt="1rem" color="gray.500" fontSize="12px">
+            Page {currentPage} to {totalPages}
+          </Text>
+        </Flex>
       </Container>
     </div>
   );
