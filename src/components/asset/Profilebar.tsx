@@ -12,6 +12,7 @@ import { useContext } from "react";
 // import { AiOutlineBell } from "react-icons/ai";
 import LogoutButton from "../../pages/Login/Logout";
 import { AuthContext } from "../../context/AuthContext";
+import AddEmployee from "../Employee/AddEmployee";
 
 const ProfileBar: React.FC = () => {
   const User = useContext(AuthContext);
@@ -49,8 +50,11 @@ const ProfileBar: React.FC = () => {
             />
           </Box>
         </MenuButton>
-        <MenuList p="0">
-          <MenuItem>
+        <MenuList p="0" borderRadius={0}>
+          <MenuItem p="0">
+            <AddEmployee />
+          </MenuItem>
+          <MenuItem p="0">
             <LogoutButton />
           </MenuItem>
         </MenuList>

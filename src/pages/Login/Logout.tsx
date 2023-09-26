@@ -36,7 +36,7 @@ export default function LogoutButton() {
         userSelect={"none"}
         cursor={"pointer"}
         transition={"all 0.3s"}
-        borderRadius={"10px"}
+        // borderRadius={"10px"}
         _hover={{ bg: "rgba(0,0,0,0.1)" }}
         onClick={onOpen}
       >
