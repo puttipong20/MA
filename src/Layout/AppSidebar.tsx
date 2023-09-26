@@ -150,7 +150,7 @@ const Sidebar: React.FC<Props> = (props) => {
         _hover={{ textShadow: "0px 0px 30px #000" }}
         // border="1px solid black"
       >
-        CRAFTING LAB (Latest)
+        CRAFTING LAB
       </Heading>
 
       <Divider my="5px" opacity={"1"} />

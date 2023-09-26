@@ -40,7 +40,7 @@ function App() {
     if (Auth.uid !== "") {
       ContractUpdate();
     }
-  }, [Auth.uid])
+  }, [Auth.uid]);
 
   useEffect(() => {
     initial();
