@@ -3,6 +3,7 @@ import AppSidebar from "./AppSidebar";
 import classes from "./Layout.module.css";
 import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import ProfileBar from "../components/asset/Profilebar";
 
 interface Props {
   children?: React.ReactNode;
@@ -12,6 +13,7 @@ const Layout: React.FC<Props> = (props) => {
   const [isTrigger, setIsTrigger] = useState<boolean>(false);
   return (
     <Flex h="100vh" position={"relative"}>
+      <ProfileBar />
       <Box
         h="100%"
         overflowY={"auto"}
