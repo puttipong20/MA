@@ -1,7 +1,6 @@
 import {
   Box,
   HStack,
-  Image,
   Menu,
   MenuButton,
   MenuItem,
