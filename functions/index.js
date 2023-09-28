@@ -172,3 +172,24 @@ exports.getProjectByCompanyID = functions.https.onRequest((req, res) => {
     }
   });
 });
+
+exports.addUser = functions.https.onCall((data, context) => {
+  if ((context.auth.uid !== null) | undefined) {
+    let email = ''
+    const createUser = admin
+      .auth()
+      .createUser({
+        email: data.email,
+        password: data.password,
+        displayName: data.userName,
+      })
+      .then((res) => {
+        email = res.email
+        return email
+      })
+      .catch((e) => {
+        return e
+      });
+      return createUser
+    }
+});

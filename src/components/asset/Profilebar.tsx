@@ -13,6 +13,7 @@ import { useContext } from "react";
 import LogoutButton from "../../pages/Login/Logout";
 import { AuthContext } from "../../context/AuthContext";
 import AddEmployee from "../Employee/AddEmployee";
+import { BsPersonPlusFill } from "react-icons/bs";
 
 const ProfileBar: React.FC = () => {
   const User = useContext(AuthContext);
@@ -34,20 +35,15 @@ const ProfileBar: React.FC = () => {
       <Menu placement="bottom-start">
         <MenuButton>
           <Box
-            h="50px"
-            borderRadius={"50%"}
+            h="40px"
             overflow={"hidden"}
-            w="50px"
-            border="1px solid #0005"
+            w="40px"
+            borderLeft="1px solid #0005"
             display="flex"
             justifyContent={"center"}
             alignItems={"center"}
           >
-            <Image
-              src={"/img/empty.jpg"}
-              fallbackSrc="/img/empty.jpg"
-              maxH="100%"
-            />
+            <BsPersonPlusFill />
           </Box>
         </MenuButton>
         <MenuList p="0" borderRadius={0}>

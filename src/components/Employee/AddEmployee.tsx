@@ -14,18 +14,51 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { BsPersonPlusFill } from "react-icons/bs";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
+
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../services/config-db";
+
+const createUser = httpsCallable(functions, "addUser");
 
 const AddEmployee: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, control, watch } = useForm();
   const [seePass, setSeePass] = useState(false);
+  const toast = useToast();
 
   const onSubmit = (d: any) => {
-    console.log(d);
+    onClose();
+    createUser({
+      email: d.email,
+      password: d.password,
+      userName: d.username,
+    })
+    .then((res) => {
+        console.log(res.data);
+        toast({
+          position: "top",
+          title: "เสร็จสิ้น",
+          description: `เพิ่ม ${res.data} เรียนร้อยแล้ว`,
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        toast({
+          position: "top",
+          title: "เกิดข้อผิดพลาด",
+          description: `${e}`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      });
   };
 
   const pass = watch("password") || "";
@@ -42,10 +75,10 @@ const AddEmployee: React.FC = () => {
         _hover={{ bg: "#0001" }}
         onClick={onOpen}
       >
-        <Text display="flex" alignItems={"center"} gap={"1rem"}>
-          <BsPersonPlusFill />
-          เพิ่มพนักงาน
-        </Text>
+        <Box display="flex" alignItems={"center"} gap={"1rem"}>
+          
+          <Text>เพิ่มพนักงาน</Text>
+        </Box>
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -54,7 +87,7 @@ const AddEmployee: React.FC = () => {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              <Heading fontFamily={"inherit"} textAlign={"center"}>
+              <Heading fontFamily={"inherit"} textAlign={"center"} bg={''}>
                 เพิ่มพนักงาน
               </Heading>
               <form onSubmit={handleSubmit(onSubmit)}>

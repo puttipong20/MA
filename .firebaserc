@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "crafting-ticket-dev",
     "develop": "craftinglab-dev",
     "prod": "craftinglabweb"
   },

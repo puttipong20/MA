@@ -18,6 +18,32 @@
   "storage": {
     "rules": "storage.rules"
   },
+  "hosting": [
+    {
+      "site": "craftingma",
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
+      }
+    },
+    {
+      "site": "craftinglab-ma-dev",
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
+      }
+    }
+  ],
   "emulators": {
     "auth": {
       "port": 9099
@@ -28,33 +54,9 @@
     "firestore": {
       "port": 8080
     },
-    "database": {
-      "port": 9000
-    },
-    "storage": {
-      "port": 9199
-    },
     "ui": {
       "enabled": true
     },
     "singleProjectMode": true
-  },
-  "hosting": [
-    {
-      "site": "craftingma",
-      "source": ".",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    },
-    {
-      "site": "craftinglab-ma-dev",
-      "source": ".",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    }
-  ]
+  }
 }
