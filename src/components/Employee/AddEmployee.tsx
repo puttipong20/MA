@@ -11,6 +11,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalHeader,
   ModalOverlay,
   Text,
   useDisclosure,
@@ -37,7 +38,7 @@ const AddEmployee: React.FC = () => {
       password: d.password,
       userName: d.username,
     })
-    .then((res) => {
+      .then((res) => {
         console.log(res.data);
         toast({
           position: "top",
@@ -71,25 +72,25 @@ const AddEmployee: React.FC = () => {
         userSelect={"none"}
         cursor={"pointer"}
         transition={"all 0.3s"}
-        // borderRadius={"10px"}
         _hover={{ bg: "#0001" }}
         onClick={onOpen}
       >
         <Box display="flex" alignItems={"center"} gap={"1rem"}>
-          
           <Text>เพิ่มพนักงาน</Text>
         </Box>
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
+        <ModalContent borderRadius={'16px'}>
+          <ModalCloseButton color={'#fff'}/>
+          <ModalHeader bg="#4C7BF4" color={'#fff'} borderTopRadius={'16px'}>
+            <Heading fontFamily={"inherit"} textAlign={"center"}>
+              เพิ่มพนักงาน
+            </Heading>
+          </ModalHeader>
           <ModalBody>
             <Box>
-              <Heading fontFamily={"inherit"} textAlign={"center"} bg={''}>
-                เพิ่มพนักงาน
-              </Heading>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
                   name="username"
@@ -181,7 +182,7 @@ const AddEmployee: React.FC = () => {
                     isDisabled={
                       pass !== conPass || pass == "" || conPass === ""
                     }
-                    colorScheme="green"
+                    bg="#4C7BF4" color={'#fff'}
                   >
                     เพิ่ม
                   </Button>
