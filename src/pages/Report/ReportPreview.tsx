@@ -101,7 +101,7 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
   return (
     <>
       <Menu>
-        <MenuButton as={Button} bg="">
+        <MenuButton as={Button} bg={'none'} borderRadius={'16px'} border={'1px solid #ccc'}>
           <BiDotsHorizontalRounded />
         </MenuButton>
         <MenuList p="0">
@@ -151,11 +151,11 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
               <Button
                 w="5rem"
                 bg="#4c7bf4"
+                color="#fff"
                 onClick={() => {
                   toArchive(true);
                 }}
                 isLoading={isUpdating}
-                color="#fff"
               >
                 ยืนยัน
               </Button>
@@ -379,7 +379,7 @@ export default function ProblemPreview() {
                   <FormControl>
                     <HStack>
                       <Text>สถานะ</Text>
-                      <Select {...field}>
+                      <Select borderRadius={'16px'} {...field}>
                         <option value="">ทั้งหมด</option>
                         <option value="รอรับเรื่อง">รอรับเรื่อง</option>
                         <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -545,7 +545,16 @@ export default function ProblemPreview() {
               >
                 การดำเนินการ
               </Th>
-              <Th></Th>
+              <Th
+                fontWeight={"normal"}
+                fontSize="16px"
+                minW="10rem"
+                color="#fff"
+                textAlign="center"
+                fontFamily={"inherit"}
+              >
+                จัดการ
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -623,7 +632,7 @@ export default function ProblemPreview() {
                         </TagLabel>
                       </Tag>
                     </Td>
-                    <Td>
+                    <Td textAlign={'center'}>
                       <ActionMenu
                         reportId={r.id}
                         refetch={fetchingReport}

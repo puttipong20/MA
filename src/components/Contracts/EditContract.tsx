@@ -22,7 +22,13 @@ import { useEffect, useState, useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { RiEditLine } from "react-icons/ri";
 import moment from "moment";
-import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { MA } from "../../@types/Type";
 import { AuthContext } from "../../context/AuthContext";
@@ -39,8 +45,8 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [cache, setCache] = useState<{ id: string, ma: MA }[] | null>(null)
-  const [duration, setDuration] = useState<number>(0)
+  const [cache, setCache] = useState<{ id: string; ma: MA }[] | null>(null);
+  const [duration, setDuration] = useState<number>(0);
   const toast = useToast();
   const Auth = useContext(AuthContext);
 
@@ -49,7 +55,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
       setValue("startMA", data?.startMA);
       setValue("endMA", data?.endMA);
       setValue("cost", data?.cost);
-      setValue("status", data?.status)
+      setValue("status", data?.status);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -89,27 +95,46 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
     const projectRef = doc(db, "Project", projectId);
     const MAref = collection(projectRef, "MAlogs");
     const MADetail = (await getDoc(doc(MAref, maId))).data() as MA;
-    if (data.startMA !== MADetail.startMA || data.endMA !== MADetail.endMA || data.status !== MADetail.status) {
-      let filtered: { id: string, ma: MA }[] = [];
+    if (
+      data.startMA !== MADetail.startMA ||
+      data.endMA !== MADetail.endMA ||
+      data.status !== MADetail.status
+    ) {
+      let filtered: { id: string; ma: MA }[] = [];
       if (cache === null) {
-        const MAlogs: { id: string, ma: MA }[] = [];
-        (await getDocs(MAref)).forEach(ma => MAlogs.push({ id: ma.id, ma: ma.data() as MA }))
+        const MAlogs: { id: string; ma: MA }[] = [];
+        (await getDocs(MAref)).forEach((ma) =>
+          MAlogs.push({ id: ma.id, ma: ma.data() as MA })
+        );
         setCache(MAlogs);
-        filtered = MAlogs.filter((ma) => ma.id !== maId && (ma.ma.status === "active" || ma.ma.status === "advance"))
+        filtered = MAlogs.filter(
+          (ma) =>
+            ma.id !== maId &&
+            (ma.ma.status === "active" || ma.ma.status === "advance")
+        );
       } else {
-        filtered = cache.filter((ma) => ma.id !== maId && (ma.ma.status === "active" || ma.ma.status === "advance"))
+        filtered = cache.filter(
+          (ma) =>
+            ma.id !== maId &&
+            (ma.ma.status === "active" || ma.ma.status === "advance")
+        );
       }
       const overlapResult: boolean[] = [];
       filtered.forEach((ma) => {
-        const ol = checkTimeOverlap(data.startMA, data.endMA, ma.ma.startMA, ma.ma.endMA);
+        const ol = checkTimeOverlap(
+          data.startMA,
+          data.endMA,
+          ma.ma.startMA,
+          ma.ma.endMA
+        );
         // if (ol) {
         // } else {
         // }
         overlapResult.push(ol);
-      })
-      const overlap = !overlapResult.every((x) => x === false)
+      });
+      const overlap = !overlapResult.every((x) => x === false);
       if (overlap) {
-        skip = true
+        skip = true;
         toast({
           title: "ช่วงเวลาไม่ถูกต้อง",
           description: "กรุณาเลือกช่วงเวลาที่ไม่ทับกับสัญญาอื่น",
@@ -160,46 +185,45 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
             position: "top",
           });
         });
-      reset()
+      reset();
       onClose();
       setIsLoading(false);
     }
   };
 
-
-  const [activeError, setActiveError] = useState(false)
-  const [advanceError, setAdvanceError] = useState(false)
-  const [expireError, setExpireError] = useState(false)
+  const [activeError, setActiveError] = useState(false);
+  const [advanceError, setAdvanceError] = useState(false);
+  const [expireError, setExpireError] = useState(false);
 
   const status = watch("status") || "";
   const start = watch("startMA") || "";
   const end = watch("endMA") || "";
-  
+
   useEffect(() => {
-    const currentDate = moment().format("YYYY-MM-DD")
+    const currentDate = moment().format("YYYY-MM-DD");
     if (status === "active") {
-      setActiveError(!((start <= currentDate) && (currentDate <= end)))
+      setActiveError(!(start <= currentDate && currentDate <= end));
       setAdvanceError(false);
       setExpireError(false);
     }
     if (status === "advance") {
-      setAdvanceError(!(start > currentDate))
-      setActiveError(false)
-      setExpireError(false)
+      setAdvanceError(!(start > currentDate));
+      setActiveError(false);
+      setExpireError(false);
     }
     if (status === "expire") {
-      setExpireError(!(currentDate > end))
-      setActiveError(false)
-      setAdvanceError(false)
+      setExpireError(!(currentDate > end));
+      setActiveError(false);
+      setAdvanceError(false);
     }
-  }, [status, start, end])
+  }, [status, start, end]);
 
   const clear = () => {
     reset();
-    setActiveError(false)
-    setAdvanceError(false)
-    setExpireError(false)
-  }
+    setActiveError(false);
+    setAdvanceError(false);
+    setExpireError(false);
+  };
 
   return (
     <Box w="100%" p={"0.5rem"} userSelect={"none"}>
@@ -216,12 +240,22 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
         แก้ไขสัญญา
       </Text>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={true} >
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">แก้ไขข้อมูลสัญญา</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          borderRadius={"16px"}
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+        >
+          <ModalCloseButton color={"#fff"}/>
+          <ModalHeader
+            borderTopRadius={"16px"}
+            color="#fff"
+            bg="#4C7BF4"
+            textAlign="center"
+          >
+            แก้ไขข้อมูลสัญญา
+          </ModalHeader>
+          <ModalBody p="1.5rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
@@ -232,6 +266,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>วันเริ่มต้นสัญญาใหม่</FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type="date"
                         value={value}
                         onChange={onChange}
@@ -248,6 +283,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>วันสิ้นสุดสัญญาใหม่</FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type="date"
                         value={value}
                         onChange={onChange}
@@ -256,10 +292,16 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                     </FormControl>
                   )}
                 />
-                <Text>ระยะเวลา = <Text as="span" fontWeight={"bold"}>{duration}</Text> วัน</Text>
-                {
-                  duration < 1 && <Text color="red">ระยะเวลาอย่างน้อย 1 วัน</Text>
-                }
+                <Text>
+                  ระยะเวลา ={" "}
+                  <Text as="span" fontWeight={"bold"}>
+                    {duration}
+                  </Text>{" "}
+                  วัน
+                </Text>
+                {duration < 1 && (
+                  <Text color="red">ระยะเวลาอย่างน้อย 1 วัน</Text>
+                )}
                 <Controller
                   name="cost"
                   control={control}
@@ -268,6 +310,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ค่าบริการ</FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type="number"
                         min="0"
                         placeholder="0.00"
@@ -285,7 +328,10 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                   render={({ field }) => (
                     <FormControl>
                       <Text>สถานะสัญญาปัจจุบัน</Text>
-                      <Select placeholder={"กรุณาเลือกสถานะของสัญญา"} {...field}>
+                      <Select
+                        placeholder={"กรุณาเลือกสถานะของสัญญา"}
+                        {...field}
+                      >
                         <option value="advance">ล่วงหน้า</option>
                         <option value="active">กำลังใช้งาน</option>
                         <option value="expire">หมดอายุ</option>
@@ -301,6 +347,7 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])} isRequired>
                       <FormLabel>หมายเหตุ</FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type="text"
                         value={value}
                         onChange={onChange}
@@ -312,12 +359,33 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                 />
               </Stack>
               <Box color="red">
-                {activeError && <Text>วันที่ไม่ถูกต้อง : วันที่ปัจจุบันต้องอยู่ในช่วงของสัญญา</Text>}
-                {advanceError && <Text>วันที่ไม่ถูกต้อง : วันที่เริ่มต้นสัญญาต้องมากกว่าวันที่ปัจจุบัน</Text>}
-                {expireError && <Text>วันที่ไม่ถูกต้อง : วันที่สิ้นสุดสัญญาต้องน้อยกว่าวันที่ปัจจุบัน</Text>}
+                {activeError && (
+                  <Text>
+                    วันที่ไม่ถูกต้อง : วันที่ปัจจุบันต้องอยู่ในช่วงของสัญญา
+                  </Text>
+                )}
+                {advanceError && (
+                  <Text>
+                    วันที่ไม่ถูกต้อง :
+                    วันที่เริ่มต้นสัญญาต้องมากกว่าวันที่ปัจจุบัน
+                  </Text>
+                )}
+                {expireError && (
+                  <Text>
+                    วันที่ไม่ถูกต้อง :
+                    วันที่สิ้นสุดสัญญาต้องน้อยกว่าวันที่ปัจจุบัน
+                  </Text>
+                )}
               </Box>
               <Flex justify="center" mt="5">
-                <Button mr="68px" w="5rem" onClick={() => clear()}>
+                <Button
+                  mr="68px"
+                  w="5rem"
+                  bg={"none"}
+                  borderRadius={"16px"}
+                  border={"1px solid #ccc"}
+                  onClick={() => clear()}
+                >
                   เคลียร์
                 </Button>
                 <Button
@@ -325,9 +393,10 @@ const EditContract = ({ data, maId, projectId, callBack }: any) => {
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ opacity:"0.8" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
                   isDisabled={activeError || advanceError || expireError}
+                  borderRadius={"16px"}
                 >
                   บันทึก
                 </Button>

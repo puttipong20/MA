@@ -55,10 +55,15 @@ const ViewCompany = ({ data }: any) => {
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">ข้อมูลบริษัท</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          borderRadius={"16px"}
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+        >
+          <ModalCloseButton color={"#fff"}/>
+          <ModalHeader bg="#4C7BF4" color={"#fff"} borderTopRadius={'16px'} textAlign="center">
+            ข้อมูลบริษัท
+          </ModalHeader>
+          <ModalBody p="1.5rem">
             <form>
               <Stack>
                 <VStack align="left">
@@ -100,15 +105,24 @@ const ViewCompany = ({ data }: any) => {
                   </HStack>
                   {/* <br /> */}
                   <Flex flexDir={"column"} alignItems={"flex-end"} w="100%">
-                    <HStack fontSize="14px" color="gray.400" alignItems={"flex-start"}>
+                    <HStack
+                      fontSize="14px"
+                      color="gray.400"
+                      alignItems={"flex-start"}
+                    >
                       <Text w="5rem">สร้างเมื่อ</Text>
                       <Box w="10rem">
                         <Text>: {cValue?.createdAt}</Text>
                         <Text pl="0.5rem">{cValue?.createBy.username}</Text>
                       </Box>
                     </HStack>
-                    <HStack fontSize="14px" color="gray.400" alignItems={"flex-start"}>
-                      <Text w="5rem">อัพเดทเมื่อ</Text><Box w="10rem">
+                    <HStack
+                      fontSize="14px"
+                      color="gray.400"
+                      alignItems={"flex-start"}
+                    >
+                      <Text w="5rem">อัพเดทเมื่อ</Text>
+                      <Box w="10rem">
                         {!cValue?.updateBy ? (
                           <Text fontSize="14px" color="gray.400">
                             : ยังไม่มีการอัพเดท

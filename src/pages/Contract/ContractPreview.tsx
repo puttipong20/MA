@@ -42,6 +42,7 @@ const ContractPreview = () => {
                     }}
                     bg="#4C7BF4"
                     color="#fff"
+                    borderRadius={'16px'}
                     size="sm"
                     w="40px"
                     _hover={{ opacity: 0.8 }}

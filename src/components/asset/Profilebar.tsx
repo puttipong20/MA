@@ -19,9 +19,6 @@ const ProfileBar: React.FC = () => {
 
   return (
     <HStack
-      position="absolute"
-      right="1rem"
-      top="1rem"
       border="1px solid #0005"
       borderRadius={"20px"}
       w="fit-content"

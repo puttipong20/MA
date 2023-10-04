@@ -183,9 +183,9 @@ export default function ProblemPreview() {
                   control={control}
                   render={({ field }) => (
                     <FormControl>
-                      <HStack>
+                      <HStack border={'1px'}>
                         <Text>สถานะ</Text>
-                        <Select {...field}>
+                        <Select borderRadius={'16px'} {...field}>
                           <option value="">ทั้งหมด</option>
                           <option value="รอรับเรื่อง">รอรับเรื่อง</option>
                           <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -303,6 +303,7 @@ export default function ProblemPreview() {
                   >
                     การดำเนินการ
                   </Th>
+                  
                 </Tr>
               </Thead>
               <Tbody>

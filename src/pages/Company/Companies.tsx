@@ -129,9 +129,8 @@ function PreCompany() {
   }
 
   return (
-    <div className="container">
-      <Container maxW="100%" pb="10">
-        <Box>
+      <Container maxW="100%"  pb="10">
+        <Box >
           <Center w="100%" mb="1rem">
             <HStack
               w="100%"
@@ -201,21 +200,18 @@ function PreCompany() {
           </Flex>
         </Box>
 
-        <Box>
+        <Box maxW={'100%'}>
           <Box
             mt="1rem"
-            borderRadius="20px"
-            border="1px"
-            borderColor="#f4f4f4"
+            borderRadius="16px"
             w="100%"
             h="100%"
-            // maxH="67vh"
             overflowY={"auto"}
             boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
             className={classes.table}
           >
             <Table w="100%">
-              <Thead position="sticky" top={0} zIndex="1">
+              <Thead top={0} zIndex="1">
                 <Tr bg="#4C7BF4">
                   <Th
                     minW="10rem"
@@ -430,7 +426,6 @@ function PreCompany() {
           </Flex>
         </Box>
       </Container>
-    </div>
   );
 }
 

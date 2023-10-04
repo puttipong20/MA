@@ -42,6 +42,18 @@
       "frameworksBackend": {
         "region": "us-central1"
       }
+    },
+    {
+      "site": "crafting-ticket-dev",
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
+      }
     }
   ],
   "emulators": {

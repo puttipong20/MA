@@ -82,14 +82,14 @@ const AddEmployee: React.FC = () => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent borderRadius={'16px'}>
-          <ModalCloseButton color={'#fff'}/>
-          <ModalHeader bg="#4C7BF4" color={'#fff'} borderTopRadius={'16px'}>
+        <ModalContent borderRadius={"16px"}>
+          <ModalCloseButton color={"#fff"} />
+          <ModalHeader bg="#4C7BF4" color={"#fff"} borderTopRadius={"16px"}>
             <Heading fontFamily={"inherit"} textAlign={"center"}>
               เพิ่มพนักงาน
             </Heading>
           </ModalHeader>
-          <ModalBody >
+          <ModalBody>
             <Box>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
@@ -99,7 +99,7 @@ const AddEmployee: React.FC = () => {
                   render={({ field }) => (
                     <FormControl isRequired>
                       <FormLabel fontWeight={"bold"}>Username</FormLabel>
-                      <Input type="text" {...field} />
+                      <Input borderRadius={"16px"} type="text" {...field} />
                     </FormControl>
                   )}
                 />
@@ -112,7 +112,7 @@ const AddEmployee: React.FC = () => {
                       <FormLabel fontWeight={"bold"} mt="0.5rem">
                         Email
                       </FormLabel>
-                      <Input type="email" {...field} />
+                      <Input borderRadius={"16px"} type="email" {...field} />
                     </FormControl>
                   )}
                 />
@@ -126,6 +126,7 @@ const AddEmployee: React.FC = () => {
                         Password
                       </FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type={seePass ? "text" : "password"}
                         minLength={6}
                         {...field}
@@ -143,6 +144,7 @@ const AddEmployee: React.FC = () => {
                         Confirmed Password
                       </FormLabel>
                       <Input
+                        borderRadius={"16px"}
                         type={seePass ? "text" : "password"}
                         minLength={6}
                         {...field}
@@ -182,7 +184,8 @@ const AddEmployee: React.FC = () => {
                     isDisabled={
                       pass !== conPass || pass == "" || conPass === ""
                     }
-                    bg="#4C7BF4" color={'#fff'}
+                    bg="#4C7BF4"
+                    color={"#fff"}
                   >
                     เพิ่ม
                   </Button>

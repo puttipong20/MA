@@ -63,7 +63,7 @@ function App() {
     );
   } else {
     return (
-      <Box w="100%" maxH="100vh" position={"relative"}>
+      <Box maxW="100%" maxH="100vh" m={0} p={0}>
         <Routes>
           <Route path="/login" element={<Login />} />
 

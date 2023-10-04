@@ -157,7 +157,7 @@ export default function DetailPage() {
         timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
       },
       projectName: data.projectName,
-      firebaseId: data.firebaseId
+      firebaseId: data.firebaseId,
     }).then(async () => {
       const companyRef = doc(db, "Company", CompanyCtx.companyId);
       const companyDoc = await getDoc(companyRef);
@@ -274,7 +274,7 @@ export default function DetailPage() {
                         reset();
                         setIsOpenEdit(false);
                       }}
-                      _hover={{opacity: 1}}
+                      _hover={{ opacity: 1 }}
                     >
                       ยกเลิก
                     </Button>
@@ -284,7 +284,7 @@ export default function DetailPage() {
                       isLoading={isUpdating}
                       type="submit"
                       borderRadius={"16px"}
-                      _hover={{opacity: 1}}
+                      _hover={{ opacity: 1 }}
                     >
                       บันทึก
                     </Button>
@@ -502,10 +502,9 @@ export default function DetailPage() {
                 borderRadius="20px"
                 border="1px"
                 borderColor="#f4f4f4"
-                w="100%"
+                maxW="100%"
                 h="100%"
-                // maxH={"34vh"}
-                overflowY={"auto"}
+                overflow={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}
               >
@@ -653,6 +652,7 @@ export default function DetailPage() {
                                         projectID={projectID}
                                         reload={fetchingProjectDetail}
                                         status="cancel"
+                                        color="red"
                                       />
                                     </MenuItem>
                                   )}
@@ -663,6 +663,7 @@ export default function DetailPage() {
                                       projectID={projectID}
                                       reload={fetchingProjectDetail}
                                       status="deleted"
+                                      color="#ffa500"
                                     />
                                   </MenuItem>
 

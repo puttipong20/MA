@@ -157,7 +157,7 @@ export default function ProjectPreviewComp() {
 
   return (
     <div className="container">
-      <Container maxW="100%" pb="10">
+      <Container maxW="100%" pb="10" overflowX="hidden">
         <Box>
           <Center w="100%" mb="1rem">
             <HStack
@@ -251,6 +251,7 @@ export default function ProjectPreviewComp() {
             </Flex>
           </Flex>
         </Box>
+        <Box w="auto">
         <Box
           mt="1rem"
           borderRadius="20px"
@@ -263,7 +264,7 @@ export default function ProjectPreviewComp() {
           boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
           className={classes.table}
         >
-          <Table textAlign={"center"} w="100%">
+          <Table textAlign={"center"} w="max-content">
             <Thead position="sticky" top={0} zIndex="1">
               <Tr bg={"#4c7bf4"}>
                 <Th
@@ -284,7 +285,7 @@ export default function ProjectPreviewComp() {
                   fontWeight={"normal"}
                   fontFamily={"inherit"}
                 >
-                  สร้างเมื่อ
+                  วันที่
                 </Th>
                 <Th
                   minW="14rem"
@@ -548,10 +549,6 @@ export default function ProjectPreviewComp() {
                               p={0}
                               backgroundColor="whiter"
                               onClick={() => {
-                                // Company.setProject(
-                                //   i.project.projectId,
-                                //   i.project.detail.projectName
-                                // );
                                 navigate(
                                   `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
                                 );
@@ -586,7 +583,7 @@ export default function ProjectPreviewComp() {
               )}
             </Tbody>
           </Table>
-        </Box>
+        </Box></Box>
         <Flex>
           <Button
             onClick={() => {

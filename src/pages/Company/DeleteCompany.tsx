@@ -25,7 +25,7 @@ function DeleteCompany({ item, fetchData }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRemove = async (id: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const bookDoc = doc(db, "Company", id);
     await deleteDoc(bookDoc).then(async () => {
       toast({
@@ -34,9 +34,9 @@ function DeleteCompany({ item, fetchData }: any) {
         duration: 3000,
         isClosable: true,
         position: "top",
-      })
+      });
       fetchData();
-      onClose()
+      onClose();
     });
     setIsLoading(false);
   };
@@ -62,8 +62,14 @@ function DeleteCompany({ item, fetchData }: any) {
         leastDestructiveRef={cancelRef}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          <AlertDialogContent borderRadius={"16px"}>
+            <AlertDialogHeader
+            borderTopRadius={'16px'}
+              bg="#4c7bf4"
+              color="#fff"
+              fontSize="lg"
+              fontWeight="bold"
+            >
               ลบข้อมูล
             </AlertDialogHeader>
 
@@ -77,6 +83,9 @@ function DeleteCompany({ item, fetchData }: any) {
                 fontSize="14px"
                 ref={cancelRef}
                 onClick={onClose}
+                borderRadius={'16px'}
+                bg={'none'}
+                border={'1px solid #ccc'}
               >
                 ยกเลิก
               </Button>
@@ -91,6 +100,7 @@ function DeleteCompany({ item, fetchData }: any) {
                 }}
                 isLoading={isLoading}
                 ml={5}
+                borderRadius={'16px'}
               >
                 ลบข้อมูล
               </Button>

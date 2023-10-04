@@ -6,7 +6,6 @@ import {
   AccordionIcon,
   Box,
   Button,
-  Divider,
   Heading,
   Text,
   Input,
@@ -16,6 +15,12 @@ import {
   InputLeftElement,
   InputGroup,
   HStack,
+  useDisclosure,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
 } from "@chakra-ui/react";
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -36,17 +41,12 @@ import { CompanyContext } from "../context/CompanyContext";
 import { SearchIcon } from "@chakra-ui/icons";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
-// import { FaLightbulb } from "react-icons/fa";
-
+import { RxHamburgerMenu } from "react-icons/rx";
 import classes from "./Layout.module.css";
 import LogoutButton from "../pages/Login/Logout";
 import SearchReport from "../components/asset/SearchReport";
 
-interface Props {
-  setTriggle: () => void;
-}
-
-const Sidebar: React.FC<Props> = (props) => {
+const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -54,6 +54,8 @@ const Sidebar: React.FC<Props> = (props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [openIndex, setOpenIndex] = useState<number>(-1);
   const Company = useContext(CompanyContext);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const { colorMode, toggleColorMode } = useColorMode();
 
   const onSearch = () => {
@@ -120,183 +122,191 @@ const Sidebar: React.FC<Props> = (props) => {
   });
 
   return (
-    <Box position="relative" h="fit-content" maxH="100%">
-      <Button
-        position="absolute"
-        top="-1rem"
-        right="-1rem"
-        display={["block", "none"]}
-        onClick={props.setTriggle}
-        bg="none"
-        color="red"
-        borderRadius="16px"
-        size="md"
-      >
-        X
+    <>
+      <Button bg="#4c7bf4" color="#fff" borderRadius={'16px'} onClick={onOpen}>
+        <RxHamburgerMenu />
       </Button>
-
-      <Heading
-        cursor={"pointer"}
-        onClick={() => {
-          navigate("/");
-        }}
-        fontSize={"1.25rem"}
-        fontFamily={"inherit"}
-        my="1rem"
-        w="100%"
-        textAlign={"center"}
-        transition={"all 0.3s"}
-        // _hover={{ textShadow: "0px 0px 30px #fff" }}
-        _hover={{ textShadow: "0px 0px 30px #000" }}
-        // border="1px solid black"
-      >
-        CRAFTING LAB
-      </Heading>
-
-      <Divider my="5px" opacity={"1"} />
-      <SearchReport />
-      <HStack my="10px">
-        <InputGroup>
-          <InputLeftElement>
-            <SearchIcon />
-          </InputLeftElement>
-          <Input
-            borderRadius="16px"
-            fontSize={"0.8rem"}
-            placeholder={"Company, Project, Report"}
-            w="100%"
-            id="searchInput"
-            onChange={onSearch}
-          />
-        </InputGroup>
-      </HStack>
-      {isFetching ? (
-        <Flex
-          w="100%"
-          justify={"center"}
-          align={"center"}
-          border=""
-          h={["70vh", "78vh"]}
-          overflowY={"auto"}
-          className={classes.sidebar}
-        >
-          <Spinner />
-        </Flex>
-      ) : (
-        <Box
-          border=""
-          // h={["70vh", "78vh"]}
-          flex="auto"
-          overflowY={"auto"}
-          className={classes.sidebar}
-        >
-          <Accordion allowToggle defaultIndex={[openIndex]}>
-            {filterCompany.map((i, index) => {
-              // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
-              const focusCompany = params["company"] === i.companyId;
-              return (
-                <AccordionItem
-                  key={index}
-                  userSelect={"none"}
-                  borderTop="0px solid rgb(0,0,0,0.1)"
-                  borderBottom="1px solid rgb(0,0,0,0.1)"
-                  transition="all 0.3s"
-                  _hover={{ bg: "#fff" }}
-                  // borderRadius={"10px"}
-                  // bg={focusCompany ? color : ""}
-                  my="5px"
-                  // borderLeft={focusCompany ? "3px solid white" : "none"}
+      <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">
+            <Flex justifyContent={"space-between"} alignItems={"center"}>
+              <Heading
+                cursor={"pointer"}
+                onClick={() => {
+                  navigate("/");
+                }}
+                fontSize={"1.25rem"}
+                fontFamily={"inherit"}
+                my="1rem"
+                w="100%"
+                textAlign={"center"}
+                transition={"all 0.3s"}
+                // _hover={{ textShadow: "0px 0px 30px #fff" }}
+                _hover={{ textShadow: "0px 0px 30px #000" }}
+                // border="1px solid black"
+              >
+                CRAFTING LAB
+              </Heading>
+              <Button
+                onClick={onClose}
+                _hover={{ opacity: 1 }}
+                bg="none"
+                color="black"
+                borderRadius="16px"
+                size="md"
+              >
+                X
+              </Button>
+            </Flex>
+          </DrawerHeader>
+          <DrawerBody>
+            <Box h="fit-content" maxH="100%">
+              <SearchReport />
+              <HStack my="10px">
+                <InputGroup>
+                  <InputLeftElement>
+                    <SearchIcon />
+                  </InputLeftElement>
+                  <Input
+                    borderRadius="16px"
+                    fontSize={"0.8rem"}
+                    placeholder={"Company, Project, Report"}
+                    w="100%"
+                    id="searchInput"
+                    onChange={onSearch}
+                  />
+                </InputGroup>
+              </HStack>
+              {isFetching ? (
+                <Flex
+                  w="100%"
+                  justify={"center"}
+                  align={"center"}
+                  border=""
+                  h={["70vh", "78vh"]}
+                  overflowY={"auto"}
+                  className={classes.sidebar}
                 >
-                  <AccordionButton
-                    onClick={() => {
-                      navigate(`/company/${i.companyId}`);
-                    }}
-                    _hover={{ bg: "#fff" }}
-                  >
-                    <HStack justify={"space-between"} w="100%">
-                      <HStack
-                        justify={"flex-start"}
-                        alignItems={"flex-start"}
-                        color={focusCompany ? "#4c7bf4" : "black"}
-                      >
-                        <Text mt="0.25rem">
-                          <HiOutlineOfficeBuilding />
-                          {/* <ImOffice /> */}
-                        </Text>
-                        <Text fontWeight={"normal"} textAlign={"left"}>
-                          {i.detail.companyName}
-                        </Text>
-                      </HStack>
-                      <AccordionIcon />
-                    </HStack>
-                  </AccordionButton>
-                  {i.detail.projects?.length !== undefined &&
-                    i.detail.projects?.length > 0 && (
-                      <AccordionPanel pt="0px">
-                        <VStack
-                          mt="-0.5rem"
-                          fontSize={"0.9rem"}
-                          align={"left"}
-                          pl="5%"
+                  <Spinner />
+                </Flex>
+              ) : (
+                <Box
+                  border=""
+                  // h={["70vh", "78vh"]}
+                  flex="auto"
+                  overflowY={"auto"}
+                  className={classes.sidebar}
+                >
+                  <Accordion allowToggle defaultIndex={[openIndex]}>
+                    {filterCompany.map((i, index) => {
+                      // if (params["company"] === i.companyId) { Company.setCompany(i.companyId, i.detail.companyName) }
+                      const focusCompany = params["company"] === i.companyId;
+                      return (
+                        <AccordionItem
+                          key={index}
+                          userSelect={"none"}
+                          borderTop="0px solid rgb(0,0,0,0.1)"
+                          borderBottom="1px solid rgb(0,0,0,0.1)"
+                          transition="all 0.3s"
+                          _hover={{ bg: "#fff" }}
+                          // borderRadius={"10px"}
+                          // bg={focusCompany ? color : ""}
+                          my="5px"
+                          // borderLeft={focusCompany ? "3px solid white" : "none"}
                         >
-                          {i.detail.projects !== undefined &&
-                          i.detail.projects.filter((i) => i.status === "enable")
-                            .length !== 0 ? (
-                            i.detail.projects?.map((j, index) => {
-                              // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
-                              const focusProject = params["projectID"] === j.id;
-                              if (j.status === "enable") {
-                                return (
-                                  <Box
-                                    h="20px"
-                                    key={index}
-                                    // fontWeight={focusProject ? "bold" : "normal"}
-                                    cursor={"pointer"}
-                                    transition={"all 0.1s"}
-                                    borderRadius={"5px"}
-                                    // pl="1rem"
-                                    color={
-                                      focusProject
-                                        ? "rgb(76, 123, 244)"
-                                        : "black"
-                                    }
-                                    // _hover={{ fontWeight: "bold", bg: color }}
-                                    position="relative"
-                                    onClick={() => {
-                                      navigate(
-                                        `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
-                                      );
-                                    }}
-                                  >
-                                    <HStack
-                                      // as="span"
-                                      // position="absolute"
-                                      // left="0.5rem"
-                                      spacing={0}
-                                    >
-                                      <Text fontSize={"40px"}>
-                                        <BsDot />
-                                      </Text>
-                                      <Text ml="-0.5rem">{j.projectName}</Text>
-                                    </HStack>
-                                  </Box>
-                                );
-                              }
-                            })
-                          ) : (
-                            <></>
-                          )}
-                        </VStack>
-                      </AccordionPanel>
-                    )}
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
-        </Box>
-      )}
-      <LogoutButton />
-    </Box>
+                          <AccordionButton
+                            onClick={() => {
+                              navigate(`/company/${i.companyId}`);
+                            }}
+                            _hover={{ bg: "#fff" }}
+                          >
+                            <HStack justify={"space-between"} w="100%">
+                              <HStack
+                                justify={"flex-start"}
+                                alignItems={"flex-start"}
+                                color={focusCompany ? "#4c7bf4" : "black"}
+                              >
+                                <Text mt="0.25rem">
+                                  <HiOutlineOfficeBuilding />
+                                  {/* <ImOffice /> */}
+                                </Text>
+                                <Text fontWeight={"normal"} textAlign={"left"}>
+                                  {i.detail.companyName}
+                                </Text>
+                              </HStack>
+                              <AccordionIcon />
+                            </HStack>
+                          </AccordionButton>
+                          {i.detail.projects?.length !== undefined &&
+                            i.detail.projects?.length > 0 && (
+                              <AccordionPanel pt="0px">
+                                <VStack
+                                  mt="-0.5rem"
+                                  fontSize={"0.9rem"}
+                                  align={"left"}
+                                  pl="5%"
+                                >
+                                  {i.detail.projects !== undefined &&
+                                  i.detail.projects.filter(
+                                    (i) => i.status === "enable"
+                                  ).length !== 0 ? (
+                                    i.detail.projects?.map((j, index) => {
+                                      // if (params["projectID"] === j.id) { Company.setProject(j.id, j.projectName) }
+                                      const focusProject =
+                                        params["projectID"] === j.id;
+                                      if (j.status === "enable") {
+                                        return (
+                                          <Box
+                                            h="20px"
+                                            key={index}
+                                            // fontWeight={focusProject ? "bold" : "normal"}
+                                            cursor={"pointer"}
+                                            transition={"all 0.1s"}
+                                            borderRadius={"5px"}
+                                            // pl="1rem"
+                                            color={
+                                              focusProject
+                                                ? "rgb(76, 123, 244)"
+                                                : "black"
+                                            }
+                                            // _hover={{ fontWeight: "bold", bg: color }}
+                                            onClick={() => {
+                                              navigate(
+                                                `/company/${i.companyId}/${j.id}/${j.projectName}/problemReport`
+                                              );
+                                            }}
+                                          >
+                                            <HStack spacing={0}>
+                                              <Text fontSize={"40px"}>
+                                                <BsDot />
+                                              </Text>
+                                              <Text ml="-0.5rem">
+                                                {j.projectName}
+                                              </Text>
+                                            </HStack>
+                                          </Box>
+                                        );
+                                      }
+                                    })
+                                  ) : (
+                                    <></>
+                                  )}
+                                </VStack>
+                              </AccordionPanel>
+                            )}
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </Box>
+              )}
+              <LogoutButton />
+            </Box>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };
 
