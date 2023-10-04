@@ -1,7 +1,8 @@
 {
   "projects": {
     "develop": "craftinglab-dev",
-    "prod": "craftinglabweb"
+    "prod": "craftinglabweb",
+    "dev": "crafting-ticket-dev"
   },
   "targets": {},
   "etags": {}

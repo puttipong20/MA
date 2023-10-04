@@ -48,17 +48,19 @@ export default function LogoutButton() {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalHeader>
+        <ModalContent borderRadius={"16px"}>
+          <ModalCloseButton color={"#fff"}/>
+          <ModalHeader color="#fff" bg="#4C7BF4" borderTopRadius={'16px'}>
             <Text textAlign={"center"}>ออกจากระบบ</Text>
           </ModalHeader>
           <ModalBody>
             <Text>ยืนยันการออกจากระบบ ?</Text>
           </ModalBody>
           <ModalFooter gap={"20px"}>
-            <Button onClick={onClose}>ยกเลิก</Button>
-            <Button colorScheme="red" onClick={logout}>
+            <Button onClick={onClose} borderRadius={"16px"}>
+              ยกเลิก
+            </Button>
+            <Button colorScheme="red" onClick={logout} borderRadius={"16px"}>
               ออกจากระบบ
             </Button>
           </ModalFooter>

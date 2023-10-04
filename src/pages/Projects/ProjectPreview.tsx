@@ -40,27 +40,21 @@ import {
   query,
   where,
   orderBy,
-  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { MA, Project, ProjectDetail } from "../../@types/Type";
-
 import { search } from "ss-search";
 import DeleteProject from "../../components/Projects/DeleteProject";
 import AddProject from "../../components/Projects/AddProject";
-
 import classes from "./ProjectPreview.module.css";
-// import EditProject from './EditProject';
-
 import moment from "moment";
-// import Renewal from './Renewal';
-
 import { CompanyContext } from "../../context/CompanyContext";
 import { BiArrowBack, BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 export default function ProjectPreviewComp() {
   const [isFetching, setIsFetching] = useState(false);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
   const [projects, setProjects] = useState<{ project: Project; ma: MA[] }[]>(
     []
   );
@@ -94,7 +88,6 @@ export default function ProjectPreviewComp() {
             detail: p.data() as ProjectDetail,
           };
           Company.setFirebaseId((p.data() as ProjectDetail).firebaseId);
-          // setCompanyName(project.detail.companyName);
           const MAref = collection(doc(db, "Project", projectID), "MAlogs");
           const MAlogs = await getDocs(MAref);
           const logs: MA[] = [];
@@ -107,7 +100,6 @@ export default function ProjectPreviewComp() {
         }
       })
     );
-
     setProjects(allProjects);
     setFilterProjects(allProjects);
     setIsFetching(false);
@@ -128,14 +120,9 @@ export default function ProjectPreviewComp() {
   };
 
   useEffect(() => {
-    const projectCollection = collection(db, "Project");
-    const q = query(projectCollection);
     setCompanyName(Company.companyName);
-    onSnapshot(q, () => {
-      fetchingData();
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params["project"], params["company"], Company.companyId]);
+    fetchingData();
+  }, [params["project"], params["company"], Company.companyId, isAdding]);
 
   // สร้าง State สำหรับ Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -241,7 +228,7 @@ export default function ProjectPreviewComp() {
                 />
               </InputGroup>
             </Flex>
-            <Flex mt={{base:"0.5rem",md:"0",lg:"0"}} justify="flex-end">
+            <Flex mt={{ base: "0.5rem", md: "0", lg: "0" }} justify="flex-end">
               <Button
                 _hover={{ opacity: 0.8 }}
                 bg="#4C7BF4"
@@ -255,6 +242,8 @@ export default function ProjectPreviewComp() {
               </Button>
               {!isFetching && (
                 <AddProject
+                  isAdding={isAdding}
+                  setIsAdding={setIsAdding}
                   companyName={companyName}
                   companyId={params["company"] as string}
                 />
@@ -286,6 +275,16 @@ export default function ProjectPreviewComp() {
                   fontFamily={"inherit"}
                 >
                   Project
+                </Th>
+                <Th
+                  minW="10rem"
+                  fontSize="16px"
+                  color="#fff"
+                  textAlign={"center"}
+                  fontWeight={"normal"}
+                  fontFamily={"inherit"}
+                >
+                  สร้างเมื่อ
                 </Th>
                 <Th
                   minW="14rem"
@@ -335,16 +334,6 @@ export default function ProjectPreviewComp() {
                   fontWeight={"normal"}
                   fontFamily={"inherit"}
                 >
-                  สร้างเมื่อ
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
                   รายการปัญหา
                 </Th>
                 <Th
@@ -378,6 +367,8 @@ export default function ProjectPreviewComp() {
                     <Td colSpan={8}>
                       <Box as="div" w="fit-content" m="auto">
                         <AddProject
+                          isAdding={isAdding}
+                          setIsAdding={setIsAdding}
                           companyName={companyName}
                           companyId={params["company"] as string}
                         />
@@ -472,6 +463,19 @@ export default function ProjectPreviewComp() {
                               );
                             }}
                           >
+                            {moment(i.project.detail.createdAt).format(
+                              "DD/MM/YYYY HH:mm:ss"
+                            )}
+                          </Td>
+                          <Td
+                            textAlign={"center"}
+                            onClick={() => {
+                              navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
+                            }}
+                          >
                             {lastestMA &&
                               Number(lastestMA.cost).toLocaleString("th-TH", {
                                 minimumFractionDigits: 2,
@@ -499,17 +503,6 @@ export default function ProjectPreviewComp() {
                           </Td>
                         </>
                       )}
-                      <Td
-                        textAlign={"center"}
-                        onClick={() => {
-                          navigate(navigateLink);
-                          Company.setFirebaseId(i.project.detail.firebaseId);
-                        }}
-                      >
-                        {moment(i.project.detail.createdAt).format(
-                          "DD/MM/YYYY HH:mm:ss"
-                        )}
-                      </Td>
                       <Td textAlign={"center"}>
                         <Button
                           bg="#4C7BF5"

@@ -43,7 +43,7 @@ const AddEmployee: React.FC = () => {
         toast({
           position: "top",
           title: "เสร็จสิ้น",
-          description: `เพิ่ม ${res.data} เรียนร้อยแล้ว`,
+          description: `เพิ่ม ${res.data} แล้ว`,
           status: "success",
           duration: 2000,
           isClosable: true,
@@ -89,7 +89,7 @@ const AddEmployee: React.FC = () => {
               เพิ่มพนักงาน
             </Heading>
           </ModalHeader>
-          <ModalBody>
+          <ModalBody >
             <Box>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
