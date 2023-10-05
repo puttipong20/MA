@@ -63,8 +63,8 @@ const DeleteProject: React.FC<Props> = (props) => {
       },
     });
     toast({
-      title: "ลบโปรเจคต์เสร็จสิ้น",
-      status: "error",
+      title: "ลบโปรเจคเรียบร้อยแล้ว",
+      status: "success",
       duration: 3000,
       isClosable: true,
       position: "top",

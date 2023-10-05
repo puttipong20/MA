@@ -105,8 +105,8 @@ const AddReport = () => {
         .then(() => {
           navigate(goBackPath);
           toast({
-            title: "Submit Successfully",
-            description: "report a problem has been submitted.",
+            title: "แจ้งปัญหาเสร็จสิ้น",
+            description: "ปัญหาถูกแจ้งไปยังผู้พัฒนาเรียบร้อยแล้ว",
             status: "success",
             position: "top",
             duration: 3000,

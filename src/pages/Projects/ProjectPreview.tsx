@@ -96,6 +96,7 @@ export default function ProjectPreviewComp() {
             project: project,
             ma: logs,
           };
+          console.log(merge)
           allProjects.push(merge);
         }
       })
@@ -252,189 +253,178 @@ export default function ProjectPreviewComp() {
           </Flex>
         </Box>
         <Box w="auto">
-        <Box
-          mt="1rem"
-          borderRadius="20px"
-          border="1px"
-          borderColor="#f4f4f4"
-          w="100%"
-          h="100%"
-          // maxH="67vh"
-          overflowY={"auto"}
-          boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
-          className={classes.table}
-        >
-          <Table textAlign={"center"} w="max-content">
-            <Thead position="sticky" top={0} zIndex="1">
-              <Tr bg={"#4c7bf4"}>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  Project
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  วันที่
-                </Th>
-                <Th
-                  minW="14rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  วันที่เริ่มต้นสัญญา MA
-                </Th>
-                <Th
-                  minW="15rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  วันที่สิ้นสุดสัญญา MA
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  ค่าบริการ
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  สถานะสัญญา
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  รายการปัญหา
-                </Th>
-                <Th
-                  minW="10rem"
-                  fontSize="16px"
-                  color="#fff"
-                  textAlign={"center"}
-                  fontWeight={"normal"}
-                  fontFamily={"inherit"}
-                >
-                  จัดการ
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {isFetching ? (
-                <Tr>
-                  <Td colSpan={8} textAlign={"center"}>
-                    Loading . . .
-                    <Spinner />
-                  </Td>
+          <Box
+            mt="1rem"
+            borderRadius="16px"
+            border="1px"
+            borderColor="#f4f4f4"
+            w="100%"
+            h="100%"
+            // maxH="67vh"
+            overflowY={"auto"}
+            boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
+            className={classes.table}
+          >
+            <Table textAlign={"center"} w="100%">
+              <Thead position="sticky" top={0} zIndex="1">
+                <Tr bg={"#4c7bf4"}>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    Project
+                  </Th>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    วันที่
+                  </Th>
+                  <Th
+                    minW="14rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    วันที่เริ่มต้นสัญญา MA
+                  </Th>
+                  <Th
+                    minW="15rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    วันที่สิ้นสุดสัญญา MA
+                  </Th>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    ค่าบริการ
+                  </Th>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    สถานะสัญญา
+                  </Th>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    รายการปัญหา
+                  </Th>
+                  <Th
+                    minW="10rem"
+                    fontSize="16px"
+                    color="#fff"
+                    textAlign={"center"}
+                    fontWeight={"normal"}
+                    fontFamily={"inherit"}
+                  >
+                    จัดการ
+                  </Th>
                 </Tr>
-              ) : filterProject.length === 0 ? (
-                <>
-                  <Tr w="100%">
+              </Thead>
+              <Tbody>
+                {isFetching ? (
+                  <Tr>
                     <Td colSpan={8} textAlign={"center"}>
-                      ไม่มีข้อมูลโปรเจค
+                      Loading . . .
+                      <Spinner />
                     </Td>
                   </Tr>
-                  <Tr w="100%">
-                    <Td colSpan={8}>
-                      <Box as="div" w="fit-content" m="auto">
-                        <AddProject
-                          isAdding={isAdding}
-                          setIsAdding={setIsAdding}
-                          companyName={companyName}
-                          companyId={params["company"] as string}
-                        />
-                      </Box>
-                    </Td>
-                  </Tr>
-                </>
-              ) : (
-                currentItems.map((i, index) => {
-                  const lastestMA = i.ma.filter(
-                    (j) => j.status === "active"
-                  )[0];
-                  let display = "";
-                  let color = "";
-                  let bg = "";
-                  if (lastestMA) {
-                    const state = lastestMA.status;
-                    state === "active"
-                      ? (display = "กำลังใช้งาน")
-                      : state === "advance"
-                      ? (display = "ล่วงหน้า")
-                      : (display = "หมดอายุ");
-                    state === "active"
-                      ? (color = "white")
-                      : state === "advance"
-                      ? (color = "white")
-                      : (color = "white");
-                    state === "active"
-                      ? (bg = "green.500")
-                      : state === "advance"
-                      ? (bg = "blue.500")
-                      : (bg = "red.500");
-                  }
-
-                  const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
-                  return (
-                    <Tr
-                      key={index}
-                      _hover={{ bg: "gray.100" }}
-                      cursor={"pointer"}
-                    >
-                      <Td
-                        textAlign={"center"}
-                        onClick={() => {
-                          Company.setFirebaseId(i.project.detail.firebaseId);
-                          navigate(navigateLink);
-                        }}
-                      >
-                        {i.project.detail.projectName}
+                ) : filterProject.length === 0 ? (
+                  <>
+                    <Tr w="100%">
+                      <Td colSpan={8} textAlign={"center"}>
+                        ไม่มีข้อมูลโปรเจค
                       </Td>
+                    </Tr>
+                    <Tr w="100%">
+                      <Td colSpan={8}>
+                        <Box as="div" w="fit-content" m="auto">
+                          <AddProject
+                            isAdding={isAdding}
+                            setIsAdding={setIsAdding}
+                            companyName={companyName}
+                            companyId={params["company"] as string}
+                          />
+                        </Box>
+                      </Td>
+                    </Tr>
+                  </>
+                ) : (
+                  currentItems.map((i, index) => {
+                    const lastestMA = i.ma.filter(
+                      (j) => j.status === "active"
+                    )[0];
+                    let display = "";
+                    let color = "";
+                    let bg = "";
+                    if (lastestMA) {
+                      const state = lastestMA.status;
+                      state === "active"
+                        ? (display = "กำลังใช้งาน")
+                        : state === "advance"
+                        ? (display = "ล่วงหน้า")
+                        : (display = "หมดอายุ");
+                      state === "active"
+                        ? (color = "white")
+                        : state === "advance"
+                        ? (color = "white")
+                        : (color = "white");
+                      state === "active"
+                        ? (bg = "green.500")
+                        : state === "advance"
+                        ? (bg = "blue.500")
+                        : (bg = "red.500");
+                    }
 
-                      {!lastestMA ? (
+                    const navigateLink = `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/problemReport`;
+                    return (
+                      <Tr
+                        key={index}
+                        _hover={{ bg: "gray.100" }}
+                        cursor={"pointer"}
+                      >
                         <Td
-                          colSpan={4}
                           textAlign={"center"}
                           onClick={() => {
-                            navigate(navigateLink);
                             Company.setFirebaseId(i.project.detail.firebaseId);
+                            navigate(navigateLink);
                           }}
                         >
-                          ไม่มีสัญญาที่กำลังใช้งาน
+                          {i.project.detail.projectName}
                         </Td>
-                      ) : (
-                        <>
+
+                        {!lastestMA ? (
                           <Td
+                            colSpan={4}
                             textAlign={"center"}
                             onClick={() => {
                               navigate(navigateLink);
@@ -443,147 +433,163 @@ export default function ProjectPreviewComp() {
                               );
                             }}
                           >
-                            {lastestMA &&
-                              moment(lastestMA.startMA).format("DD/MM/YYYY")}
+                            ไม่มีสัญญาที่กำลังใช้งาน
                           </Td>
-                          <Td
-                            textAlign={"center"}
-                            onClick={() => {
-                              navigate(navigateLink);
-                            }}
-                          >
-                            {lastestMA &&
-                              moment(lastestMA.endMA).format("DD/MM/YYYY")}
-                          </Td>
-                          <Td
-                            textAlign={"center"}
-                            onClick={() => {
-                              navigate(navigateLink);
-                              Company.setFirebaseId(
-                                i.project.detail.firebaseId
-                              );
-                            }}
-                          >
-                            {moment(i.project.detail.createdAt).format(
-                              "DD/MM/YYYY HH:mm:ss"
-                            )}
-                          </Td>
-                          <Td
-                            textAlign={"center"}
-                            onClick={() => {
-                              navigate(navigateLink);
-                              Company.setFirebaseId(
-                                i.project.detail.firebaseId
-                              );
-                            }}
-                          >
-                            {lastestMA &&
-                              Number(lastestMA.cost).toLocaleString("th-TH", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })}
-                          </Td>
-                          <Td
-                            textAlign={"center"}
-                            onClick={() => {
-                              navigate(navigateLink);
-                              Company.setFirebaseId(
-                                i.project.detail.firebaseId
-                              );
-                            }}
-                          >
-                            <Badge
-                              borderRadius="16px"
-                              p="1.5"
-                              w="6rem"
-                              color={color}
-                              bg={bg}
-                            >
-                              {display}
-                            </Badge>
-                          </Td>
-                        </>
-                      )}
-                      <Td textAlign={"center"}>
-                        <Button
-                          bg="#4C7BF5"
-                          opacity="0.9"
-                          color="#eee"
-                          _hover={{ opacity: "0.8" }}
-                          fontWeight={"normal"}
-                          w="150px"
-                          borderRadius="16px"
-                          onClick={() => {
-                            navigate(navigateLink);
-                            Company.setFirebaseId(i.project.detail.firebaseId);
-                          }}
-                        >
-                          ดูรายการปัญหา
-                        </Button>
-                      </Td>
-                      <Td textAlign={"center"}>
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            colorScheme="white"
-                            bg="none"
-                            _hover={{ bg: "white" }}
-                            icon={
-                              <BiDotsHorizontalRounded
-                                size="25px"
-                                color="#4C7BF4"
-                              />
-                            }
-                          />
-                          <MenuList
-                            backgroundColor="white"
-                            pos="sticky"
-                            top="0"
-                            bg="white"
-                            boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-                            zIndex="sticky"
-                          >
-                            <MenuItem
-                              color="gray"
-                              h="50px"
-                              p={0}
-                              backgroundColor="whiter"
+                        ) : (
+                          <>
+                            <Td
+                              textAlign={"center"}
                               onClick={() => {
-                                navigate(
-                                  `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
+                                navigate(navigateLink);
+                                Company.setFirebaseId(
+                                  i.project.detail.firebaseId
                                 );
                               }}
                             >
-                              <Text
-                                w="20%"
-                                display="flex"
-                                justifyContent={"center"}
-                              >
-                                <CgDetailsMore />
-                              </Text>
-                              ดูข้อมูล Project {<br />}และ สัญญา MA
-                            </MenuItem>
-                            <MenuItem
-                              h="50px"
-                              p={0}
-                              backgroundColor="whiter"
-                              color={"red"}
+                              {lastestMA &&
+                                moment(lastestMA.startMA).format("DD/MM/YYYY")}
+                            </Td>
+                            <Td
+                              textAlign={"center"}
+                              onClick={() => {
+                                navigate(navigateLink);
+                              }}
                             >
-                              <DeleteProject
-                                companyId={i.project.detail.companyID}
-                                projectId={i.project.projectId}
-                              />
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  );
-                })
-              )}
-            </Tbody>
-          </Table>
-        </Box></Box>
+                              {lastestMA &&
+                                moment(lastestMA.endMA).format("DD/MM/YYYY")}
+                            </Td>
+                            <Td
+                              textAlign={"center"}
+                              onClick={() => {
+                                navigate(navigateLink);
+                                Company.setFirebaseId(
+                                  i.project.detail.firebaseId
+                                );
+                              }}
+                            >
+                              {moment(i.project.detail.createdAt).format(
+                                "DD/MM/YYYY"
+                              )}
+                            </Td>
+                            <Td
+                              textAlign={"center"}
+                              onClick={() => {
+                                navigate(navigateLink);
+                                Company.setFirebaseId(
+                                  i.project.detail.firebaseId
+                                );
+                              }}
+                            >
+                              {lastestMA &&
+                                Number(lastestMA.cost).toLocaleString("th-TH", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
+                            </Td>
+                            <Td
+                              textAlign={"center"}
+                              onClick={() => {
+                                navigate(navigateLink);
+                                Company.setFirebaseId(
+                                  i.project.detail.firebaseId
+                                );
+                              }}
+                            >
+                              <Badge
+                                borderRadius="16px"
+                                p="1.5"
+                                w="6rem"
+                                color={color}
+                                bg={bg}
+                              >
+                                {display}
+                              </Badge>
+                            </Td>
+                          </>
+                        )}
+                        <Td textAlign={"center"}>
+                          <Button
+                            bg="#4C7BF5"
+                            opacity="0.9"
+                            color="#eee"
+                            _hover={{ opacity: "0.8" }}
+                            fontWeight={"normal"}
+                            w="150px"
+                            borderRadius="16px"
+                            onClick={() => {
+                              navigate(navigateLink);
+                              Company.setFirebaseId(
+                                i.project.detail.firebaseId
+                              );
+                            }}
+                          >
+                            ดูรายการปัญหา
+                          </Button>
+                        </Td>
+                        <Td textAlign={"center"}>
+                          <Menu>
+                            <MenuButton
+                              as={IconButton}
+                              colorScheme="white"
+                              bg="none"
+                              _hover={{ bg: "white" }}
+                              icon={
+                                <BiDotsHorizontalRounded
+                                  size="25px"
+                                  color="#4C7BF4"
+                                />
+                              }
+                            />
+                            <MenuList
+                              backgroundColor="white"
+                              pos="sticky"
+                              top="0"
+                              bg="white"
+                              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                              zIndex="sticky"
+                            >
+                              <MenuItem
+                                color="gray"
+                                h="50px"
+                                p={0}
+                                backgroundColor="whiter"
+                                onClick={() => {
+                                  navigate(
+                                    `/company/${params["company"]}/${i.project.projectId}/${i.project.detail.projectName}/detail`
+                                  );
+                                }}
+                              >
+                                <Text
+                                  w="20%"
+                                  display="flex"
+                                  justifyContent={"center"}
+                                >
+                                  <CgDetailsMore />
+                                </Text>
+                                ดูข้อมูล Project {<br />}และ สัญญา MA
+                              </MenuItem>
+                              <MenuItem
+                                h="50px"
+                                p={0}
+                                backgroundColor="whiter"
+                                color={"red"}
+                              >
+                                <DeleteProject
+                                  companyId={i.project.detail.companyID}
+                                  projectId={i.project.projectId}
+                                />
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    );
+                  })
+                )}
+              </Tbody>
+            </Table>
+          </Box>
+        </Box>
         <Flex>
           <Button
             onClick={() => {

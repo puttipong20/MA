@@ -316,7 +316,7 @@ export default function ProblemPreview() {
                   </Tr>
                 ) : filterReports.length === 0 ? (
                   <Tr>
-                    <Td colSpan={7} textAlign={"center"}>
+                    <Td colSpan={9} textAlign={"center"}>
                       ยังไม่มีข้อมูลการรายงาน
                     </Td>
                   </Tr>

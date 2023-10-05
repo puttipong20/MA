@@ -17,6 +17,7 @@ import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
 import FetchCompany from "./Common/SetCompanyContext";
 import { DataContext } from "./context/DataContext";
+import AllProject from "./pages/allMa";
 
 function App() {
   const navigate = useNavigate();
@@ -104,6 +105,14 @@ function App() {
             element={
               <Layout>
                 <ProblemPreview />
+              </Layout>
+            }
+          />
+          <Route
+            path="/allMa"
+            element={
+              <Layout>
+                <AllProject />
               </Layout>
             }
           />

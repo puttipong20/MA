@@ -77,8 +77,8 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
     setIsUpdating(true);
     await axios
       .post(
-        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //dev
-        "http://127.0.0.1:5001/craftinglab-dev/us-central1/addReport_v2", //test
+        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
+        "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
         {
           reportId: props.reportId,
           isArchive: set,
@@ -101,7 +101,12 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
   return (
     <>
       <Menu>
-        <MenuButton as={Button} bg={'none'} borderRadius={'16px'} border={'1px solid #ccc'}>
+        <MenuButton
+          as={Button}
+          bg={"none"}
+          borderRadius={"16px"}
+          border={"1px solid #ccc"}
+        >
           <BiDotsHorizontalRounded />
         </MenuButton>
         <MenuList p="0">
@@ -119,13 +124,23 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
       {isArchive ? (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>ยกเลิกการจัดเก็บรายงาน ?</ModalHeader>
+          <ModalContent borderRadius={"16px"}>
+            <ModalHeader borderTopRadius={"16px"} bg="#4C7BF4" color="#fff">
+              ยกเลิกการจัดเก็บรายงาน ?
+            </ModalHeader>
             <ModalFooter>
-              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+              <Button
+                borderRadius={"16px"}
+                border={"1px solid #ccc"}
+                mr={3}
+                onClick={onClose}
+                w="5rem"
+                variant={"ghost"}
+              >
                 ปิด
               </Button>
               <Button
+                borderRadius={"16px"}
                 w="5rem"
                 bg="#4c7bf4"
                 onClick={() => {
@@ -142,13 +157,23 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
       ) : (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>ยืนยันการจัดเก็บรายงาน ?</ModalHeader>
+          <ModalContent borderRadius={"16px"}>
+            <ModalHeader borderTopRadius={"16px"} bg="#4C7BF4" color="#fff">
+              ยืนยันการจัดเก็บรายงาน ?
+            </ModalHeader>
             <ModalFooter>
-              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+              <Button
+                borderRadius={"16px"}
+                border={"1px solid #ccc"}
+                mr={3}
+                onClick={onClose}
+                w="5rem"
+                variant={"ghost"}
+              >
                 ปิด
               </Button>
               <Button
+                borderRadius={"16px"}
                 w="5rem"
                 bg="#4c7bf4"
                 color="#fff"
@@ -190,6 +215,8 @@ export default function ProblemPreview() {
   const getFireBaseId = async () => {
     const projectRef = doc(db, "Project", params["projectID"] as string);
     const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail;
+    console.log(projectDetail);
+    
     const firebaseId = projectDetail.firebaseId;
     // Company.setFirebaseId(firebaseId)
     return firebaseId;
@@ -197,10 +224,10 @@ export default function ProblemPreview() {
 
   const fetchingReport = async () => {
     setIsFetching(true);
-    const firebaseId = await getFireBaseId();
-
+    // const firebaseId = await getFireBaseId();
+    console.log(params['projectID'])
     const collRef = collection(db, "Report");
-    const q = query(collRef, where("firebaseId", "==", firebaseId));
+    const q = query(collRef, where("projectId", "==", params["projectID"]));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
     fetchReport.forEach((r) => {
@@ -244,7 +271,6 @@ export default function ProblemPreview() {
   }, [params["projectID"]]);
 
   const onSearch = () => {
-    // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
     const value = searchRef.current?.value;
     const searchText = value + " " + statusFilter || "";
     const searchField = [
@@ -379,7 +405,7 @@ export default function ProblemPreview() {
                   <FormControl>
                     <HStack>
                       <Text>สถานะ</Text>
-                      <Select borderRadius={'16px'} {...field}>
+                      <Select borderRadius={"16px"} {...field}>
                         <option value="">ทั้งหมด</option>
                         <option value="รอรับเรื่อง">รอรับเรื่อง</option>
                         <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -632,7 +658,7 @@ export default function ProblemPreview() {
                         </TagLabel>
                       </Tag>
                     </Td>
-                    <Td textAlign={'center'}>
+                    <Td textAlign={"center"}>
                       <ActionMenu
                         reportId={r.id}
                         refetch={fetchingReport}

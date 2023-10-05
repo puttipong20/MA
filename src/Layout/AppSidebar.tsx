@@ -38,7 +38,7 @@ import { search } from "ss-search";
 import { Company, CompanyDetail } from "../@types/Type";
 
 import { CompanyContext } from "../context/CompanyContext";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, SettingsIcon } from "@chakra-ui/icons";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -123,7 +123,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <Button bg="#4c7bf4" color="#fff" borderRadius={'16px'} onClick={onOpen}>
+      <Button bg="#4c7bf4" color="#fff" borderRadius={"16px"} onClick={onOpen}>
         <RxHamburgerMenu />
       </Button>
       <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
@@ -177,6 +177,23 @@ const Sidebar: React.FC = () => {
                     onChange={onSearch}
                   />
                 </InputGroup>
+              </HStack>
+              <HStack
+                mx={4}
+                my={4}
+                justify={"flex-start"}
+                alignItems={"center"}
+                color={"black"}
+                maxW={'50%'}
+                cursor={'pointer'}
+                onClick={() => {navigate('/allMa'),onClose()}}
+              >
+                <Text>
+                  <SettingsIcon />
+                </Text>
+                <Text fontWeight={"normal"} textAlign={"left"}>
+                  All Ma
+                </Text>
               </HStack>
               {isFetching ? (
                 <Flex
