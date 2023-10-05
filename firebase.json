@@ -6,7 +6,7 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "develop",
+      "codebase": "default",
       "ignore": [
         "node_modules",
         ".git",
@@ -18,44 +18,6 @@
   "storage": {
     "rules": "storage.rules"
   },
-  "hosting": [
-    {
-      "site": "craftingma",
-      "source": ".",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    },
-    {
-      "site": "craftinglab-ma-dev",
-      "source": ".",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    },
-    {
-      "site": "craft-ma-dev",
-      "source": ".",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    }
-  ],
   "emulators": {
     "auth": {
       "port": 9099
@@ -65,6 +27,9 @@
     },
     "firestore": {
       "port": 8080
+    },
+    "storage": {
+      "port": 9199
     },
     "ui": {
       "enabled": true

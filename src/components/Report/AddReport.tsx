@@ -100,9 +100,12 @@ const AddReport = () => {
           // "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2", // *** prod ***
           // "https://us-central1-craftinglab-dev.cloudfunctions.net/addReport_v2", // prod
           "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", // dev
+          // "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2", //emulators
           dataToAdd
         )
-        .then(() => {
+        .then((res) => {
+          console.log(res);
+          
           navigate(goBackPath);
           toast({
             title: "แจ้งปัญหาเสร็จสิ้น",

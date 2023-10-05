@@ -10,24 +10,20 @@ const db = admin.firestore();
 exports.addReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
     const token = process.env.VITE_LINE_NOTIFY;
-    const { firebaseId, title, detail } = req.body;
+    const { projectId, title, detail } = req.body;
     let shortName = "";
     let projectName = "";
     let companyName = "";
     try {
       await db
         .collection("Project")
-        .where("firebaseId", "==", firebaseId)
+        .doc(projectId)
         .get()
         .then((snapshot) => {
-          const docs = snapshot.docs;
-          let query = {};
-          docs.map((item) => {
-            query = item.data();
-          });
-          shortName = query.shortName;
-          projectName = query.projectName;
-          companyName = query.companyName;
+          const docs = snapshot.data();
+          shortName = docs.shortName;
+          projectName = docs.projectName;
+          companyName = docs.companyName;
         });
       const incrementRef = db.collection("autoIncrement").doc(shortName);
       db.runTransaction(async (transaction) => {
