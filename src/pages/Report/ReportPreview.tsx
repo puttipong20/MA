@@ -45,14 +45,12 @@ import { Controller, useForm } from "react-hook-form";
 
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
   query,
   where,
 } from "firebase/firestore";
 import { db } from "../../services/config-db";
-import { ProjectDetail, Report, ReportDetail } from "../../@types/Type";
+import { Report, ReportDetail } from "../../@types/Type";
 import classes from "./ReportPreview.module.css";
 import moment from "moment";
 import { CompanyContext } from "../../context/CompanyContext";
@@ -211,16 +209,6 @@ export default function ProblemPreview() {
   const process = "กำลังดำเนินการ";
   const done = "เสร็จสิ้น";
   // const cancel = "ยกเลิก"
-
-  const getFireBaseId = async () => {
-    const projectRef = doc(db, "Project", params["projectID"] as string);
-    const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail;
-    console.log(projectDetail);
-    
-    const firebaseId = projectDetail.firebaseId;
-    // Company.setFirebaseId(firebaseId)
-    return firebaseId;
-  };
 
   const fetchingReport = async () => {
     setIsFetching(true);
