@@ -96,6 +96,7 @@ function AllProject() {
         const docs = res.docs;
         const projects: any[] = [];
         docs.map((item) => {
+          
           getDocs(
             query(
               collection(db, "Project", item.id, "MAlogs"),
@@ -126,6 +127,7 @@ function AllProject() {
       }
     );
   };
+  console.log(allProject)
   //====== useEffect ======
   useEffect(() => {
     getProjects();
@@ -174,6 +176,16 @@ function AllProject() {
         <Table>
           <Thead top={0} zIndex="1">
             <Tr bg={"#4c7bf4"}>
+              <Th
+                minW="10rem"
+                fontSize="16px"
+                color="#fff"
+                textAlign={"center"}
+                fontWeight={"normal"}
+                fontFamily={"inherit"}
+              >
+                ชื่อบริษัท
+              </Th>
               <Th
                 minW="10rem"
                 fontSize="16px"
@@ -274,6 +286,7 @@ function AllProject() {
               currentItems.map((item, index) =>
                 item.statusProject === "enable" ? (
                   <Tr key={index} onClick={() => console.log(item)}>
+                    <Td textAlign={"center"}>{item.companyName}</Td>
                     <Td textAlign={"center"}>{item.projectName}</Td>
                     <Td textAlign={"center"}>
                       {moment(item.createdAt).format("DD/MM/YYYY")}
