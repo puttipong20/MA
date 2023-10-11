@@ -114,6 +114,7 @@ function AllProject() {
                     statusMa: doc.data().status,
                     statusProject: item.data().status,
                   });
+                  console.log(projects)
                 }
               });
               setAllProject([...projects]);
@@ -127,7 +128,6 @@ function AllProject() {
       }
     );
   };
-  console.log(allProject)
   //====== useEffect ======
   useEffect(() => {
     getProjects();
@@ -314,6 +314,8 @@ function AllProject() {
                             ? "green.500"
                             : item.status == "advance"
                             ? "blue.500"
+                            : item.status == "cancel"
+                            ? "yellow.500"
                             : "red.500"
                         }
                       >
@@ -321,6 +323,9 @@ function AllProject() {
                           ? "กำลังใช้งาน"
                           : item.status == "advance"
                           ? "ล่วงหน้า"
+                          
+                          : item.status == "cancel"
+                          ? "ยกเลิก"
                           : "หมดอายุ"}
                       </Badge>
                     </Td>
