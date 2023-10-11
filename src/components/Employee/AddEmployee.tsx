@@ -39,7 +39,6 @@ const AddEmployee: React.FC = () => {
       userName: d.username,
     })
       .then((res) => {
-        console.log(res.data);
         toast({
           position: "top",
           title: "เสร็จสิ้น",

@@ -104,8 +104,6 @@ const AddReport = () => {
           dataToAdd
         )
         .then((res) => {
-          console.log(res);
-          
           navigate(goBackPath);
           toast({
             title: "แจ้งปัญหาเสร็จสิ้น",

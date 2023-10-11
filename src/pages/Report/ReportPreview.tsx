@@ -213,7 +213,6 @@ export default function ProblemPreview() {
   const fetchingReport = async () => {
     setIsFetching(true);
     // const firebaseId = await getFireBaseId();
-    console.log(params['projectID'])
     const collRef = collection(db, "Report");
     const q = query(collRef, where("projectId", "==", params["projectID"]));
     const fetchReport = await getDocs(q);

@@ -84,7 +84,7 @@ function AllProject() {
   //===== functions =======
   const onSearch = () => {
     const key = `${keyWord} ${status}`;
-    const searchField = ["projectName", "statusMa"];
+    const searchField = ["companyName","projectName", "statusMa"];
     const result = search(allProject, searchField, key);
     setFilterAllProject(result);
   };
@@ -114,7 +114,6 @@ function AllProject() {
                     statusMa: doc.data().status,
                     statusProject: item.data().status,
                   });
-                  console.log(projects)
                 }
               });
               setAllProject([...projects]);
@@ -168,6 +167,7 @@ function AllProject() {
           >
             <option value={"active"}>กำลังใช้งาน</option>
             <option value={"expire"}>หมดอายุ</option>
+            <option value={"cancel"}>ยกเลิก</option>
             <option value={"advance"}>ล่วงหน้า</option>
           </Select>
         </Box>
@@ -285,7 +285,7 @@ function AllProject() {
             ) : (
               currentItems.map((item, index) =>
                 item.statusProject === "enable" ? (
-                  <Tr key={index} onClick={() => console.log(item)}>
+                  <Tr key={index} >
                     <Td textAlign={"center"}>{item.companyName}</Td>
                     <Td textAlign={"center"}>{item.projectName}</Td>
                     <Td textAlign={"center"}>
@@ -339,7 +339,6 @@ function AllProject() {
                         w="150px"
                         borderRadius="16px"
                         onClick={() => {
-                          console.log(item);
                           navigate(
                             `/company/${item.companyID}/${item.projectId}/${item.projectName}/problemReport`
                           );

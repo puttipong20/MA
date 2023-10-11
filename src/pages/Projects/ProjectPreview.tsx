@@ -96,7 +96,6 @@ export default function ProjectPreviewComp() {
             project: project,
             ma: logs,
           };
-          console.log(merge)
           allProjects.push(merge);
         }
       })
