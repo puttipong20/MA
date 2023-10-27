@@ -45,14 +45,12 @@ import { Controller, useForm } from "react-hook-form";
 
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
   query,
   where,
 } from "firebase/firestore";
 import { db } from "../../services/config-db";
-import { ProjectDetail, Report, ReportDetail } from "../../@types/Type";
+import { Report, ReportDetail } from "../../@types/Type";
 import classes from "./ReportPreview.module.css";
 import moment from "moment";
 import { CompanyContext } from "../../context/CompanyContext";
@@ -77,8 +75,8 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
     setIsUpdating(true);
     await axios
       .post(
-        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //dev
-        "http://127.0.0.1:5001/craftinglab-dev/us-central1/addReport_v2", //test
+        "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
+        // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
         {
           reportId: props.reportId,
           isArchive: set,
@@ -101,7 +99,12 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
   return (
     <>
       <Menu>
-        <MenuButton as={Button} bg="">
+        <MenuButton
+          as={Button}
+          bg={"none"}
+          borderRadius={"16px"}
+          border={"1px solid #ccc"}
+        >
           <BiDotsHorizontalRounded />
         </MenuButton>
         <MenuList p="0">
@@ -119,13 +122,23 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
       {isArchive ? (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>ยกเลิกการจัดเก็บรายงาน ?</ModalHeader>
+          <ModalContent borderRadius={"16px"}>
+            <ModalHeader borderTopRadius={"16px"} bg="#4C7BF4" color="#fff">
+              ยกเลิกการจัดเก็บรายงาน ?
+            </ModalHeader>
             <ModalFooter>
-              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+              <Button
+                borderRadius={"16px"}
+                border={"1px solid #ccc"}
+                mr={3}
+                onClick={onClose}
+                w="5rem"
+                variant={"ghost"}
+              >
                 ปิด
               </Button>
               <Button
+                borderRadius={"16px"}
                 w="5rem"
                 bg="#4c7bf4"
                 onClick={() => {
@@ -142,20 +155,30 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
       ) : (
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>ยืนยันการจัดเก็บรายงาน ?</ModalHeader>
+          <ModalContent borderRadius={"16px"}>
+            <ModalHeader borderTopRadius={"16px"} bg="#4C7BF4" color="#fff">
+              ยืนยันการจัดเก็บรายงาน ?
+            </ModalHeader>
             <ModalFooter>
-              <Button mr={3} onClick={onClose} w="5rem" variant={"ghost"}>
+              <Button
+                borderRadius={"16px"}
+                border={"1px solid #ccc"}
+                mr={3}
+                onClick={onClose}
+                w="5rem"
+                variant={"ghost"}
+              >
                 ปิด
               </Button>
               <Button
+                borderRadius={"16px"}
                 w="5rem"
                 bg="#4c7bf4"
+                color="#fff"
                 onClick={() => {
                   toArchive(true);
                 }}
                 isLoading={isUpdating}
-                color="#fff"
               >
                 ยืนยัน
               </Button>
@@ -187,20 +210,11 @@ export default function ProblemPreview() {
   const done = "เสร็จสิ้น";
   // const cancel = "ยกเลิก"
 
-  const getFireBaseId = async () => {
-    const projectRef = doc(db, "Project", params["projectID"] as string);
-    const projectDetail = (await getDoc(projectRef)).data() as ProjectDetail;
-    const firebaseId = projectDetail.firebaseId;
-    // Company.setFirebaseId(firebaseId)
-    return firebaseId;
-  };
-
   const fetchingReport = async () => {
     setIsFetching(true);
-    const firebaseId = await getFireBaseId();
-
+    // const firebaseId = await getFireBaseId();
     const collRef = collection(db, "Report");
-    const q = query(collRef, where("firebaseId", "==", firebaseId));
+    const q = query(collRef, where("projectId", "==", params["projectID"]));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
     fetchReport.forEach((r) => {
@@ -244,7 +258,6 @@ export default function ProblemPreview() {
   }, [params["projectID"]]);
 
   const onSearch = () => {
-    // const searchInput = document.getElementById("searchInput") as HTMLInputElement;
     const value = searchRef.current?.value;
     const searchText = value + " " + statusFilter || "";
     const searchField = [
@@ -379,7 +392,7 @@ export default function ProblemPreview() {
                   <FormControl>
                     <HStack>
                       <Text>สถานะ</Text>
-                      <Select {...field}>
+                      <Select borderRadius={"16px"} {...field}>
                         <option value="">ทั้งหมด</option>
                         <option value="รอรับเรื่อง">รอรับเรื่อง</option>
                         <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -545,7 +558,16 @@ export default function ProblemPreview() {
               >
                 การดำเนินการ
               </Th>
-              <Th></Th>
+              <Th
+                fontWeight={"normal"}
+                fontSize="16px"
+                minW="10rem"
+                color="#fff"
+                textAlign="center"
+                fontFamily={"inherit"}
+              >
+                จัดการ
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -623,7 +645,7 @@ export default function ProblemPreview() {
                         </TagLabel>
                       </Tag>
                     </Td>
-                    <Td>
+                    <Td textAlign={"center"}>
                       <ActionMenu
                         reportId={r.id}
                         refetch={fetchingReport}

@@ -75,7 +75,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
         updateBy: {
           uid: AuthCtx.uid,
           username: AuthCtx.username,
-        }
+        },
       })
         .then(() => {
           toast({
@@ -129,10 +129,20 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">แก้ไขข้อมูลบริษัท</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          borderRadius={"16px"}
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+        >
+          <ModalCloseButton color={"#fff"} />
+          <ModalHeader
+            bg="#4C7BF4"
+            color={"#fff"}
+            borderTopRadius={"16px"}
+            textAlign="center"
+          >
+            แก้ไขข้อมูลบริษัท
+          </ModalHeader>
+          <ModalBody p="1.5rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
@@ -144,6 +154,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ชื่อบริษัท</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -160,6 +171,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ที่อยู่บริษัท</FormLabel>
                       <Textarea
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -176,6 +188,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">ชื่อผู้ติดต่อ</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -192,6 +205,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel fontSize="16px">เบอร์โทรติดต่อ</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         type="tel"
                         value={value}
                         onChange={onChange}
@@ -211,6 +225,7 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                         เลขประจำตัวผู้เสียภาษี
                       </FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -243,14 +258,21 @@ const FormEditCompany = ({ data, id, callBack }: any) => {
                 />
               </Stack>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button
+                  borderRadius={"16px"}
+                  bg={"none"}
+                  border={"1px solid #ccc"}
+                  mr="68px"
+                  onClick={() => reset()}
+                >
                   เคลียร์
                 </Button>
                 <Button
+                  borderRadius={"16px"}
                   type="submit"
                   color="gray.100"
                   bg="#4C7BF4"
-                  _hover={{ opacity:"0.8" }}
+                  _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
                 >
                   บันทึก

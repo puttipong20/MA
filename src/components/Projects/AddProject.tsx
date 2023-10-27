@@ -14,41 +14,52 @@ import {
   useToast,
   useDisclosure,
   ModalHeader,
-  Tooltip,
   FormErrorMessage,
   FormLabel,
+  Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
 import { useForm, Controller } from "react-hook-form";
 
-import { collection, addDoc, updateDoc, getDoc, doc, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  getDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { CompanyDetail, MA, ProjectDetail } from "../../@types/Type";
-
 import { AuthContext } from "../../context/AuthContext";
-import { CompanyContext } from "../../context/CompanyContext";
-import { QuestionIcon } from "@chakra-ui/icons";
-
 import classes from "./AddProject.module.css";
 
 interface Props {
   companyId: string;
   companyName: string;
+  setIsAdding: any;
+  isAdding: boolean;
 }
 
 const AddProject: React.FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, control, watch, setValue, reset, formState: { errors } } = useForm();
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [duration, setDuration] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const toast = useToast();
   const Auth = useContext(AuthContext);
-  const CompanyCtx = useContext(CompanyContext);
 
   useEffect(() => {
     reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async (data: any) => {
@@ -89,12 +100,11 @@ const AddProject: React.FC<Props> = (props) => {
       projectName: data.projectName,
       status: "enable",
       shortName: data.shortName,
-      firebaseId: data.firebaseID
+      firebaseId: data.firebaseID,
       // MAlogs: [latestMA]
     };
-    const snExists = await checkShortName(data.shortName)
+    const snExists = await checkShortName(data.shortName);
     if (!snExists) {
-
       const companyRef = doc(db, "Company", props.companyId);
       const company = await getDoc(companyRef);
       const companyDetail = company.data() as CompanyDetail;
@@ -115,7 +125,7 @@ const AddProject: React.FC<Props> = (props) => {
       const project = {
         id: newProjectRef.id,
         projectName: data.projectName,
-        status: "enable"
+        status: "enable",
       };
       let updateProject = [];
       if (companyDetail.projects) {
@@ -135,7 +145,7 @@ const AddProject: React.FC<Props> = (props) => {
         position: "top",
       });
     }
-
+    props.setIsAdding(!props.isAdding);
     setIsAdding(false);
   };
 
@@ -145,20 +155,11 @@ const AddProject: React.FC<Props> = (props) => {
     let isExists = true;
     await getDocs(q).then((p) => {
       if (p.size === 0) {
-        isExists = false
+        isExists = false;
       }
-    })
-    return isExists
-  }
-
-  useEffect(() => {
-    if (props.companyName !== "") {
-      setValue("companyName", props.companyName);
-    } else {
-      setValue("companyName", CompanyCtx.companyName)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    });
+    return isExists;
+  };
 
   const startMA = watch("startMA") || moment().format("YYYY-MM-DD");
   const endMA = watch("endMA") || moment().add(1, "year").format("YYYY-MM-DD");
@@ -191,50 +192,52 @@ const AddProject: React.FC<Props> = (props) => {
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">เพิ่มโปรเจคต์</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+          borderRadius={"16px"}
+        >
+          <Text color={"#fff"}>
+            <ModalCloseButton />
+          </Text>
+          <ModalHeader
+            color="#fff"
+            bg="#4C7BF4"
+            textAlign="center"
+            borderTopRadius={"16px"}
+          >
+            เพิ่มโปรเจคต์
+          </ModalHeader>
+          <ModalBody m="1rem">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name="companyName"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <FormControl mb="0.5rem">
-                    <FormLabel fontWeight={"bold"}>บริษัท/ลูกค้า</FormLabel>
-                    <Input type="text" {...field} readOnly />
-                  </FormControl>
-                )}
-              />
-              <Controller
-                name="firebaseID"
-                control={control}
-                defaultValue={""}
-                rules={{ required: { value: true, message: "กรุณากรอก firebase ID" } }}
-                render={({ field }) => (
-                  <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["firebaseID"])}>
-                    <FormLabel fontWeight={"bold"}>Firebase ID</FormLabel>
-                    <Input className={classes.input} type="text" {...field} placeholder="firebase ID" />
-                    <FormErrorMessage>
-                      {errors["firebaseID"] && (errors["firebaseID"].message as string)}
-                    </FormErrorMessage>
-                  </FormControl>
-                )}
-              />
               <HStack>
                 <Controller
                   name="projectName"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: { value: true, message: "กรุณากรอกชื่อโปรเจค" } }}
+                  rules={{
+                    required: { value: true, message: "กรุณากรอกชื่อโปรเจค" },
+                  }}
                   render={({ field }) => (
-                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["projectName"])}>
-                      <FormLabel fontWeight={"bold"}>ชื่อโปรเจค</FormLabel>
+                    <FormControl
+                      mb="0.5rem"
+                      isInvalid={Boolean(errors["projectName"])}
+                    >
+                      <FormLabel fontWeight={"bold"}>
+                        <Flex>
+                          <Text>ชื่อโปรเจค</Text>
+                          <Text color={"red"}> *</Text>
+                        </Flex>
+                      </FormLabel>
                       <Input
-                        className={classes.input} type="text" {...field} placeholder="project name" />
+                        borderRadius={'16px'}
+                        className={classes.input}
+                        type="text"
+                        {...field}
+                        placeholder="project name"
+                      />
                       <FormErrorMessage>
-                        {errors["projectName"] && (errors["projectName"].message as string)}
+                        {errors["projectName"] &&
+                          (errors["projectName"].message as string)}
                       </FormErrorMessage>
                     </FormControl>
                   )}
@@ -243,33 +246,82 @@ const AddProject: React.FC<Props> = (props) => {
                   name="shortName"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: { value: true, message: "กรุณาระบุชื่อย่อ" }, minLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" }, maxLength: { value: 3, message: "ชื่อย่อต้องมี 3 ตัวอักษร" } }}
+                  rules={{
+                    required: { value: true, message: "กรุณาระบุชื่อย่อ" },
+                  }}
                   render={({ field }) => (
-                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["shortName"])}>
-                      <FormLabel fontWeight={"bold"}>ชื่อย่อ <Tooltip label="ชื่อย่อต้องมี 3 ตัวอักษรและเป็นตัวพิมพ์ใหญ่ภาษาอังกฤษเท่านั้น" placement="top" display="flex" alignItems={"center"} border={"1px"}><QuestionIcon /></Tooltip></FormLabel>
+                    <FormControl
+                      mb="0.5rem"
+                      isInvalid={Boolean(errors["shortName"])}
+                    >
+                      <FormLabel fontWeight={"bold"}>
+                        <Flex>
+                          <Text>ชื่อย่อ</Text>
+                          <Text color={"red"}> *</Text>
+                        </Flex>
+                      </FormLabel>
                       <Input
-                        className={classes.input} type="text" {...field} placeholder="ABC" minHeight={3} maxLength={3} pattern="[A-Z]{3}" />
+                        borderRadius={'16px'}
+                        className={classes.input}
+                        type="text"
+                        {...field}
+                        placeholder="ABC"
+                        minHeight={3}
+                        maxLength={3}
+                      />
                       <FormErrorMessage>
-                        {errors["shortName"] && (errors["shortName"].message as string)}
+                        {errors["shortName"] &&
+                          (errors["shortName"].message as string)}
                       </FormErrorMessage>
                     </FormControl>
                   )}
                 />
               </HStack>
+              <Controller
+                name="firebaseID"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <FormControl mb="0.5rem">
+                    <FormLabel fontWeight={"bold"}>Firebase ID</FormLabel>
+                    <Input
+                      borderRadius={'16px'}
+                      className={classes.input}
+                      type="text"
+                      {...field}
+                      placeholder="firebase ID"
+                    />
+                    <FormErrorMessage>
+                      {errors["firebaseID"] &&
+                        (errors["firebaseID"].message as string)}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              />
 
               <HStack>
                 <Controller
                   name="startMA"
                   control={control}
                   defaultValue={moment().format("YYYY-MM-DD")}
-                  rules={{ required: { value: true, message: "กรุณาระบุวันเริ่มสัญญา" } }}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "กรุณาระบุวันเริ่มสัญญา",
+                    },
+                  }}
                   render={({ field }) => (
-                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["startMA"])}>
+                    <FormControl
+                      isRequired
+                      mb="0.5rem"
+                      isInvalid={Boolean(errors["startMA"])}
+                    >
                       <FormLabel fontWeight={"bold"}>start MA</FormLabel>
                       <Input
-                        className={classes.input} type="date" {...field} />
+                        borderRadius={'16px'} className={classes.input} type="date" {...field} />
                       <FormErrorMessage>
-                        {errors["startMA"] && (errors["startMA"].message as string)}
+                        {errors["startMA"] &&
+                          (errors["startMA"].message as string)}
                       </FormErrorMessage>
                     </FormControl>
                   )}
@@ -278,12 +330,21 @@ const AddProject: React.FC<Props> = (props) => {
                   name="endMA"
                   control={control}
                   defaultValue={moment().add(1, "year").format("YYYY-MM-DD")}
-                  rules={{ required: { value: true, message: "กรุณาระบุวันสิ้นสุดสัญญา" } }}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "กรุณาระบุวันสิ้นสุดสัญญา",
+                    },
+                  }}
                   render={({ field }) => (
-                    <FormControl isRequired mb="0.5rem" isInvalid={Boolean(errors["endMA"])}>
+                    <FormControl
+                      isRequired
+                      mb="0.5rem"
+                      isInvalid={Boolean(errors["endMA"])}
+                    >
                       <FormLabel fontWeight={"bold"}>end MA</FormLabel>
                       <Input
-                        className={classes.input} type="date" {...field} />
+                        borderRadius={'16px'} className={classes.input} type="date" {...field} />
                       <FormErrorMessage>
                         {errors["endMA"] && (errors["endMA"].message as string)}
                       </FormErrorMessage>
@@ -303,11 +364,20 @@ const AddProject: React.FC<Props> = (props) => {
                 name="cost"
                 control={control}
                 defaultValue={""}
-                rules={{ required: { value: true, message: "กรุณากรอกค่าบริการ" }, min: { value: 0, message: "ค่าบริการต้องมากกว่า 0" } }}
+                rules={{
+                  required: { value: true, message: "กรุณากรอกค่าบริการ" },
+                  min: { value: 0, message: "ค่าบริการต้องมากกว่า 0" },
+                }}
                 render={({ field }) => (
-                  <FormControl isRequired isInvalid={Boolean(errors["cost"])}>
-                    <FormLabel fontWeight={"bold"}>ค่าบริการ</FormLabel>
+                  <FormControl isInvalid={Boolean(errors["cost"])}>
+                    <FormLabel fontWeight={"bold"}>
+                      <Flex>
+                        <Text>ค่าบริการ</Text>
+                        <Text color={"red"}> *</Text>
+                      </Flex>
+                    </FormLabel>
                     <Input
+                      borderRadius={'16px'}
                       className={classes.input}
                       type="number"
                       min={0}
@@ -327,6 +397,7 @@ const AddProject: React.FC<Props> = (props) => {
                     onClose();
                   }}
                   colorScheme="gray"
+                  borderRadius={"16px"}
                 >
                   ปิด
                 </Button>
@@ -337,6 +408,7 @@ const AddProject: React.FC<Props> = (props) => {
                   _hover={{ opacity: "0.8" }}
                   isLoading={isAdding}
                   isDisabled={duration < 1}
+                  borderRadius={"16px"}
                 >
                   เพิ่ม
                 </Button>

@@ -63,8 +63,8 @@ const DeleteProject: React.FC<Props> = (props) => {
       },
     });
     toast({
-      title: "ลบโปรเจคต์เสร็จสิ้น",
-      status: "error",
+      title: "ลบโปรเจคเรียบร้อยแล้ว",
+      status: "success",
       duration: 3000,
       isClosable: true,
       position: "top",
@@ -92,14 +92,24 @@ const DeleteProject: React.FC<Props> = (props) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>ยืนยันการลบ Project ?</ModalHeader>
+        <ModalContent borderRadius={"16px"}>
+          <ModalHeader borderTopRadius={"16px"} bg="#4c7bf4" color="#fff">
+            ยืนยันการลบ Project ?
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>ยืนยันการลบหรือไม่?</Text>
           </ModalBody>
           <ModalFooter>
-            <Button w="5rem" fontSize="14px" mr="5" onClick={onClose}>
+            <Button
+              borderRadius={"16px"}
+              bg={"none"}
+              border={"1px solid #ccc"}
+              w="5rem"
+              fontSize="14px"
+              mr="5"
+              onClick={onClose}
+            >
               ยกเลิก
             </Button>
             <Button
@@ -110,6 +120,7 @@ const DeleteProject: React.FC<Props> = (props) => {
               _hover={{ opacity: "0.8" }}
               onClick={deleteProcess}
               isLoading={deleting}
+              borderRadius={"16px"}
             >
               ยืนยัน
             </Button>

@@ -23,7 +23,6 @@ import {
   Container,
   Card,
   HStack,
-  Tooltip,
   FormControl,
   Input,
   useToast,
@@ -44,8 +43,6 @@ import {
   AiOutlineHistory,
   AiOutlineReload,
   AiOutlineEdit,
-  AiOutlineClose,
-  AiOutlineCheck,
 } from "react-icons/ai";
 
 import moment from "moment";
@@ -74,7 +71,6 @@ export default function DetailPage() {
   const projectRef = doc(db, "Project", projectID);
   const MAref = collection(projectRef, "MAlogs");
   const [isUpdating, setIsUpdating] = useState(false);
-  const [hoverToEdit, setHoverToEdit] = useState(false);
   const toast = useToast();
 
   const { control, handleSubmit, reset } = useForm();
@@ -161,6 +157,7 @@ export default function DetailPage() {
         timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
       },
       projectName: data.projectName,
+      firebaseId: data.firebaseId,
     }).then(async () => {
       const companyRef = doc(db, "Company", CompanyCtx.companyId);
       const companyDoc = await getDoc(companyRef);
@@ -192,13 +189,6 @@ export default function DetailPage() {
     });
     setIsOpenEdit(false);
     setIsUpdating(false);
-  };
-
-  const hoverEnter = () => {
-    setHoverToEdit(true);
-  };
-  const hoverLeave = () => {
-    setHoverToEdit(false);
   };
 
   // สร้าง State สำหรับ Pagination
@@ -265,56 +255,53 @@ export default function DetailPage() {
           </Box>
           <form onSubmit={handleSubmit(submitUpdate)}>
             <Card
+              borderRadius={"16px"}
               p={"1rem"}
               w="max-content"
               maxW="100%"
               position="relative"
               border={"1px solid rgb(0,0,0,0.05)"}
-              onMouseEnter={hoverEnter}
-              onMouseLeave={hoverLeave}
             >
-              {!isOpenEdit ? (
+              <Flex justifyContent={"flex-end"}>
+                {isOpenEdit && (
+                  <Box>
+                    <Button
+                      border={"1px solid #ccc"}
+                      bg={"none"}
+                      borderRadius={"16px"}
+                      mr="0.25rem"
+                      onClick={() => {
+                        reset();
+                        setIsOpenEdit(false);
+                      }}
+                      _hover={{ opacity: 1 }}
+                    >
+                      ยกเลิก
+                    </Button>
+                    <Button
+                      bg="#4C7BF4"
+                      color={"#fff"}
+                      isLoading={isUpdating}
+                      type="submit"
+                      borderRadius={"16px"}
+                      _hover={{ opacity: 1 }}
+                    >
+                      บันทึก
+                    </Button>
+                  </Box>
+                )}
                 <Button
-                  position="absolute"
                   fontSize={"xl"}
                   bg="none"
-                  right="-2.25rem"
-                  top="-0.75rem"
                   color="GrayText"
                   _hover={{ color: "black" }}
-                  _active={{}}
-                  display={hoverToEdit ? "block" : "none"}
                   onClick={() => {
-                    setIsOpenEdit(true);
+                    setIsOpenEdit(!isOpenEdit);
                   }}
                 >
-                  <Tooltip label={"click to edit"} placement="top">
-                    <span>
-                      <AiOutlineEdit />
-                    </span>
-                  </Tooltip>
+                  <AiOutlineEdit />
                 </Button>
-              ) : (
-                <Box position="absolute" top="-1.25rem" right="0rem">
-                  <Button
-                    colorScheme="red"
-                    mr="0.25rem"
-                    onClick={() => {
-                      reset();
-                      setIsOpenEdit(false);
-                    }}
-                  >
-                    <AiOutlineClose />
-                  </Button>
-                  <Button
-                    colorScheme="green"
-                    isLoading={isUpdating}
-                    type="submit"
-                  >
-                    <AiOutlineCheck />
-                  </Button>
-                </Box>
-              )}
+              </Flex>
               <Box>
                 <HStack>
                   <Text w="7.5rem" fontWeight={"bold"}>
@@ -323,6 +310,48 @@ export default function DetailPage() {
                   <Text as="span" fontWeight={"normal"}>
                     : {CompanyCtx.companyName}
                   </Text>
+                </HStack>
+                <HStack my={1}>
+                  <Text
+                    fontWeight={"bold"}
+                    w="7.5rem"
+                    display={"flex"}
+                    align={"center"}
+                  >
+                    Firebase Id
+                  </Text>
+                  {!isOpenEdit ? (
+                    <Text as="span" fontWeight={"normal"}>
+                      :{" "}
+                      {projectDetail?.firebaseId
+                        ? projectDetail.firebaseId
+                        : "-"}
+                    </Text>
+                  ) : (
+                    <Controller
+                      name="firebaseId"
+                      control={control}
+                      defaultValue={projectDetail?.firebaseId}
+                      render={({ field }) => (
+                        <FormControl
+                          isRequired
+                          as="span"
+                          w="fit-content"
+                          display="flex"
+                          alignItems={"center"}
+                        >
+                          :{" "}
+                          <Input
+                            type="text"
+                            {...field}
+                            borderRadius={"16px"}
+                            maxW={"fit-content"}
+                            mx={2}
+                          />
+                        </FormControl>
+                      )}
+                    />
+                  )}
                 </HStack>
                 <HStack>
                   <Text
@@ -350,7 +379,14 @@ export default function DetailPage() {
                           display="flex"
                           alignItems={"center"}
                         >
-                          : <Input type="text" {...field} />
+                          :{" "}
+                          <Input
+                            type="text"
+                            {...field}
+                            borderRadius={"16px"}
+                            maxW={"fit-content"}
+                            mx={2}
+                          />
                         </FormControl>
                       )}
                     />
@@ -466,10 +502,9 @@ export default function DetailPage() {
                 borderRadius="20px"
                 border="1px"
                 borderColor="#f4f4f4"
-                w="100%"
+                maxW="100%"
                 h="100%"
-                // maxH={"34vh"}
-                overflowY={"auto"}
+                overflow={"auto"}
                 boxShadow={"1px 1px 1px rgb(0,0,0,0.1)"}
                 className={classes.table}
               >
@@ -617,6 +652,7 @@ export default function DetailPage() {
                                         projectID={projectID}
                                         reload={fetchingProjectDetail}
                                         status="cancel"
+                                        color="red"
                                       />
                                     </MenuItem>
                                   )}
@@ -627,6 +663,7 @@ export default function DetailPage() {
                                       projectID={projectID}
                                       reload={fetchingProjectDetail}
                                       status="deleted"
+                                      color="#ffa500"
                                     />
                                   </MenuItem>
 

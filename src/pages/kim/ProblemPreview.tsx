@@ -183,9 +183,9 @@ export default function ProblemPreview() {
                   control={control}
                   render={({ field }) => (
                     <FormControl>
-                      <HStack>
+                      <HStack border={'1px'}>
                         <Text>สถานะ</Text>
-                        <Select {...field}>
+                        <Select borderRadius={'16px'} {...field}>
                           <option value="">ทั้งหมด</option>
                           <option value="รอรับเรื่อง">รอรับเรื่อง</option>
                           <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
@@ -303,6 +303,7 @@ export default function ProblemPreview() {
                   >
                     การดำเนินการ
                   </Th>
+                  
                 </Tr>
               </Thead>
               <Tbody>
@@ -315,7 +316,7 @@ export default function ProblemPreview() {
                   </Tr>
                 ) : filterReports.length === 0 ? (
                   <Tr>
-                    <Td colSpan={7} textAlign={"center"}>
+                    <Td colSpan={9} textAlign={"center"}>
                       ยังไม่มีข้อมูลการรายงาน
                     </Td>
                   </Tr>

@@ -107,10 +107,20 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
       </Box>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">เพิ่มข้อมูลบริษัท</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+          borderRadius={"16px"}
+        >
+          <ModalCloseButton color={"#fff"} />
+          <ModalHeader
+            color="#fff"
+            bg="#4C7BF4"
+            borderTopRadius={"16px"}
+            textAlign="center"
+          >
+            เพิ่มข้อมูลบริษัท
+          </ModalHeader>
+          <ModalBody p="1.25rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack>
                 <Controller
@@ -127,6 +137,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                         </Flex>
                       </FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -143,6 +154,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ที่อยู่บริษัท</FormLabel>
                       <Textarea
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -159,6 +171,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ชื่อผู้ติดต่อ</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -175,6 +188,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เบอร์โทรติดต่อ</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         type="tel"
                         value={value}
                         onChange={onChange}
@@ -192,6 +206,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เลขประจำตัวผู้เสียภาษี</FormLabel>
                       <Input
+                      borderRadius={'16px'}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -224,7 +239,13 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                 />
               </Stack>
               <Flex justify="center" mt="5">
-                <Button mr="68px" onClick={() => reset()}>
+                <Button
+                  bg={"none"}
+                  border={"1px solid #ccc"}
+                  borderRadius={"16px"}
+                  mr="68px"
+                  onClick={() => reset()}
+                >
                   เคลียร์
                 </Button>
                 <Button
@@ -233,6 +254,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                   bg="#4C7BF4"
                   _hover={{ opacity: "0.8" }}
                   isLoading={isLoading}
+                  borderRadius={"16px"}
                 >
                   บันทึก
                 </Button>

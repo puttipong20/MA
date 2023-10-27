@@ -193,10 +193,20 @@ const Renewal: React.FC<Props> = (props) => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w={{ base: "90%", sm: "90%", md: "30rem" }} p="1rem">
-          <ModalCloseButton />
-          <ModalHeader textAlign="center">ต่อสัญญา</ModalHeader>
-          <ModalBody>
+        <ModalContent
+          borderRadius={"16px"}
+          w={{ base: "90%", sm: "90%", md: "30rem" }}
+        >
+          <ModalCloseButton color={"#fff"} />
+          <ModalHeader
+            bg="#4C7BF4"
+            color={"#fff"}
+            borderTopRadius={"16px"}
+            textAlign="center"
+          >
+            ต่อสัญญา
+          </ModalHeader>
+          <ModalBody p="1.5rem">
             <Box>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
@@ -206,7 +216,7 @@ const Renewal: React.FC<Props> = (props) => {
                   render={({ field }) => (
                     <FormControl isRequired>
                       <Text>วันเริ่มต้นสัญญาใหม่</Text>
-                      <Input type="date" {...field} />
+                      <Input borderRadius={"16px"} type="date" {...field} />
                     </FormControl>
                   )}
                 />
@@ -217,7 +227,7 @@ const Renewal: React.FC<Props> = (props) => {
                   render={({ field }) => (
                     <FormControl isRequired>
                       <Text>วันสิ้นสุดสัญญาใหม่</Text>
-                      <Input type="date" {...field} />
+                      <Input borderRadius={"16px"} type="date" {...field} />
                     </FormControl>
                   )}
                 />
@@ -245,6 +255,7 @@ const Renewal: React.FC<Props> = (props) => {
                       </Flex>
 
                       <Input
+                        borderRadius={"16px"}
                         type="number"
                         min="0"
                         placeholder="0.00"
@@ -255,14 +266,18 @@ const Renewal: React.FC<Props> = (props) => {
                 />
                 <Flex justify={"center"} mt="5">
                   <Button
+                    borderRadius={"16px"}
                     mr="68px"
                     w="5rem"
                     colorScheme="gray"
                     onClick={onClose}
+                    bg={"none"}
+                    border={"1px solid #ccc"}
                   >
                     ยกเลิก
                   </Button>
                   <Button
+                    borderRadius={"16px"}
                     w="5rem"
                     bg="#4C7BF4"
                     color="#fff"

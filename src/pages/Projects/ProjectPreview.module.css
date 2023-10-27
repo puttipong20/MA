@@ -1,3 +1,7 @@
+html,
+body{
+    overflow-x: hidden;
+}
 .table::-webkit-scrollbar {
     width: 5px;
     height: 5px;

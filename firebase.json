@@ -6,7 +6,7 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "develop",
+      "codebase": "default",
       "ignore": [
         "node_modules",
         ".git",
@@ -28,9 +28,6 @@
     "firestore": {
       "port": 8080
     },
-    "database": {
-      "port": 9000
-    },
     "storage": {
       "port": 9199
     },
@@ -41,7 +38,7 @@
   },
   "hosting": [
     {
-      "site": "craftingma",
+      "site": "craft-ma-dev",
       "source": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "frameworksBackend": {

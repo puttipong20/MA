@@ -98,15 +98,16 @@ const AddReport = () => {
       await axios
         .post(
           // "https://asia-southeast1-craftinglabweb.cloudfunctions.net/addReport_v2", // *** prod ***
-          "https://us-central1-craftinglab-dev.cloudfunctions.net/addReport_v2", // dev
-          // "http://127.0.0.1:5001/craftinglab-dev/us-central1/addReport_v2",
+          "https://us-central1-craftinglab-dev.cloudfunctions.net/addReport_v2", // prod
+          // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", // dev
+          // "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2", //emulators
           dataToAdd
         )
-        .then(() => {
+        .then((res) => {
           navigate(goBackPath);
           toast({
-            title: "Submit Successfully",
-            description: "report a problem has been submitted.",
+            title: "แจ้งปัญหาเสร็จสิ้น",
+            description: "ปัญหาถูกแจ้งไปยังผู้พัฒนาเรียบร้อยแล้ว",
             status: "success",
             position: "top",
             duration: 3000,

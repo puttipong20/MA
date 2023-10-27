@@ -17,6 +17,7 @@ import ContractPreview from "./pages/Contract/ContractPreview";
 import ContractUpdate from "./Common/ContractUpdate";
 import FetchCompany from "./Common/SetCompanyContext";
 import { DataContext } from "./context/DataContext";
+import AllProject from "./pages/allMa";
 
 function App() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function App() {
     if (Auth.uid !== "") {
       ContractUpdate();
     }
-  }, [Auth.uid])
+  }, [Auth.uid]);
 
   useEffect(() => {
     initial();
@@ -63,7 +64,7 @@ function App() {
     );
   } else {
     return (
-      <Box w="100%" maxH="100vh" position={"relative"}>
+      <Box maxW="100%" maxH="100vh" m={0} p={0}>
         <Routes>
           <Route path="/login" element={<Login />} />
 
@@ -104,6 +105,14 @@ function App() {
             element={
               <Layout>
                 <ProblemPreview />
+              </Layout>
+            }
+          />
+          <Route
+            path="/allMa"
+            element={
+              <Layout>
+                <AllProject />
               </Layout>
             }
           />
