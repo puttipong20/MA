@@ -10,76 +10,92 @@ const db = admin.firestore();
 exports.addReport_v2 = functions.https.onRequest((req, res) => {
   cors()(req, res, async () => {
     const token = process.env.VITE_LINE_NOTIFY;
-    const { projectId, title, detail } = req.body;
+    const { firebaseId, projectId, title, detail } = req.body;
     let shortName = "";
     let projectName = "";
     let companyName = "";
     try {
-      await db
-        .collection("Project")
-        .doc(projectId)
-        .get()
-        .then((snapshot) => {
-          const docs = snapshot.data();
-          shortName = docs.shortName;
-          projectName = docs.projectName;
-          companyName = docs.companyName;
-        });
-      const incrementRef = db.collection("autoIncrement").doc(shortName);
-      db.runTransaction(async (transaction) => {
-        const doc = await transaction.get(incrementRef);
-        if (!doc.exists) {
-          transaction.set(incrementRef, {
-            number: 1,
-          });
-          return {
-            number: 1,
-          };
-        } else {
-          const prevNumber = parseInt(doc.data().number);
-          const number = prevNumber + 1;
-
-          transaction.set(incrementRef, {
-            number: number,
-          });
-          return {
-            number: number,
-          };
-        }
-      }).then(async (resp) => {
-        const { number } = resp;
-        const padNumber = String(number).padStart(5, "0");
-        const ref = shortName + "-" + padNumber;
+      if (!!firebaseId) {
         await db
-          .collection("Report")
-          .add({
-            ...req.body,
-            ref: ref,
-            projectName: projectName,
-            companyName: companyName,
-            RepStatus: "รอรับเรื่อง",
-          })
-          .then(() => {
-            res.send(true);
+          .collection("Project")
+          .where("firebaseId", "==", firebaseId)
+          .get()
+          .then((snapshot) => {
+            const docs = snapshot.docs;
+            docs.map((item) => {
+              console.log(item.data());
+              shortName = item.data().shortName;
+              projectName = item.data().projectName;
+              companyName = item.data().companyName;
+            });
           });
-        request({
-          method: "POST",
-          uri: "https://notify-api.line.me/api/notify",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${token}`,
-          },
-          form: {
-            message: `
+      } else {
+        await db
+          .collection("Project")
+          .doc(projectId)
+          .get()
+          .then((snapshot) => {
+            const docs = snapshot.data();
+            shortName = docs.shortName;
+            projectName = docs.projectName;
+            companyName = docs.companyName;
+          });
+      }
+            const incrementRef = db.collection("autoIncrement").doc(shortName);
+            db.runTransaction(async (transaction) => {
+              const doc = await transaction.get(incrementRef);
+              if (!doc.exists) {
+                transaction.set(incrementRef, {
+                  number: 1,
+                });
+                return {
+                  number: 1,
+                };
+              } else {
+                const prevNumber = parseInt(doc.data().number);
+                const number = prevNumber + 1;
+
+                transaction.set(incrementRef, {
+                  number: number,
+                });
+                return {
+                  number: number,
+                };
+              }
+            }).then(async (resp) => {
+              const { number } = resp;
+              const padNumber = String(number).padStart(5, "0");
+              const ref = shortName + "-" + padNumber;
+              await db
+                .collection("Report")
+                .add({
+                  ...req.body,
+                  ref: ref,
+                  projectName: projectName,
+                  companyName: companyName,
+                  RepStatus: "รอรับเรื่อง",
+                })
+                .then(() => {
+                  res.send(true);
+                });
+              request({
+                method: "POST",
+                uri: "https://notify-api.line.me/api/notify",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                  Authorization: `Bearer ${token}`,
+                },
+                form: {
+                  message: `
 บริษัท : ${companyName}
 โปรเจค : ${projectName}
 เลขอ้างอิง : ${ref}
 ชื่อเรื่อง : ${title}
 รายละเอียด : ${detail}
                         `,
-          },
-        });
-      });
+                },
+              });
+            });
     } catch (e) {
       res.send(`API need : ( companyName, title, detail ) OR. ${e}`);
     }
@@ -171,7 +187,7 @@ exports.getProjectByCompanyID = functions.https.onRequest((req, res) => {
 
 exports.addUser = functions.https.onCall((data, context) => {
   if ((context.auth.uid !== null) | undefined) {
-    let email = ''
+    let email = "";
     const createUser = admin
       .auth()
       .createUser({
@@ -180,12 +196,12 @@ exports.addUser = functions.https.onCall((data, context) => {
         displayName: data.userName,
       })
       .then((res) => {
-        email = res.email
-        return email
+        email = res.email;
+        return email;
       })
       .catch((e) => {
-        return e
+        return e;
       });
-      return createUser
-    }
+    return createUser;
+  }
 });

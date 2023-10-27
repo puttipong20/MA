@@ -75,8 +75,8 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
     setIsUpdating(true);
     await axios
       .post(
-        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
-        "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
+        "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
+        // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
         {
           reportId: props.reportId,
           isArchive: set,
