@@ -413,7 +413,6 @@ export default function ProjectPreviewComp() {
                         <Td
                           textAlign={"center"}
                           onClick={() => {
-                            console.log(i.project)
                             Company.setFirebaseId(i.project.detail.firebaseId);
                             navigate(navigateLink);
                           }}

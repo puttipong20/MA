@@ -23,7 +23,6 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
           .then((snapshot) => {
             const docs = snapshot.docs;
             docs.map((item) => {
-              console.log(item.data());
               shortName = item.data().shortName;
               projectName = item.data().projectName;
               companyName = item.data().companyName;

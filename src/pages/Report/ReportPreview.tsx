@@ -75,8 +75,9 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
     setIsUpdating(true);
     await axios
       .post(
-        "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
+        // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
         // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
+        "http://127.0.0.1:5001/final-project-661cd/us-central1/updateReport",
         {
           reportId: props.reportId,
           isArchive: set,
@@ -214,9 +215,10 @@ export default function ProblemPreview() {
     setIsFetching(true);
     // const firebaseId = await getFireBaseId();
     const collRef = collection(db, "Report");
-    const q = query(collRef, where("projectId", "==", params["projectID"]));
+    const q = query(collRef, where("projectName", "==", params["projectName"]));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
+    
     fetchReport.forEach((r) => {
       const report: Report = {
         id: r.id,

@@ -28,6 +28,9 @@
     "firestore": {
       "port": 8080
     },
+    "hosting": {
+      "port": 5000
+    },
     "storage": {
       "port": 9199
     },
@@ -35,23 +38,5 @@
       "enabled": true
     },
     "singleProjectMode": true
-  },
-  "hosting": [
-    {
-      "site": "craft-ma-dev",
-      "source": ".",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    },
-    {
-      "site": "craftinglab-ma-dev",
-      "source": ".",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "frameworksBackend": {
-        "region": "us-central1"
-      }
-    }
-  ]
+  }
 }
