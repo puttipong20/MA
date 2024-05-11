@@ -40,63 +40,64 @@ exports.addReport_v2 = functions.https.onRequest((req, res) => {
             companyName = docs.companyName;
           });
       }
-            const incrementRef = db.collection("autoIncrement").doc(shortName);
-            db.runTransaction(async (transaction) => {
-              const doc = await transaction.get(incrementRef);
-              if (!doc.exists) {
-                transaction.set(incrementRef, {
-                  number: 1,
-                });
-                return {
-                  number: 1,
-                };
-              } else {
-                const prevNumber = parseInt(doc.data().number);
-                const number = prevNumber + 1;
+      const incrementRef = db.collection("autoIncrement").doc(shortName);
+      db.runTransaction(async (transaction) => {
+        const doc = await transaction.get(incrementRef);
+        if (!doc.exists) {
+          transaction.set(incrementRef, {
+            number: 1,
+          });
+          return {
+            number: 1,
+          };
+        } else {
+          const prevNumber = parseInt(doc.data().number);
+          const number = prevNumber + 1;
 
-                transaction.set(incrementRef, {
-                  number: number,
-                });
-                return {
-                  number: number,
-                };
-              }
-            }).then(async (resp) => {
-              const { number } = resp;
-              const padNumber = String(number).padStart(5, "0");
-              const ref = shortName + "-" + padNumber;
-              await db
-                .collection("Report")
-                .add({
-                  ...req.body,
-                  ref: ref,
-                  projectName: projectName,
-                  companyName: companyName,
-                  RepStatus: "รอรับเรื่อง",
-                })
-                .then(() => {
-                  res.send(true);
-                });
-              request({
-                method: "POST",
-                uri: "https://notify-api.line.me/api/notify",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  Authorization: `Bearer ${token}`,
-                },
-                form: {
-                  message: `
+          transaction.set(incrementRef, {
+            number: number,
+          });
+          return {
+            number: number,
+          };
+        }
+      }).then(async (resp) => {
+        const { number } = resp;
+        const padNumber = String(number).padStart(5, "0");
+        const ref = shortName + "-" + padNumber;
+        await db
+          .collection("Report")
+          .add({
+            ...req.body,
+            ref: ref,
+            projectName: projectName,
+            companyName: companyName,
+            RepStatus: "รอรับเรื่อง",
+          })
+          .then(() => {
+            res.send(true);
+          });
+        request({
+          method: "POST",
+          uri: "https://notify-api.line.me/api/notify",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`,
+          },
+          form: {
+            message: `
 บริษัท : ${companyName}
 โปรเจค : ${projectName}
 เลขอ้างอิง : ${ref}
 ชื่อเรื่อง : ${title}
 รายละเอียด : ${detail}
                         `,
-                },
-              });
-            });
+          },
+        });
+      });
     } catch (e) {
-      res.send(`API need : ( companyName, title, detail ) OR. ${e}`);
+      console.log(e);
+      res.send(`Some thing went wrong. ${e}`);
     }
   });
 });
@@ -148,7 +149,7 @@ exports.getReportByid_v2 = functions.https.onRequest((req, res) => {
       const allDoc = [];
       await db
         .collection("Report")
-        .where("projectID", "==", projectID)
+        .where("projectId", "==", projectID)
         .get()
         .then((snapshot) => {
           snapshot.forEach((doc) => {

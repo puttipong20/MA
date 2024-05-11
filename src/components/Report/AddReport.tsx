@@ -93,6 +93,9 @@ const AddReport = () => {
       uid: Auth.uid,
       createBy: { uid: Auth.uid, username: Auth.username },
       RepStatus: "รอรับเรื่อง",
+      companyName: "",
+      projectName: "",
+      isArchive: false
     };
     try {
       await axios
@@ -101,7 +104,7 @@ const AddReport = () => {
           // "https://us-central1-craftinglab-dev.cloudfunctions.net/addReport_v2", // prod
           // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/addReport_v2", // dev
           // "http://127.0.0.1:5001/crafting-ticket-dev/us-central1/addReport_v2", //emulators
-          "http://127.0.0.1:5001/final-project-661cd/us-central1/addReport_v2",
+          "http://127.0.0.1:5001/present-project-cecd4/us-central1/addReport_v2",
           dataToAdd
         )
         .then((res) => {
@@ -114,7 +117,7 @@ const AddReport = () => {
             duration: 3000,
             isClosable: true,
           });
-        })
+        });
     } catch (e) {
       toast({
         title: "Error",
@@ -160,8 +163,7 @@ const AddReport = () => {
     setAllImgUpload(allImgUpload.filter((i) => i !== allImgUpload[index]));
   };
 
-  useEffect(() => {
-  }, [problem]);
+  useEffect(() => {}, [problem]);
 
   return (
     <div className="container">

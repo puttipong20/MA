@@ -1,19 +1,4 @@
 {
-  "indexes": [
-    {
-      "collectionGroup": "Project",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "companyID",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    }
-  ],
+  "indexes": [],
   "fieldOverrides": []
 }

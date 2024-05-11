@@ -73,7 +73,8 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
           isClosable: true,
         });
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e)
         toast({
           title: `เพิ่มบริษัทไม่สำเร็จ`,
           status: "error",
@@ -137,7 +138,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                         </Flex>
                       </FormLabel>
                       <Input
-                      borderRadius={'16px'}
+                        borderRadius={"16px"}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -154,7 +155,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ที่อยู่บริษัท</FormLabel>
                       <Textarea
-                      borderRadius={'16px'}
+                        borderRadius={"16px"}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -171,7 +172,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>ชื่อผู้ติดต่อ</FormLabel>
                       <Input
-                      borderRadius={'16px'}
+                        borderRadius={"16px"}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -188,7 +189,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เบอร์โทรติดต่อ</FormLabel>
                       <Input
-                      borderRadius={'16px'}
+                        borderRadius={"16px"}
                         type="tel"
                         value={value}
                         onChange={onChange}
@@ -206,7 +207,7 @@ const FormAddCompany = ({ refetch }: { refetch: () => void }) => {
                     <FormControl isInvalid={Boolean(errors[name])}>
                       <FormLabel>เลขประจำตัวผู้เสียภาษี</FormLabel>
                       <Input
-                      borderRadius={'16px'}
+                        borderRadius={"16px"}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}

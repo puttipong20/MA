@@ -43,12 +43,7 @@ import { BsArchiveFill, BsSearch } from "react-icons/bs";
 import { search } from "ss-search";
 import { Controller, useForm } from "react-hook-form";
 
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../services/config-db";
 import { Report, ReportDetail } from "../../@types/Type";
 import classes from "./ReportPreview.module.css";
@@ -77,7 +72,7 @@ const ActionMenu: React.FC<ActionProps> = (props) => {
       .post(
         // "https://us-central1-craftinglab-dev.cloudfunctions.net/updateReport", //prod
         // "https://us-central1-crafting-ticket-dev.cloudfunctions.net/updateReport", // dev
-        "http://127.0.0.1:5001/final-project-661cd/us-central1/updateReport",
+        "http://127.0.0.1:5001/present-project-cecd4/us-central1/updateReport",
         {
           reportId: props.reportId,
           isArchive: set,
@@ -218,7 +213,7 @@ export default function ProblemPreview() {
     const q = query(collRef, where("projectName", "==", params["projectName"]));
     const fetchReport = await getDocs(q);
     const allReport: Report[] = [];
-    
+
     fetchReport.forEach((r) => {
       const report: Report = {
         id: r.id,
